@@ -1,0 +1,66 @@
+Meeting Notes - USPS Postal Store UI/UX Modernization
+Date: October 2, 2025
+
+Features Discussed:
+
+1. Addition of How It Works section
+   - Mini education on the product details page
+   - Detail how customers can use the product
+   - As detailed as possible with hyperlinks
+   - Specific section for product usage instructions
+   - Helps customers understand if they're buying the right product
+   - Reduces customer frustration and buying mistakes
+   - Improves trust in website and brand
+
+2. Product Details Page Content Layout and Module Resizing
+   - Changing the hierarchy and verbiage
+   - Reordering to be more streamlined and modernized
+   - Better flow for scanning product information
+   - Improves visual hierarchy and scannability
+   - Better organization of purchase-making decision information
+
+3. Product Details Imagery Updates
+   - More quantities and more details
+   - Full size availability for images
+   - Higher quality images
+   - Multiple angles of products
+   - Gives customers realistic expectation of what they'll receive
+   - Should cut down on returns
+   - Improves customer satisfaction and trust
+
+4. Product Comparison Table
+   - Specific to Shipping Supplies Only
+   - Create a comparison table at a glance for other small boxes
+   - Show all the specs as well
+   - Display current item and compare similar items
+   - View details links to product detail page for that specific item
+   - Helps customers understand differences between sizes, prices, shipping speeds
+   - Allows customers to make more informed purchasing decisions
+
+5. Site Search Optimization
+   - Optimizes search functionality
+   - Customers can find products (and related products) faster
+   - More accurate search results
+   - Contains relevant products so customers can find what they're looking for quickly
+
+6. YMAL (You May Also Like) Automation
+   - Removes manual flow
+   - Allows for smarter, more persuasive purchase nudging
+   - Product recommendations relevant to interests and purchase preferences
+   - Helps customers discover new items they may not know exist
+   - Don't waste time looking at irrelevant items
+
+7. Confirmation Page Layout
+   - Modernization of the confirmation layout
+   - Separate Guest vs Log In flow
+   - Utilizes gestalt principles for easier scanning
+   - Easier digestion of order summary information
+   - Customers can quickly see details of confirmed order
+   - Know the correct order was placed
+   - Easily see and refer back to shipment details
+
+Additional Notes:
+- All features should work on mobile and desktop
+- Need to consider accessibility throughout
+- Focus on reducing customer confusion
+- Improve overall trust in the postal store brand
