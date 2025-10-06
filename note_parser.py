@@ -7,12 +7,18 @@ import PyPDF2
 import os
 from typing import Dict, List, Optional
 
+try:
+    import docx
+    DOCX_AVAILABLE = True
+except ImportError:
+    DOCX_AVAILABLE = False
+
 
 class NoteParser:
     """Parse raw meeting notes into structured data"""
 
     def __init__(self):
-        self.supported_formats = ['.pdf', '.txt', '.md']
+        self.supported_formats = ['.pdf', '.txt', '.md', '.docx']
 
     def parse_file(self, file_path: str) -> str:
         """
@@ -33,6 +39,8 @@ class NoteParser:
             return self._parse_pdf(file_path)
         elif file_ext in ['.txt', '.md']:
             return self._parse_text(file_path)
+        elif file_ext == '.docx':
+            return self._parse_docx(file_path)
         else:
             raise ValueError(f"Unsupported file format: {file_ext}. Supported: {self.supported_formats}")
 
@@ -56,6 +64,32 @@ class NoteParser:
                 return file.read().strip()
         except Exception as e:
             raise Exception(f"Error reading text file: {str(e)}")
+
+    def _parse_docx(self, file_path: str) -> str:
+        """Extract text from Word document"""
+        if not DOCX_AVAILABLE:
+            raise Exception("python-docx library not installed. Run: pip install python-docx")
+
+        try:
+            doc = docx.Document(file_path)
+            text = []
+
+            # Extract text from paragraphs
+            for paragraph in doc.paragraphs:
+                if paragraph.text.strip():
+                    text.append(paragraph.text)
+
+            # Extract text from tables
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        if cell.text.strip():
+                            text.append(cell.text)
+
+            return "\n".join(text).strip()
+
+        except Exception as e:
+            raise Exception(f"Error parsing Word document: {str(e)}")
 
     def parse_text(self, text: str) -> str:
         """

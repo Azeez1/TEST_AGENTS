@@ -6,7 +6,8 @@ An autonomous AI agent that converts raw meeting notes into backlog-ready user s
 
 - **Web UI**: Simple, intuitive Streamlit interface - no command line needed!
 - **Domain-Agnostic**: Works with meeting notes from ANY project (e-commerce, finance, healthcare, etc.)
-- **Intelligent Parsing**: Handles messy, unstructured notes - bullet points, paragraphs, whatever you have
+- **Multiple Formats**: Supports PDF, TXT, Markdown, and Word documents (.docx)
+- **Intelligent Parsing**: Handles messy, unstructured notes - bullet points, paragraphs, tables, whatever you have
 - **Complete User Stories**: Generates stories in standard format with detailed Gherkin acceptance criteria
 - **Excel Output**: Creates properly formatted Excel files with your exact column structure
 - **Append Mode**: Automatically detects and appends to existing Excel files
@@ -80,6 +81,9 @@ python user_story_agent.py --notes "meeting_notes.pdf" --output "stories.xlsx"
 
 # From a text file
 python user_story_agent.py --notes "notes.txt" --output "stories.xlsx"
+
+# From a Word document
+python user_story_agent.py --notes "meeting_notes.docx" --output "stories.xlsx"
 ```
 
 ### Append to Existing File

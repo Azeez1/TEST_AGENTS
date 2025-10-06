@@ -174,8 +174,8 @@ with tab1:
     if input_method == "Upload File":
         uploaded_notes = st.file_uploader(
             "Upload meeting notes",
-            type=['pdf', 'txt', 'md'],
-            help="Supported formats: PDF, TXT, MD",
+            type=['pdf', 'txt', 'md', 'docx'],
+            help="Supported formats: PDF, TXT, MD, DOCX (Word)",
             key="gen_file_upload"
         )
 
@@ -319,7 +319,7 @@ with tab3:
         st.markdown("#### Upload New Meeting Notes")
         new_notes_file = st.file_uploader(
             "Upload new meeting notes",
-            type=['pdf', 'txt', 'md'],
+            type=['pdf', 'txt', 'md', 'docx'],
             key="append_notes_upload"
         )
 
