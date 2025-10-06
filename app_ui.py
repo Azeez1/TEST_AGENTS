@@ -345,27 +345,36 @@ with tab2:
             # Download all changes button (only if refinements made)
             if st.session_state.refinement_history:
                 try:
-                    # Create temp file with all refinements
+                    # Prepare download data
                     import tempfile
-                    import io
-
-                    # Create Excel in memory
-                    output_buffer = io.BytesIO()
-                    from openpyxl import Workbook
                     from excel_handler import ExcelHandler
 
-                    # Create temp file path
-                    with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp:
-                        temp_path = tmp.name
+                    def prepare_download_data():
+                        """Prepare Excel data for download"""
+                        # Create temp file
+                        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp:
+                            temp_path = tmp.name
 
-                    # Write stories to temp file
-                    excel_handler = ExcelHandler(temp_path)
-                    excel_handler.write_stories(st.session_state.refine_working_stories, append=False)
-                    excel_handler.close()
+                        # Write stories to temp file
+                        excel_handler = ExcelHandler(temp_path)
+                        excel_handler.write_stories(st.session_state.refine_working_stories, append=False)
+                        excel_handler.close()
 
-                    # Read the file for download
-                    with open(temp_path, 'rb') as f:
-                        excel_data = f.read()
+                        # Read the file
+                        with open(temp_path, 'rb') as f:
+                            data = f.read()
+
+                        # Clean up temp file
+                        import os
+                        try:
+                            os.unlink(temp_path)
+                        except:
+                            pass
+
+                        return data
+
+                    # Generate Excel data
+                    excel_data = prepare_download_data()
 
                     # Direct download button
                     st.download_button(
@@ -380,7 +389,7 @@ with tab2:
                     st.info(f"✓ {len(st.session_state.refinement_history)} refinements ready to download")
 
                 except Exception as e:
-                    show_error_message(str(e))
+                    show_error_message(f"Download error: {str(e)}")
 
         # Show refined story preview if just refined
         if st.session_state.refinement_history and st.session_state.refinement_history[-1]['row'] == selected_index + 1:
