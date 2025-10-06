@@ -34,6 +34,12 @@ if 'generated_stories' not in st.session_state:
     st.session_state.generated_stories = []
 if 'output_file_path' not in st.session_state:
     st.session_state.output_file_path = None
+if 'refine_working_stories' not in st.session_state:
+    st.session_state.refine_working_stories = []
+if 'refinement_history' not in st.session_state:
+    st.session_state.refinement_history = []
+if 'refine_excel_name' not in st.session_state:
+    st.session_state.refine_excel_name = None
 
 # Initialize clients
 client = Anthropic()
@@ -245,6 +251,7 @@ with tab1:
 # TAB 2: REFINE STORIES
 with tab2:
     st.header("Refine Existing Stories")
+    st.markdown("*Refine multiple stories in one session before downloading*")
 
     # Upload existing Excel
     uploaded_excel = st.file_uploader(
@@ -255,59 +262,111 @@ with tab2:
     )
 
     if uploaded_excel:
-        temp_excel_path = save_uploaded_file(uploaded_excel)
+        # Load stories into session state if new upload
+        if st.session_state.refine_excel_name != uploaded_excel.name:
+            temp_excel_path = save_uploaded_file(uploaded_excel)
+            st.session_state.refine_working_stories = read_existing_stories(temp_excel_path)
+            st.session_state.refine_excel_name = uploaded_excel.name
+            st.session_state.refinement_history = []
 
-        try:
-            existing_stories = read_existing_stories(temp_excel_path)
+        show_success_message(f"Loaded {len(st.session_state.refine_working_stories)} stories from {uploaded_excel.name}")
 
-            show_success_message(f"Loaded {len(existing_stories)} stories from {uploaded_excel.name}")
+        # Show refinement history if any
+        if st.session_state.refinement_history:
+            st.markdown("### ✏️ Refinements Made This Session")
+            for history_item in st.session_state.refinement_history:
+                st.success(f"✓ Story {history_item['row']}: {history_item['instruction']}")
 
-            # Display stories list
+        st.markdown("---")
+
+        # Display stories list
+        col1, col2 = st.columns([1, 2])
+
+        with col1:
             st.markdown("### Select Story to Refine")
 
             # Story selector
-            story_options = [f"Story {i+1}: {s['feature_epic']}" for i, s in enumerate(existing_stories)]
-            selected_index = st.selectbox("Choose a story:", range(len(story_options)), format_func=lambda x: story_options[x])
-
-            # Display selected story
-            st.markdown("#### Current Story")
-            display_story_card(existing_stories[selected_index])
-
-            # Refinement instruction
-            st.markdown("#### Refinement Instructions")
-            refinement_instruction = st.text_area(
-                "What changes do you want to make?",
-                placeholder="Examples:\n- Add more acceptance criteria about error handling\n- Make the business case more specific\n- Add mobile responsiveness requirements\n- Change user type from 'customer' to 'administrator'",
-                height=150
+            story_options = [f"Story {i+1}: {s['feature_epic']}" for i, s in enumerate(st.session_state.refine_working_stories)]
+            selected_index = st.selectbox(
+                "Choose a story:",
+                range(len(story_options)),
+                format_func=lambda x: story_options[x],
+                key="refine_story_selector"
             )
 
+        with col2:
+            st.markdown("### Current Story")
+            display_story_card(st.session_state.refine_working_stories[selected_index])
+
+        # Refinement instruction
+        st.markdown("### Refinement Instructions")
+        refinement_instruction = st.text_area(
+            "What changes do you want to make?",
+            placeholder="Examples:\n- Add more acceptance criteria about error handling\n- Make the business case more specific\n- Add mobile responsiveness requirements\n- Change user type from 'customer' to 'administrator'",
+            height=120,
+            key="refine_instruction_input"
+        )
+
+        # Action buttons
+        col_a, col_b = st.columns(2)
+
+        with col_a:
             # Refine button
-            if st.button("✏️ Refine Story", type="primary", use_container_width=True):
+            if st.button("✏️ Refine This Story", type="primary", use_container_width=True):
                 if not refinement_instruction:
                     show_warning_message("Please enter refinement instructions")
                 else:
                     with st.spinner("Refining story with Claude AI..."):
                         try:
-                            refined_story = refine_single_story(existing_stories[selected_index], refinement_instruction)
+                            refined_story = refine_single_story(
+                                st.session_state.refine_working_stories[selected_index],
+                                refinement_instruction
+                            )
 
-                            st.markdown("#### Refined Story")
-                            display_story_card(refined_story)
+                            # Update in working stories
+                            st.session_state.refine_working_stories[selected_index] = refined_story
 
-                            # Update in Excel
-                            excel_handler = ExcelHandler(temp_excel_path)
-                            excel_handler.update_story(selected_index + 1, refined_story)
-                            excel_handler.close()
+                            # Add to history
+                            st.session_state.refinement_history.append({
+                                'row': selected_index + 1,
+                                'feature': refined_story['feature_epic'],
+                                'instruction': refinement_instruction
+                            })
 
-                            show_success_message("Story refined and updated in Excel")
+                            show_success_message(f"Story {selected_index + 1} refined! You can refine more stories or download all changes.")
 
-                            # Download button
-                            create_download_button(temp_excel_path, "📥 Download Updated Excel", key="refine_download")
+                            # Force rerun to show updated state
+                            st.rerun()
 
                         except Exception as e:
                             show_error_message(str(e))
 
-        except Exception as e:
-            show_error_message(f"Error loading Excel file: {str(e)}")
+        with col_b:
+            # Download all changes button (only if refinements made)
+            if st.session_state.refinement_history:
+                if st.button("📥 Download All Changes", use_container_width=True):
+                    try:
+                        # Create temp file with all refinements
+                        import tempfile
+                        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp:
+                            output_path = tmp.name
+
+                        # Write all working stories to Excel
+                        create_excel_output(output_path, st.session_state.refine_working_stories, append=False)
+
+                        show_success_message(f"All {len(st.session_state.refinement_history)} refinements applied!")
+
+                        # Download button
+                        create_download_button(output_path, "📥 Download Updated Excel", key="refine_download_all")
+
+                    except Exception as e:
+                        show_error_message(str(e))
+
+        # Show refined story preview if just refined
+        if st.session_state.refinement_history and st.session_state.refinement_history[-1]['row'] == selected_index + 1:
+            st.markdown("---")
+            st.markdown("### ✨ Refined Story Preview")
+            display_story_card(st.session_state.refine_working_stories[selected_index])
 
 # TAB 3: ADD MORE STORIES
 with tab3:
