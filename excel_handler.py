@@ -113,7 +113,10 @@ class ExcelHandler:
             self.load_workbook()
             start_row = self.worksheet.max_row + 1
         else:
-            self.load_workbook()
+            # Create new workbook (don't try to load empty/non-existent file)
+            self.workbook = openpyxl.Workbook()
+            self.worksheet = self.workbook.active
+            self._create_header()
             start_row = 2  # Start after header
 
         for story in stories:
