@@ -344,23 +344,43 @@ with tab2:
         with col_b:
             # Download all changes button (only if refinements made)
             if st.session_state.refinement_history:
-                if st.button("📥 Download All Changes", use_container_width=True):
-                    try:
-                        # Create temp file with all refinements
-                        import tempfile
-                        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp:
-                            output_path = tmp.name
+                try:
+                    # Create temp file with all refinements
+                    import tempfile
+                    import io
 
-                        # Write all working stories to Excel
-                        create_excel_output(output_path, st.session_state.refine_working_stories, append=False)
+                    # Create Excel in memory
+                    output_buffer = io.BytesIO()
+                    from openpyxl import Workbook
+                    from excel_handler import ExcelHandler
 
-                        show_success_message(f"All {len(st.session_state.refinement_history)} refinements applied!")
+                    # Create temp file path
+                    with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp:
+                        temp_path = tmp.name
 
-                        # Download button
-                        create_download_button(output_path, "📥 Download Updated Excel", key="refine_download_all")
+                    # Write stories to temp file
+                    excel_handler = ExcelHandler(temp_path)
+                    excel_handler.write_stories(st.session_state.refine_working_stories, append=False)
+                    excel_handler.close()
 
-                    except Exception as e:
-                        show_error_message(str(e))
+                    # Read the file for download
+                    with open(temp_path, 'rb') as f:
+                        excel_data = f.read()
+
+                    # Direct download button
+                    st.download_button(
+                        label="📥 Download All Changes",
+                        data=excel_data,
+                        file_name=st.session_state.refine_excel_name or "refined_stories.xlsx",
+                        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        use_container_width=True,
+                        key="refine_download_all"
+                    )
+
+                    st.info(f"✓ {len(st.session_state.refinement_history)} refinements ready to download")
+
+                except Exception as e:
+                    show_error_message(str(e))
 
         # Show refined story preview if just refined
         if st.session_state.refinement_history and st.session_state.refinement_history[-1]['row'] == selected_index + 1:
