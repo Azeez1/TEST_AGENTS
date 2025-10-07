@@ -48,7 +48,10 @@ This opens the web interface in your browser at `http://localhost:8501`
 ### 4. Use the Web Interface
 
 - **Tab 1: Generate Stories** - Upload notes → Generate → Download Excel
-- **Tab 2: Refine Stories** - Upload Excel → Select story → Refine → Download
+- **Tab 2: Refine Stories** - Upload Excel → Select story → **Manual Edit OR AI Refine** → Download
+  - **Manual Edit Mode**: Directly edit all fields (User Story, ACs, Business Case, etc.)
+  - **AI Refine Mode**: Give instructions to Claude to update the story
+  - Edit multiple stories before downloading all changes
 - **Tab 3: Add More Stories** - Upload notes + Excel → Append → Download
 - **Tab 4: View Stories** - Upload Excel → Browse/search stories
 - **Tab 5: Batch Operations** - Upload Excel → Apply to all → Download

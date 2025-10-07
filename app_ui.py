@@ -298,21 +298,100 @@ with tab2:
             st.markdown("### Current Story")
             display_story_card(st.session_state.refine_working_stories[selected_index])
 
-        # Refinement instruction
-        st.markdown("### Refinement Instructions")
-        refinement_instruction = st.text_area(
-            "What changes do you want to make?",
-            placeholder="Examples:\n- Add more acceptance criteria about error handling\n- Make the business case more specific\n- Add mobile responsiveness requirements\n- Change user type from 'customer' to 'administrator'",
-            height=120,
-            key="refine_instruction_input"
+        st.markdown("---")
+
+        # Two options: Manual Edit OR AI Refinement
+        edit_mode = st.radio(
+            "Choose editing mode:",
+            ["✏️ Manual Edit", "🤖 AI Refinement"],
+            horizontal=True,
+            key="edit_mode_selector"
         )
 
-        # Action buttons
-        col_a, col_b = st.columns(2)
+        if edit_mode == "✏️ Manual Edit":
+            st.markdown("### Manual Edit Story")
+            st.markdown("*Edit the fields directly and save your changes*")
 
-        with col_a:
+            # Get current story
+            current_story = st.session_state.refine_working_stories[selected_index]
+
+            # Manual edit fields
+            manual_user_story = st.text_area(
+                "User Story",
+                value=current_story['user_story'],
+                height=80,
+                key=f"manual_user_story_{selected_index}"
+            )
+
+            manual_feature_epic = st.text_input(
+                "Feature/Epic",
+                value=current_story['feature_epic'],
+                key=f"manual_feature_{selected_index}"
+            )
+
+            # Acceptance Criteria (each on separate line)
+            st.markdown("**Acceptance Criteria** (one per line)")
+            manual_ac_text = st.text_area(
+                "Acceptance Criteria",
+                value="\n".join(current_story['acceptance_criteria']),
+                height=120,
+                key=f"manual_ac_{selected_index}",
+                help="Enter each acceptance criterion on a new line"
+            )
+
+            manual_business_case = st.text_area(
+                "Rationale or Business Case",
+                value=current_story['business_case'],
+                height=80,
+                key=f"manual_bc_{selected_index}"
+            )
+
+            manual_relevant_pages = st.text_input(
+                "Relevant Page(s)",
+                value=current_story['relevant_pages'],
+                key=f"manual_pages_{selected_index}"
+            )
+
+            # Save button
+            if st.button("💾 Save Manual Changes", type="primary", use_container_width=True):
+                # Parse AC text into list
+                ac_list = [line.strip() for line in manual_ac_text.split('\n') if line.strip()]
+
+                # Create updated story
+                updated_story = {
+                    'user_story': manual_user_story.strip(),
+                    'feature_epic': manual_feature_epic.strip(),
+                    'acceptance_criteria': ac_list,
+                    'business_case': manual_business_case.strip(),
+                    'relevant_pages': manual_relevant_pages.strip()
+                }
+
+                # Update in working stories
+                st.session_state.refine_working_stories[selected_index] = updated_story
+
+                # Add to history
+                st.session_state.refinement_history.append({
+                    'row': selected_index + 1,
+                    'feature': updated_story['feature_epic'],
+                    'instruction': 'Manual edit'
+                })
+
+                show_success_message(f"Story {selected_index + 1} saved! You can edit more stories or download all changes.")
+                st.rerun()
+
+        else:  # AI Refinement mode
+            st.markdown("### AI Refinement Instructions")
+            st.markdown("*Describe what you want Claude to change*")
+
+            refinement_instruction = st.text_area(
+                "What changes do you want to make?",
+                placeholder="Examples:\n- Add more acceptance criteria about error handling\n- Make the business case more specific\n- Add mobile responsiveness requirements\n- Change user type from 'customer' to 'administrator'",
+                height=120,
+                key="refine_instruction_input"
+            )
+
             # Refine button
-            if st.button("✏️ Refine This Story", type="primary", use_container_width=True):
+            if st.button("🤖 Refine with AI", type="primary", use_container_width=True):
                 if not refinement_instruction:
                     show_warning_message("Please enter refinement instructions")
                 else:
@@ -341,9 +420,11 @@ with tab2:
                         except Exception as e:
                             show_error_message(str(e))
 
-        with col_b:
-            # Download all changes button (only if refinements made)
-            if st.session_state.refinement_history:
+        # Download button section
+        st.markdown("---")
+
+        # Download all changes button (only if refinements made)
+        if st.session_state.refinement_history:
                 try:
                     # Prepare download data
                     import tempfile
