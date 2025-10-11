@@ -175,26 +175,135 @@ Consider edge cases like:
         # Define AC format reminder
         if ac_format == "explicit":
             ac_format_reminder = """
-IMPORTANT: Maintain the Explicit/Detailed AC format.
+CRITICAL: Use Explicit/Detailed AC format with the following COMPLETE GUIDELINES:
 
-TARGET LENGTH: 30-50 lines (2,500-4,500 characters)
+## 🎯 KEEP IT SIMPLE (DEFAULT - Use This 95% of the Time)
 
-STRUCTURE: Use 3-4 levels max (1, a, i, 1), keep 4-7 main sections
+**TARGET:** 30-50 lines total, 2,500-4,500 characters
+**STRUCTURE:** 3-4 indentation levels max (1, a, i, 1)
+**SECTIONS:** 4-7 main numbered sections
+**FOCUS:** Core functionality only
 
-INCLUDE:
+### Universal Checklist - Every AC Must Cover:
+✅ Trigger/Entry Point: What initiates this functionality?
+✅ Inputs: What data/information is required?
+✅ Processing/Logic: What happens during execution?
+✅ Outputs: What's produced? (screen, data, notification, file)
+✅ Validation Rules: What must be verified/checked?
+✅ Error Handling: What happens when things fail?
+✅ Edge Cases: Unusual scenarios covered?
+✅ Permissions: Who can access this? (roles, authentication)
+✅ State Changes: What changes in the system?
+✅ Success Criteria: How do we know it worked?
+
+### What to INCLUDE:
 ✅ What displays/happens on screen
-✅ User interactions and conditional logic (if/then)
-✅ Validation and error messages
-✅ Navigation flows and cross-references
-✅ User states (guest/logged in, empty state)
-✅ Responsive behavior summary
+✅ User interactions and results
+✅ Conditional logic (if/then statements)
+✅ Validation and error messages with exact text
+✅ Navigation flows and redirects
+✅ Required vs optional fields (mark explicitly)
+✅ User states (guest/logged in, empty states)
+✅ Tooltips and modals
+✅ Pre-populated data
+✅ Cross-references to related stories: (See [Story Name])
+✅ Responsive behavior summary (desktop/mobile differences if important)
 
-AVOID:
-❌ Specific timings, detailed analytics, pixel-perfect design
-❌ Exhaustive accessibility, CMS details, A/B testing
-❌ Social features (unless core)
+### What to AVOID:
+❌ Design implementation details ("swipe left" → use "option to access")
+❌ Vague statements ("manage items" → use "Copy, Delete, or Select")
+❌ Pixel-perfect design specs (fonts, colors, exact spacing)
+❌ Exhaustive analytics event lists
+❌ Detailed accessibility specs (summarize in Notes)
+❌ CMS/admin implementation details
+❌ A/B testing requirements
+❌ Social features (unless core to story)
+❌ Specific timings (unless critical - say "loads quickly")
 
-NOTES SECTION: Always include performance, accessibility, analytics, future enhancements, technical hints, open questions"""
+### REQUIRED NOTES SECTION:
+Always include a "Notes:" section at the end covering:
+- Performance: Target load times, optimization notes
+- Accessibility: Screen reader, keyboard navigation summary
+- Analytics: Key events to track (high-level)
+- Future Enhancements: v2 features, nice-to-haves
+- Technical Hints: Caching, API considerations
+- Open Questions: Items needing clarification
+
+### Example Structure (Use As Template):
+
+1. The [Page/Feature Name] displays:
+   a. [UI Element/Section Name]
+      i. [Field name] (Required)
+      ii. [Field name] (Optional)
+      iii. [Behavior or condition]
+         1. If [condition], then [result]
+         2. Error message: "[exact text]"
+   b. [Next UI Element]
+      i. [Details...]
+   c. [Button/Action]
+      i. Disabled if [condition]
+      ii. Selecting will redirect to [Destination]
+
+2. User States:
+   a. Guest users: [behavior]
+   b. Logged-in users: [behavior]
+   c. Empty state: Display message "[text]"
+
+3. Validation Rules:
+   a. [Field] validation
+      i. If [invalid condition], display error: "[message]"
+   b. Form submission
+      i. All Required fields must be completed
+
+4. Navigation:
+   a. Success: Redirect to [Page]
+   b. Cancel: Return to [Previous Page] (See [Story Name])
+   c. Back button: Navigate to [Page]
+
+5. Responsive Behavior:
+   a. Desktop: [key differences]
+   b. Mobile: [key differences if significant]
+
+Notes:
+- Performance: [target metrics]
+- Accessibility: [keyboard navigation, screen readers]
+- Analytics: [key events to track]
+- Future: [planned enhancements]
+
+### Common Patterns to Use:
+
+**For Validation:**
+i. If the user does not [required action] they will receive an error message informing them that [specific error text]
+
+**For Navigation:**
+i. Selecting will redirect the user to [Destination] ([URL]) to [purpose]
+
+**For Conditionals:**
+a. If [condition], then:
+   i. [Outcome 1]
+   ii. [Outcome 2]
+
+**For Cross-References:**
+ii. [Action] (See [Related User Story Name])
+
+**For Modals:**
+d. Tool Tip
+   i. Selecting will display a modal that [describes purpose]
+      1. [Content element]
+      2. [Button/Link]
+         a. Selecting will [action]
+
+**For Pre-population:**
+i. [Field name] will pre-populate with [data source/default value]
+
+**For Permissions:**
+a. User must be [authenticated/have role] to access this feature
+b. If user does not have permission:
+   i. User sees: [error message OR redirect to login]
+
+---
+
+REMEMBER: Default to SIMPLE (30-50 lines). Only write comprehensive 100+ line ACs if this is mission-critical, compliance-heavy, or explicitly required."""
         else:
             ac_format_reminder = "\nIMPORTANT: Maintain the Gherkin format (Given/When/Then) for all acceptance criteria."
 
@@ -212,16 +321,23 @@ Refinement Instruction:
 {instruction}
 {ac_format_reminder}
 
-Return the refined story in the same JSON format:
+Return the refined story in the same JSON format with acceptance_criteria as an ARRAY OF STRINGS where each string is one complete acceptance criterion section:
 {{
     "user_story": "...",
     "feature_epic": "...",
-    "acceptance_criteria": ["...", "..."],
+    "acceptance_criteria": [
+        "1. The [Page] displays:\\n   a. Element 1\\n      i. Detail\\n   b. Element 2",
+        "2. User States:\\n   a. Guest users: [behavior]\\n   b. Logged-in users: [behavior]",
+        "3. Validation Rules:\\n   a. Field validation\\n      i. Error message: \\"text\\"",
+        "Notes:\\n- Performance: [details]\\n- Accessibility: [details]"
+    ],
     "business_case": "...",
     "relevant_pages": "..."
 }}
 
-Maintain the quality and detail level of the original story while implementing the requested changes."""
+IMPORTANT: Each array element should be a complete numbered section (including subsections with proper indentation using \\n for line breaks). The ACs should total 30-50 lines when formatted. Always include the Notes section as the final array element.
+
+Maintain the quality and detail level while implementing the requested changes."""
 
     @staticmethod
     def get_batch_update_prompt(stories: List[Dict], instruction: str) -> str:

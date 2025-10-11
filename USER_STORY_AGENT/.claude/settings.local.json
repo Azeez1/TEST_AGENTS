@@ -9,7 +9,8 @@
       "Bash(git push:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nImprove Tab 2: Allow multiple story refinements in one session\n\nFeatures:\n- Refine multiple stories before downloading (no need to re-upload)\n- Session state tracks all refinements\n- Shows refinement history in real-time\n- \"Download All Changes\" button appears after first refinement\n- Side-by-side story selector and preview\n- Cleaner workflow: Upload once → Refine many → Download once\n\nUser Experience:\nBefore: Upload → Refine Story 1 → Download → Re-upload → Refine Story 2 → Download\nAfter: Upload → Refine Story 1 → Refine Story 3 → Refine Story 7 → Download All\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit:*)",
-      "Bash(streamlit run:*)"
+      "Bash(streamlit run:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

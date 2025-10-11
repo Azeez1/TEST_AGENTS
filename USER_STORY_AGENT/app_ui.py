@@ -62,9 +62,41 @@ def generate_stories_from_notes(notes_text: str, output_filename: str, append: b
 
         # Define AC format instructions
         if ac_format == "explicit":
-            ac_example = """      "Given I am viewing a product details page, when I scroll to the How It Works section, then I should see a detailed mini-education guide with clear step-by-step instructions, visual aids, and one relevant hyperlink to a specific related section",
-      "Given I am viewing a stamps or philatelic product, when I access the How It Works section, then the content should be sourced from the standardized 'How it Works (Stamps & Philatelic)' PDF documentation to ensure accuracy and consistency" """
-            ac_requirement = "2. Include 4-6 detailed acceptance criteria per story in Explicit/Detailed format with comprehensive narrative descriptions"
+            ac_example = """      "1. The Login Page displays:\\n   a. Email field (Required)\\n   b. Password field (Required)\\n      i. Show/hide password toggle\\n   c. \\"Remember Me\\" checkbox\\n   d. \\"Sign In\\" button\\n      i. Disabled if fields empty",
+      "2. User States:\\n   a. Guest users: Form is displayed\\n   b. Already logged in: Redirect to Dashboard",
+      "3. Validation:\\n   a. If email invalid format, display error: \\"Please enter valid email\\"\\n   b. If credentials incorrect, display error: \\"Invalid email or password\\"",
+      "4. Successful Login:\\n   a. Redirect to Dashboard\\n   b. Set session cookie (expires in 30 days if \\"Remember Me\\" checked)",
+      "Notes:\\n- Performance: Page loads within 2 seconds\\n- Security: HTTPS required, password encrypted\\n- Accessibility: Keyboard navigable, proper labels\\n- Analytics: Track login attempts, success/failure rates" """
+            ac_requirement = """2. Include Explicit/Detailed acceptance criteria in this specific format:
+
+   TARGET: 30-50 lines total (2,500-4,500 characters)
+   STRUCTURE: 3-4 indentation levels max (1, a, i, 1), 4-7 main sections
+
+   Universal Checklist - Cover ALL of these:
+   ✅ Trigger/Entry Point: What initiates this functionality?
+   ✅ Inputs: What data/information is required?
+   ✅ Processing/Logic: What happens during execution?
+   ✅ Outputs: What's produced?
+   ✅ Validation Rules: What must be verified?
+   ✅ Error Handling: What happens when things fail?
+   ✅ Edge Cases: Unusual scenarios?
+   ✅ Permissions: Who can access this?
+   ✅ State Changes: What changes in the system?
+   ✅ Success Criteria: How do we know it worked?
+
+   INCLUDE:
+   ✅ What displays on screen, user interactions, conditional logic (if/then)
+   ✅ Validation and error messages with EXACT text
+   ✅ Navigation flows, required vs optional fields
+   ✅ User states (guest/logged in, empty states)
+   ✅ Cross-references: (See [Story Name])
+
+   AVOID:
+   ❌ Design details, pixel-perfect specs, vague statements
+   ❌ Exhaustive analytics/accessibility (put in Notes)
+
+   REQUIRED: Always end with "Notes:" section covering:
+   - Performance, Accessibility, Analytics, Future enhancements"""
         else:
             ac_example = """      "Given [context], when [action], then [expected outcome]",
       "Given [context], when [action], then [expected outcome]" """
@@ -92,9 +124,11 @@ Generate user stories in this exact JSON format:
 Requirements:
 1. Each story must follow the "As a..., I want..., so that..." format
 {ac_requirement}
-3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
-4. Business case should explain ROI, customer impact, or strategic value
-5. Be specific about which pages/screens/areas are affected
+3. Each acceptance_criteria array element is a complete numbered section with \\n for line breaks and proper indentation (spaces)
+4. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
+5. Business case should explain ROI, customer impact, or strategic value
+6. Be specific about which pages/screens/areas are affected
+7. Always include the "Notes:" section as the final element in acceptance_criteria array
 
 Return ONLY the JSON array, no additional text."""
 
@@ -188,9 +222,9 @@ with tab1:
 
     if input_method == "Upload File":
         uploaded_notes = st.file_uploader(
-            "Upload meeting notes",
-            type=['pdf', 'txt', 'md', 'docx'],
-            help="Supported formats: PDF, TXT, MD, DOCX (Word)",
+            "Upload meeting notes or requirements",
+            type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls'],
+            help="Supported formats: PDF, TXT, MD, DOCX (Word), XLSX/XLS (Excel)\n\nExcel files will be intelligently analyzed for:\n• Existing user stories (will reformat/enhance)\n• Structured requirements tables\n• Free-form notes and content",
             key="gen_file_upload"
         )
 
@@ -537,8 +571,9 @@ with tab3:
     with col_a:
         st.markdown("#### Upload New Meeting Notes")
         new_notes_file = st.file_uploader(
-            "Upload new meeting notes",
-            type=['pdf', 'txt', 'md', 'docx'],
+            "Upload new meeting notes or requirements",
+            type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls'],
+            help="Supported: PDF, TXT, MD, DOCX, XLSX/XLS",
             key="append_notes_upload"
         )
 
