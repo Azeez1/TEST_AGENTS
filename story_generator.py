@@ -55,70 +55,197 @@ Return the analysis in a structured format that will help generate user stories.
         if ac_format == "explicit":
             ac_instructions = """2. Detailed Acceptance Criteria in Explicit/Detailed format
 
-   IMPORTANT: Write ACs that are detailed, prescriptive, and implementation-focused. Describe exactly what appears on each screen/page and how each element behaves.
+   CRITICAL: Choose the appropriate template based on story type. Use hierarchical numbering (1, a, i, 1, a) for ALL templates.
 
-   Structure Guidelines:
-   - Use hierarchical numbering: 1, a, i, 1, a, etc.
-   - Start with: "1. The [Page/Feature Name] page displays the following:"
-   - List ALL UI elements (buttons, fields, checkboxes, links, tooltips, modals, progress indicators, error messages)
-   - Mark required fields: "First Name (Required)" or "Company Name (If Applicable)"
-   - Specify ALL validation rules, character limits, date ranges, allowed formats
-   - Use "If...then" statements for conditional logic
-   - Include exact URLs for redirects
-   - Reference related user stories: "(See [Related Story Name])"
-   - Define quantity limits and default behaviors
+   === UNIVERSAL CHECKLIST (Apply to ALL Stories) ===
+   Before writing ACs, verify you've addressed:
+   - Trigger/Entry Point: What initiates this?
+   - Inputs: What data is required?
+   - Processing/Logic: What happens during execution?
+   - Outputs: What's produced?
+   - Validation Rules: What's verified?
+   - Error Handling: What happens when it fails?
+   - Edge Cases: Unusual scenarios?
+   - Permissions: Who can access?
+   - State Changes: What changes in the system?
+   - Success Criteria: How do we know it worked?
 
-   Standard Template for Multi-Step Flows:
-   ```
+   === TEMPLATE SELECTION GUIDE ===
+
+   Template 1 - UI/Form Stories: Forms, data entry, wizards, screen flows
+   Template 2 - Dashboard/List Views: Dashboards, tables, summary pages
+   Template 3 - Backend/API: System integrations, APIs, data sync
+   Template 4 - Notifications: Alerts, push notifications, emails
+   Template 5 - Business Logic: Calculations, pricing, rules, eligibility
+   Template 6 - Reports/Exports: Data exports, file generation, downloads
+   Template 7 - Search/Filter: Search functionality, filtering, queries
+
+   === TEMPLATE 1: UI/FORM STORIES ===
+   Structure:
    1. The [Page Name] page displays the following:
-      a. [Primary content/form fields]
-         i. [Field name] (Required)
-         ii. If the user does not [condition] they will receive an error message informing them that [error message]
-      b. [Secondary elements - tooltips, help text]
+      a. [UI Element/Section]:
+         i. [Field] (Required) OR (If Applicable)
+         ii. If the user does not [condition] they will receive an error message informing them that [exact error text]
+      b. [Tooltips/Modals]:
          i. Tool Tip
             1. Selecting will display a modal that [describes content]
-            2. Redirect link to [Destination]
+            2. [Action button/link]
                a. Selecting will redirect the user to [URL]
-      c. Progress Bar is displayed
-      d. Cancel (See [Save for Later User Story])
-      e. Option to navigate back to the [Previous Page]
+      c. Progress Bar is displayed [if multi-step]
+      d. Cancel (See [Related Story])
+      e. Option to navigate back to [Previous Page]
       f. Continue
-         i. If the user does not [complete required action] they will not have the option to continue
-   ```
+         i. If the user does not [condition] they will not have the option to continue
 
-   What to Include:
-   - All UI elements on the page
-   - Required vs optional fields clearly marked
-   - All validation rules and error messages
-   - Navigation flows (where each button/link goes)
-   - Edge cases (guest users, empty states, errors)
-   - Conditional logic with If...then statements
-   - Cross-references to related user stories
-   - Default/pre-populated values
-   - Quantity limits and constraints
-   - Tool tips and modal content descriptions
+   === TEMPLATE 2: DASHBOARD/LIST STORIES ===
+   Structure:
+   1. [User Type/State] Users:
+      a. [Behavior for this state]
+   2. [Alternative State]:
+      a. [Alternative behavior]
+   3. The [Dashboard] displays the following:
+      a. [Section Name]:
+         i. Display [quantity limit] of [items]
+         ii. Sort by [criteria]
+         iii. Each item shows:
+            1. [Data point 1]
+            2. [Data point 2]
+         iv. User actions:
+            1. [Action] (See [Related Story])
 
-   What NOT to Include:
-   - Design implementation details (e.g., "swipe left")
-   - Vague statements (e.g., "User can manage labels")
-   - Unclear requirements
+   === TEMPLATE 3: BACKEND/API STORIES ===
+   Structure:
+   1. When [trigger] occurs:
+      a. System initiates [process]
+   2. System sends/receives data:
+      a. Endpoint: [URL]
+      b. Authentication: [method]
+      c. Request payload includes:
+         i. [Field]: [type/format]
+      d. System receives response:
+         i. Success (HTTP 200):
+            1. Contains: [data]
+            2. System updates: [database/state]
+            3. User sees: [result]
+         ii. Error (HTTP [code]):
+            1. System logs: [error details]
+            2. System retries: [logic OR does not retry]
+            3. User sees: [error message]
+   3. Timeout handling:
+      a. If no response within [X] seconds:
+         i. System [action]
 
-   Example AC:
-   ```
-   1. The Package Weight page displays the following:
-      a. Weight entry fields (Required):
-         i. Pounds (lbs.)
-         ii. Ounces (oz)
-         iii. If the user does not input pounds or ounces greater than 0 they will receive an error message informing them that at least one field must be greater than 0
-         iv. If the user inputs pounds greater than 70 they will receive an error message informing them that the pounds must be less than or equal to 70
-      b. Note recommending the user to use a scale to input the exact weight of the package
-      c. Progress Bar is displayed
-      d. Cancel (See Save for Later User Story)
-      e. Option to navigate back to the Select Packaging Type page
-      f. Continue
-         i. If the user does not meet the weight entry requirements they will not have the option to continue
-   ```"""
-            ac_format_note = "each in hierarchical explicit format with implementation-level detail"
+   === TEMPLATE 4: NOTIFICATION STORIES ===
+   Structure:
+   1. Notification triggers when:
+      a. [Condition 1]
+      b. [Condition 2]
+   2. Notification eligibility:
+      a. User has [permission/setting]
+   3. Notification content includes:
+      a. [Content element 1]
+      b. [Action button]: [destination]
+   4. Notification delivery:
+      a. Channel: [Push/Email/SMS]
+      b. Timing: [Immediate/Scheduled]
+   5. Notification behavior:
+      a. Displays in [location]
+      b. User can [interact/dismiss]
+   6. Opt-out mechanism:
+      a. User can disable via [method]
+
+   === TEMPLATE 5: BUSINESS LOGIC/CALCULATION STORIES ===
+   Structure:
+   1. System calculates [output] based on:
+      a. Input: [source] - [description]
+      b. Business rule: [rule]
+   2. Calculation logic:
+      a. If [condition], then:
+         i. [Formula/rule]
+         ii. Result: [output]
+      b. If [edge case], then:
+         i. [Alternative logic]
+   3. Validation:
+      a. System validates [criteria]
+      b. If validation fails:
+         i. System [action]
+         ii. User notified: [message]
+   4. Output:
+      a. System returns: [format]
+      b. User sees: [display format]
+
+   === TEMPLATE 6: REPORT/EXPORT STORIES ===
+   Structure:
+   1. Report triggered by: [action]
+   2. Report filters/parameters:
+      a. [Filter 1]: [options]
+         i. Default: [value]
+         ii. Required: [Yes/No]
+   3. Report data includes:
+      a. Column 1: [name] - [source]
+      b. Total records: [limit]
+      c. Sort order: [default]
+   4. Report format:
+      a. File type: [CSV/PDF/Excel]
+      b. File naming: [pattern]
+   5. Report delivery:
+      a. [Download/Email/Saved to location]
+   6. Empty state:
+      a. If no data:
+         i. System [action]
+         ii. User notified: [message]
+
+   === TEMPLATE 7: SEARCH/FILTER STORIES ===
+   Structure:
+   1. The [Search Feature] displays:
+      a. Search input:
+         i. Accepts: [input types]
+         ii. Validation: [rules]
+      b. Search trigger:
+         i. Initiates when [action]
+         ii. Minimum characters: [number]
+   2. Filter options:
+      a. [Filter name]:
+         i. Type: [dropdown/checkbox]
+         ii. Options: [list]
+   3. Search behavior:
+      a. Looks for matches in:
+         i. [Field 1]
+      b. Case sensitive: [Yes/No]
+      c. Partial matches: [Allowed/Not allowed]
+   4. Search results:
+      a. Display [X] per page
+      b. Each result shows:
+         i. [Data point]
+   5. No results:
+      a. Display message: [text]
+      b. Suggestions: [alternatives]
+
+   === COMMON PATTERNS (Reusable) ===
+
+   Validation:
+   i. If the user does not [action] they will receive an error message informing them that [exact error text]
+
+   Navigation:
+   i. Selecting will redirect the user to [Destination] ([URL]) to [purpose]
+
+   Cross-reference:
+   ii. [Action] (See [Related Story Name])
+
+   Pre-population:
+   i. [Field] will pre-populate with [source]
+
+   Permissions:
+   a. User must be [authenticated/role] to access
+   b. If no permission:
+      i. User sees: [message OR redirect]
+
+   === WHAT TO AVOID ===
+   ❌ Design details ("swipe left")
+   ❌ Vague statements ("manage items")
+   ❌ Ambiguous requirements
+   ❌ Missing error scenarios"""
+            ac_format_note = "using appropriate template with hierarchical numbering and implementation-level detail"
         else:
             ac_instructions = """2. Detailed Acceptance Criteria in Gherkin format (Given/When/Then)
    - Include at least 4-6 acceptance criteria per story
@@ -171,29 +298,43 @@ Consider edge cases like:
         # Define AC format reminder
         if ac_format == "explicit":
             ac_format_reminder = """
-IMPORTANT: Maintain the Explicit/Detailed AC format with hierarchical numbering and implementation-level detail.
+IMPORTANT: Maintain the Explicit/Detailed AC format. Choose the appropriate template based on story type.
 
-Structure Requirements:
-- Use hierarchical numbering: 1, a, i, 1, a
-- Start with: "1. The [Page Name] page displays the following:"
-- List ALL UI elements on the page
-- Mark required fields: "(Required)" or "(If Applicable)"
-- Use "If...then" statements for all conditional logic
-- Include exact error messages
-- Specify navigation destinations and URLs
-- Reference related user stories: "(See [Story Name])"
-- Include Progress Bar, Cancel, Back, and Continue sections for multi-step flows
+Use hierarchical numbering (1, a, i, 1, a) for ALL templates.
 
-Example Format:
-1. The [Page] page displays the following:
-   a. [Section/Element]:
-      i. [Field] (Required)
-      ii. If the user does not [condition] they will receive an error message informing them that [message]
-   b. Progress Bar is displayed
-   c. Cancel (See [Related Story])
-   d. Option to navigate back to [Previous Page]
-   e. Continue
-      i. If the user does not [condition] they will not have the option to continue"""
+Template Selection:
+- UI/Form: Use Template 1 (forms, data entry, wizards, screen flows)
+- Dashboard/List: Use Template 2 (dashboards, tables, summary pages)
+- Backend/API: Use Template 3 (system integrations, APIs, data sync)
+- Notifications: Use Template 4 (alerts, push, emails)
+- Business Logic: Use Template 5 (calculations, pricing, rules)
+- Reports: Use Template 6 (data exports, file generation)
+- Search: Use Template 7 (search, filtering, queries)
+
+Universal Requirements (ALL stories must address):
+✓ Trigger/Entry Point
+✓ Inputs required
+✓ Processing/Logic
+✓ Outputs produced
+✓ Validation Rules
+✓ Error Handling
+✓ Edge Cases
+✓ Permissions
+✓ State Changes
+✓ Success Criteria
+
+Common Patterns to Use:
+- Validation: "If the user does not [action] they will receive an error message informing them that [exact text]"
+- Navigation: "Selecting will redirect the user to [Destination] ([URL]) to [purpose]"
+- Cross-reference: "[Action] (See [Related Story Name])"
+- Pre-population: "[Field] will pre-populate with [source]"
+- Permissions: "User must be [authenticated/role] to access"
+
+What to Avoid:
+❌ Design details ("swipe left")
+❌ Vague statements ("manage items")
+❌ Ambiguous requirements
+❌ Missing error scenarios"""
         else:
             ac_format_reminder = "\nIMPORTANT: Maintain the Gherkin format (Given/When/Then) for all acceptance criteria."
 
