@@ -236,21 +236,13 @@ with tab1:
         horizontal=True,
         help="""Gherkin: Concise Given/When/Then format for testable criteria
 
-Explicit/Detailed: Comprehensive format with 7 specialized templates:
-• Template 1: UI/Forms (data entry, wizards, screen flows)
-• Template 2: Dashboards/Lists (tables, summary views)
-• Template 3: Backend/API (integrations, data sync)
-• Template 4: Notifications (alerts, emails, push)
-• Template 5: Business Logic (calculations, rules, pricing)
-• Template 6: Reports/Exports (CSV, PDF, file generation)
-• Template 7: Search/Filter (queries, filtering)
+Explicit/Detailed: Realistic format (30-50 lines, 2,500-4,500 chars)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• Includes: screen display, user interactions, validation, navigation, user states, responsive behavior
+• Avoids: pixel-perfect design, exhaustive specs, non-critical timings
+• Always includes Notes section: performance, accessibility, analytics, future enhancements
 
-All templates use hierarchical numbering (1, a, i, 1, a) and cover:
-✓ Trigger/Entry Point ✓ Inputs ✓ Processing/Logic
-✓ Outputs ✓ Validation ✓ Error Handling
-✓ Edge Cases ✓ Permissions ✓ Success Criteria
-
-AI automatically selects the appropriate template based on story type.""",
+Focuses on functional requirements developers and QA need to implement/test.""",
         key="gen_ac_format"
     )
     ac_format_value = "gherkin" if ac_format == "Gherkin (Given/When/Then)" else "explicit"
@@ -344,21 +336,13 @@ with tab2:
             horizontal=True,
             help="""Gherkin: Concise Given/When/Then format for testable criteria
 
-Explicit/Detailed: Comprehensive format with 7 specialized templates:
-• Template 1: UI/Forms (data entry, wizards, screen flows)
-• Template 2: Dashboards/Lists (tables, summary views)
-• Template 3: Backend/API (integrations, data sync)
-• Template 4: Notifications (alerts, emails, push)
-• Template 5: Business Logic (calculations, rules, pricing)
-• Template 6: Reports/Exports (CSV, PDF, file generation)
-• Template 7: Search/Filter (queries, filtering)
+Explicit/Detailed: Realistic format (30-50 lines, 2,500-4,500 chars)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• Includes: screen display, user interactions, validation, navigation, user states, responsive behavior
+• Avoids: pixel-perfect design, exhaustive specs, non-critical timings
+• Always includes Notes section: performance, accessibility, analytics, future enhancements
 
-All templates use hierarchical numbering (1, a, i, 1, a) and cover:
-✓ Trigger/Entry Point ✓ Inputs ✓ Processing/Logic
-✓ Outputs ✓ Validation ✓ Error Handling
-✓ Edge Cases ✓ Permissions ✓ Success Criteria
-
-AI automatically selects the appropriate template based on story type.""",
+Focuses on functional requirements developers and QA need to implement/test.""",
             key="refine_ac_format"
         )
         refine_ac_format_value = "gherkin" if refine_ac_format == "Gherkin (Given/When/Then)" else "explicit"
@@ -588,21 +572,13 @@ with tab3:
             horizontal=True,
             help="""Gherkin: Concise Given/When/Then format for testable criteria
 
-Explicit/Detailed: Comprehensive format with 7 specialized templates:
-• Template 1: UI/Forms (data entry, wizards, screen flows)
-• Template 2: Dashboards/Lists (tables, summary views)
-• Template 3: Backend/API (integrations, data sync)
-• Template 4: Notifications (alerts, emails, push)
-• Template 5: Business Logic (calculations, rules, pricing)
-• Template 6: Reports/Exports (CSV, PDF, file generation)
-• Template 7: Search/Filter (queries, filtering)
+Explicit/Detailed: Realistic format (30-50 lines, 2,500-4,500 chars)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• Includes: screen display, user interactions, validation, navigation, user states, responsive behavior
+• Avoids: pixel-perfect design, exhaustive specs, non-critical timings
+• Always includes Notes section: performance, accessibility, analytics, future enhancements
 
-All templates use hierarchical numbering (1, a, i, 1, a) and cover:
-✓ Trigger/Entry Point ✓ Inputs ✓ Processing/Logic
-✓ Outputs ✓ Validation ✓ Error Handling
-✓ Edge Cases ✓ Permissions ✓ Success Criteria
-
-AI automatically selects the appropriate template based on story type.""",
+Focuses on functional requirements developers and QA need to implement/test.""",
             key="append_ac_format"
         )
         append_ac_format_value = "gherkin" if append_ac_format == "Gherkin (Given/When/Then)" else "explicit"
