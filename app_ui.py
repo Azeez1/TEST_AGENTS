@@ -47,7 +47,7 @@ story_generator = StoryGenerator()
 formatter = StoryFormatter()
 
 
-def generate_stories_from_notes(notes_text: str, output_filename: str, append: bool):
+def generate_stories_from_notes(notes_text: str, output_filename: str, append: bool, ac_format: str = "gherkin"):
     """Generate user stories from meeting notes"""
     try:
         # Build prompt
@@ -59,6 +59,16 @@ def generate_stories_from_notes(notes_text: str, output_filename: str, append: b
         if existing_stories:
             existing_list = [s['user_story'] for s in existing_stories[:5]]
             existing_context = "\n\nExisting stories (avoid duplicates):\n" + "\n".join(existing_list)
+
+        # Define AC format instructions
+        if ac_format == "explicit":
+            ac_example = """      "Given I am viewing a product details page, when I scroll to the How It Works section, then I should see a detailed mini-education guide with clear step-by-step instructions, visual aids, and one relevant hyperlink to a specific related section",
+      "Given I am viewing a stamps or philatelic product, when I access the How It Works section, then the content should be sourced from the standardized 'How it Works (Stamps & Philatelic)' PDF documentation to ensure accuracy and consistency" """
+            ac_requirement = "2. Include 4-6 detailed acceptance criteria per story in Explicit/Detailed format with comprehensive narrative descriptions"
+        else:
+            ac_example = """      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]" """
+            ac_requirement = "2. Include 4-6 detailed acceptance criteria per story in Gherkin format (Given/When/Then)"
 
         prompt = f"""You are a user story generation expert. Generate comprehensive, backlog-ready user stories from the following meeting notes.
 
@@ -72,8 +82,7 @@ Generate user stories in this exact JSON format:
     "user_story": "As a [user type], I want [goal], so that [benefit]",
     "feature_epic": "Concise feature name",
     "acceptance_criteria": [
-      "Given [context], when [action], then [expected outcome]",
-      "Given [context], when [action], then [expected outcome]"
+{ac_example}
     ],
     "business_case": "Explanation of business value and impact",
     "relevant_pages": "Page/screen names affected"
@@ -82,7 +91,7 @@ Generate user stories in this exact JSON format:
 
 Requirements:
 1. Each story must follow the "As a..., I want..., so that..." format
-2. Include 4-6 detailed acceptance criteria per story in Gherkin format (Given/When/Then)
+{ac_requirement}
 3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
 4. Business case should explain ROI, customer impact, or strategic value
 5. Be specific about which pages/screens/areas are affected
@@ -112,10 +121,10 @@ Return ONLY the JSON array, no additional text."""
         raise Exception(f"Error generating stories: {str(e)}")
 
 
-def refine_single_story(story: dict, instruction: str) -> dict:
+def refine_single_story(story: dict, instruction: str, ac_format: str = "gherkin") -> dict:
     """Refine a specific story based on instruction"""
     try:
-        prompt = story_generator.get_refinement_prompt(story, instruction)
+        prompt = story_generator.get_refinement_prompt(story, instruction, ac_format)
 
         response = client.messages.create(
             model="claude-sonnet-4-20250514",
@@ -219,6 +228,17 @@ with tab1:
         )
         append_mode = (file_mode == "Append to existing")
 
+    # AC Format Selection
+    st.markdown("### Acceptance Criteria Format")
+    ac_format = st.radio(
+        "Choose AC format:",
+        ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
+        horizontal=True,
+        help="Gherkin: Concise Given/When/Then format\nExplicit: More detailed, narrative-style format with comprehensive descriptions",
+        key="gen_ac_format"
+    )
+    ac_format_value = "gherkin" if ac_format == "Gherkin (Given/When/Then)" else "explicit"
+
     # Generate button
     if st.button("🚀 Generate User Stories", type="primary", use_container_width=True):
         if not notes_text:
@@ -226,7 +246,7 @@ with tab1:
         else:
             with st.spinner("Generating user stories with Claude AI..."):
                 try:
-                    stories, output_path = generate_stories_from_notes(notes_text, output_filename, append_mode)
+                    stories, output_path = generate_stories_from_notes(notes_text, output_filename, append_mode, ac_format_value)
 
                     st.session_state.generated_stories = stories
                     st.session_state.output_file_path = output_path
@@ -297,6 +317,19 @@ with tab2:
         with col2:
             st.markdown("### Current Story")
             display_story_card(st.session_state.refine_working_stories[selected_index])
+
+        st.markdown("---")
+
+        # AC Format Selection (for AI Refinement)
+        st.markdown("### Acceptance Criteria Format")
+        refine_ac_format = st.radio(
+            "Choose AC format:",
+            ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
+            horizontal=True,
+            help="Gherkin: Concise Given/When/Then format\nExplicit: More detailed, narrative-style format with comprehensive descriptions",
+            key="refine_ac_format"
+        )
+        refine_ac_format_value = "gherkin" if refine_ac_format == "Gherkin (Given/When/Then)" else "explicit"
 
         st.markdown("---")
 
@@ -399,7 +432,8 @@ with tab2:
                         try:
                             refined_story = refine_single_story(
                                 st.session_state.refine_working_stories[selected_index],
-                                refinement_instruction
+                                refinement_instruction,
+                                refine_ac_format_value
                             )
 
                             # Update in working stories
@@ -514,6 +548,17 @@ with tab3:
         existing_count = len(read_existing_stories(existing_excel_temp))
         st.info(f"📚 Existing stories: {existing_count}")
 
+        # AC Format Selection
+        st.markdown("### Acceptance Criteria Format")
+        append_ac_format = st.radio(
+            "Choose AC format:",
+            ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
+            horizontal=True,
+            help="Gherkin: Concise Given/When/Then format\nExplicit: More detailed, narrative-style format with comprehensive descriptions",
+            key="append_ac_format"
+        )
+        append_ac_format_value = "gherkin" if append_ac_format == "Gherkin (Given/When/Then)" else "explicit"
+
         # Add button
         if st.button("➕ Add New Stories", type="primary", use_container_width=True):
             with st.spinner("Generating and appending new stories..."):
@@ -521,7 +566,8 @@ with tab3:
                     new_stories, output_path = generate_stories_from_notes(
                         new_notes_text,
                         existing_excel_temp,
-                        append=True
+                        append=True,
+                        ac_format=append_ac_format_value
                     )
 
                     total_count = existing_count + len(new_stories)
