@@ -54,14 +54,71 @@ Return the analysis in a structured format that will help generate user stories.
         # Define AC format instructions
         if ac_format == "explicit":
             ac_instructions = """2. Detailed Acceptance Criteria in Explicit/Detailed format
-   - Include at least 4-6 acceptance criteria per story
-   - Each AC should be a comprehensive, detailed bullet point that clearly describes the scenario, context, and expected behavior
-   - Use narrative, explicit language that is easy to understand
-   - Cover happy path, edge cases, error handling, mobile responsiveness, and accessibility
-   - Each AC should follow this pattern: "Given [detailed context], when [specific action], then [detailed expected outcome with specific details]"
-   - Example: "Given I am viewing a product details page, when I scroll to the How It Works section, then I should see a detailed mini-education guide with clear step-by-step instructions, visual aids, and one relevant hyperlink to a specific related section"
-   - Be specific about visual elements, user interactions, data sources, and system behaviors"""
-            ac_format_note = "each in detailed explicit format with comprehensive descriptions"
+
+   IMPORTANT: Write ACs that are detailed, prescriptive, and implementation-focused. Describe exactly what appears on each screen/page and how each element behaves.
+
+   Structure Guidelines:
+   - Use hierarchical numbering: 1, a, i, 1, a, etc.
+   - Start with: "1. The [Page/Feature Name] page displays the following:"
+   - List ALL UI elements (buttons, fields, checkboxes, links, tooltips, modals, progress indicators, error messages)
+   - Mark required fields: "First Name (Required)" or "Company Name (If Applicable)"
+   - Specify ALL validation rules, character limits, date ranges, allowed formats
+   - Use "If...then" statements for conditional logic
+   - Include exact URLs for redirects
+   - Reference related user stories: "(See [Related Story Name])"
+   - Define quantity limits and default behaviors
+
+   Standard Template for Multi-Step Flows:
+   ```
+   1. The [Page Name] page displays the following:
+      a. [Primary content/form fields]
+         i. [Field name] (Required)
+         ii. If the user does not [condition] they will receive an error message informing them that [error message]
+      b. [Secondary elements - tooltips, help text]
+         i. Tool Tip
+            1. Selecting will display a modal that [describes content]
+            2. Redirect link to [Destination]
+               a. Selecting will redirect the user to [URL]
+      c. Progress Bar is displayed
+      d. Cancel (See [Save for Later User Story])
+      e. Option to navigate back to the [Previous Page]
+      f. Continue
+         i. If the user does not [complete required action] they will not have the option to continue
+   ```
+
+   What to Include:
+   - All UI elements on the page
+   - Required vs optional fields clearly marked
+   - All validation rules and error messages
+   - Navigation flows (where each button/link goes)
+   - Edge cases (guest users, empty states, errors)
+   - Conditional logic with If...then statements
+   - Cross-references to related user stories
+   - Default/pre-populated values
+   - Quantity limits and constraints
+   - Tool tips and modal content descriptions
+
+   What NOT to Include:
+   - Design implementation details (e.g., "swipe left")
+   - Vague statements (e.g., "User can manage labels")
+   - Unclear requirements
+
+   Example AC:
+   ```
+   1. The Package Weight page displays the following:
+      a. Weight entry fields (Required):
+         i. Pounds (lbs.)
+         ii. Ounces (oz)
+         iii. If the user does not input pounds or ounces greater than 0 they will receive an error message informing them that at least one field must be greater than 0
+         iv. If the user inputs pounds greater than 70 they will receive an error message informing them that the pounds must be less than or equal to 70
+      b. Note recommending the user to use a scale to input the exact weight of the package
+      c. Progress Bar is displayed
+      d. Cancel (See Save for Later User Story)
+      e. Option to navigate back to the Select Packaging Type page
+      f. Continue
+         i. If the user does not meet the weight entry requirements they will not have the option to continue
+   ```"""
+            ac_format_note = "each in hierarchical explicit format with implementation-level detail"
         else:
             ac_instructions = """2. Detailed Acceptance Criteria in Gherkin format (Given/When/Then)
    - Include at least 4-6 acceptance criteria per story
@@ -113,7 +170,30 @@ Consider edge cases like:
         """
         # Define AC format reminder
         if ac_format == "explicit":
-            ac_format_reminder = "\nIMPORTANT: Maintain the Explicit/Detailed AC format with comprehensive, narrative descriptions. Each AC should be detailed and specific about context, actions, and expected outcomes."
+            ac_format_reminder = """
+IMPORTANT: Maintain the Explicit/Detailed AC format with hierarchical numbering and implementation-level detail.
+
+Structure Requirements:
+- Use hierarchical numbering: 1, a, i, 1, a
+- Start with: "1. The [Page Name] page displays the following:"
+- List ALL UI elements on the page
+- Mark required fields: "(Required)" or "(If Applicable)"
+- Use "If...then" statements for all conditional logic
+- Include exact error messages
+- Specify navigation destinations and URLs
+- Reference related user stories: "(See [Story Name])"
+- Include Progress Bar, Cancel, Back, and Continue sections for multi-step flows
+
+Example Format:
+1. The [Page] page displays the following:
+   a. [Section/Element]:
+      i. [Field] (Required)
+      ii. If the user does not [condition] they will receive an error message informing them that [message]
+   b. Progress Bar is displayed
+   c. Cancel (See [Related Story])
+   d. Option to navigate back to [Previous Page]
+   e. Continue
+      i. If the user does not [condition] they will not have the option to continue"""
         else:
             ac_format_reminder = "\nIMPORTANT: Maintain the Gherkin format (Given/When/Then) for all acceptance criteria."
 

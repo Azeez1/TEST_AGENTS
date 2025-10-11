@@ -234,7 +234,18 @@ with tab1:
         "Choose AC format:",
         ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
         horizontal=True,
-        help="Gherkin: Concise Given/When/Then format\nExplicit: More detailed, narrative-style format with comprehensive descriptions",
+        help="""Gherkin: Concise Given/When/Then format for testable criteria
+
+Explicit/Detailed: Implementation-focused format with:
+• Hierarchical numbering (1, a, i, 1, a)
+• ALL UI elements listed (buttons, fields, tooltips, modals)
+• Required fields marked: (Required) or (If Applicable)
+• Validation rules and exact error messages
+• If...then conditional logic
+• Navigation flows with URLs
+• Cross-references to related stories
+
+Example: "1. The Package Weight page displays: a. Weight entry (Required): i. Pounds ii. If user inputs >70 lbs, error message..." """,
         key="gen_ac_format"
     )
     ac_format_value = "gherkin" if ac_format == "Gherkin (Given/When/Then)" else "explicit"
@@ -326,7 +337,18 @@ with tab2:
             "Choose AC format:",
             ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
             horizontal=True,
-            help="Gherkin: Concise Given/When/Then format\nExplicit: More detailed, narrative-style format with comprehensive descriptions",
+            help="""Gherkin: Concise Given/When/Then format for testable criteria
+
+Explicit/Detailed: Implementation-focused format with:
+• Hierarchical numbering (1, a, i, 1, a)
+• ALL UI elements listed (buttons, fields, tooltips, modals)
+• Required fields marked: (Required) or (If Applicable)
+• Validation rules and exact error messages
+• If...then conditional logic
+• Navigation flows with URLs
+• Cross-references to related stories
+
+Example: "1. The Package Weight page displays: a. Weight entry (Required): i. Pounds ii. If user inputs >70 lbs, error message..." """,
             key="refine_ac_format"
         )
         refine_ac_format_value = "gherkin" if refine_ac_format == "Gherkin (Given/When/Then)" else "explicit"
@@ -554,7 +576,18 @@ with tab3:
             "Choose AC format:",
             ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
             horizontal=True,
-            help="Gherkin: Concise Given/When/Then format\nExplicit: More detailed, narrative-style format with comprehensive descriptions",
+            help="""Gherkin: Concise Given/When/Then format for testable criteria
+
+Explicit/Detailed: Implementation-focused format with:
+• Hierarchical numbering (1, a, i, 1, a)
+• ALL UI elements listed (buttons, fields, tooltips, modals)
+• Required fields marked: (Required) or (If Applicable)
+• Validation rules and exact error messages
+• If...then conditional logic
+• Navigation flows with URLs
+• Cross-references to related stories
+
+Example: "1. The Package Weight page displays: a. Weight entry (Required): i. Pounds ii. If user inputs >70 lbs, error message..." """,
             key="append_ac_format"
         )
         append_ac_format_value = "gherkin" if append_ac_format == "Gherkin (Given/When/Then)" else "explicit"
