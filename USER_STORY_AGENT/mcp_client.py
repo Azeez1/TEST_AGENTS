@@ -7,8 +7,9 @@ import os
 import json
 import subprocess
 import asyncio
+import time
 from typing import Dict, List, Optional, Any
-from anthropic import Anthropic
+from anthropic import Anthropic, RateLimitError, APITimeoutError
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
@@ -176,7 +177,7 @@ class MCPClient:
         max_tokens: int = 8192,
         tools: Optional[List[Dict]] = None,
         log_callback = None,
-        max_iterations: int = 10
+        max_iterations: int = 20
     ) -> str:
         """
         Call Claude with tool support - allows MULTIPLE tool iterations
@@ -186,7 +187,7 @@ class MCPClient:
             max_tokens: Maximum tokens for response
             tools: Tool definitions (defaults to Playwright tools)
             log_callback: Optional callback for logging activity
-            max_iterations: Maximum number of tool-use iterations (default: 10)
+            max_iterations: Maximum number of tool-use iterations (default: 20, increased for complex Figma prototypes)
 
         Returns:
             Final response text
@@ -210,13 +211,44 @@ class MCPClient:
 
         # Allow multiple iterations of tool use
         for iteration in range(max_iterations):
-            # API call with tools
-            response = self.anthropic_client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=max_tokens,
-                tools=tools,
-                messages=messages
-            )
+            # API call with tools, including timeout and retry logic
+            retry_count = 0
+            max_retries = 3
+
+            while retry_count < max_retries:
+                try:
+                    response = self.anthropic_client.messages.create(
+                        model="claude-sonnet-4-20250514",
+                        max_tokens=max_tokens,
+                        tools=tools,
+                        messages=messages,
+                        timeout=300.0  # 5 minutes per iteration
+                    )
+                    break  # Success, exit retry loop
+
+                except RateLimitError as e:
+                    retry_count += 1
+                    if retry_count < max_retries:
+                        wait_time = 2 ** retry_count  # Exponential backoff: 2, 4, 8 seconds
+                        _log(f"⚠️  Rate limit hit. Retrying in {wait_time}s... (attempt {retry_count}/{max_retries})", "")
+                        time.sleep(wait_time)
+                    else:
+                        _log("❌ Rate limit exceeded after retries", "")
+                        raise Exception(f"Rate limit exceeded: {e}")
+
+                except APITimeoutError as e:
+                    retry_count += 1
+                    if retry_count < max_retries:
+                        _log(f"⚠️  API timeout. Retrying... (attempt {retry_count}/{max_retries})", "")
+                        time.sleep(2)
+                    else:
+                        _log("❌ API timeout after retries", "")
+                        raise Exception(f"API timeout: {e}")
+
+                except Exception as e:
+                    # Other errors shouldn't retry
+                    _log(f"❌ API error: {e}", "")
+                    raise
 
             # Check stop reason
             if response.stop_reason == "end_turn":
@@ -233,6 +265,11 @@ class MCPClient:
                     _log("\n🔧 Claude is using tools!\n", "")
                 else:
                     _log(f"\n🔧 Tool iteration {iteration + 1}/{max_iterations}\n", "")
+
+                # Check if approaching iteration limit
+                if iteration >= max_iterations - 3:
+                    _log(f"⚠️  Approaching iteration limit ({iteration + 1}/{max_iterations})", "")
+                    _log("  → Will prompt for final generation after this iteration", "")
 
                 # Process tool uses
                 tool_results = []
@@ -258,6 +295,14 @@ class MCPClient:
                 # Add assistant response and tool results to messages
                 messages.append({"role": "assistant", "content": response.content})
                 messages.append({"role": "user", "content": tool_results})
+
+                # If approaching limit, add forced generation prompt
+                if iteration >= max_iterations - 3:
+                    _log("📝 Adding forced generation prompt to ensure output", "")
+                    messages.append({
+                        "role": "user",
+                        "content": "IMPORTANT: You are approaching the iteration limit. Generate the complete JSON array of user stories NOW based on all the information you've gathered. Do NOT use any more tools. Return ONLY the JSON array."
+                    })
 
                 # Continue to next iteration
                 _log("Continuing to next step...", "🤖")

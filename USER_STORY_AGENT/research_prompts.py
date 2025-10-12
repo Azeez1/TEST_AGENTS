@@ -37,15 +37,15 @@ Like Perplexity or Manus, you decide:
 - How deep to explore
 - What patterns to extract
 
-Available Tools (use freely):
-- playwright_navigate - Go anywhere
-- playwright_click - Click any element
-- playwright_fill - Fill any form
-- playwright_screenshot - Capture valuable content
-- playwright_press_key - Use keyboard (arrows, Enter, etc.)
-- playwright_scroll_page - Scroll to see more
-- playwright_evaluate - Run JavaScript
-- playwright_get_page_info - Get page context
+Available Tools (use efficiently):
+- playwright_navigate - Go to any URL
+- playwright_click - Click elements (CSS selectors)
+- playwright_fill - Fill form inputs
+- playwright_screenshot - Capture screens (use fullPage: true for complete pages)
+- playwright_press_key - Keyboard input (ArrowRight, ArrowLeft, Enter, etc.)
+- playwright_scroll_page - Scroll the page (directions: down, up, bottom, top)
+- playwright_get_page_info - Get current page URL, title, and visible text
+- playwright_evaluate - Execute JavaScript (useful for custom scrolling: window.scrollBy(0, 500))
 
 Your Research Strategy (adapt as needed):
 1. Analyze notes → identify features, domains, URLs mentioned
@@ -364,38 +364,46 @@ Return ONLY the JSON array, no additional text or commentary.
         password_instruction = ""
         if password:
             password_instruction = f"""
-2. Enter password: {password} and click Continue
+2. If password prompt appears, authenticate:
+   - Fill password field: playwright_fill with selector "input[type='password']" and value "{password}"
+   - Click continue button: playwright_click with selector "button:has-text('Continue')"
 """
 
-        return f"""Analyze this Figma prototype and generate detailed user stories:
+        return f"""Analyze this Figma prototype and intelligently combine it with the uploaded document to generate comprehensive user stories:
 
 Figma URL: {figma_url}
 
+IMPORTANT: Research efficiently to stay within tool iteration limits. Focus on KEY screens and comprehensive generation.
+
 Steps to navigate the Figma prototype:
 1. Navigate to the URL above{password_instruction}
-3. Use keyboard navigation to explore all screens:
-   - Press ArrowRight (→) to go to next screen
-   - Press ArrowLeft (←) to go to previous screen
-   - Press 'r' to restart from first screen
+{3 if password else 2}. Explore the prototype efficiently and autonomously:
+   - Use ArrowRight/ArrowLeft keys to navigate between screens
+   - Take screenshots of KEY screens that demonstrate important UI/UX patterns (use fullPage: true)
+   - If you need to see more content on a long screen, scroll using JavaScript: window.scrollBy(0, 500)
+   - Observe and mentally document: UI components, layouts, design patterns, colors, typography, spacing
+   - Navigate through several representative screens (look for X/Y indicators at bottom to understand total screens)
+   - Prioritize breadth over depth - see multiple screens rather than exhaustively documenting one
 
-4. For EACH screen you see:
-   - Take a screenshot with playwright_screenshot (use fullPage: true to capture everything)
-   - Scroll down the entire page using playwright_scroll_page to see all content
-   - Take another screenshot after scrolling
-   - Extract visible text with playwright_get_page_info
-   - Document UI components, layouts, interactions visible
+{4 if password else 3}. INTELLIGENTLY SYNTHESIZE both sources to generate user stories:
 
-5. Navigate through ALL screens in the prototype (usually indicated by X / Y at bottom)
+   **Your Uploaded Document/Excel Content:**
+   {notes}
 
-6. After exploring the entire prototype, generate user stories that describe:
-   - Each screen and its purpose
-   - User flows through the prototype
-   - UI components and their interactions
-   - Visual design patterns
-   - Accessibility considerations
+   **How to combine Figma + Document:**
+   - If document has requirements → Use Figma to add UI/UX implementation details
+   - If document has features → Use Figma to specify exact screens, components, flows
+   - If document has business goals → Use Figma to describe visual implementation
+   - Use your own intelligence to fill gaps where information is missing in either source
+   - Enhance stories with design specs from Figma (colors, typography, spacing)
+   - Add interaction patterns and flows observed in Figma
+   - Include accessibility considerations based on visual design
 
-Meeting Notes Context:
-{notes}
+   **Generate stories that:**
+   - Start with the purpose/requirement from the document (if exists)
+   - Add concrete implementation details from Figma screens
+   - Use your judgment to create comprehensive, production-ready stories
+   - Reference specific Figma screens and document sections where applicable
 
 IMPORTANT: Use {ac_format_desc} for acceptance criteria.
 

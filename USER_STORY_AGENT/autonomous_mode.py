@@ -5,6 +5,7 @@ MCP-enabled agent with browser and research capabilities
 
 import os
 import json
+import re
 from typing import Dict, List, Optional, Tuple
 from anthropic import Anthropic
 from note_parser import extract_notes, extract_notes_from_multiple_files
@@ -57,6 +58,48 @@ class AutonomousAgent:
     def get_mcp_status(self) -> Dict:
         """Get MCP connection status"""
         return self.mcp_client.get_status()
+
+    def _detect_figma_url(self, notes: str) -> Optional[Dict[str, str]]:
+        """
+        Detect Figma URL and optional password in notes
+
+        Args:
+            notes: Meeting notes text (can include Excel content)
+
+        Returns:
+            Dict with 'url' and 'password' keys, or None if no Figma URL found
+        """
+        # Detect Figma URLs (proto or file URLs)
+        figma_pattern = r'https?://(?:www\.)?figma\.com/(?:proto|file)/[^\s)\]>]+'
+        figma_match = re.search(figma_pattern, notes, re.IGNORECASE)
+
+        if not figma_match:
+            return None
+
+        figma_url = figma_match.group(0)
+
+        # Try to extract password (various formats)
+        # Look within 200 characters before/after Figma URL for password
+        figma_pos = figma_match.start()
+        context_start = max(0, figma_pos - 200)
+        context_end = min(len(notes), figma_pos + 200)
+        context = notes[context_start:context_end]
+
+        password_patterns = [
+            r'[Pp]assword[:\s]+([^\s\n,;]+)',
+            r'[Pp]ass[:\s]+([^\s\n,;]+)',
+            r'[Pp]wd[:\s]+([^\s\n,;]+)',
+            r'[Pp]w[:\s]+([^\s\n,;]+)'
+        ]
+
+        password = ""
+        for pattern in password_patterns:
+            pwd_match = re.search(pattern, context)
+            if pwd_match:
+                password = pwd_match.group(1).strip()
+                break
+
+        return {"url": figma_url, "password": password}
 
     async def generate_from_notes(
         self,
@@ -204,15 +247,29 @@ class AutonomousAgent:
 
         _log("Autonomous Research Mode Enabled\n", "🌐")
 
-        # Create research plan
-        research_plan = create_autonomous_research_plan(notes, browser_instructions)
-        detected_domain = research_plan.get("detected_domain", "")
+        # Check for Figma URL in notes (Priority: Figma > Instructions > Domain)
+        figma_info = self._detect_figma_url(notes)
 
-        if detected_domain:
-            _log(f"Detected domain: {detected_domain}\n", "🎯")
+        if figma_info:
+            # Figma detected - use specialized Figma template
+            _log(f"🎨 Detected Figma prototype: {figma_info['url'][:60]}...", "")
+            if figma_info['password']:
+                _log(f"🔐 Password detected: {figma_info['password'][:3]}*** (will auto-fill)", "")
+                _log(f"   Using selector: input[type='password']", "  →")
+                _log(f"   Continue button: button:has-text('Continue')", "  →")
+            else:
+                _log("⚠️  No password detected - will attempt direct access", "")
+            _log("Using specialized Figma navigation template\n", "  →")
 
-        # Build research-enhanced prompt
-        if browser_instructions:
+            research_prompt = ResearchPrompts.get_figma_prototype_prompt(
+                notes,
+                figma_info['url'],
+                figma_info['password'],
+                ac_format
+            )
+
+        elif browser_instructions:
+            # User provided specific instructions - use guided mode
             _log("Following your research instructions...", "📋")
             _log(f"Instructions: {browser_instructions[:100]}...\n", "  →")
             research_prompt = ResearchPrompts.get_guided_research_prompt(
@@ -220,7 +277,15 @@ class AutonomousAgent:
                 browser_instructions,
                 ac_format
             )
+
         else:
+            # No Figma, no instructions - use autonomous domain research
+            research_plan = create_autonomous_research_plan(notes, browser_instructions)
+            detected_domain = research_plan.get("detected_domain", "")
+
+            if detected_domain:
+                _log(f"Detected domain: {detected_domain}\n", "🎯")
+
             _log("Performing autonomous research...", "🔍")
             _log(f"Will research: {detected_domain or 'general'} best practices\n", "  →")
             research_prompt = ResearchPrompts.get_domain_research_prompt(
@@ -265,7 +330,8 @@ class AutonomousAgent:
         response_text = await self.mcp_client.call_with_tools(
             enhanced_prompt,
             max_tokens=8192,
-            log_callback=lambda msg: _log(msg, "")
+            log_callback=lambda msg: _log(msg, ""),
+            max_iterations=20  # Increased for complex Figma prototypes
         )
 
         _log("\n" + "─" * 60, "")
@@ -363,8 +429,13 @@ class AutonomousAgent:
 
     async def cleanup(self):
         """Clean up resources (stop MCP server)"""
-        if self.mcp_server_started:
-            await self.mcp_client.stop_server()
+        try:
+            if self.mcp_server_started:
+                await self.mcp_client.stop_server()
+                self.mcp_server_started = False
+        except Exception as e:
+            print(f"⚠️ Warning: Cleanup failed: {e}")
+            # Force cleanup flag even on error to prevent retry loops
             self.mcp_server_started = False
 
 

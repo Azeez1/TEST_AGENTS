@@ -31,6 +31,25 @@ except ImportError:
 # Load environment variables
 load_dotenv()
 
+# CRITICAL: Validate API key before proceeding
+def validate_api_key():
+    """Validate ANTHROPIC_API_KEY is present"""
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        st.error("❌ ANTHROPIC_API_KEY not found in environment!")
+        st.info("""
+**To fix this:**
+1. Create a `.env` file in the project folder
+2. Add this line: `ANTHROPIC_API_KEY=your_api_key_here`
+3. Restart the app
+
+Get your API key at: https://console.anthropic.com/
+        """)
+        st.stop()
+
+# Validate on startup
+validate_api_key()
+
 # Page config
 st.set_page_config(
     page_title="User Story Agent",
@@ -56,6 +75,27 @@ if 'feedback_history' not in st.session_state:
     st.session_state.feedback_history = []
 if 'autonomous_agent' not in st.session_state and AUTONOMOUS_MODE_AVAILABLE:
     st.session_state.autonomous_agent = AutonomousAgent()
+if 'cleanup_registered' not in st.session_state:
+    st.session_state.cleanup_registered = False
+
+# Register cleanup for browser processes
+def cleanup_browser_resources():
+    """Clean up browser resources on session end"""
+    try:
+        if 'autonomous_agent' in st.session_state and st.session_state.autonomous_agent:
+            agent = st.session_state.autonomous_agent
+            if hasattr(agent, 'mcp_server_started') and agent.mcp_server_started:
+                import asyncio
+                # Run cleanup in event loop
+                try:
+                    asyncio.run(agent.cleanup())
+                except Exception as e:
+                    print(f"Browser cleanup warning: {e}")
+    except Exception as e:
+        print(f"Cleanup error: {e}")
+
+# Note: Streamlit doesn't have explicit session end hooks, but we handle cleanup
+# in the agent's __del__ method and also provide manual cleanup option in UI
 
 # Initialize clients
 client = Anthropic()
@@ -443,6 +483,13 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                             append=append_mode
                         )
                     )
+
+                    # Clean up browser resources after generation
+                    if browser_enabled:
+                        try:
+                            asyncio.run(agent.cleanup())
+                        except Exception as e:
+                            print(f"Browser cleanup warning: {e}")
 
                     # Clean up temp file
                     try:

@@ -31,6 +31,7 @@ App opens at `http://localhost:8501`
 - **Multi-File Support** - PDF, DOCX, TXT, Excel, Markdown, JSON, CSV, HTML, images
 - **Browser Research** (Optional) - AI browses web for best practices
 - **Feedback Learning** - Agent remembers preferences across sessions
+- **🆕 Auto Figma Detection** - Automatically detects Figma URLs in Excel/notes and navigates designs
 
 ## Browser Research (Optional)
 
@@ -74,6 +75,17 @@ Provide instructions like:
 - "Search for WCAG accessibility requirements for forms"
 - "Browse Shopify cart and analyze their UX patterns"
 
+### 🆕 Excel + Figma Workflow (Automatic)
+**NEW:** Agent automatically detects Figma URLs in your Excel/notes!
+
+**Simple workflow:**
+1. Add Figma URL to Excel cell: `Figma: https://figma.com/proto/ABC123 Password: demo`
+2. Upload Excel and enable "Browser & Research Mode"
+3. Agent auto-detects, navigates Figma, extracts design specs
+4. Combines Excel requirements + Figma designs into comprehensive stories
+
+**See:** [EXCEL_FIGMA_WORKFLOW.md](EXCEL_FIGMA_WORKFLOW.md) for complete guide
+
 ## AC Formats
 
 **Gherkin** (3-5 criteria):
@@ -114,19 +126,22 @@ Edit `mcp_config.json` for browser automation settings.
 ## Project Structure
 
 ```
-app_ui.py                 # Main UI
-autonomous_mode.py        # Browser automation agent
-user_story_agent.py       # Core generation
-story_generator.py        # Prompts
-formatters.py            # JSON parsing
-excel_handler.py         # Excel operations
-note_parser.py           # File parsing
-mcp_client.py            # MCP integration
-research_prompts.py      # Research templates
-feedback_handler.py      # Feedback system
-conversation_memory.py   # Preferences storage
+app_ui.py                 # Main Streamlit UI (6 tabs)
+autonomous_mode.py        # Browser automation agent with MCP
+story_generator.py        # Prompt templates for generation
+formatters.py            # JSON parsing with 4 fallback strategies
+excel_handler.py         # Excel read/write operations
+note_parser.py           # Multi-format file parsing
+file_handlers.py         # Extended file format support
+multi_file_processor.py  # Multi-file processing
+ocr_handler.py           # OCR for images with pytesseract
+mcp_client.py            # MCP stdio client with tool execution
+research_prompts.py      # Autonomous research prompt templates
+feedback_handler.py      # Feedback learning system
+conversation_memory.py   # Persistent preferences storage
+browser_helper.py        # Browser utilities (stub - unused)
 mcp_config.json         # MCP configuration
-requirements.txt        # Dependencies
+requirements.txt        # Python dependencies
 ```
 
 ## License

@@ -1,6 +1,16 @@
 """
 Browser Helper Module
 Provides browser utilities for autonomous web research using Playwright MCP
+
+⚠️ WARNING: This module is currently a STUB/PLACEHOLDER and is NOT used in production.
+All actual browser automation is handled by mcp_client.py using Playwright MCP tools.
+
+This file is kept for potential future use as a high-level wrapper around MCP operations,
+but currently all methods return placeholder responses.
+
+For working browser automation, see:
+- mcp_client.py - PlaywrightMCPClient class (actual implementation)
+- autonomous_mode.py - AutonomousAgent using MCP client
 """
 
 import json
