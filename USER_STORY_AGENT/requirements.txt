@@ -5,3 +5,8 @@ PyPDF2
 python-docx
 python-dotenv
 streamlit
+mcp
+pytesseract
+Pillow
+beautifulsoup4
+lxml

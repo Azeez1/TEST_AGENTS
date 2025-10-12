@@ -1,6 +1,6 @@
 """
 Note Parser Module
-Handles parsing of raw meeting notes from various formats (PDF, text, docx)
+Handles parsing of raw meeting notes from various formats (PDF, text, docx, images, JSON, CSV, HTML, XML)
 """
 
 import PyPDF2
@@ -15,12 +15,24 @@ try:
 except ImportError:
     DOCX_AVAILABLE = False
 
+# Import new handlers
+try:
+    from file_handlers import read_any_file, read_multiple_files
+    from ocr_handler import extract_text_from_image, is_image_file
+    EXTENDED_HANDLERS_AVAILABLE = True
+except ImportError:
+    EXTENDED_HANDLERS_AVAILABLE = False
+
 
 class NoteParser:
     """Parse raw meeting notes into structured data"""
 
     def __init__(self):
-        self.supported_formats = ['.pdf', '.txt', '.md', '.docx', '.xlsx', '.xls']
+        self.supported_formats = [
+            '.pdf', '.txt', '.md', '.docx', '.xlsx', '.xls',
+            '.json', '.csv', '.html', '.htm', '.xml',
+            '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp'
+        ]
 
     def parse_file(self, file_path: str) -> str:
         """
@@ -37,6 +49,11 @@ class NoteParser:
 
         file_ext = os.path.splitext(file_path)[1].lower()
 
+        # Check if image file
+        if EXTENDED_HANDLERS_AVAILABLE and is_image_file(file_path):
+            return extract_text_from_image(file_path)
+
+        # Handle standard formats with existing parsers
         if file_ext == '.pdf':
             return self._parse_pdf(file_path)
         elif file_ext in ['.txt', '.md']:
@@ -45,8 +62,15 @@ class NoteParser:
             return self._parse_docx(file_path)
         elif file_ext in ['.xlsx', '.xls']:
             return self._parse_excel(file_path)
+        # Handle new formats with extended handlers
+        elif EXTENDED_HANDLERS_AVAILABLE and file_ext in ['.json', '.csv', '.html', '.htm', '.xml']:
+            return read_any_file(file_path)
         else:
-            raise ValueError(f"Unsupported file format: {file_ext}. Supported: {self.supported_formats}")
+            # Try as plain text fallback
+            try:
+                return self._parse_text(file_path)
+            except:
+                raise ValueError(f"Unsupported file format: {file_ext}. Supported: {self.supported_formats}")
 
     def _parse_pdf(self, file_path: str) -> str:
         """Extract text from PDF file"""
@@ -288,3 +312,35 @@ def extract_notes(input_source: str) -> str:
     else:
         # Treat as raw text
         return parser.parse_text(input_source)
+
+
+def extract_notes_from_multiple_files(file_paths: List[str]) -> str:
+    """
+    Extract notes from multiple files and combine them
+
+    Args:
+        file_paths: List of file paths
+
+    Returns:
+        Combined text content from all files
+    """
+    if EXTENDED_HANDLERS_AVAILABLE:
+        return read_multiple_files(file_paths)
+    else:
+        # Fallback: parse each file individually
+        parser = NoteParser()
+        combined_content = []
+
+        for file_path in file_paths:
+            filename = os.path.basename(file_path)
+            combined_content.append(f"\n{'='*80}\n")
+            combined_content.append(f"FILE: {filename}\n")
+            combined_content.append(f"{'='*80}\n")
+
+            try:
+                content = parser.parse_file(file_path)
+                combined_content.append(content)
+            except Exception as e:
+                combined_content.append(f"Error reading file: {str(e)}")
+
+        return "\n".join(combined_content)

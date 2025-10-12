@@ -83,38 +83,82 @@ class StoryFormatter:
     def parse_ai_response(response: str) -> List[Dict]:
         """
         Parse AI response into story dictionaries
+        Handles various formats including research commentary with embedded JSON
 
         Args:
-            response: Raw AI response (expected to be JSON)
+            response: Raw AI response (expected to contain JSON)
 
         Returns:
             List of story dictionaries
         """
-        try:
-            # Try to parse as JSON
-            data = json.loads(response)
+        import re
 
-            # If it's a single object, wrap in list
+        # Strategy 1: Try direct JSON parse (for basic mode)
+        try:
+            data = json.loads(response)
             if isinstance(data, dict):
                 data = [data]
-
-            # Format each story
             return [StoryFormatter.format_story_dict(story) for story in data]
-
         except json.JSONDecodeError:
-            # If not valid JSON, try to extract from markdown code blocks
-            if '```json' in response:
+            pass  # Try next strategy
+
+        # Strategy 2: Extract from markdown code blocks
+        if '```json' in response:
+            try:
                 json_start = response.find('```json') + 7
                 json_end = response.find('```', json_start)
                 json_str = response[json_start:json_end].strip()
                 data = json.loads(json_str)
-
                 if isinstance(data, dict):
                     data = [data]
-
                 return [StoryFormatter.format_story_dict(story) for story in data]
-            else:
-                raise ValueError("Could not parse AI response as JSON")
+            except (json.JSONDecodeError, ValueError):
+                pass  # Try next strategy
+
+        # Strategy 3: Find JSON array pattern in text (for autonomous mode with research)
+        # Look for [ ... ] pattern that contains objects with expected fields
+        try:
+            # Find the first '[' and last ']' that likely contains our JSON
+            # This handles cases where there's text before/after the JSON
+            json_match = re.search(r'\[\s*\{.*\}\s*\]', response, re.DOTALL)
+            if json_match:
+                json_str = json_match.group(0)
+                data = json.loads(json_str)
+                if isinstance(data, dict):
+                    data = [data]
+                return [StoryFormatter.format_story_dict(story) for story in data]
+        except (json.JSONDecodeError, AttributeError):
+            pass  # Try next strategy
+
+        # Strategy 4: Try to find JSON between common markers
+        for start_marker, end_marker in [('[', ']'), ('{', '}')]:
+            try:
+                start_idx = response.find(start_marker)
+                # Find matching closing bracket by counting
+                if start_idx != -1:
+                    bracket_count = 0
+                    for i in range(start_idx, len(response)):
+                        if response[i] == start_marker:
+                            bracket_count += 1
+                        elif response[i] == end_marker:
+                            bracket_count -= 1
+                            if bracket_count == 0:
+                                json_str = response[start_idx:i+1]
+                                data = json.loads(json_str)
+                                if isinstance(data, dict):
+                                    data = [data]
+                                return [StoryFormatter.format_story_dict(story) for story in data]
+                                break
+            except (json.JSONDecodeError, ValueError):
+                continue
+
+        # If all strategies fail, provide helpful error
+        error_msg = "Could not parse AI response as JSON. "
+        if len(response) > 200:
+            error_msg += f"Response preview: {response[:200]}..."
+        else:
+            error_msg += f"Response: {response}"
+        raise ValueError(error_msg)
 
     @staticmethod
     def stories_to_text(stories: List[Dict]) -> str:

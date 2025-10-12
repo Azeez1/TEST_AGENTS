@@ -46,5 +46,10 @@ temp/
 output/
 .env
 
+# Autonomous mode preferences and memory
+preferences_store.json
+*.key
+credentials.json
+
 # Keep example output
 !examples/*.xlsx

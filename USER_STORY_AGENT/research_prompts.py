@@ -1,0 +1,393 @@
+"""
+Research Prompts Module
+Templates and utilities for autonomous research prompts
+"""
+
+from typing import Dict, List, Optional
+
+
+class ResearchPrompts:
+    """Generate prompts for autonomous research"""
+
+    @staticmethod
+    def get_domain_research_prompt(notes: str, detected_domain: str = "") -> str:
+        """
+        Generate prompt for researching domain-specific best practices
+
+        Args:
+            notes: Meeting notes
+            detected_domain: Detected domain (e.g., "e-commerce", "healthcare")
+
+        Returns:
+            Research prompt
+        """
+        domain_context = f" in the {detected_domain} domain" if detected_domain else ""
+
+        return f"""Analyze these meeting notes and perform autonomous research to enhance the user stories{domain_context}:
+
+Meeting Notes:
+{notes}
+
+Research Tasks:
+1. Identify the main features mentioned in the notes
+2. For each feature, search for:
+   - Industry best practices and patterns
+   - Common user story examples
+   - Relevant technical standards
+   - Accessibility requirements
+   - Security considerations
+
+3. Use your browser tools to:
+   - Search: "[feature name] best practices {detected_domain}"
+   - Search: "[feature name] user story examples"
+   - Browse relevant results and extract key patterns
+
+4. Generate comprehensive user stories informed by:
+   - The original meeting notes
+   - Industry best practices you discovered
+   - Real-world examples you found
+   - Technical standards you identified
+
+Focus on creating stories that are:
+- Aligned with industry standards
+- Comprehensive and detailed
+- Following proven patterns
+- Including accessibility and security considerations
+
+Generate user stories in this exact JSON format:
+[
+  {{
+    "user_story": "As a [user type], I want [goal], so that [benefit]",
+    "feature_epic": "Concise feature name",
+    "acceptance_criteria": [
+      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]",
+      ...
+    ],
+    "business_case": "Explanation of business value and impact",
+    "relevant_pages": "Page/screen names affected"
+  }}
+]
+
+Requirements:
+1. Each story must follow the "As a..., I want..., so that..." format
+2. Include 4-6 detailed acceptance criteria per story in Gherkin format (Given/When/Then)
+3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
+4. Business case should explain ROI, customer impact, or strategic value
+5. Be specific about which pages/screens/areas are affected
+
+Return ONLY the JSON array, no additional text or commentary.
+"""
+
+    @staticmethod
+    def get_guided_research_prompt(notes: str, instructions: str, ac_format: str = "gherkin") -> str:
+        """
+        Generate prompt with specific browsing instructions
+
+        Args:
+            notes: Meeting notes
+            instructions: Specific browser instructions from user
+            ac_format: AC format to use
+
+        Returns:
+            Research prompt
+        """
+        # Define AC format instructions
+        if ac_format == "explicit":
+            ac_format_desc = "Explicit/Detailed format (30-50 lines, structured with numbered sections and subsections)"
+            ac_example = """      "1. The [Page] displays:\\n   a. Element 1\\n      i. Detail\\n   b. Element 2",
+      "2. User States:\\n   a. Guest users: [behavior]\\n   b. Logged-in users: [behavior]",
+      "3. Validation Rules:\\n   a. Field validation\\n      i. Error message: \\"text\\"",
+      "Notes:\\n- Performance: [details]\\n- Accessibility: [details]\""""
+        else:
+            ac_format_desc = "Gherkin format (Given/When/Then)"
+            ac_example = """      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]",
+      ..."""
+
+        return f"""Follow these specific research instructions before generating user stories:
+
+Research Instructions:
+{instructions}
+
+Meeting Notes:
+{notes}
+
+Steps:
+1. Execute the research instructions above using your browser tools
+2. Gather and analyze the information you find
+3. Generate user stories that incorporate:
+   - Information from the meeting notes
+   - Context and patterns from your research
+   - Any design specifications or standards you discovered
+
+IMPORTANT: Use {ac_format_desc}
+
+Generate user stories in this exact JSON format:
+[
+  {{
+    "user_story": "As a [user type], I want [goal], so that [benefit]",
+    "feature_epic": "Concise feature name",
+    "acceptance_criteria": [
+{ac_example}
+    ],
+    "business_case": "Explanation of business value and impact",
+    "relevant_pages": "Page/screen names affected"
+  }}
+]
+
+Requirements:
+1. Each story must follow the "As a..., I want..., so that..." format
+2. Include 4-6 detailed acceptance criteria per story in the specified format ({ac_format_desc})
+3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
+4. Business case should explain ROI, customer impact, or strategic value
+5. Be specific about which pages/screens/areas are affected
+
+Return ONLY the JSON array, no additional text or commentary.
+"""
+
+    @staticmethod
+    def get_design_system_prompt(notes: str, design_system_url: str) -> str:
+        """
+        Generate prompt for learning from a design system
+
+        Args:
+            notes: Meeting notes
+            design_system_url: URL of design system
+
+        Returns:
+            Research prompt
+        """
+        return f"""Research the design system and use it to generate user stories:
+
+1. Navigate to: {design_system_url}
+2. Browse the component library and documentation
+3. Learn:
+   - Component names and conventions (e.g., Button.Primary, Input.Text)
+   - Available states and variants
+   - Accessibility patterns
+   - Usage guidelines
+
+4. Generate user stories from these notes using the EXACT component names and patterns from the design system:
+
+Meeting Notes:
+{notes}
+
+Important:
+- Use the design system's component terminology
+- Reference the design system's states and variants
+- Follow the design system's patterns and guidelines
+- Include references to design system components in acceptance criteria
+
+Generate user stories in this exact JSON format:
+[
+  {{
+    "user_story": "As a [user type], I want [goal], so that [benefit]",
+    "feature_epic": "Concise feature name",
+    "acceptance_criteria": [
+      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]",
+      ...
+    ],
+    "business_case": "Explanation of business value and impact",
+    "relevant_pages": "Page/screen names affected"
+  }}
+]
+
+Requirements:
+1. Each story must follow the "As a..., I want..., so that..." format
+2. Include 4-6 detailed acceptance criteria per story in Gherkin format (Given/When/Then)
+3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
+4. Business case should explain ROI, customer impact, or strategic value
+5. Be specific about which pages/screens/areas are affected
+
+Return ONLY the JSON array, no additional text or commentary.
+"""
+
+    @staticmethod
+    def get_competitor_analysis_prompt(notes: str, competitor_urls: List[str]) -> str:
+        """
+        Generate prompt for analyzing competitor implementations
+
+        Args:
+            notes: Meeting notes
+            competitor_urls: List of competitor URLs to analyze
+
+        Returns:
+            Research prompt
+        """
+        urls_list = "\n".join(f"   - {url}" for url in competitor_urls)
+
+        return f"""Analyze competitor implementations to inform user stories:
+
+1. Visit and analyze these competitor sites:
+{urls_list}
+
+2. For each site, observe:
+   - How they implement similar features
+   - UX patterns and flows
+   - Error handling
+   - Accessibility features
+   - Mobile responsiveness
+
+3. Generate user stories based on these notes, incorporating best practices from competitors:
+
+Meeting Notes:
+{notes}
+
+Important:
+- Learn from competitors but don't copy directly
+- Identify patterns that work well
+- Note innovative approaches
+- Consider improvements over competitor implementations
+
+Generate user stories in this exact JSON format:
+[
+  {{
+    "user_story": "As a [user type], I want [goal], so that [benefit]",
+    "feature_epic": "Concise feature name",
+    "acceptance_criteria": [
+      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]",
+      ...
+    ],
+    "business_case": "Explanation of business value and impact",
+    "relevant_pages": "Page/screen names affected"
+  }}
+]
+
+Requirements:
+1. Each story must follow the "As a..., I want..., so that..." format
+2. Include 4-6 detailed acceptance criteria per story in Gherkin format (Given/When/Then)
+3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
+4. Business case should explain ROI, customer impact, or strategic value
+5. Be specific about which pages/screens/areas are affected
+
+Return ONLY the JSON array, no additional text or commentary.
+"""
+
+    @staticmethod
+    def get_standards_lookup_prompt(notes: str, standards: List[str]) -> str:
+        """
+        Generate prompt for looking up technical standards
+
+        Args:
+            notes: Meeting notes
+            standards: List of standards to look up (e.g., ["WCAG 2.1", "GDPR"])
+
+        Returns:
+            Research prompt
+        """
+        standards_list = "\n".join(f"   - {std}" for std in standards)
+
+        return f"""Research technical standards and generate compliant user stories:
+
+1. Look up these standards and their requirements:
+{standards_list}
+
+2. For each standard, identify:
+   - Key requirements relevant to the features in the notes
+   - Compliance criteria
+   - Best practices for implementation
+
+3. Generate user stories from these notes that include compliance requirements:
+
+Meeting Notes:
+{notes}
+
+Important:
+- Include standard-specific acceptance criteria
+- Reference standards in business cases
+- Ensure stories cover compliance requirements
+- Include validation and testing criteria for compliance
+
+Generate user stories in this exact JSON format:
+[
+  {{
+    "user_story": "As a [user type], I want [goal], so that [benefit]",
+    "feature_epic": "Concise feature name",
+    "acceptance_criteria": [
+      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]",
+      ...
+    ],
+    "business_case": "Explanation of business value and impact",
+    "relevant_pages": "Page/screen names affected"
+  }}
+]
+
+Requirements:
+1. Each story must follow the "As a..., I want..., so that..." format
+2. Include 4-6 detailed acceptance criteria per story in Gherkin format (Given/When/Then)
+3. Cover edge cases: errors, mobile responsiveness, accessibility, missing data
+4. Business case should explain ROI, customer impact, or strategic value
+5. Be specific about which pages/screens/areas are affected
+
+Return ONLY the JSON array, no additional text or commentary.
+"""
+
+    @staticmethod
+    def detect_domain_from_notes(notes: str) -> str:
+        """
+        Analyze notes to detect the domain/industry
+
+        Args:
+            notes: Meeting notes
+
+        Returns:
+            Detected domain string
+        """
+        notes_lower = notes.lower()
+
+        domains = {
+            "e-commerce": ["shop", "cart", "checkout", "product", "payment", "order", "inventory"],
+            "healthcare": ["patient", "medical", "health", "diagnosis", "treatment", "hospital", "doctor"],
+            "finance": ["account", "transaction", "banking", "payment", "investment", "loan"],
+            "education": ["student", "course", "learning", "assignment", "grade", "teacher"],
+            "social": ["post", "comment", "like", "share", "friend", "feed", "profile"],
+            "saas": ["subscription", "dashboard", "analytics", "integration", "api", "tenant"],
+        }
+
+        domain_scores = {}
+        for domain, keywords in domains.items():
+            score = sum(1 for keyword in keywords if keyword in notes_lower)
+            if score > 0:
+                domain_scores[domain] = score
+
+        if domain_scores:
+            return max(domain_scores, key=domain_scores.get)
+        return ""
+
+
+def create_autonomous_research_plan(notes: str, browser_instructions: str = "") -> Dict[str, any]:
+    """
+    Create a research plan based on notes and instructions
+
+    Args:
+        notes: Meeting notes
+        browser_instructions: Optional browser instructions
+
+    Returns:
+        Research plan dictionary
+    """
+    plan = {
+        "has_specific_instructions": bool(browser_instructions),
+        "detected_domain": ResearchPrompts.detect_domain_from_notes(notes),
+        "research_type": "",
+        "prompt": ""
+    }
+
+    if browser_instructions:
+        # User provided specific instructions - use guided research
+        plan["research_type"] = "guided"
+        plan["prompt"] = browser_instructions
+    elif plan["detected_domain"]:
+        # Domain detected - do domain-specific research
+        plan["research_type"] = "domain"
+        plan["prompt"] = f"Research {plan['detected_domain']} best practices and examples"
+    else:
+        # Generic research
+        plan["research_type"] = "generic"
+        plan["prompt"] = "Research general best practices for the features mentioned"
+
+    return plan

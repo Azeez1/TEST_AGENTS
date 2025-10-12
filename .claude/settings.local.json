@@ -1,0 +1,11 @@
+{
+  "enabledMcpjsonServers": ["playwright"],
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx @executeautomation/playwright-mcp-server:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

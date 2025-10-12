@@ -6,8 +6,9 @@ Complete Streamlit interface for generating and managing user stories
 import streamlit as st
 import os
 import tempfile
+import asyncio
 from anthropic import Anthropic
-from note_parser import extract_notes
+from note_parser import extract_notes, extract_notes_from_multiple_files
 from story_generator import StoryGenerator
 from excel_handler import ExcelHandler, read_existing_stories, create_excel_output
 from formatters import StoryFormatter, validate_stories
@@ -17,6 +18,15 @@ from ui_helpers import (
     create_download_button, get_batch_operation_options
 )
 from dotenv import load_dotenv
+
+# Import autonomous mode components
+try:
+    from autonomous_mode import AutonomousAgent, generate_stories_autonomous
+    from conversation_memory import ConversationMemory, format_preferences_for_display
+    from multi_file_processor import process_multiple_files
+    AUTONOMOUS_MODE_AVAILABLE = True
+except ImportError:
+    AUTONOMOUS_MODE_AVAILABLE = False
 
 # Load environment variables
 load_dotenv()
@@ -40,6 +50,12 @@ if 'refinement_history' not in st.session_state:
     st.session_state.refinement_history = []
 if 'refine_excel_name' not in st.session_state:
     st.session_state.refine_excel_name = None
+
+# Autonomous mode session state
+if 'feedback_history' not in st.session_state:
+    st.session_state.feedback_history = []
+if 'autonomous_agent' not in st.session_state and AUTONOMOUS_MODE_AVAILABLE:
+    st.session_state.autonomous_agent = AutonomousAgent()
 
 # Initialize clients
 client = Anthropic()
@@ -203,13 +219,23 @@ with st.sidebar:
     st.markdown("**Powered by Claude Sonnet 4**")
 
 # Main tabs
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📝 Generate Stories",
-    "✏️ Refine Stories",
-    "➕ Add More Stories",
-    "👁️ View Stories",
-    "⚙️ Batch Operations"
-])
+if AUTONOMOUS_MODE_AVAILABLE:
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "📝 Generate Stories",
+        "✏️ Refine Stories",
+        "➕ Add More Stories",
+        "👁️ View Stories",
+        "⚙️ Batch Operations",
+        "🤖 Autonomous & Feedback"
+    ])
+else:
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "📝 Generate Stories",
+        "✏️ Refine Stories",
+        "➕ Add More Stories",
+        "👁️ View Stories",
+        "⚙️ Batch Operations"
+    ])
 
 # TAB 1: GENERATE STORIES
 with tab1:
@@ -221,17 +247,35 @@ with tab1:
     notes_text = None
 
     if input_method == "Upload File":
-        uploaded_notes = st.file_uploader(
-            "Upload meeting notes or requirements",
-            type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls'],
-            help="Supported formats: PDF, TXT, MD, DOCX (Word), XLSX/XLS (Excel)\n\nExcel files will be intelligently analyzed for:\n• Existing user stories (will reformat/enhance)\n• Structured requirements tables\n• Free-form notes and content",
-            key="gen_file_upload"
-        )
+        # Check if autonomous mode available for multiple files
+        if AUTONOMOUS_MODE_AVAILABLE:
+            uploaded_notes = st.file_uploader(
+                "Upload meeting notes or requirements (multiple files supported)",
+                type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls', 'json', 'csv', 'html', 'xml', 'png', 'jpg', 'jpeg'],
+                accept_multiple_files=True,
+                help="Supported: PDF, TXT, MD, DOCX, XLSX/XLS, JSON, CSV, HTML, XML, Images (with OCR)\n\nMultiple files will be combined automatically",
+                key="gen_file_upload"
+            )
+        else:
+            uploaded_notes = st.file_uploader(
+                "Upload meeting notes or requirements",
+                type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls'],
+                help="Supported formats: PDF, TXT, MD, DOCX (Word), XLSX/XLS (Excel)",
+                key="gen_file_upload"
+            )
+            # Convert single file to list for consistency
+            uploaded_notes = [uploaded_notes] if uploaded_notes else []
 
         if uploaded_notes:
-            temp_path = save_uploaded_file(uploaded_notes)
-            notes_text = extract_notes(temp_path)
-            st.success(f"✓ Loaded {len(notes_text)} characters from {uploaded_notes.name}")
+            if len(uploaded_notes) == 1:
+                temp_path = save_uploaded_file(uploaded_notes[0])
+                notes_text = extract_notes(temp_path)
+                st.success(f"✓ Loaded {len(notes_text)} characters from {uploaded_notes[0].name}")
+            else:
+                # Multiple files
+                temp_paths = [save_uploaded_file(f) for f in uploaded_notes]
+                notes_text = extract_notes_from_multiple_files(temp_paths)
+                st.success(f"✓ Loaded {len(uploaded_notes)} files, {len(notes_text)} total characters")
 
             with st.expander("Preview notes"):
                 st.text_area("Notes content", notes_text, height=200, disabled=True)
@@ -281,34 +325,186 @@ Focuses on functional requirements developers and QA need to implement/test.""",
     )
     ac_format_value = "gherkin" if ac_format == "Gherkin (Given/When/Then)" else "explicit"
 
+    # Autonomous Mode Options (if available)
+    browser_enabled = False
+    browser_instructions = ""
+    current_feedback = ""
+
+    if AUTONOMOUS_MODE_AVAILABLE:
+        st.markdown("---")
+        st.markdown("### 🤖 Autonomous Mode (Optional)")
+
+        # Show MCP Status
+        if st.session_state.autonomous_agent:
+            mcp_status = st.session_state.autonomous_agent.get_mcp_status()
+            if mcp_status['configured']:
+                st.success(f"🔌 MCP Configured | {mcp_status['tools_available']} Playwright tools available")
+                if mcp_status['server_running']:
+                    st.info("✅ MCP Server: Running")
+                else:
+                    st.info("⏸️ MCP Server: Will start when needed")
+            else:
+                st.warning("⚠️ MCP Not Configured - Using research-enhanced prompts only")
+                with st.expander("How to enable MCP"):
+                    st.markdown("""
+                    To enable TRUE browser automation with Playwright:
+                    1. Ensure `mcp_config.json` exists in the project folder
+                    2. Install Playwright: `npm install -g @executeautomation/playwright-mcp-server`
+                    3. Restart the app
+
+                    Without MCP, the agent uses research-enhanced prompts (still effective!)
+                    """)
+
+        browser_enabled = st.checkbox(
+            "Enable Browser & Research Mode",
+            value=False,
+            help="Agent will use Playwright MCP tools to actually browse websites and research best practices"
+        )
+
+        if browser_enabled:
+            research_mode = st.radio(
+                "Research Mode:",
+                ["Autonomous (Agent decides)", "Guided (Provide instructions)"],
+                horizontal=True
+            )
+
+            if research_mode == "Guided (Provide instructions)":
+                browser_instructions = st.text_area(
+                    "Browser Instructions",
+                    placeholder="Examples:\n• Go to https://figma.com/file/xyz and extract design specs\n• Search for 'WCAG accessibility requirements checkout flow'\n• Browse https://design.company.com and learn button components",
+                    height=120,
+                    help="Tell the agent what to browse, search, or research"
+                )
+
+        # Feedback section
+        st.markdown("### 💬 Feedback (Optional)")
+        current_feedback = st.text_area(
+            "Apply feedback from previous generation",
+            placeholder="Examples:\n• Make ACs shorter (20-30 lines)\n• Use Button.Primary not 'primary button'\n• Always include mobile responsiveness\n• More user-focused, less technical",
+            height=100,
+            help="Agent will remember and apply this feedback to generation"
+        )
+
     # Generate button
     if st.button("🚀 Generate User Stories", type="primary", use_container_width=True):
         if not notes_text:
             show_error_message("Please provide meeting notes (upload file or paste text)")
         else:
-            with st.spinner("Generating user stories with Claude AI..."):
+            # Use autonomous mode if enabled, otherwise use standard generation
+            if AUTONOMOUS_MODE_AVAILABLE and (browser_enabled or current_feedback):
+                # Autonomous generation
+                spinner_text = "Generating with autonomous mode..."
+                if browser_enabled:
+                    spinner_text = "Researching and generating stories..."
+
+                # Create activity log container
+                activity_log = st.empty()
+                log_lines = []
+
+                def log_callback(message):
+                    """Callback to capture and display logs"""
+                    log_lines.append(message)
+                    # Update the activity log display (latest 30 lines)
+                    with activity_log.container():
+                        st.markdown("### 🔴 Live Activity Log")
+                        st.code("\n".join(log_lines[-30:]), language="")
+
                 try:
-                    stories, output_path = generate_stories_from_notes(notes_text, output_filename, append_mode, ac_format_value)
+                    # Show initial activity log
+                    with activity_log.container():
+                        st.markdown("### 🔴 Live Activity Log")
+                        st.info("Starting autonomous generation...")
 
-                    st.session_state.generated_stories = stories
-                    st.session_state.output_file_path = output_path
+                    # Add feedback if provided
+                    if current_feedback and st.session_state.autonomous_agent:
+                        st.session_state.autonomous_agent.add_feedback(current_feedback, "Tab 1 Generation")
+                        st.session_state.feedback_history.append(current_feedback)
 
-                    show_success_message("Stories generated successfully", len(stories))
+                    # Save notes to temp file for autonomous mode
+                    with tempfile.NamedTemporaryFile(delete=False, suffix='.txt', mode='w', encoding='utf-8') as tmp:
+                        tmp.write(notes_text)
+                        temp_notes_path = tmp.name
 
-                    # Display summary
-                    display_story_summary(stories)
+                    # Create autonomous agent
+                    agent = AutonomousAgent(output_file=output_filename, enable_browser=browser_enabled)
 
-                    # Display stories
-                    st.markdown("### Generated Stories")
-                    for i, story in enumerate(stories, 1):
-                        display_story_card(story, i)
+                    # Copy feedback from session if exists
+                    if st.session_state.feedback_history:
+                        for fb in st.session_state.feedback_history:
+                            agent.add_feedback(fb)
 
-                    # Download button
-                    st.markdown("---")
-                    create_download_button(output_path, "📥 Download Excel File", key="gen_download")
+                    # Generate with async support
+                    import asyncio
+                    success, stories, message = asyncio.run(
+                        agent.generate_from_notes(
+                            temp_notes_path,
+                            ac_format=ac_format_value,
+                            browser_instructions=browser_instructions,
+                            append=append_mode
+                        )
+                    )
+
+                    # Clean up temp file
+                    try:
+                        os.unlink(temp_notes_path)
+                    except:
+                        pass
+
+                    # Clear activity log after completion
+                    activity_log.empty()
+
+                    if success:
+                        st.session_state.generated_stories = stories
+                        st.session_state.output_file_path = output_filename
+
+                        show_success_message(f"Stories generated successfully! {message}", len(stories))
+
+                        # Show research notice
+                        if browser_enabled:
+                            st.info("🌐 Agent performed web research to enhance story quality")
+
+                        # Display summary
+                        display_story_summary(stories)
+
+                        # Display stories
+                        st.markdown("### Generated Stories")
+                        for i, story in enumerate(stories, 1):
+                            display_story_card(story, i)
+
+                        # Download button
+                        st.markdown("---")
+                        create_download_button(output_filename, "📥 Download Excel File", key="gen_download")
+                    else:
+                        show_error_message(message)
 
                 except Exception as e:
-                    show_error_message(str(e))
+                    activity_log.empty()
+                    show_error_message(f"Autonomous generation error: {str(e)}")
+            else:
+                # Standard generation (original behavior)
+                with st.spinner("Generating user stories with Claude AI..."):
+                    try:
+                        stories, output_path = generate_stories_from_notes(notes_text, output_filename, append_mode, ac_format_value)
+
+                        st.session_state.generated_stories = stories
+                        st.session_state.output_file_path = output_path
+
+                        show_success_message("Stories generated successfully", len(stories))
+
+                        # Display summary
+                        display_story_summary(stories)
+
+                        # Display stories
+                        st.markdown("### Generated Stories")
+                        for i, story in enumerate(stories, 1):
+                            display_story_card(story, i)
+
+                        # Download button
+                        st.markdown("---")
+                        create_download_button(output_path, "📥 Download Excel File", key="gen_download")
+
+                    except Exception as e:
+                        show_error_message(str(e))
 
 # TAB 2: REFINE STORIES
 with tab2:
@@ -771,6 +967,147 @@ with tab5:
 
         except Exception as e:
             show_error_message(f"Error loading stories: {str(e)}")
+
+# TAB 6: AUTONOMOUS & FEEDBACK (only if autonomous mode available)
+if AUTONOMOUS_MODE_AVAILABLE:
+    with tab6:
+        st.header("🤖 Autonomous Mode & Feedback Management")
+        st.markdown("Manage agent preferences and view feedback history")
+
+        # Create tabs within tab6
+        feedback_tab, preferences_tab, about_tab = st.tabs([
+            "💬 Feedback History",
+            "⚙️ Stored Preferences",
+            "ℹ️ About Autonomous Mode"
+        ])
+
+        with feedback_tab:
+            st.markdown("### Current Session Feedback")
+
+            if st.session_state.feedback_history:
+                st.info(f"📝 {len(st.session_state.feedback_history)} feedback items this session")
+
+                for i, feedback in enumerate(st.session_state.feedback_history, 1):
+                    with st.expander(f"Feedback {i}"):
+                        st.write(feedback)
+
+                if st.button("Clear Session Feedback", key="clear_session_feedback"):
+                    st.session_state.feedback_history = []
+                    st.success("Session feedback cleared")
+                    st.rerun()
+            else:
+                st.info("No feedback in current session")
+
+            st.markdown("---")
+            st.markdown("### Add New Feedback")
+            st.markdown("Add feedback that will be applied to all future generations")
+
+            new_feedback = st.text_area(
+                "Enter feedback:",
+                placeholder="Examples:\n• Always include error handling in ACs\n• Use specific component names from our design system\n• Make stories more user-focused",
+                height=120,
+                key="new_feedback_input"
+            )
+
+            if st.button("💾 Save Feedback", type="primary"):
+                if new_feedback:
+                    st.session_state.feedback_history.append(new_feedback)
+                    if st.session_state.autonomous_agent:
+                        st.session_state.autonomous_agent.add_feedback(new_feedback, "Manual Entry")
+                    st.success("Feedback saved! It will be applied to future generations.")
+                    st.rerun()
+                else:
+                    st.warning("Please enter feedback first")
+
+        with preferences_tab:
+            st.markdown("### Stored Preferences")
+            st.markdown("These preferences are saved permanently and applied across all sessions")
+
+            if st.session_state.autonomous_agent:
+                preferences = st.session_state.autonomous_agent.get_preferences()
+
+                if preferences:
+                    st.info(f"📚 {len(preferences)} stored preferences")
+
+                    for i, pref in enumerate(preferences):
+                        col1, col2 = st.columns([4, 1])
+                        with col1:
+                            st.write(f"**{i+1}.** {pref.get('preference', '')}")
+                            st.caption(f"Added: {pref.get('timestamp', 'Unknown')[:10]}")
+                        with col2:
+                            if st.button("Delete", key=f"del_pref_{i}"):
+                                st.session_state.autonomous_agent.remove_preference(i)
+                                st.success("Preference removed")
+                                st.rerun()
+
+                    st.markdown("---")
+                    if st.button("🗑️ Clear All Preferences", type="secondary"):
+                        if st.session_state.autonomous_agent.memory:
+                            st.session_state.autonomous_agent.memory.clear_all()
+                            st.success("All preferences cleared")
+                            st.rerun()
+                else:
+                    st.info("No stored preferences yet")
+                    st.markdown("💡 **Tip:** Add feedback in the 'Feedback History' tab to create permanent preferences")
+            else:
+                st.info("Autonomous agent not initialized")
+
+        with about_tab:
+            st.markdown("### About Autonomous Mode")
+
+            st.markdown("""
+            **Autonomous Mode** enhances story generation with:
+
+            #### 🌐 Browser & Research
+            - **Web Search**: Agent searches for best practices, examples, and standards
+            - **Site Browsing**: Can visit URLs you provide (Figma, design systems, docs)
+            - **Autonomous Research**: Agent decides what to research based on notes
+            - **Guided Research**: You provide specific instructions for browsing
+
+            #### 💬 Feedback & Learning
+            - **Session Feedback**: Applied to current session
+            - **Stored Preferences**: Permanent, applied across all sessions
+            - **Iterative Improvement**: Agent learns and improves over time
+            - **Contextual Memory**: Remembers your preferences and style
+
+            #### 📁 Enhanced File Support
+            - **Multiple Files**: Upload and process multiple files at once
+            - **More Formats**: JSON, CSV, HTML, XML, Images (with OCR)
+            - **Automatic Combination**: Files are intelligently combined
+
+            #### 🎯 Use Cases
+            1. **Design System Integration**: Browse your design system and use exact component names
+            2. **Standards Compliance**: Research WCAG, GDPR, or other standards automatically
+            3. **Competitive Analysis**: Analyze competitor implementations
+            4. **Style Learning**: Agent learns your team's story style over time
+            5. **Domain Research**: Automatic research of domain-specific best practices
+
+            #### 🚀 Getting Started
+            1. Enable "Browser & Research Mode" in Tab 1
+            2. Choose Autonomous or provide specific instructions
+            3. Optionally add feedback for the agent to apply
+            4. Generate stories - agent will research first
+            5. Review and provide more feedback to improve future generations
+
+            #### 💡 Tips
+            - Start with autonomous mode to let agent explore
+            - Provide specific URLs when you have resources to analyze
+            - Use feedback to teach agent your preferences over time
+            - Stored preferences persist across sessions
+            - Combine multiple input files for comprehensive context
+            """)
+
+            st.markdown("---")
+            st.markdown("### Configuration")
+
+            mcp_available = os.path.exists("mcp_config.json")
+            st.write(f"**MCP Configuration:** {'✅ Available' if mcp_available else '❌ Not found'}")
+
+            if mcp_available:
+                st.success("Playwright MCP is configured and ready")
+            else:
+                st.warning("MCP config not found. Browser features may be limited.")
+                st.info("Create `mcp_config.json` to enable full browser capabilities")
 
 # Footer
 st.markdown("---")
