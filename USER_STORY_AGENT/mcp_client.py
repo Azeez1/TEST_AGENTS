@@ -175,16 +175,18 @@ class MCPClient:
         prompt: str,
         max_tokens: int = 8192,
         tools: Optional[List[Dict]] = None,
-        log_callback = None
+        log_callback = None,
+        max_iterations: int = 10
     ) -> str:
         """
-        Call Claude with tool support (simulated MCP integration)
+        Call Claude with tool support - allows MULTIPLE tool iterations
 
         Args:
             prompt: The prompt to send
             max_tokens: Maximum tokens for response
             tools: Tool definitions (defaults to Playwright tools)
             log_callback: Optional callback for logging activity
+            max_iterations: Maximum number of tool-use iterations (default: 10)
 
         Returns:
             Final response text
@@ -201,73 +203,89 @@ class MCPClient:
 
         _log("Calling Claude with tool support...", "🔧")
         _log(f"Available tools: {len(tools)}", "  →")
+        _log(f"Max iterations: {max_iterations}", "  →")
 
-        # First API call with tools
-        response = self.anthropic_client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=max_tokens,
-            tools=tools,
-            messages=[{"role": "user", "content": prompt}]
-        )
+        # Build initial messages
+        messages = [{"role": "user", "content": prompt}]
 
-        # Check if Claude wants to use tools
-        if response.stop_reason == "tool_use":
-            _log("\n🔧 Claude is using tools!\n", "")
-
-            # Process tool uses
-            tool_results = []
-            for block in response.content:
-                if block.type == "tool_use":
-                    _log(f"Tool: {block.name}", "🔧")
-                    _log(f"  Input: {json.dumps(block.input, indent=2)}", "")
-
-                    # Execute tool via REAL MCP if session available, else simulate
-                    if hasattr(self, 'mcp_session') and self.mcp_session:
-                        result = await self._execute_tool_real(block.name, block.input, self.mcp_session, _log)
-                    else:
-                        result = await self._simulate_tool_execution(block.name, block.input, _log)
-
-                    tool_results.append({
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": result
-                    })
-
-                    _log(f"  Result: {result[:200]}...\n", "✓")
-
-            # Continue conversation with tool results
-            _log("Continuing conversation with tool results...", "🤖")
-
-            # Build messages history
-            messages = [
-                {"role": "user", "content": prompt},
-                {"role": "assistant", "content": response.content},
-                {"role": "user", "content": tool_results}
-            ]
-
-            # Second API call with tool results
-            final_response = self.anthropic_client.messages.create(
+        # Allow multiple iterations of tool use
+        for iteration in range(max_iterations):
+            # API call with tools
+            response = self.anthropic_client.messages.create(
                 model="claude-sonnet-4-20250514",
                 max_tokens=max_tokens,
                 tools=tools,
                 messages=messages
             )
 
-            # Extract text from response
-            response_text = ""
-            for block in final_response.content:
-                if hasattr(block, "text"):
-                    response_text += block.text
+            # Check stop reason
+            if response.stop_reason == "end_turn":
+                # Claude is done, extract final response
+                _log(f"\n✓ Task complete after {iteration + 1} iteration(s)\n", "")
+                response_text = ""
+                for block in response.content:
+                    if hasattr(block, "text"):
+                        response_text += block.text
+                return response_text
 
-            return response_text
-        else:
-            # No tools used, return direct response
-            _log("No tools used, direct response generated", "  →")
-            response_text = ""
-            for block in response.content:
-                if hasattr(block, "text"):
-                    response_text += block.text
-            return response_text
+            elif response.stop_reason == "tool_use":
+                if iteration == 0:
+                    _log("\n🔧 Claude is using tools!\n", "")
+                else:
+                    _log(f"\n🔧 Tool iteration {iteration + 1}/{max_iterations}\n", "")
+
+                # Process tool uses
+                tool_results = []
+                for block in response.content:
+                    if block.type == "tool_use":
+                        _log(f"Tool: {block.name}", "🔧")
+                        _log(f"  Input: {json.dumps(block.input, indent=2)}", "")
+
+                        # Execute tool via REAL MCP if session available, else simulate
+                        if hasattr(self, 'mcp_session') and self.mcp_session:
+                            result = await self._execute_tool_real(block.name, block.input, self.mcp_session, _log)
+                        else:
+                            result = await self._simulate_tool_execution(block.name, block.input, _log)
+
+                        tool_results.append({
+                            "type": "tool_result",
+                            "tool_use_id": block.id,
+                            "content": result
+                        })
+
+                        _log(f"  Result: {result[:200]}...\n", "✓")
+
+                # Add assistant response and tool results to messages
+                messages.append({"role": "assistant", "content": response.content})
+                messages.append({"role": "user", "content": tool_results})
+
+                # Continue to next iteration
+                _log("Continuing to next step...", "🤖")
+
+            elif response.stop_reason == "max_tokens":
+                _log("⚠️  Reached max tokens", "")
+                response_text = ""
+                for block in response.content:
+                    if hasattr(block, "text"):
+                        response_text += block.text
+                return response_text
+
+            else:
+                # Unknown stop reason
+                _log(f"Unexpected stop reason: {response.stop_reason}", "  →")
+                response_text = ""
+                for block in response.content:
+                    if hasattr(block, "text"):
+                        response_text += block.text
+                return response_text
+
+        # Reached max iterations
+        _log(f"⚠️  Reached max iterations ({max_iterations})", "")
+        response_text = ""
+        for block in response.content:
+            if hasattr(block, "text"):
+                response_text += block.text
+        return response_text
 
     async def _execute_tool_real(
         self,
