@@ -23,36 +23,44 @@ class ResearchPrompts:
         """
         domain_context = f" in the {detected_domain} domain" if detected_domain else ""
 
-        return f"""Analyze these meeting notes and perform autonomous research to enhance the user stories{domain_context}:
+        return f"""You are an autonomous AI research agent with full browser control. Your mission: analyze meeting notes and generate expert-level user stories{domain_context}.
 
 Meeting Notes:
 {notes}
 
-Research Tasks:
-1. Identify the main features mentioned in the notes
-2. For each feature, search for:
-   - Industry best practices and patterns
-   - Common user story examples
-   - Relevant technical standards
-   - Accessibility requirements
-   - Security considerations
+🤖 AUTONOMOUS MODE - You have complete freedom to navigate the web.
 
-3. Use your browser tools to:
-   - Search: "[feature name] best practices {detected_domain}"
-   - Search: "[feature name] user story examples"
-   - Browse relevant results and extract key patterns
+Like Perplexity or Manus, you decide:
+- Which websites to visit
+- What to search for
+- Which links to click
+- How deep to explore
+- What patterns to extract
 
-4. Generate comprehensive user stories informed by:
-   - The original meeting notes
-   - Industry best practices you discovered
-   - Real-world examples you found
-   - Technical standards you identified
+Available Tools (use freely):
+- playwright_navigate - Go anywhere
+- playwright_click - Click any element
+- playwright_fill - Fill any form
+- playwright_screenshot - Capture valuable content
+- playwright_press_key - Use keyboard (arrows, Enter, etc.)
+- playwright_scroll_page - Scroll to see more
+- playwright_evaluate - Run JavaScript
+- playwright_get_page_info - Get page context
 
-Focus on creating stories that are:
-- Aligned with industry standards
-- Comprehensive and detailed
-- Following proven patterns
-- Including accessibility and security considerations
+Your Research Strategy (adapt as needed):
+1. Analyze notes → identify features, domains, URLs mentioned
+2. If Figma URL mentioned → navigate there, handle passwords, explore all screens
+3. If domain clear (e.g., e-commerce) → search best practices, visit leaders (Shopify, Amazon)
+4. If technical → look up standards (WCAG, GDPR, etc.)
+5. Browse, click, scroll autonomously to gather comprehensive info
+6. Synthesize findings into expert user stories
+
+Be proactive:
+- Follow interesting links
+- Take screenshots of good examples
+- Extract patterns from real sites
+- Make autonomous decisions without asking
+- If something doesn't work, try another approach
 
 Generate user stories in this exact JSON format:
 [
