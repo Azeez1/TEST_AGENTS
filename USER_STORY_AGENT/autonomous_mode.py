@@ -106,7 +106,8 @@ class AutonomousAgent:
         notes_input: str,
         ac_format: str = "gherkin",
         browser_instructions: str = "",
-        append: bool = True
+        append: bool = True,
+        stream_callback = None
     ) -> Tuple[bool, List[Dict], str]:
         """
         Generate user stories from notes with optional browser research
@@ -116,6 +117,7 @@ class AutonomousAgent:
             ac_format: AC format ("gherkin" or "explicit")
             browser_instructions: Optional browser instructions for research
             append: Whether to append to existing Excel
+            stream_callback: Optional callback function for streaming progress updates
 
         Returns:
             Tuple of (success, stories, message)
@@ -143,7 +145,8 @@ class AutonomousAgent:
                     notes,
                     existing_stories,
                     ac_format,
-                    browser_instructions
+                    browser_instructions,
+                    stream_callback
                 )
             else:
                 stories = await self._generate_standard(
@@ -331,7 +334,7 @@ class AutonomousAgent:
             enhanced_prompt,
             max_tokens=8192,
             log_callback=lambda msg: _log(msg, ""),
-            max_iterations=20  # Increased for complex Figma prototypes
+            max_iterations=50  # Balanced limit for complex workflows while controlling costs
         )
 
         _log("\n" + "─" * 60, "")

@@ -63,6 +63,10 @@ if 'generated_stories' not in st.session_state:
     st.session_state.generated_stories = []
 if 'output_file_path' not in st.session_state:
     st.session_state.output_file_path = None
+if 'generation_complete' not in st.session_state:
+    st.session_state.generation_complete = False
+if 'research_used' not in st.session_state:
+    st.session_state.research_used = False
 if 'refine_working_stories' not in st.session_state:
     st.session_state.refine_working_stories = []
 if 'refinement_history' not in st.session_state:
@@ -480,7 +484,8 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                             temp_notes_path,
                             ac_format=ac_format_value,
                             browser_instructions=browser_instructions,
-                            append=append_mode
+                            append=append_mode,
+                            stream_callback=None  # Callback won't work with blocking asyncio.run, logs go to terminal
                         )
                     )
 
@@ -501,30 +506,24 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                     activity_log.empty()
 
                     if success:
+                        # Save to session state (convert to absolute path)
+                        abs_output_path = os.path.abspath(output_filename)
                         st.session_state.generated_stories = stories
-                        st.session_state.output_file_path = output_filename
+                        st.session_state.output_file_path = abs_output_path
+                        st.session_state.generation_complete = True
 
-                        # Add prominent scroll indicator
-                        st.balloons()  # Visual celebration
-                        st.success("✅ **GENERATION COMPLETE!** Scroll down to see your stories ⬇️")
+                        # Force a rerun to display results
+                        st.balloons()
+                        st.success(f"✅ **GENERATION COMPLETE!** Generated {len(stories)} stories. Page will refresh to show results...")
 
-                        show_success_message(f"Stories generated successfully! {message}", len(stories))
-
-                        # Show research notice
                         if browser_enabled:
                             st.info("🌐 Agent performed web research to enhance story quality")
 
-                        # Display summary
-                        display_story_summary(stories)
+                        # Force rerun to show stories (needed after async operations)
+                        import time
+                        time.sleep(1)  # Brief delay so user sees success message
+                        st.rerun()
 
-                        # Display stories
-                        st.markdown("### Generated Stories")
-                        for i, story in enumerate(stories, 1):
-                            display_story_card(story, i)
-
-                        # Download button
-                        st.markdown("---")
-                        create_download_button(output_filename, "📥 Download Excel File", key="gen_download")
                     else:
                         show_error_message(message)
 
@@ -537,25 +536,46 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                     try:
                         stories, output_path = generate_stories_from_notes(notes_text, output_filename, append_mode, ac_format_value)
 
+                        # Convert to absolute path for download button
+                        abs_output_path = os.path.abspath(output_path)
                         st.session_state.generated_stories = stories
-                        st.session_state.output_file_path = output_path
+                        st.session_state.output_file_path = abs_output_path
+                        st.session_state.generation_complete = True
 
-                        show_success_message("Stories generated successfully", len(stories))
-
-                        # Display summary
-                        display_story_summary(stories)
-
-                        # Display stories
-                        st.markdown("### Generated Stories")
-                        for i, story in enumerate(stories, 1):
-                            display_story_card(story, i)
-
-                        # Download button
-                        st.markdown("---")
-                        create_download_button(output_path, "📥 Download Excel File", key="gen_download")
+                        st.balloons()
+                        st.success("✅ **GENERATION COMPLETE!** Scroll down to see your stories and download button ⬇️")
 
                     except Exception as e:
                         show_error_message(str(e))
+
+    # Display generated stories and download button (OUTSIDE button handler, using session state)
+    if st.session_state.generation_complete and st.session_state.generated_stories:
+        st.markdown("---")
+
+        # Clear results button
+        if st.button("🔄 Clear Results & Start New Generation", key="clear_results"):
+            st.session_state.generation_complete = False
+            st.session_state.generated_stories = []
+            st.session_state.output_file_path = None
+            st.rerun()
+
+        st.markdown("---")
+
+        # Display summary
+        display_story_summary(st.session_state.generated_stories)
+
+        # Display stories
+        st.markdown("### Generated Stories")
+        for i, story in enumerate(st.session_state.generated_stories, 1):
+            display_story_card(story, i)
+
+        # Download button (always visible after generation)
+        st.markdown("---")
+        st.markdown("### 📥 Download Your Stories")
+        if st.session_state.output_file_path:
+            create_download_button(st.session_state.output_file_path, "📥 Download Excel File", key="gen_download_persistent")
+            st.success("✅ Download button is ready! Click above to download your Excel file.")
+
 
 # TAB 2: REFINE STORIES
 with tab2:
@@ -876,6 +896,9 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                         ac_format=append_ac_format_value
                     )
 
+                    # Convert to absolute path
+                    abs_output_path = os.path.abspath(output_path)
+
                     total_count = existing_count + len(new_stories)
 
                     show_success_message(
@@ -887,9 +910,9 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                     for i, story in enumerate(new_stories, existing_count + 1):
                         display_story_card(story, i)
 
-                    # Download button
+                    # Download button (use absolute path)
                     st.markdown("---")
-                    create_download_button(output_path, "📥 Download Updated Excel", key="append_download")
+                    create_download_button(abs_output_path, "📥 Download Updated Excel", key="append_download")
 
                 except Exception as e:
                     show_error_message(str(e))
