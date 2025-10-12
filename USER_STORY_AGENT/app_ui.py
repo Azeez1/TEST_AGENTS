@@ -504,6 +504,10 @@ Focuses on functional requirements developers and QA need to implement/test.""",
                         st.session_state.generated_stories = stories
                         st.session_state.output_file_path = output_filename
 
+                        # Add prominent scroll indicator
+                        st.balloons()  # Visual celebration
+                        st.success("✅ **GENERATION COMPLETE!** Scroll down to see your stories ⬇️")
+
                         show_success_message(f"Stories generated successfully! {message}", len(stories))
 
                         # Show research notice
