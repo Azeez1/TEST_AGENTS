@@ -125,6 +125,48 @@ class MCPClient:
                     },
                     "required": ["script"]
                 }
+            },
+            {
+                "name": "playwright_press_key",
+                "description": "Press a keyboard key (useful for Figma prototypes, image carousels, presentations). Use ArrowRight for next, ArrowLeft for previous, r for restart.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "key": {
+                            "type": "string",
+                            "description": "Key to press: ArrowRight, ArrowLeft, ArrowUp, ArrowDown, Enter, Escape, r, etc."
+                        }
+                    },
+                    "required": ["key"]
+                }
+            },
+            {
+                "name": "playwright_scroll_page",
+                "description": "Scroll the entire page to capture full content. Use for long pages, dashboards, or detailed designs.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "direction": {
+                            "type": "string",
+                            "description": "Direction to scroll: 'down', 'up', 'bottom', 'top'",
+                            "enum": ["down", "up", "bottom", "top"]
+                        },
+                        "amount": {
+                            "type": "number",
+                            "description": "Pixels to scroll (optional, default varies by direction)"
+                        }
+                    },
+                    "required": ["direction"]
+                }
+            },
+            {
+                "name": "playwright_get_page_info",
+                "description": "Get current page information including URL, title, and visible text",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
             }
         ]
 
@@ -311,6 +353,18 @@ class MCPClient:
         elif tool_name == "playwright_evaluate":
             script = tool_input.get("script", "")
             return f"[SIMULATED] Executed JavaScript: {script[:100]}..."
+
+        elif tool_name == "playwright_press_key":
+            key = tool_input.get("key", "")
+            return f"[SIMULATED] Pressed key: {key}"
+
+        elif tool_name == "playwright_scroll_page":
+            direction = tool_input.get("direction", "down")
+            amount = tool_input.get("amount", 800)
+            return f"[SIMULATED] Scrolled page {direction} by {amount}px"
+
+        elif tool_name == "playwright_get_page_info":
+            return f"[SIMULATED] Page info: URL: https://example.com, Title: Example Page"
 
         else:
             return f"[SIMULATED] Tool {tool_name} executed"

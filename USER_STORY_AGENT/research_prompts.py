@@ -327,6 +327,96 @@ Return ONLY the JSON array, no additional text or commentary.
 """
 
     @staticmethod
+    def get_figma_prototype_prompt(notes: str, figma_url: str, password: str = "", ac_format: str = "gherkin") -> str:
+        """
+        Generate prompt for analyzing Figma prototypes
+
+        Args:
+            notes: Meeting notes
+            figma_url: Figma prototype URL
+            password: Optional password for password-protected prototypes
+            ac_format: AC format to use
+
+        Returns:
+            Research prompt for Figma analysis
+        """
+        # Define AC format instructions
+        if ac_format == "explicit":
+            ac_format_desc = "Explicit/Detailed format (30-50 lines, structured with numbered sections and subsections)"
+            ac_example = """      "1. The [Page] displays:\\n   a. Element 1\\n      i. Detail\\n   b. Element 2",
+      "2. User States:\\n   a. Guest users: [behavior]\\n   b. Logged-in users: [behavior]",
+      "3. Validation Rules:\\n   a. Field validation\\n      i. Error message: \\"text\\"",
+      "Notes:\\n- Performance: [details]\\n- Accessibility: [details]\""""
+        else:
+            ac_format_desc = "Gherkin format (Given/When/Then)"
+            ac_example = """      "Given [context], when [action], then [expected outcome]",
+      "Given [context], when [action], then [expected outcome]",
+      ..."""
+
+        password_instruction = ""
+        if password:
+            password_instruction = f"""
+2. Enter password: {password} and click Continue
+"""
+
+        return f"""Analyze this Figma prototype and generate detailed user stories:
+
+Figma URL: {figma_url}
+
+Steps to navigate the Figma prototype:
+1. Navigate to the URL above{password_instruction}
+3. Use keyboard navigation to explore all screens:
+   - Press ArrowRight (→) to go to next screen
+   - Press ArrowLeft (←) to go to previous screen
+   - Press 'r' to restart from first screen
+
+4. For EACH screen you see:
+   - Take a screenshot with playwright_screenshot (use fullPage: true to capture everything)
+   - Scroll down the entire page using playwright_scroll_page to see all content
+   - Take another screenshot after scrolling
+   - Extract visible text with playwright_get_page_info
+   - Document UI components, layouts, interactions visible
+
+5. Navigate through ALL screens in the prototype (usually indicated by X / Y at bottom)
+
+6. After exploring the entire prototype, generate user stories that describe:
+   - Each screen and its purpose
+   - User flows through the prototype
+   - UI components and their interactions
+   - Visual design patterns
+   - Accessibility considerations
+
+Meeting Notes Context:
+{notes}
+
+IMPORTANT: Use {ac_format_desc} for acceptance criteria.
+
+Generate user stories in this exact JSON format:
+[
+  {{
+    "user_story": "As a [user type], I want [goal], so that [benefit]",
+    "feature_epic": "Concise feature name",
+    "acceptance_criteria": [
+{ac_example}
+    ],
+    "business_case": "Explanation of business value and impact",
+    "relevant_pages": "Page/screen names from Figma prototype"
+  }}
+]
+
+Requirements for Figma-based stories:
+1. Each story must follow the "As a..., I want..., so that..." format
+2. Include 4-6 detailed acceptance criteria per story in the specified format ({ac_format_desc})
+3. Reference specific screens, components, and UI elements from the Figma prototype
+4. Include visual design specifications (colors, typography, spacing) when relevant
+5. Cover interaction patterns shown in the prototype
+6. Include accessibility considerations based on the design
+7. Specify which Figma screens each story relates to
+
+Return ONLY the JSON array, no additional text or commentary.
+"""
+
+    @staticmethod
     def detect_domain_from_notes(notes: str) -> str:
         """
         Analyze notes to detect the domain/industry
