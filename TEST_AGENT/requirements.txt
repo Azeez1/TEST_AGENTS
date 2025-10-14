@@ -1,0 +1,23 @@
+# Claude Agent SDK
+claude-agent-sdk>=0.1.0
+
+# Testing Framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+pytest-json-report>=1.5.0
+
+# CLI Interface
+rich>=13.7.0
+click>=8.1.7
+
+# Code Analysis
+ast-comments>=1.2.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+
+# Coverage
+coverage[toml]>=7.3.0

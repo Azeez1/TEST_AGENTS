@@ -51,5 +51,18 @@ preferences_store.json
 *.key
 credentials.json
 
+# Local configs and backups
+.claude/settings.local.json
+*.backup
+.mcp.test-*.json
+nul
+
+# Archives
+archive/
+
+# Runtime data
+memory/
+**/memory/
+
 # Keep example output
 !examples/*.xlsx

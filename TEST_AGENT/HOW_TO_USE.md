@@ -1,0 +1,554 @@
+# 🧪 TEST_AGENT Usage Guide
+
+## Your 5 Testing Agents Are Ready!
+
+No Python code to run. No orchestrator. Just talk to Claude Code.
+
+---
+
+## Quick Start
+
+```
+You: "Use the test-orchestrator subagent to scan USER_STORY_AGENT and generate tests"
+
+Claude: [becomes test-orchestrator]
+        [scans codebase]
+        [delegates to specialist agents]
+        [generates comprehensive test suite]
+```
+
+**That's it!**
+
+---
+
+## All 5 Agents
+
+### 1. test-orchestrator (The Coordinator)
+**When to use:** Complete test suite generation
+
+```
+"Use test-orchestrator to scan and test my entire codebase"
+```
+
+**It will:**
+- Scan codebase with `scan_codebase` tool
+- Analyze functions, classes, methods
+- Delegate to specialist agents:
+  - unit-test-agent for each module
+  - edge-case-agent for boundary tests
+  - fixture-agent for test data
+- Generate comprehensive tests
+- Run tests and analyze coverage
+
+### 2. unit-test-agent (Unit Tests)
+**When to use:** Unit tests for specific functions/classes
+
+```
+"Use unit-test-agent to generate tests for story_generator.py"
+```
+
+**It will:**
+- Analyze function signatures
+- Generate 3 tests per function:
+  - Happy path test
+  - Edge case test
+  - Error case test
+- Create parametrized tests when appropriate
+- Mock external dependencies
+- Follow AAA pattern (Arrange-Act-Assert)
+- Use naming convention: `test_function_when_condition_then_expected`
+
+### 3. integration-test-agent (Integration Tests)
+**When to use:** Testing module interactions and workflows
+
+```
+"Use integration-test-agent to test the complete story generation workflow"
+```
+
+**It will:**
+- Create end-to-end tests
+- Test module interactions
+- Test complete user workflows
+- Test external integrations (APIs, files, databases)
+- Mark with `@pytest.mark.integration`
+
+### 4. edge-case-agent (Edge Cases & Boundaries)
+**When to use:** Finding and testing edge cases
+
+```
+"Use edge-case-agent to identify edge cases in file validation"
+```
+
+**It will:**
+- Analyze function parameters
+- Identify boundary values:
+  - Empty strings, None, zero
+  - Max/min values
+  - Special characters
+  - Unicode, SQL injection attempts
+- Generate tests for each edge case
+- Prioritize by security/stability risk
+
+### 5. fixture-agent (Test Data & Fixtures)
+**When to use:** Creating pytest fixtures
+
+```
+"Use fixture-agent to create fixtures for database tests"
+```
+
+**It will:**
+- Create reusable test data
+- Generate mock objects
+- Create `conftest.py` with shared fixtures
+- Use appropriate scopes (function, module, session)
+- Build factory fixtures for flexibility
+
+---
+
+## Real-World Examples
+
+### Example 1: Generate Complete Test Suite
+
+```
+You: "Use test-orchestrator to scan ../USER_STORY_AGENT and generate comprehensive tests"
+
+Claude (as test-orchestrator):
+  [Using scan_codebase tool...]
+
+  Scanning codebase...
+
+  Found:
+  - 14 Python files
+  - 45 functions
+  - 12 classes
+  - 38 methods
+
+  Analyzing complexity...
+  - 8 high-complexity functions
+  - 3 functions with external dependencies
+  - 5 async functions
+
+  Now delegating to specialist agents:
+
+  [Invoking unit-test-agent for story_generator.py...]
+  ✅ Generated 15 unit tests
+
+  [Invoking unit-test-agent for file_handlers.py...]
+  ✅ Generated 12 unit tests
+
+  [Invoking edge-case-agent for validation functions...]
+  ✅ Identified 18 edge cases, generated tests
+
+  [Invoking fixture-agent for test data...]
+  ✅ Created conftest.py with 5 fixtures
+
+  [Invoking integration-test-agent for workflows...]
+  ✅ Generated 4 integration tests
+
+  Test Suite Complete!
+
+  Generated:
+  - tests/test_story_generator.py (15 tests)
+  - tests/test_file_handlers.py (12 tests)
+  - tests/test_formatters.py (8 tests)
+  - tests/test_edge_cases.py (18 tests)
+  - tests/test_integration.py (4 tests)
+  - tests/conftest.py (fixtures)
+
+  Total: 57 test cases
+
+  [Using run_tests tool...]
+  Running tests...
+
+  ===== 57 passed in 2.34s =====
+
+  [Using analyze_coverage tool...]
+  Coverage: 89.5%
+
+  Files below 80% threshold:
+  - autonomous_mode.py: 67%
+  - mcp_client.py: 72%
+
+  Recommendations:
+  • Add tests for autonomous navigation edge cases
+  • Test MCP client error handling
+  • Add integration tests for browser workflows
+
+  Would you like me to generate additional tests for low-coverage files?
+```
+
+### Example 2: Unit Tests for Specific Module
+
+```
+You: "Use unit-test-agent to generate comprehensive unit tests for file_handlers.py with good edge case coverage"
+
+Claude (as unit-test-agent):
+  [Using analyze_function tool...]
+
+  Analyzing file_handlers.py...
+
+  Found:
+  - read_file(file_path: str) -> str
+  - write_file(file_path: str, content: str) -> bool
+  - validate_file_type(file_path: str, allowed_types: list) -> bool
+
+  Generating tests...
+
+  # tests/test_file_handlers.py
+  """
+  Tests for file_handlers module
+  Generated by Unit Test Agent
+  """
+
+  import pytest
+  from unittest.mock import Mock, patch, mock_open
+  from file_handlers import read_file, write_file, validate_file_type
+
+
+  class TestReadFile:
+      """Tests for read_file()"""
+
+      def test_read_file_when_valid_path_then_returns_content(self):
+          """Test reading a valid file"""
+          # Arrange
+          with patch('builtins.open', mock_open(read_data='test content')):
+              # Act
+              result = read_file('test.txt')
+              # Assert
+              assert result == 'test content'
+
+      def test_read_file_when_empty_file_then_returns_empty_string(self):
+          """Test reading empty file"""
+          # Arrange
+          with patch('builtins.open', mock_open(read_data='')):
+              # Act
+              result = read_file('empty.txt')
+              # Assert
+              assert result == ''
+
+      def test_read_file_when_not_exists_then_raises_file_not_found(self):
+          """Test file not found error"""
+          # Arrange & Act & Assert
+          with pytest.raises(FileNotFoundError):
+              read_file('nonexistent.txt')
+
+      def test_read_file_when_no_permission_then_raises_permission_error(self):
+          """Test permission denied"""
+          # Arrange
+          with patch('builtins.open', side_effect=PermissionError):
+              # Act & Assert
+              with pytest.raises(PermissionError):
+                  read_file('protected.txt')
+
+
+  class TestWriteFile:
+      """Tests for write_file()"""
+
+      def test_write_file_when_valid_path_then_writes_successfully(self):
+          """Test writing to valid path"""
+          # Arrange
+          with patch('builtins.open', mock_open()) as mock_file:
+              # Act
+              result = write_file('test.txt', 'content')
+              # Assert
+              assert result is True
+              mock_file().write.assert_called_once_with('content')
+
+      def test_write_file_when_empty_content_then_writes_empty(self):
+          """Test writing empty content"""
+          # Arrange
+          with patch('builtins.open', mock_open()) as mock_file:
+              # Act
+              result = write_file('test.txt', '')
+              # Assert
+              assert result is True
+
+      def test_write_file_when_unicode_content_then_handles_correctly(self):
+          """Test writing unicode content"""
+          # Arrange
+          unicode_content = "Hello 世界 🌍"
+          with patch('builtins.open', mock_open()) as mock_file:
+              # Act
+              result = write_file('test.txt', unicode_content)
+              # Assert
+              assert result is True
+
+
+  class TestValidateFileType:
+      """Tests for validate_file_type()"""
+
+      @pytest.mark.parametrize("file_path,allowed,expected", [
+          ("test.txt", [".txt"], True),
+          ("test.pdf", [".txt", ".pdf"], True),
+          ("test.exe", [".txt", ".pdf"], False),
+          ("test", [".txt"], False),
+      ])
+      def test_validate_file_type_various_cases(self, file_path, allowed, expected):
+          """Test file type validation with various inputs"""
+          result = validate_file_type(file_path, allowed)
+          assert result == expected
+
+      def test_validate_file_type_when_empty_allowed_list_then_returns_false(self):
+          """Test with empty allowed list"""
+          result = validate_file_type('test.txt', [])
+          assert result is False
+
+  ===== Tests Generated =====
+
+  Created: tests/test_file_handlers.py
+  - 3 test classes
+  - 11 test functions
+  - Includes mocking, parametrization, edge cases
+
+  Run with: pytest tests/test_file_handlers.py
+```
+
+### Example 3: Edge Case Discovery
+
+```
+You: "Use edge-case-agent to identify all edge cases for the validate_email function"
+
+Claude (as edge-case-agent):
+  [Using identify_edge_cases tool...]
+
+  Analyzing validate_email(email: str) -> bool...
+
+  Identified 15 critical edge cases:
+
+  **Boundary Values:**
+  1. Empty string: ""
+  2. None value: None
+  3. Single character: "a"
+  4. Maximum length: 320+ characters
+
+  **Format Edge Cases:**
+  5. No @ symbol: "test.com"
+  6. Multiple @ symbols: "test@@test.com"
+  7. @ at start: "@test.com"
+  8. @ at end: "test@"
+  9. No domain: "test@"
+
+  **Special Characters:**
+  10. Spaces: "test @test.com"
+  11. SQL injection: "test'; DROP TABLE--@test.com"
+  12. XSS attempt: "<script>@test.com"
+  13. Unicode: "test@日本.com"
+
+  **Unusual Valid Cases:**
+  14. Plus addressing: "test+tag@test.com"
+  15. Subdomain: "test@mail.test.com"
+
+  Generated tests for all 15 cases:
+
+  # tests/test_validate_email_edge_cases.py
+
+  class TestValidateEmailEdgeCases:
+      """Edge cases for validate_email()"""
+
+      # Empty/None cases
+      def test_validate_email_when_empty_string_then_returns_false(self):
+          assert validate_email("") is False
+
+      def test_validate_email_when_none_then_raises_type_error(self):
+          with pytest.raises(TypeError):
+              validate_email(None)
+
+      # Security cases
+      def test_validate_email_when_sql_injection_then_rejects(self):
+          malicious = "test'; DROP TABLE--@test.com"
+          assert validate_email(malicious) is False
+
+      # ... [13 more tests]
+
+  Priority: HIGH (security-related edge cases detected)
+```
+
+---
+
+## Common Workflows
+
+### Workflow 1: Full Test Suite Generation
+
+```
+# One command does everything:
+You: "Use test-orchestrator to scan ../USER_STORY_AGENT and generate complete test suite"
+
+Claude: [Coordinates all specialist agents automatically]
+        [Generates unit + integration + edge case tests]
+        [Creates fixtures]
+        [Runs tests]
+        [Analyzes coverage]
+        [Provides recommendations]
+```
+
+### Workflow 2: Iterative Coverage Improvement
+
+```
+# Step 1: Generate initial tests
+You: "Use test-orchestrator to test my code"
+
+# Step 2: Check coverage
+You: "Show me which files have low coverage"
+
+# Step 3: Target specific files
+You: "Use edge-case-agent to generate edge case tests for file_handlers.py"
+
+# Step 4: Re-run coverage
+You: "Run tests and show new coverage"
+```
+
+### Workflow 3: Targeted Test Generation
+
+```
+# Just want unit tests for one module
+You: "Use unit-test-agent to generate tests for story_generator.py"
+
+# Just want fixtures
+You: "Use fixture-agent to create fixtures for database tests"
+
+# Just want integration tests
+You: "Use integration-test-agent to test the complete workflow"
+```
+
+---
+
+## Tips & Best Practices
+
+### 1. Start with test-orchestrator for Complete Coverage
+```
+"Use test-orchestrator to scan my entire codebase"
+```
+It will coordinate all specialists automatically.
+
+### 2. Be Specific About Coverage Goals
+```
+"Use test-orchestrator to generate tests with 90% coverage"
+```
+
+### 3. Target Specific Areas
+```
+"Use edge-case-agent to focus on security-critical validation functions"
+```
+
+### 4. Review Generated Tests
+Always review generated tests before committing:
+- Check assertions make sense
+- Verify mocks are appropriate
+- Ensure edge cases are relevant
+
+### 5. Iterate on Low Coverage Areas
+```
+"Use unit-test-agent to add tests for low-coverage functions in module_x.py"
+```
+
+---
+
+## Available Tools (Per Agent)
+
+**test-orchestrator:**
+- scan_codebase
+- run_tests
+- analyze_coverage
+- classify_test_intent
+- list_test_agents
+
+**unit-test-agent:**
+- analyze_function
+- generate_unit_tests
+- create_fixtures
+
+**integration-test-agent:**
+- scan_codebase
+- generate_integration_tests
+
+**edge-case-agent:**
+- identify_edge_cases
+- analyze_function
+
+**fixture-agent:**
+- create_fixtures
+- analyze_function
+
+---
+
+## Test Output Structure
+
+Generated tests follow this structure:
+
+```
+tests/
+├── conftest.py              # Shared fixtures
+├── test_module_name.py      # Unit tests per module
+├── test_edge_cases.py       # Edge case tests
+├── test_integration.py      # Integration tests
+└── __pycache__/
+```
+
+Each test file contains:
+- Module docstring
+- Proper imports
+- Test classes (grouped by function/class)
+- AAA pattern (Arrange-Act-Assert)
+- Descriptive test names
+- Appropriate mocking
+
+---
+
+## Troubleshooting
+
+### "Tests weren't generated"
+- Check agent .md files exist in `.claude/agents/`
+- Verify target path is correct
+- Check Python files are valid syntax
+
+### "Coverage analysis failed"
+- Need pytest and pytest-cov installed: `pip install pytest pytest-cov`
+- Coverage data might not exist yet (run tests first)
+
+### "Mocks not working"
+- Check imports in generated tests
+- Verify mock paths are correct
+- Review pytest-mock documentation
+
+---
+
+## Next Steps
+
+1. **Try your first test generation:**
+   ```
+   "Use test-orchestrator to scan ../USER_STORY_AGENT"
+   ```
+
+2. **Review generated tests:**
+   ```bash
+   cat tests/test_story_generator.py
+   ```
+
+3. **Run the tests:**
+   ```bash
+   pytest tests/
+   ```
+
+4. **Check coverage:**
+   ```bash
+   pytest --cov=. tests/
+   ```
+
+---
+
+## Quick Reference
+
+| Need | Use This Agent | Example |
+|------|----------------|---------|
+| Complete test suite | test-orchestrator | "Use test-orchestrator to test my code" |
+| Unit tests | unit-test-agent | "Use unit-test-agent for module.py" |
+| Edge cases | edge-case-agent | "Use edge-case-agent for validation" |
+| Integration tests | integration-test-agent | "Use integration-test-agent for workflow" |
+| Fixtures | fixture-agent | "Use fixture-agent for test data" |
+| Run tests | test-orchestrator | "Run tests and show coverage" |
+
+---
+
+**Your testing agents are ready! Just start talking to Claude Code.** 🚀
+
+See [MULTI_AGENT_GUIDE.md](../MULTI_AGENT_GUIDE.md) for more details on how the system works.
