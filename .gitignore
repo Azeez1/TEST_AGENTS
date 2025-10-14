@@ -42,8 +42,12 @@ Thumbs.db
 # Project specific
 *.xlsx
 *.pdf
+*.docx
+*.pptx
 temp/
 output/
+outputs/
+**/outputs/
 .env
 
 # Autonomous mode preferences and memory
