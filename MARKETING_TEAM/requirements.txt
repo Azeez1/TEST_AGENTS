@@ -1,0 +1,62 @@
+# Claude Agent SDK
+claude-agent-sdk>=0.1.0
+
+# OpenAI (for GPT-4o and Sora)
+openai>=1.12.0
+
+# Google APIs
+google-auth>=2.23.0
+google-auth-oauthlib>=1.1.0
+google-auth-httplib2>=0.1.1
+google-api-python-client>=2.108.0
+
+# MCP Servers
+mcp>=0.1.0
+
+# Web Research
+playwright>=1.40.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# PDF Generation
+reportlab>=4.0.0
+pypdf2>=3.0.0
+
+# PowerPoint Generation
+python-pptx>=0.6.23
+
+# Word Document Generation
+python-docx>=1.2.0
+
+# Microsoft Office Automation (via MCP)
+officemcp>=1.0.5
+
+# Image Processing
+pillow>=10.1.0
+
+# Data & Analysis
+pandas>=2.1.0
+numpy>=1.26.0
+matplotlib>=3.7.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+asyncio>=3.4.3
+
+# CLI Interface
+rich>=13.7.0
+click>=8.1.7
+
+# Rate Limiting
+ratelimit>=2.2.1
+
+# JSON/YAML
+pyyaml>=6.0.1
+
+# Date/Time
+python-dateutil>=2.8.2
+
+# HTTP
+aiohttp>=3.9.0
+httpx>=0.25.0

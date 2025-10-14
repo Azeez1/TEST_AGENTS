@@ -1,0 +1,360 @@
+# 🤖 MARKETING_TEAM - Multi-Agent Marketing System
+
+**13 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
+
+Create complete marketing campaigns through natural conversation. Generate blog posts, social content, images, videos, emails, and more by simply talking to your AI marketing team.
+
+---
+
+## 🚀 Quick Start
+
+**No Python code to run. No setup. Just talk to Claude Code:**
+
+```
+You: "Use the social-media-manager subagent to create a LinkedIn post about AI trends"
+
+Claude: [Creates professional LinkedIn post with hashtags and formatting]
+```
+
+**That's it!** Your 13 agents are ready to use right now.
+
+---
+
+## 📚 **READ THIS FIRST**
+
+### Getting Started
+**👉 [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md)** - **START HERE:** API setup for images, videos, emails
+
+### User Guides
+**👉 [docs/guides/usage-guide.md](docs/guides/usage-guide.md)** - Complete usage guide with examples
+
+**👉 [docs/guides/campaign-examples.md](docs/guides/campaign-examples.md)** - Real campaign examples and results
+
+**👉 [../MULTI_AGENT_GUIDE.md](../MULTI_AGENT_GUIDE.md)** - Universal guide for all agents
+
+### Technical Documentation
+**👉 [docs/architecture/system-architecture.md](docs/architecture/system-architecture.md)** - System architecture and design
+
+These guides explain:
+- How to set up APIs (OpenAI, Gmail, Google Drive)
+- How to invoke each of the 13 agents
+- Real-world examples with actual output
+- Common workflows
+- Tips & best practices
+
+---
+
+## 🤖 Your 13 Marketing Agents
+
+| Agent | Purpose | Invoke With |
+|-------|---------|-------------|
+| **router-agent** | Coordinates complex campaigns | `"Use router-agent to plan a campaign"` |
+| **copywriter** | Blog posts, articles (2000+ words) | `"Use copywriter to write a blog"` |
+| **editor** | Content review & improvement | `"Use editor to review this content"` |
+| **social-media-manager** | X/Twitter, LinkedIn posts | `"Use social-media-manager for LinkedIn post"` |
+| **visual-designer** | GPT-4o image generation | `"Use visual-designer to create an image"` |
+| **video-producer** | Sora video creation | `"Use video-producer for video ad"` |
+| **seo-specialist** | SEO research & keywords | `"Use seo-specialist to research keywords"` |
+| **email-specialist** | Email copywriting | `"Use email-specialist for email sequence"` |
+| **gmail-agent** | Email sending via Gmail | `"Use gmail-agent to send newsletter"` |
+| **pdf-specialist** | PDF whitepaper creation | `"Use pdf-specialist for PDF"` |
+| **presentation-designer** | PowerPoint decks | `"Use presentation-designer for deck"` |
+| **analyst** | Performance analysis | `"Use analyst to analyze data"` |
+| **content-strategist** | Full campaign orchestration | `"Use content-strategist for campaign"` |
+
+---
+
+## 🎯 How It Works
+
+### The Truth About Multi-Agent Systems
+
+Your agents are **specialized personas** that I (Claude Code) adopt.
+
+When you say:
+```
+"Use the copywriter subagent to write a blog about AI"
+```
+
+**What happens:**
+1. I (Claude) read `.claude/agents/copywriter.md`
+2. I adopt that agent's instructions and persona
+3. I use the tools specified for that agent
+4. I complete the task in that agent's style
+5. I return results to you
+
+**No Python orchestrator needed** - I AM the orchestrator.
+
+---
+
+## 💡 Usage Examples
+
+### Example 1: Create LinkedIn Post
+
+```
+You: "Use social-media-manager to create a LinkedIn post about autonomous AI agents"
+
+Claude (as social-media-manager):
+  🤖 The Future of Marketing is Autonomous
+
+  AI agents are revolutionizing content creation in 2025:
+
+  ✨ Autonomous content generation
+  ✨ Multi-agent coordination
+  ✨ Personalized at scale
+
+  The question isn't IF you'll use AI agents, but WHEN.
+
+  #AIMarketing #Automation #FutureOfWork #MarTech
+```
+
+### Example 2: Complete Campaign
+
+```
+You: "Use router-agent to create a social media campaign for our AI product launch"
+
+Claude (as router-agent):
+  [Coordinates multiple specialist agents]
+
+  ✅ Blog post (2000 words) - copywriter
+  ✅ LinkedIn + Twitter posts - social-media-manager
+  ✅ 3 campaign images - visual-designer
+  ✅ 3-email sequence - email-specialist
+
+  All uploaded to Google Drive:
+  - Blog: [link]
+  - Social: [link]
+  - Images: [link]
+  - Emails: [link]
+```
+
+### Example 3: Automatic Delegation
+
+```
+You: "Write a blog post about AI coding assistants"
+
+Claude: [Automatically invokes copywriter agent]
+        [Writes 2000-word SEO-optimized blog]
+        [Returns Markdown format]
+```
+
+---
+
+## ⚙️ Setup (One-Time)
+
+### 1. Install Dependencies
+
+```bash
+cd MARKETING_TEAM
+pip install -r requirements.txt
+```
+
+### 2. Configure APIs
+
+**OpenAI API (CONFIGURED):**
+- Image generation with GPT-4o - Ready!
+- Video generation with Sora - Ready!
+- See [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md) for testing
+
+**Gmail API (Optional):**
+- Required for: email-specialist, gmail-agent
+- See [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md) for setup
+
+**Google Drive API (Optional):**
+- Required for: file uploads and sharing
+- See [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md) for setup
+
+**Playwright (Auto-configured):**
+- Used for web research by seo-specialist
+- First run: `npx playwright install`
+
+**Full setup guide:** [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md)
+
+### 3. Configure Brand (Recommended)
+
+Create `memory/brand_voice.json`:
+```json
+{
+  "tone": "professional yet approachable",
+  "style": "data-driven storytelling",
+  "key_phrases": ["AI-powered marketing"],
+  "audience": "Marketing professionals"
+}
+```
+
+See [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for more memory configuration options.
+
+---
+
+## 🛠️ Agent Capabilities
+
+### Content Creation
+- **copywriter** - Blog posts, articles, web copy
+- **editor** - Grammar, clarity, brand voice
+- **social-media-manager** - X/Twitter, LinkedIn posts
+
+### Visual Content
+- **visual-designer** - GPT-4o image generation
+- **video-producer** - Sora video creation
+- **presentation-designer** - PowerPoint decks
+- **pdf-specialist** - PDF documents
+
+### Research & Strategy
+- **seo-specialist** - Keyword research, trend analysis
+- **analyst** - Performance analysis, insights
+- **content-strategist** - Campaign planning
+
+### Distribution
+- **email-specialist** - Email copywriting
+- **gmail-agent** - Email sending automation
+
+### Coordination
+- **router-agent** - Multi-agent coordination
+
+---
+
+## 📖 Documentation Structure
+
+```
+MARKETING_TEAM/
+├── README.md                         ← You are here
+├── docs/                             ← All documentation
+│   ├── getting-started/              ← Setup guides
+│   │   └── api-setup.md
+│   ├── guides/                       ← Usage guides
+│   │   ├── usage-guide.md
+│   │   └── campaign-examples.md
+│   ├── reference/                    ← API references
+│   └── architecture/                 ← Technical docs
+│       ├── system-architecture.md
+│       ├── mcp-config.md
+│       └── build-notes.md
+├── .claude/
+│   └── agents/                       ← 13 agent definitions
+│       ├── router-agent.md
+│       ├── copywriter.md
+│       ├── social-media-manager.md
+│       └── ... (10 more)
+├── tools/                            ← Custom tools
+│   ├── openai_gpt4o_image.py
+│   ├── gmail_api.py
+│   ├── google_drive.py
+│   └── ... (more tools)
+├── scripts/                          ← Utility scripts
+│   ├── create_word_documents.py
+│   ├── generate_linkedin_image.py
+│   └── test_openai_connection.py
+├── memory/                           ← Brand & preferences
+│   ├── brand_voice.json
+│   └── visual_guidelines.json
+├── outputs/                          ← Generated content
+│   ├── blog_posts/
+│   ├── campaigns/
+│   ├── emails/
+│   └── ... (more outputs)
+└── archive/
+    └── orchestrator.py               ← Old approach (archived)
+```
+
+---
+
+## 🎓 Learn More
+
+**[docs/guides/usage-guide.md](docs/guides/usage-guide.md)** - Detailed guide with examples for each agent
+
+**[docs/guides/campaign-examples.md](docs/guides/campaign-examples.md)** - Real campaign examples and results
+
+**[../MULTI_AGENT_GUIDE.md](../MULTI_AGENT_GUIDE.md)** - Understanding multi-agent systems
+
+**[docs/architecture/system-architecture.md](docs/architecture/system-architecture.md)** - Technical architecture documentation
+
+**Agent Definitions:** Check `.claude/agents/` to see each agent's:
+- Specialized instructions
+- Available tools
+- Capabilities
+
+---
+
+## 🔧 Troubleshooting
+
+### "Agent isn't working"
+- Verify agent `.md` file exists in `.claude/agents/`
+- Be more specific in your request
+- Check [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for examples
+
+### "Images not generating"
+- Need OpenAI API key in `.env` file
+- Verify `OPENAI_API_KEY` is correct
+- Check billing is set up
+
+### "Can't upload to Drive"
+- Need `credentials.json` from Google Cloud Console
+- Enable Google Drive API
+- First run opens browser for authentication
+
+### "Gmail not sending"
+- Need `gmail_credentials.json` from Google Cloud Console
+- Enable Gmail API
+- Check OAuth scopes include `gmail.send`
+
+---
+
+## 🚀 Quick Examples to Try
+
+**Create your first content:**
+```
+"Use copywriter to write a short blog intro about AI in marketing"
+```
+
+**Generate an image:**
+```
+"Use visual-designer to create a LinkedIn header image about productivity"
+```
+
+**Create social posts:**
+```
+"Use social-media-manager to create posts about our new feature"
+```
+
+**Full campaign:**
+```
+"Use router-agent to plan a mini marketing campaign"
+```
+
+---
+
+## 📝 Notes
+
+### About the Archived Orchestrator
+
+You'll find `orchestrator.py` in the `archive/` folder. This was an earlier attempt to create a Python program that would invoke agents. **It's not needed anymore** because:
+
+- Agent definitions are used directly by Claude Code
+- No Python orchestrator required
+- Simpler and more powerful to just talk to Claude
+
+**The agent definitions (`.claude/agents/*.md`) are what matter** - they're perfectly formatted and ready to use.
+
+---
+
+## 🎯 What's Next?
+
+1. **Read [docs/guides/usage-guide.md](docs/guides/usage-guide.md)** - Complete guide with examples
+2. **Check out [docs/guides/campaign-examples.md](docs/guides/campaign-examples.md)** - See real examples
+3. **Try invoking an agent** - Start with something simple
+4. **Explore agent definitions** - See what each can do in `.claude/agents/`
+5. **Experiment** - Try automatic delegation by just describing tasks
+
+---
+
+## 📚 Additional Resources
+
+- **Claude Code Documentation:** https://docs.claude.com/claude-code
+- **Agent Definitions:** `.claude/agents/`
+- **Tools Source Code:** `tools/`
+- **Memory Configuration:** `memory/`
+
+---
+
+**Your 13 marketing agents are ready!** Just start talking to Claude Code.
+
+See [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for detailed instructions and examples. 🚀
