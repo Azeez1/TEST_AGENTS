@@ -7,6 +7,21 @@
     "google-workspace": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-google-workspace"]
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      }
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+      "env": {
+        "GDRIVE_CLIENT_ID": "${GOOGLE_OAUTH_CLIENT_ID}",
+        "GDRIVE_CLIENT_SECRET": "${GOOGLE_OAUTH_CLIENT_SECRET}"
+      }
     }
   }
 }
