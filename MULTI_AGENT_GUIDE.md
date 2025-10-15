@@ -2,7 +2,7 @@
 
 ## The Simple Truth
 
-**You have 18 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 20 perfectly defined AI agents ready to use RIGHT NOW.**
 
 No Python code required. No orchestrators. No complex setup.
 
@@ -20,10 +20,13 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 18 Agents
+### You Have 20 Agents
 
-**MARKETING_TEAM (13 agents):**
+**MARKETING_TEAM (15 agents):**
 - router-agent - Coordinator
+- content-strategist - Campaign planning
+- research-agent - Evidence-backed research
+- landing-page-specialist - Landing page UX + code
 - copywriter - Blog & article writing
 - editor - Content review
 - social-media-manager - Social posts
@@ -35,7 +38,6 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - pdf-specialist - PDF creation
 - presentation-designer - PowerPoint
 - analyst - Performance analysis
-- content-strategist - Campaign planning
 
 **TEST_AGENT (5 agents):**
 - test-orchestrator - Testing coordinator
@@ -385,7 +387,7 @@ Read the `.md` files to understand:
 
 ✅ **Verify agents exist:**
 ```bash
-ls MARKETING_TEAM/.claude/agents/  # Should show 13 .md files
+ls MARKETING_TEAM/.claude/agents/  # Should show 15 .md files
 ls TEST_AGENT/.claude/agents/       # Should show 5 .md files
 ```
 
@@ -410,7 +412,7 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 18 agents perfectly defined
+- ✅ 20 agents perfectly defined
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run

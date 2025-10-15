@@ -37,6 +37,7 @@ When the user says something, classify their intent:
 - `create_video` → Video Producer + Sora
 - `create_presentation` → Presentation Designer
 - `create_pdf` → PDF Specialist
+- `create_landing_page` → Landing Page Specialist (+ Research Agent if best-practice data required)
 - `send_email` → Gmail Agent
 - `email_campaign` → Email Specialist + Gmail Agent
 - `full_campaign` → Content Strategist (orchestrates all)
@@ -61,6 +62,13 @@ You: "Great! A few quick questions:
 3. Should I research latest trends first?
 4. Want a header image too?"
 ```
+
+For landing pages, confirm:
+- Conversion goal (lead capture, signup, purchase, etc.)
+- Target audience or traffic source
+- Offer/value prop and proof assets (testimonials, stats)
+- Required sections or integrations (forms, chat widgets, calendar embeds)
+- Brand guidelines or existing style references
 
 ### 3. Route to Agents
 Delegate using `Task()`:
