@@ -1,149 +1,349 @@
 """
 Sora Video Generation Tool
 Creates videos using OpenAI's Sora model
+
+Note: As of January 2025, Sora API access via OpenAI platform.openai.com is public.
+This implementation uses direct HTTP requests until the Python SDK adds native support.
 """
 
 from claude_agent_sdk import tool
 from openai import AsyncOpenAI
+import httpx
+import asyncio
 import json
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+
+# Import Google Drive upload functionality
+try:
+    from .google_drive import get_drive_manager
+    GOOGLE_DRIVE_AVAILABLE = True
+except ImportError:
+    GOOGLE_DRIVE_AVAILABLE = False
 
 # Load environment variables
 load_dotenv()
 
 # Initialize OpenAI client
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_BASE_URL = "https://api.openai.com/v1"
 
 
 @tool(
     "generate_sora_video",
-    "Generate video using Sora (OpenAI video generation model)",
+    "Generate video using Sora-2 (OpenAI video generation model)",
     {
         "prompt": str,
-        "duration": int,  # Duration in seconds (5-60)
-        "aspect_ratio": str,  # "16:9", "9:16", "1:1"
-        "filename": str
+        "seconds": str,  # Duration: "4", "8", or "12" (MUST be string)
+        "orientation": str,  # "portrait" or "landscape"
+        "filename": str,
+        "upload_to_drive": bool  # Optional: upload to Google Drive videos folder
     }
 )
 async def generate_sora_video(args):
     """
-    Generate video using Sora
+    Generate video using Sora-2 API
 
-    Note: As of January 2025, Sora API is in limited access.
-    This implementation assumes API access is available.
-    If not available, this will return instructions for manual creation.
+    Model: sora-2
+    Pricing: $0.10 per second
+
+    Duration OPTIONS (must be string):
+    - "4" = 4 seconds = $0.40
+    - "8" = 8 seconds = $0.80
+    - "12" = 12 seconds = $1.20
+
+    Resolutions:
+    - Portrait: 720x1280
+    - Landscape: 1280x720
+
+    Storage:
+    - Saves locally to outputs/videos/
+    - Optionally uploads to Google Drive (default: True)
+    - Returns both local path and shareable Drive link
+
+    API Docs: https://platform.openai.com/docs/guides/video-generation
+    API Endpoint: POST https://api.openai.com/v1/videos
     """
 
     prompt = args["prompt"]
-    duration = args.get("duration", 30)  # Default 30 seconds
-    aspect_ratio = args.get("aspect_ratio", "16:9")
+    seconds = args.get("seconds", "4")  # Default 4 seconds
+    orientation = args.get("orientation", "landscape")  # Default landscape
     filename = args.get("filename", "video.mp4")
+    upload_to_drive = args.get("upload_to_drive", True)  # Default: upload to Drive
+    model = "sora-2"  # Only use sora-2
 
-    # Validate duration
-    if duration < 5 or duration > 60:
+    # Validate seconds (MUST be string!)
+    valid_seconds = ["4", "8", "12"]
+    if seconds not in valid_seconds:
         return {
             "content": [{
                 "type": "text",
-                "text": "Error: Duration must be between 5 and 60 seconds"
+                "text": f"Error: seconds must be one of {valid_seconds} (as a STRING). Got: {seconds}\n\nExamples:\n- '4' = 4 seconds = $0.40\n- '8' = 8 seconds = $0.80\n- '12' = 12 seconds = $1.20"
             }]
         }
 
-    # Validate aspect ratio
-    valid_ratios = ["16:9", "9:16", "1:1"]
-    if aspect_ratio not in valid_ratios:
+    # Validate orientation
+    valid_orientations = ["portrait", "landscape"]
+    if orientation not in valid_orientations:
         return {
             "content": [{
                 "type": "text",
-                "text": f"Error: Aspect ratio must be one of {valid_ratios}"
+                "text": f"Error: Orientation must be one of {valid_orientations}"
+            }]
+        }
+
+    # Map orientation to resolution
+    resolution_map = {
+        "portrait": "720x1280",
+        "landscape": "1280x720"
+    }
+    resolution = resolution_map[orientation]
+
+    # Calculate cost ($0.10 per second)
+    price_per_sec = 0.10
+    duration_int = int(seconds)
+    estimated_cost = duration_int * price_per_sec
+
+    if not API_KEY:
+        return {
+            "content": [{
+                "type": "text",
+                "text": "Error: OPENAI_API_KEY not found in environment variables. Please add it to your .env file."
             }]
         }
 
     try:
-        # Check if Sora API is available
-        # Note: This endpoint structure is speculative - update when official API is released
+        # Try using the native Python SDK first (in case it gets updated)
+        if hasattr(client, 'videos'):
+            video_response = await client.videos.create(
+                model=model,
+                prompt=prompt,
+                size=resolution,
+                seconds=seconds  # Must be string: "4", "8", or "12"
+            )
 
-        # Attempt to generate video
-        # In the meantime, return comprehensive guidance for manual creation
+            video_url = video_response.url if hasattr(video_response, 'url') else video_response.get('url')
 
-        result = {
-            "status": "awaiting_sora_api_access",
-            "prompt": prompt,
-            "duration": f"{duration} seconds",
-            "aspect_ratio": aspect_ratio,
-            "filename": filename,
-            "estimated_cost": f"${duration * 0.10:.2f}",  # Estimated pricing
-            "manual_creation_guide": {
-                "platforms": [
-                    {
-                        "name": "Runway Gen-2",
-                        "url": "https://runwayml.com",
-                        "features": "4-second clips, text-to-video",
-                        "pricing": "$12/month for 125 credits"
-                    },
-                    {
-                        "name": "Pika Labs",
-                        "url": "https://pika.art",
-                        "features": "3-second clips, style customization",
-                        "pricing": "Free tier available"
-                    },
-                    {
-                        "name": "Stability AI (Stable Video)",
-                        "url": "https://stability.ai",
-                        "features": "Image-to-video, controllable motion",
-                        "pricing": "API-based pricing"
-                    }
-                ],
-                "prompt_optimization": {
-                    "structure": "[Subject] + [Action] + [Setting] + [Style] + [Camera]",
-                    "example": f"For your prompt: '{prompt}'\n\nOptimized version:\n{prompt}\nCamera: {self._suggest_camera_movement(prompt)}\nLighting: {self._suggest_lighting(prompt)}\nStyle: Cinematic, high-quality production\nPacing: {self._suggest_pacing(duration)}"
+            # Download video
+            output_dir = Path("outputs/videos")
+            output_dir.mkdir(parents=True, exist_ok=True)
+            output_path = output_dir / filename
+
+            async with httpx.AsyncClient() as http_client:
+                video_data = await http_client.get(video_url)
+                output_path.write_bytes(video_data.content)
+
+            # Upload to Google Drive if requested
+            drive_url = None
+            if upload_to_drive and GOOGLE_DRIVE_AVAILABLE:
+                try:
+                    drive_manager = get_drive_manager()
+                    drive_url = drive_manager.upload_file(
+                        str(output_path),
+                        "videos",
+                        f"Sora-2 video: {prompt[:100]}"
+                    )
+                except Exception as e:
+                    drive_url = f"Upload failed: {str(e)}"
+
+            result_text = f"✅ Video generated successfully!\n\nModel: {model}\nPrompt: {prompt}\nDuration: {seconds}s\nResolution: {resolution} ({orientation})\nEstimated Cost: ${estimated_cost:.2f}\n\nSaved to: {output_path}"
+
+            if drive_url:
+                result_text += f"\n\n📤 Google Drive: {drive_url}"
+
+            return {
+                "content": [{
+                    "type": "text",
+                    "text": result_text
+                }]
+            }
+
+        # Fall back to direct HTTP API call
+        else:
+            async with httpx.AsyncClient(timeout=300.0) as http_client:
+                # Step 1: Create video generation request
+                headers = {
+                    "Authorization": f"Bearer {API_KEY}",
+                    "Content-Type": "application/json"
                 }
-            },
-            "sora_specific_guidance": {
-                "when_available": "Sora API is currently in limited preview. Check https://openai.com/sora for access.",
-                "expected_features": [
-                    "Up to 60 seconds of high-quality video",
-                    "Multiple shots and scenes",
-                    "Complex camera motion",
-                    "Consistent character generation",
-                    "Text rendering in video"
-                ],
-                "prompt_tips": [
-                    "Be specific about camera movements (dolly, pan, zoom)",
-                    "Describe lighting conditions explicitly",
-                    "Include temporal instructions (slow motion, time-lapse)",
-                    "Specify style references (cinematic, documentary, etc.)",
-                    "Break complex scenes into multiple prompts"
-                ]
-            },
-            "alternative_workflow": {
-                "step_1": "Generate key frames using GPT-4o image generation",
-                "step_2": "Use Runway/Pika to animate between frames",
-                "step_3": "Edit in video editor (CapCut, DaVinci Resolve)",
-                "step_4": "Add voiceover using ElevenLabs",
-                "step_5": "Add music from Epidemic Sound or Artlist"
-            },
-            "interim_solution": "Use generate_gpt4o_image tool to create storyboard frames, then use external video tools"
-        }
 
-        # Save request to queue for when Sora becomes available
-        self._save_to_video_queue(result)
+                payload = {
+                    "model": model,
+                    "prompt": prompt,
+                    "size": resolution,
+                    "seconds": seconds  # MUST be string: "4", "8", or "12"
+                }
 
+                # Make API request to CORRECT endpoint
+                response = await http_client.post(
+                    f"{OPENAI_BASE_URL}/videos",  # NOT /videos/generations!
+                    headers=headers,
+                    json=payload
+                )
+
+                if response.status_code == 404:
+                    return {
+                        "content": [{
+                            "type": "text",
+                            "text": (
+                                "❌ Sora API endpoint not found (404)\n\n"
+                                "The Sora video generation API may not be available for your account yet.\n\n"
+                                "**To get access:**\n"
+                                "1. Visit https://platform.openai.com/settings/organization/general\n"
+                                "2. Ensure your organization is verified\n"
+                                "3. Check usage limits at https://platform.openai.com/usage\n"
+                                "4. Apply for Sora access if needed\n\n"
+                                "**Alternative workflow:**\n"
+                                "- Use the visual-designer agent to create storyboard frames with GPT-4o\n"
+                                "- Use external tools like Runway, Pika Labs, or Stability AI for video generation\n\n"
+                                f"Your API key is configured ({'✓' if API_KEY else '✗'})"
+                            )
+                        }]
+                    }
+
+                if response.status_code == 401:
+                    return {
+                        "content": [{
+                            "type": "text",
+                            "text": "❌ Authentication failed. Check your OPENAI_API_KEY in the .env file."
+                        }]
+                    }
+
+                if response.status_code != 200:
+                    error_detail = response.json() if response.headers.get('content-type') == 'application/json' else response.text
+                    return {
+                        "content": [{
+                            "type": "text",
+                            "text": f"❌ API Error ({response.status_code}):\n\n{json.dumps(error_detail, indent=2)}"
+                        }]
+                    }
+
+                result = response.json()
+                video_id = result.get('id')
+
+                if not video_id:
+                    return {
+                        "content": [{
+                            "type": "text",
+                            "text": f"⚠️ No video ID in response:\n\n{json.dumps(result, indent=2)}"
+                        }]
+                    }
+
+                # Step 2: Poll for completion
+                await _poll_for_video_completion(http_client, headers, video_id)
+
+                # Step 3: Download video using /videos/{id}/content endpoint
+                output_dir = Path("outputs/videos")
+                output_dir.mkdir(parents=True, exist_ok=True)
+                output_path = output_dir / filename
+
+                video_content_response = await http_client.get(
+                    f"{OPENAI_BASE_URL}/videos/{video_id}/content",
+                    headers=headers
+                )
+
+                if video_content_response.status_code != 200:
+                    return {
+                        "content": [{
+                            "type": "text",
+                            "text": f"❌ Failed to download video: {video_content_response.status_code}"
+                        }]
+                    }
+
+                output_path.write_bytes(video_content_response.content)
+
+                # Upload to Google Drive if requested
+                drive_url = None
+                if upload_to_drive and GOOGLE_DRIVE_AVAILABLE:
+                    try:
+                        drive_manager = get_drive_manager()
+                        drive_url = drive_manager.upload_file(
+                            str(output_path),
+                            "videos",
+                            f"Sora-2 video: {prompt[:100]}"
+                        )
+                    except Exception as e:
+                        drive_url = f"Upload failed: {str(e)}"
+
+                result_text = (
+                    f"✅ Video generated successfully!\n\n"
+                    f"**Model:** {model}\n"
+                    f"**Prompt:** {prompt}\n"
+                    f"**Duration:** {seconds}s\n"
+                    f"**Resolution:** {resolution} ({orientation})\n"
+                    f"**Cost:** ${estimated_cost:.2f} (@ $0.10/second)\n\n"
+                    f"**Saved to:** {output_path}\n"
+                    f"**Video ID:** {video_id}\n"
+                )
+
+                if drive_url:
+                    result_text += f"\n**📤 Google Drive:** {drive_url}\n"
+
+                result_text += "\n💡 For longer videos, cost scales linearly: 8s = $0.80, 12s = $1.20"
+
+                return {
+                    "content": [{
+                        "type": "text",
+                        "text": result_text
+                    }]
+                }
+
+    except httpx.HTTPStatusError as e:
         return {
             "content": [{
                 "type": "text",
-                "text": json.dumps(result, indent=2)
+                "text": f"❌ HTTP Error: {e.response.status_code}\n\n{e.response.text}"
             }]
         }
-
     except Exception as e:
         return {
             "content": [{
                 "type": "text",
-                "text": f"Error generating video: {str(e)}\n\nSora API may not be available yet. Check OpenAI documentation for access."
+                "text": (
+                    f"❌ Error generating video: {str(e)}\n\n"
+                    f"**Troubleshooting:**\n"
+                    f"1. Check your OPENAI_API_KEY is valid\n"
+                    f"2. Ensure your account has Sora access\n"
+                    f"3. Visit https://platform.openai.com/docs/guides/video-generation\n"
+                    f"4. Check usage limits at https://platform.openai.com/usage\n\n"
+                    f"**Alternative:** Use visual-designer to create images and external tools for video"
+                )
             }]
         }
+
+
+async def _poll_for_video_completion(http_client, headers, video_id, max_wait=300):
+    """
+    Poll the API for video generation completion
+    Max wait: 300 seconds (5 minutes)
+    """
+    start_time = asyncio.get_event_loop().time()
+
+    while True:
+        elapsed = asyncio.get_event_loop().time() - start_time
+        if elapsed > max_wait:
+            raise TimeoutError(f"Video generation timed out after {max_wait} seconds")
+
+        response = await http_client.get(
+            f"{OPENAI_BASE_URL}/videos/{video_id}",
+            headers=headers
+        )
+
+        if response.status_code != 200:
+            raise Exception(f"Failed to check video status: {response.text}")
+
+        result = response.json()
+        status = result.get('status')
+
+        if status == 'completed':
+            return  # Video is ready, download it separately
+        elif status == 'failed':
+            raise Exception(f"Video generation failed: {result.get('error', 'Unknown error')}")
+
+        # Wait before polling again
+        await asyncio.sleep(5)
 
 
 def _suggest_camera_movement(prompt: str) -> str:

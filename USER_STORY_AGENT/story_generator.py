@@ -42,7 +42,7 @@ Return the analysis in a structured format that will help generate user stories.
         Args:
             analysis: Structured analysis from notes
             existing_stories: List of existing user stories (to avoid duplicates)
-            ac_format: Format for acceptance criteria ("gherkin" or "explicit")
+            ac_format: Format for acceptance criteria ("gherkin", "explicit", or "functional")
 
         Returns:
             Prompt for generating user stories
@@ -52,7 +52,139 @@ Return the analysis in a structured format that will help generate user stories.
             existing_context = f"\n\nExisting stories (avoid duplicates):\n" + "\n".join(existing_stories)
 
         # Define AC format instructions
-        if ac_format == "explicit":
+        if ac_format == "functional":
+            ac_instructions = """2. Acceptance Criteria in Functional format
+
+   TARGET LENGTH: 30-50 lines total (2,500-4,500 characters)
+
+   STRUCTURE:
+   - Use 3-4 levels max (1, a, i, 1)
+   - Keep 4-7 main numbered sections
+   - Focus on functional requirements ONLY
+
+   LANGUAGE RULES - CRITICAL:
+
+   ✅ PRIMARY PATTERN (Use This Most):
+   - **"The user will be able to [action]"** ← MAIN PATTERN!
+   - Example: "The user will be able to navigate through product images"
+   - Example: "The user will be able to expand to full screen gallery mode"
+   - Focus on USER CAPABILITIES and what user can DO
+
+   ✅ SECONDARY PATTERNS (Supporting):
+   - "The [element] will [verb]" - for automatic system behavior
+   - "When user selects [X], [result]" - for user interactions
+   - "The [page/section] will display [content]" - for what shows
+   - "will be displayed", "will show", "displays"
+   - Describe WHAT the system DOES
+
+   ❌ AVOID ALL DESIGN LANGUAGE AND UI IMPLEMENTATION TERMS:
+
+   Design Adjectives (NO):
+   - NO "modern", "modernized", "streamlined", "clean", "clear"
+   - NO "prominent", "prominently", "elevated", "intuitive", "seamless"
+   - NO "visual hierarchy", "aesthetics", "polished", "sophisticated"
+
+   UI Implementation Terms (NO):
+   - NO "button" → USE "call-to-action" or "selectable option"
+   - NO "dropdown" → USE "selection menu" or "options list"
+   - NO "modal", "popup" → USE "overlay message" or "notification"
+   - NO "accordion", "collapsible" → USE "expandable section"
+   - NO "carousel", "slider" → USE "navigable images" or "image sequence"
+   - NO "toggle", "switch" → USE "option to enable/disable"
+   - NO "checkbox" → USE "selectable option"
+   - NO "radio button" → USE "single-selection option"
+   - NO "tab" → USE "section" or "area"
+   - NO "icon" → USE "indicator" or "symbol"
+   - NO "sidebar", "navbar" → USE "navigation area"
+
+   Focus on FUNCTIONALITY, not implementation!
+
+   FUNCTIONAL LANGUAGE PATTERNS TO USE:
+   ✅ "call-to-action" (instead of button)
+   ✅ "selectable option/component" (instead of checkbox, radio, toggle)
+   ✅ "navigate to [page]" (instead of click button to go to)
+   ✅ "expandable section" (instead of accordion, collapsible)
+   ✅ "selection menu" or "options list" (instead of dropdown)
+   ✅ "overlay message" or "notification" (instead of modal, popup)
+   ✅ "option to enable/disable" (instead of toggle, switch)
+   ✅ "single-selection option" (instead of radio button)
+   ✅ "multiple-selection option" (instead of checkboxes)
+   ✅ "navigable images" (instead of carousel, image slider)
+   ✅ "navigation area" (instead of navbar, sidebar, menu bar)
+
+   CONTENT TO INCLUDE:
+   ✅ What displays/shows on screen (specific elements)
+   ✅ User interactions and system responses
+   ✅ Conditional logic (If/then statements)
+   ✅ Data availability states (pending, unavailable, error)
+   ✅ User states (guest users, logged-in users)
+   ✅ Mobile responsive behavior
+   ✅ Navigation flows (redirects, page changes)
+   ✅ Field behaviors (required, optional, dynamic updates)
+
+   CONTENT TO AVOID:
+   ❌ Pixel-perfect design specs (fonts, colors, spacing)
+   ❌ Subjective design descriptions
+   ❌ Exhaustive analytics/accessibility details (summarize in Notes)
+   ❌ A/B testing requirements
+   ❌ CMS/admin implementation details
+
+   EXAMPLE STRUCTURE:
+
+   1. The [Page Name] will display [element/section] [location]
+      a. [Specific element or information]
+      b. [Another element]
+         i. [Detail about element]
+         ii. [Conditional behavior]
+            1. [Further nested detail]
+      c. [Another element with behavior]
+
+   2. User State-Specific Content:
+      a. Logged-in users see:
+         i. [Specific content]
+         ii. [Specific features]
+      b. Guest users see:
+         i. [Different content]
+         ii. [Different features]
+
+   3. If [condition], [the system/section] will display [specific outcome]
+      a. [Sub-condition or detail]
+
+   4. The user will be able to [action]
+      a. When user selects [element], they will be navigated to [destination]
+      b. [Result or feedback]
+
+   5. The [feature/section] will be mobile responsive
+
+   EXAMPLE (Based on Real Postal Store Story #5 - Using Functional Language):
+
+   1. The user will be able to navigate through product images within the product detail page
+       a. The product image will dynamically change once user selects a different image
+   2. The user will be able to expand to full screen view, showing multiple product angles and images
+       a. The user will be able to exit full screen view and navigate back to product detail page
+   3. The user will be able to view photos in full-size resolution
+
+   Notice: NO "button", "modal", "carousel" - just functional descriptions!
+
+   ADDITIONAL EXAMPLE (Story #1 - System Display Pattern):
+
+   1. The Product Details Page will display a 'How it Works' section below the product information
+   2. The 'How it Works' section will display the following information
+       a. Definition of the product
+       b. Hyperlink to related section for additional information
+   3. If the 'How it Works' section is pending or under maintenance, the section will display placeholder messaging
+   4. The 'How it Works' section will be mobile responsive
+
+   NOTES SECTION (always include):
+   Add a "Notes" section after ACs covering:
+   - Performance considerations
+   - Accessibility summary
+   - Analytics overview
+   - Future enhancements
+   - Technical hints
+   - Open questions"""
+            ac_format_note = "with functional language only (no design adjectives)"
+        elif ac_format == "explicit":
             ac_instructions = """2. Acceptance Criteria in Explicit/Detailed format
 
    TARGET LENGTH: 30-50 lines total (2,500-4,500 characters)
@@ -167,13 +299,172 @@ Consider edge cases like:
         Args:
             story: Existing story dictionary
             instruction: User's refinement instruction
-            ac_format: Format for acceptance criteria ("gherkin" or "explicit")
+            ac_format: Format for acceptance criteria ("gherkin", "explicit", or "functional")
 
         Returns:
             Prompt for refining the story
         """
         # Define AC format reminder
-        if ac_format == "explicit":
+        if ac_format == "functional":
+            ac_format_reminder = """
+CRITICAL: Use Functional AC format with the following COMPLETE GUIDELINES:
+
+## 🎯 FUNCTIONAL FORMAT (DEFAULT - Use This 95% of the Time)
+
+**TARGET:** 30-50 lines total, 2,500-4,500 characters
+**STRUCTURE:** 3-4 indentation levels max (1, a, i, 1)
+**SECTIONS:** 4-7 main numbered sections
+**FOCUS:** Pure functional requirements ONLY
+
+### LANGUAGE RULES - ABSOLUTELY CRITICAL:
+
+✅ PRIMARY PATTERN (Use This Most):
+- **"The user will be able to [action]"** ← MAIN PATTERN!
+- Example: "The user will be able to navigate through product images"
+- Example: "The user will be able to expand to full screen gallery mode"
+- Focus on USER CAPABILITIES and what user can DO
+
+✅ SECONDARY PATTERNS (Supporting):
+- "The [element] will [verb]" - for automatic system behavior
+- "When user selects [X], [result]" - for user interactions
+- "The [page/section] will display [content]" - for what shows
+- "will be displayed", "will show", "displays"
+- Describe WHAT the system DOES, not HOW it looks
+
+❌ AVOID ALL DESIGN LANGUAGE AND UI IMPLEMENTATION TERMS (THIS IS CRITICAL):
+
+Design Adjectives (NO):
+- NO "modern", "modernized", "streamlined", "clean", "clear"
+- NO "prominent", "prominently", "elevated", "intuitive", "seamless"
+- NO "visual hierarchy", "aesthetics", "polished", "sophisticated"
+
+UI Implementation Terms (NO):
+- NO "button" → USE "call-to-action" or "selectable option"
+- NO "dropdown" → USE "selection menu" or "options list"
+- NO "modal", "popup" → USE "overlay message" or "notification"
+- NO "accordion", "collapsible" → USE "expandable section"
+- NO "carousel", "slider" → USE "navigable images"
+- NO "toggle", "switch" → USE "option to enable/disable"
+- NO "checkbox" → USE "selectable option"
+- NO "radio button" → USE "single-selection option"
+- NO "tab" → USE "section" or "area"
+- NO "icon" → USE "indicator" or "symbol"
+- NO "sidebar", "navbar" → USE "navigation area"
+
+FUNCTIONAL LANGUAGE TO USE:
+✅ "call-to-action" (not button)
+✅ "selectable option/component" (not checkbox/radio/toggle)
+✅ "navigate to [page]" (not click button)
+✅ "expandable section" (not accordion/collapsible)
+✅ "selection menu" (not dropdown)
+✅ "overlay message" (not modal/popup)
+✅ "option to enable/disable" (not toggle/switch)
+
+Focus on FUNCTIONALITY ONLY - NO design or implementation words!
+
+### Content Checklist - Every AC Must Cover:
+✅ Trigger/Entry Point: What initiates this functionality?
+✅ What Displays: Specific elements that show on screen
+✅ User Interactions: What user can do and system responses
+✅ Conditional Logic: If/then statements
+✅ Data States: What happens with pending, missing, or error data
+✅ User States: Guest vs logged-in users
+✅ Navigation: Where user is redirected/navigated
+✅ Field Behaviors: Required, optional, dynamic updates
+✅ Mobile Responsive: How it behaves on mobile
+
+### What to INCLUDE:
+✅ Specific screen elements that display
+✅ User interactions and system responses
+✅ Conditional logic (If/then statements)
+✅ Data availability (pending, unavailable, error messaging)
+✅ User state differences (guest/logged-in)
+✅ Navigation flows (redirects to specific pages)
+✅ Field behaviors (required, optional, auto-populate, dynamic)
+✅ Mobile responsive statement
+
+### What to AVOID:
+❌ Design adjectives ("modern", "clean", "prominent", etc.)
+❌ Subjective visual descriptions
+❌ Pixel-perfect design specs
+❌ Exhaustive analytics details (summarize in Notes)
+❌ Detailed accessibility specs (summarize in Notes)
+
+### REQUIRED NOTES SECTION:
+Always include a "Notes:" section at the end covering:
+- Performance: Target load times
+- Accessibility: Screen reader, keyboard navigation summary
+- Analytics: Key events to track
+- Future Enhancements: Planned features
+- Technical Hints: API, caching considerations
+
+### Example Structure (Use As Template):
+
+1. The [Page/Feature Name] will display [element] [location]
+   a. [Specific element or information]
+   b. [Another element]
+      i. [Detail about the element]
+      ii. [Conditional behavior]
+         1. [Further nested detail if needed]
+   c. [Element with specific behavior]
+
+2. User State-Specific Content:
+   a. Logged-in users see:
+      i. [Specific content]
+      ii. [Specific features or information]
+   b. Guest users see:
+      i. [Different content]
+      ii. [Different features]
+
+3. If [condition], [the system/page/section] will display [specific outcome]
+   a. [Sub-condition or additional detail]
+   b. [Another outcome]
+
+4. The user will be able to [action]
+   a. When user selects [element], they will be navigated to [destination page]
+   b. [Resulting behavior or feedback]
+
+5. The [feature/section/page] will be mobile responsive
+
+Notes:
+- Performance: [target metrics]
+- Accessibility: [keyboard navigation, screen readers]
+- Analytics: [key events to track]
+- Future: [planned enhancements]
+
+### REAL EXAMPLE FROM POSTAL STORE (Story #5 - Functional Language Only):
+
+1. The user will be able to navigate through product images within the product detail page
+    a. The product image will dynamically change once user selects a different image
+2. The user will be able to expand to full screen view, showing multiple product angles and images
+    a. The user will be able to exit full screen view and navigate back to product detail page
+3. The user will be able to view photos in full-size resolution
+
+Notice: Uses "full screen view" not "modal", "selects" not "clicks button"
+
+Notes:
+- Performance: Images load progressively, full-size available on demand
+- Accessibility: Image navigation keyboard accessible, alt text on all images
+- Future: Add zoom functionality, image comparison feature
+
+### ADDITIONAL EXAMPLE (Story #1 - System Display Pattern):
+
+1. The Product Details Page will display a 'How it Works' section below the product information
+2. The 'How it Works' section will display the following information
+    a. Definition of the product
+    b. Hyperlink to related section for additional information
+3. If the 'How it Works' section is pending or under maintenance, the section will display placeholder messaging
+4. The 'How it Works' section will be mobile responsive
+
+Notes:
+- Performance: Section loads with page, no additional requests
+- Accessibility: Links have descriptive text, section has proper heading
+- Future: Expand to additional product categories
+
+---
+
+REMEMBER: NO design language. Only describe FUNCTIONALITY and BEHAVIOR."""
+        elif ac_format == "explicit":
             ac_format_reminder = """
 CRITICAL: Use Explicit/Detailed AC format with the following COMPLETE GUIDELINES:
 

@@ -316,7 +316,7 @@ Each agent invocation happens in a **separate context window**:
 
 ### Q: How do I know which agents are available?
 **A:** Check the `.claude/agents/` folders:
-- `MARKETING_TEAM/.claude/agents/` - 13 marketing agents
+- `MARKETING_TEAM/.claude/agents/` - 15 marketing agents
 - `TEST_AGENT/.claude/agents/` - 5 testing agents
 
 ### Q: Can I create my own agents?

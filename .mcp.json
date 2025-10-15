@@ -11,13 +11,12 @@
       "command": "npx",
       "args": ["-y", "@microsoft/playwright-mcp"]
     },
-    "google_workspace": {
-      "command": "python",
-      "args": ["-m", "uv", "tool", "run", "workspace-mcp", "--tool-tier", "core"],
+    "google-drive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
       "env": {
-        "GOOGLE_OAUTH_CLIENT_ID": "${GOOGLE_OAUTH_CLIENT_ID}",
-        "GOOGLE_OAUTH_CLIENT_SECRET": "${GOOGLE_OAUTH_CLIENT_SECRET}",
-        "OAUTHLIB_INSECURE_TRANSPORT": "1"
+        "GDRIVE_CLIENT_ID": "${GOOGLE_OAUTH_CLIENT_ID}",
+        "GDRIVE_CLIENT_SECRET": "${GOOGLE_OAUTH_CLIENT_SECRET}"
       }
     }
   }

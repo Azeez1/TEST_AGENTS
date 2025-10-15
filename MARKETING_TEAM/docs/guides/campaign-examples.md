@@ -132,22 +132,23 @@ MARKETING_TEAM/
 
 ---
 
-## 🚀 Your 14 Marketing Agents (Now!)
+## 🚀 Your 15 Marketing Agents (Now!)
 
 1. **router-agent** - Campaign orchestration
-2. **research-agent** - Perplexity AI research ← NEW!
-3. **copywriter** - Long-form content
-4. **editor** - Quality assurance
-5. **social-media-manager** - X/Twitter, LinkedIn
-6. **visual-designer** - GPT-4o images
-7. **video-producer** - Sora videos
-8. **seo-specialist** - SEO & web research
-9. **email-specialist** - Email campaigns
-10. **gmail-agent** - Email automation
-11. **pdf-specialist** - PDF creation
-12. **presentation-designer** - PowerPoint
-13. **analyst** - Performance analysis
-14. **content-strategist** - Campaign strategy
+2. **content-strategist** - Campaign strategy
+3. **research-agent** - Perplexity AI research
+4. **landing-page-specialist** - Landing page UX + code ← NEW!
+5. **copywriter** - Long-form content
+6. **editor** - Quality assurance
+7. **social-media-manager** - X/Twitter, LinkedIn
+8. **visual-designer** - GPT-4o images
+9. **video-producer** - Sora videos
+10. **seo-specialist** - SEO & web research
+11. **email-specialist** - Email campaigns
+12. **gmail-agent** - Email automation
+13. **pdf-specialist** - PDF creation
+14. **presentation-designer** - PowerPoint
+15. **analyst** - Performance analysis
 
 ---
 
@@ -224,7 +225,7 @@ Research for content:
 ### Future Enhancements
 - Set up Gmail API for automated email campaigns
 - Set up Google Drive for automatic file uploads
-- Create more campaigns using your 14-agent team
+- Create more campaigns using your 15-agent team
 - Try Perplexity research for deeper analysis
 
 ---

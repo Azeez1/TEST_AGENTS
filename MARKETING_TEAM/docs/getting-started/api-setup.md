@@ -33,14 +33,32 @@ Your OpenAI API key is configured in [.env](.env)
 
 **What this enables:**
 - GPT-4o image generation (gpt-image-1 model)
-- Sora video generation
+- **Sora-2 video generation (NOW PUBLIC!)** - $0.10/second, 720p
 - visual-designer agent
 - video-producer agent
 
-**Test it:**
+**Sora-2 Model:**
+- Resolution: 720p (1280x720 landscape or 720x1280 portrait)
+- Pricing: **$0.10 per second**
+- Duration: 3-90 seconds
+
+**Test image generation:**
 ```
 "Use the visual-designer subagent to create an image of a modern tech startup office"
 ```
+
+**Test video generation:**
+```
+"Use the video-producer subagent to create a 5-second landscape video of a cat walking in the rain"
+```
+
+**Cost examples:**
+- 5 seconds = $0.50
+- 10 seconds = $1.00
+- 30 seconds = $3.00
+- 60 seconds = $6.00
+
+**Note:** Sora access may require account verification. Check https://platform.openai.com/settings/organization/general
 
 ---
 
@@ -248,9 +266,17 @@ outputs/
 - 1024x1536: $0.06/image
 - 1536x1024: $0.06/image
 
-**Sora Video Generation:**
-- Pricing varies by video length and resolution
-- Check [OpenAI Pricing](https://openai.com/api/pricing/)
+**Sora-2 Video Generation (✅ NOW AVAILABLE):**
+- **$0.10 per second** (fixed pricing)
+- Resolution: 720p
+  - Portrait: 720x1280
+  - Landscape: 1280x720
+- Duration: 3-90 seconds
+- Examples:
+  - 5s video = $0.50
+  - 15s ad = $1.50
+  - 30s video = $3.00
+  - 60s video = $6.00
 
 ### Gmail API
 
@@ -342,8 +368,14 @@ Expected output:
 - Check usage: [OpenAI Usage](https://platform.openai.com/usage)
 
 **"Model not available"**
-- Sora may require waitlist access
+- Sora API is now public but may require account verification
+- Visit https://platform.openai.com/settings/organization/general to verify
 - GPT-4o images (gpt-image-1) available to all paid accounts
+
+**Sora API Errors**
+- **404 endpoint not found**: Your account may not have Sora access yet, verify organization
+- **401 unauthorized**: Check your API key is correct and has necessary permissions
+- **Rate limited**: Sora has generation limits, wait before retrying
 
 ### Gmail API Errors
 

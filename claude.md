@@ -2,11 +2,11 @@
 
 ## 📋 Repository Overview
 
-This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **18 specialized agents** for user story generation, marketing automation, and test generation.
+This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **20 specialized agents** for user story generation, marketing automation, and test generation.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
-- **MARKETING_TEAM** - 13 marketing agents for content creation, social media, images, videos, and emails
+- **MARKETING_TEAM** - 15 marketing agents for content creation, social media, images, videos, emails, and landing pages
 - **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
@@ -22,7 +22,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 | **TEST_AGENT** | Automated test generation | Talk to Claude Code agents | [README](TEST_AGENT/README.md) |
 
 **Key Documentation:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 18 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 20 agents
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation details
 
@@ -35,7 +35,7 @@ TEST_AGENTS/
 ├── claude.md                        ← YOU ARE HERE - Repository navigation guide
 ├── .claude.json                     ← Claude Code MCP configuration
 ├── .gitignore                       ← Excludes outputs, configs, artifacts
-├── MULTI_AGENT_GUIDE.md             ← Complete guide for all 18 agents
+├── MULTI_AGENT_GUIDE.md             ← Complete guide for all 20 agents
 ├── MCP_SETUP.md                     ← MCP server setup instructions
 ├── IMPLEMENTATION_SUMMARY.md        ← Technical implementation overview
 │
@@ -60,10 +60,10 @@ TEST_AGENTS/
 │   ├── start_ui.bat                 ← Windows launcher
 │   └── [Documentation]              ← CLEAN_CODEBASE.md, EXCEL_FIGMA_WORKFLOW.md, etc.
 │
-├── MARKETING_TEAM/                  ← 13 marketing automation agents
+├── MARKETING_TEAM/                  ← 15 marketing automation agents
 │   ├── README.md                    ← Quick start guide
 │   ├── .claude/
-│   │   └── agents/                  ← 13 agent definitions
+│   │   └── agents/                  ← 15 agent definitions
 │   │       ├── router-agent.md      ← Campaign coordinator
 │   │       ├── copywriter.md        ← Blog posts & articles
 │   │       ├── social-media-manager.md  ← X/Twitter, LinkedIn posts
@@ -74,6 +74,7 @@ TEST_AGENTS/
 │   │       ├── gmail-agent.md       ← Email sending via Gmail API
 │   │       ├── pdf-specialist.md    ← PDF whitepaper creation
 │   │       ├── presentation-designer.md  ← PowerPoint decks
+│   │       ├── landing-page-specialist.md  ← Landing page UX & code
 │   │       ├── analyst.md           ← Performance analysis
 │   │       ├── content-strategist.md     ← Campaign orchestration
 │   │       ├── editor.md            ← Content review
@@ -144,11 +145,13 @@ TEST_AGENTS/
 
 ---
 
-### MARKETING_TEAM (13 Agents)
+### MARKETING_TEAM (15 Agents)
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
 | **router-agent** | Coordinates complex multi-agent campaigns | `"Use router-agent to plan a product launch campaign"` |
+| **content-strategist** | Full campaign orchestration | `"Use content-strategist to plan Q1 content"` |
+| **research-agent** | Evidence-backed market research with citations | `"Use research-agent to investigate best practices"` |
 | **copywriter** | Blog posts, articles, web copy (2000+ words) | `"Use copywriter to write a blog about AI trends"` |
 | **editor** | Content review, grammar, brand voice alignment | `"Use editor to review this blog post"` |
 | **social-media-manager** | X/Twitter, LinkedIn posts with hashtags | `"Use social-media-manager to create a LinkedIn post"` |
@@ -157,10 +160,10 @@ TEST_AGENTS/
 | **seo-specialist** | Keyword research, trend analysis, Playwright web research | `"Use seo-specialist to research AI marketing keywords"` |
 | **email-specialist** | Email sequences, newsletters, campaigns | `"Use email-specialist to write a welcome email"` |
 | **gmail-agent** | Email sending via Gmail API | `"Use gmail-agent to send this newsletter"` |
+| **landing-page-specialist** | Conversion-focused landing pages with UX & code | `"Use landing-page-specialist to build a landing page"` |
 | **pdf-specialist** | PDF whitepaper/report creation | `"Use pdf-specialist to create a PDF guide"` |
 | **presentation-designer** | PowerPoint deck creation | `"Use presentation-designer to create a pitch deck"` |
 | **analyst** | Campaign performance analysis | `"Use analyst to analyze campaign metrics"` |
-| **content-strategist** | Full campaign orchestration | `"Use content-strategist to plan Q1 content"` |
 
 **APIs Required:**
 - OpenAI API (images via GPT-4o, videos via Sora)
@@ -196,7 +199,7 @@ TEST_AGENTS/
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 18 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 20 agents
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
 - [TEST_AGENT/HOW_TO_USE.md](TEST_AGENT/HOW_TO_USE.md) - Testing agent usage with examples
@@ -453,7 +456,7 @@ Talk to Claude Code:
 3. **Follow the documentation map** - Links to all key docs
 4. **Respect .gitignore** - Don't track outputs, credentials, or artifacts
 5. **Use the multi-agent system** - Invoke specialized agents for complex tasks
-6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 18 agents
+6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 20 agents
 
 **Common patterns:**
 - Each system has a README.md with quick start

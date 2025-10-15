@@ -121,7 +121,49 @@ def generate_stories_from_notes(notes_text: str, output_filename: str, append: b
             existing_context = "\n\nExisting stories (avoid duplicates):\n" + "\n".join(existing_list)
 
         # Define AC format instructions
-        if ac_format == "explicit":
+        if ac_format == "functional":
+            ac_example = """      "1. The user will be able to navigate through product images within the product detail page\\n   a. The product image will dynamically change once user selects a different image",
+      "2. The user will be able to expand to full screen view, showing multiple product angles and images\\n   a. The user will be able to exit full screen view and navigate back to product detail page",
+      "3. The user will be able to view photos in full-size resolution",
+      "Notes:\\n- Performance: Images load progressively, full-size available on demand\\n- Accessibility: Image navigation keyboard accessible, alt text on all images\\n- Future: Add zoom functionality, image comparison feature" """
+            ac_requirement = """2. Include Functional acceptance criteria in this specific format:
+
+   TARGET: 30-50 lines total (2,500-4,500 characters)
+   STRUCTURE: 3-4 indentation levels max (1, a, i, 1), 4-7 main sections
+
+   LANGUAGE RULES - CRITICAL:
+   ✅ PRIMARY PATTERN: **"The user will be able to [action]"** ← MAIN PATTERN!
+   ✅ SECONDARY PATTERNS: "The [element] will [verb]", "When user selects [X], [result]", "will display"
+
+   ❌ AVOID DESIGN ADJECTIVES: NO "modern", "prominent", "streamlined", "clean", "intuitive"
+
+   ❌ AVOID UI IMPLEMENTATION TERMS:
+   - NO "button" → USE "call-to-action" or "selectable option"
+   - NO "dropdown" → USE "selection menu"
+   - NO "modal", "popup" → USE "overlay message"
+   - NO "accordion", "collapsible" → USE "expandable section"
+   - NO "carousel" → USE "navigable images"
+   - NO "toggle" → USE "option to enable/disable"
+
+   INCLUDE:
+   ✅ User capabilities ("The user will be able to...")
+   ✅ What displays/shows on screen (specific elements)
+   ✅ User interactions and system responses ("selects", "navigates")
+   ✅ Conditional logic (If/then statements)
+   ✅ Data states (pending, unavailable, error)
+   ✅ User states (guest/logged-in)
+   ✅ Mobile responsive behavior
+   ✅ Navigation flows
+
+   AVOID:
+   ❌ Design adjectives or subjective descriptions
+   ❌ UI component names (button, dropdown, modal, etc.)
+   ❌ Pixel-perfect specs
+   ❌ Exhaustive analytics/accessibility (put in Notes)
+
+   REQUIRED: Always end with "Notes:" section covering:
+   - Performance, Accessibility, Analytics, Future enhancements"""
+        elif ac_format == "explicit":
             ac_example = """      "1. The Login Page displays:\\n   a. Email field (Required)\\n   b. Password field (Required)\\n      i. Show/hide password toggle\\n   c. \\"Remember Me\\" checkbox\\n   d. \\"Sign In\\" button\\n      i. Disabled if fields empty",
       "2. User States:\\n   a. Guest users: Form is displayed\\n   b. Already logged in: Redirect to Dashboard",
       "3. Validation:\\n   a. If email invalid format, display error: \\"Please enter valid email\\"\\n   b. If credentials incorrect, display error: \\"Invalid email or password\\"",
@@ -354,20 +396,31 @@ with tab1:
     st.markdown("### Acceptance Criteria Format")
     ac_format = st.radio(
         "Choose AC format:",
-        ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
+        ["Gherkin (Given/When/Then)", "Explicit/Detailed", "Functional (Behavior-Focused)"],
         horizontal=True,
-        help="""Gherkin: Concise Given/When/Then format for testable criteria
+        help="""**Gherkin**: Concise Given/When/Then format for testable criteria
 
-Explicit/Detailed: Realistic format (30-50 lines, 2,500-4,500 chars)
+**Explicit/Detailed**: Realistic format (30-50 lines, 2,500-4,500 chars)
 • Hierarchical numbering (1, a, i, 1) with 4-7 main sections
-• Includes: screen display, user interactions, validation, navigation, user states, responsive behavior
-• Avoids: pixel-perfect design, exhaustive specs, non-critical timings
-• Always includes Notes section: performance, accessibility, analytics, future enhancements
+• Includes: screen display, user interactions, validation, navigation, user states
+• Design language allowed: "modern", "prominent", "streamlined"
+• Always includes Notes section
 
-Focuses on functional requirements developers and QA need to implement/test.""",
+**Functional (Behavior-Focused)**: Pure functional requirements (30-50 lines)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• PRIMARY pattern: "The user will be able to [action]" (emphasizes user capabilities)
+• SECONDARY patterns: "will display", "will show", "when user selects"
+• NO design adjectives: NO "modern", "prominent", "streamlined", "clean", "intuitive"
+• Describes system behavior and user capabilities, not appearance
+• Always includes Notes section""",
         key="gen_ac_format"
     )
-    ac_format_value = "gherkin" if ac_format == "Gherkin (Given/When/Then)" else "explicit"
+    if ac_format == "Gherkin (Given/When/Then)":
+        ac_format_value = "gherkin"
+    elif ac_format == "Explicit/Detailed":
+        ac_format_value = "explicit"
+    else:  # Functional (Behavior-Focused)
+        ac_format_value = "functional"
 
     # Autonomous Mode Options (if available)
     browser_enabled = False
@@ -633,20 +686,31 @@ with tab2:
         st.markdown("### Acceptance Criteria Format")
         refine_ac_format = st.radio(
             "Choose AC format:",
-            ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
+            ["Gherkin (Given/When/Then)", "Explicit/Detailed", "Functional (Behavior-Focused)"],
             horizontal=True,
-            help="""Gherkin: Concise Given/When/Then format for testable criteria
+            help="""**Gherkin**: Concise Given/When/Then format for testable criteria
 
-Explicit/Detailed: Realistic format (30-50 lines, 2,500-4,500 chars)
+**Explicit/Detailed**: Realistic format (30-50 lines, 2,500-4,500 chars)
 • Hierarchical numbering (1, a, i, 1) with 4-7 main sections
-• Includes: screen display, user interactions, validation, navigation, user states, responsive behavior
-• Avoids: pixel-perfect design, exhaustive specs, non-critical timings
-• Always includes Notes section: performance, accessibility, analytics, future enhancements
+• Includes: screen display, user interactions, validation, navigation, user states
+• Design language allowed: "modern", "prominent", "streamlined"
+• Always includes Notes section
 
-Focuses on functional requirements developers and QA need to implement/test.""",
+**Functional (Behavior-Focused)**: Pure functional requirements (30-50 lines)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• PRIMARY pattern: "The user will be able to [action]" (emphasizes user capabilities)
+• SECONDARY patterns: "will display", "will show", "when user selects"
+• NO design adjectives: NO "modern", "prominent", "streamlined", "clean", "intuitive"
+• Describes system behavior and user capabilities, not appearance
+• Always includes Notes section""",
             key="refine_ac_format"
         )
-        refine_ac_format_value = "gherkin" if refine_ac_format == "Gherkin (Given/When/Then)" else "explicit"
+        if refine_ac_format == "Gherkin (Given/When/Then)":
+            refine_ac_format_value = "gherkin"
+        elif refine_ac_format == "Explicit/Detailed":
+            refine_ac_format_value = "explicit"
+        else:  # Functional (Behavior-Focused)
+            refine_ac_format_value = "functional"
 
         st.markdown("---")
 
@@ -832,90 +896,164 @@ Focuses on functional requirements developers and QA need to implement/test.""",
 # TAB 3: ADD MORE STORIES
 with tab3:
     st.header("Add More Stories to Existing File")
+    st.markdown("*Upload your Excel file, then add new stories from notes*")
 
-    col_a, col_b = st.columns(2)
+    # Step 1: Upload Excel file
+    st.markdown("### Step 1: Upload Existing Excel File")
+    existing_excel_file = st.file_uploader(
+        "Upload your user stories Excel file",
+        type=['xlsx'],
+        help="Upload the Excel file you want to add stories to",
+        key="append_excel_upload"
+    )
 
-    with col_a:
-        st.markdown("#### Upload New Meeting Notes")
-        new_notes_file = st.file_uploader(
-            "Upload new meeting notes or requirements",
-            type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls'],
-            help="Supported: PDF, TXT, MD, DOCX, XLSX/XLS",
-            key="append_notes_upload"
-        )
-
-    with col_b:
-        st.markdown("#### Upload Existing Stories Excel")
-        existing_excel_file = st.file_uploader(
-            "Upload existing Excel file",
-            type=['xlsx'],
-            key="append_excel_upload"
-        )
-
-    if new_notes_file and existing_excel_file:
-        # Extract new notes
-        new_notes_temp = save_uploaded_file(new_notes_file)
-        new_notes_text = extract_notes(new_notes_temp)
-
+    if existing_excel_file:
         # Save existing Excel
         existing_excel_temp = save_uploaded_file(existing_excel_file)
 
-        st.info(f"📄 New notes: {len(new_notes_text)} characters")
-
         # Count existing stories
-        existing_count = len(read_existing_stories(existing_excel_temp))
-        st.info(f"📚 Existing stories: {existing_count}")
+        existing_stories = read_existing_stories(existing_excel_temp)
+        existing_count = len(existing_stories)
 
-        # AC Format Selection
-        st.markdown("### Acceptance Criteria Format")
-        append_ac_format = st.radio(
-            "Choose AC format:",
-            ["Gherkin (Given/When/Then)", "Explicit/Detailed"],
+        st.success(f"✓ Loaded Excel file: **{existing_excel_file.name}**")
+        st.info(f"📚 Current story count: **{existing_count} stories**")
+
+        st.markdown("---")
+
+        # Step 2: Enter new notes
+        st.markdown("### Step 2: Add New Meeting Notes")
+
+        input_method = st.radio(
+            "How do you want to add new stories?",
+            ["Upload notes file", "Paste notes text"],
             horizontal=True,
-            help="""Gherkin: Concise Given/When/Then format for testable criteria
-
-Explicit/Detailed: Realistic format (30-50 lines, 2,500-4,500 chars)
-• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
-• Includes: screen display, user interactions, validation, navigation, user states, responsive behavior
-• Avoids: pixel-perfect design, exhaustive specs, non-critical timings
-• Always includes Notes section: performance, accessibility, analytics, future enhancements
-
-Focuses on functional requirements developers and QA need to implement/test.""",
-            key="append_ac_format"
+            key="append_input_method"
         )
-        append_ac_format_value = "gherkin" if append_ac_format == "Gherkin (Given/When/Then)" else "explicit"
 
-        # Add button
-        if st.button("➕ Add New Stories", type="primary", use_container_width=True):
-            with st.spinner("Generating and appending new stories..."):
-                try:
-                    new_stories, output_path = generate_stories_from_notes(
-                        new_notes_text,
-                        existing_excel_temp,
-                        append=True,
-                        ac_format=append_ac_format_value
-                    )
+        new_notes_text = None
 
-                    # Convert to absolute path
-                    abs_output_path = os.path.abspath(output_path)
+        if input_method == "Upload notes file":
+            new_notes_file = st.file_uploader(
+                "Upload new meeting notes or requirements",
+                type=['pdf', 'txt', 'md', 'docx', 'xlsx', 'xls'],
+                help="Supported: PDF, TXT, MD, DOCX, XLSX/XLS",
+                key="append_notes_upload"
+            )
 
-                    total_count = existing_count + len(new_stories)
+            if new_notes_file:
+                new_notes_temp = save_uploaded_file(new_notes_file)
+                new_notes_text = extract_notes(new_notes_temp)
+                st.success(f"✓ Loaded notes: {len(new_notes_text)} characters")
 
-                    show_success_message(
-                        f"Added {len(new_stories)} new stories. Total now: {total_count}"
-                    )
+                with st.expander("Preview notes"):
+                    st.text_area("Notes content", new_notes_text, height=150, disabled=True)
+        else:
+            new_notes_text = st.text_area(
+                "Paste your new meeting notes here:",
+                height=200,
+                placeholder="New Features to Add:\n1. Feature A\n2. Feature B\n...",
+                key="append_notes_paste"
+            )
 
-                    # Display new stories
-                    st.markdown("### Newly Added Stories")
-                    for i, story in enumerate(new_stories, existing_count + 1):
-                        display_story_card(story, i)
+            if new_notes_text:
+                st.info(f"📄 Notes length: {len(new_notes_text)} characters")
 
-                    # Download button (use absolute path)
-                    st.markdown("---")
-                    create_download_button(abs_output_path, "📥 Download Updated Excel", key="append_download")
+        # Only show Step 3 and 4 if we have notes
+        if new_notes_text:
+            # Step 3: AC Format Selection
+            st.markdown("### Step 3: Choose AC Format")
+            append_ac_format = st.radio(
+                "Choose AC format for new stories:",
+                ["Gherkin (Given/When/Then)", "Explicit/Detailed", "Functional (Behavior-Focused)"],
+                horizontal=True,
+                help="""**Gherkin**: Concise Given/When/Then format for testable criteria
 
-                except Exception as e:
-                    show_error_message(str(e))
+**Explicit/Detailed**: Realistic format (30-50 lines, 2,500-4,500 chars)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• Includes: screen display, user interactions, validation, navigation, user states
+• Design language allowed: "modern", "prominent", "streamlined"
+• Always includes Notes section
+
+**Functional (Behavior-Focused)**: Pure functional requirements (30-50 lines)
+• Hierarchical numbering (1, a, i, 1) with 4-7 main sections
+• PRIMARY pattern: "The user will be able to [action]" (emphasizes user capabilities)
+• SECONDARY patterns: "will display", "will show", "when user selects"
+• NO design adjectives: NO "modern", "prominent", "streamlined", "clean", "intuitive"
+• Describes system behavior and user capabilities, not appearance
+• Always includes Notes section""",
+                key="append_ac_format"
+            )
+            if append_ac_format == "Gherkin (Given/When/Then)":
+                append_ac_format_value = "gherkin"
+            elif append_ac_format == "Explicit/Detailed":
+                append_ac_format_value = "explicit"
+            else:  # Functional (Behavior-Focused)
+                append_ac_format_value = "functional"
+
+            st.markdown("---")
+
+            # Step 4: Generate and Add button
+            st.markdown("### Step 4: Generate & Add Stories")
+
+            col_summary1, col_summary2 = st.columns(2)
+            with col_summary1:
+                st.metric("Current Stories", existing_count)
+            with col_summary2:
+                st.metric("After Adding", "Will be calculated", delta=None)
+
+            # Add button
+            if st.button("➕ Generate & Add New Stories", type="primary", use_container_width=True):
+                with st.spinner("Generating new stories and adding to Excel..."):
+                    try:
+                        new_stories, output_path = generate_stories_from_notes(
+                            new_notes_text,
+                            existing_excel_temp,
+                            append=True,
+                            ac_format=append_ac_format_value
+                        )
+
+                        # Convert to absolute path
+                        abs_output_path = os.path.abspath(output_path)
+
+                        total_count = existing_count + len(new_stories)
+
+                        st.balloons()
+                        show_success_message(
+                            f"✅ Successfully added {len(new_stories)} new stories!\n\nTotal stories: **{total_count}** (was {existing_count})"
+                        )
+
+                        # Display summary
+                        st.markdown("---")
+                        st.markdown("### 📊 Summary")
+
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Previous Count", existing_count)
+                        with col2:
+                            st.metric("New Stories Added", len(new_stories), delta=len(new_stories))
+                        with col3:
+                            st.metric("Total Now", total_count, delta=len(new_stories))
+
+                        # Display new stories
+                        st.markdown("---")
+                        st.markdown("### 📝 Newly Added Stories")
+                        st.info(f"Showing stories #{existing_count + 1} to #{total_count}")
+
+                        for i, story in enumerate(new_stories, existing_count + 1):
+                            display_story_card(story, i)
+
+                        # Download button (use absolute path)
+                        st.markdown("---")
+                        st.markdown("### 📥 Download Updated Excel")
+                        create_download_button(abs_output_path, "📥 Download Updated Excel File", key="append_download")
+                        st.success(f"✓ Your Excel file now has {total_count} total stories (original {existing_count} + new {len(new_stories)})")
+
+                    except Exception as e:
+                        show_error_message(str(e))
+        else:
+            st.info("👆 Enter your new meeting notes above to continue")
+    else:
+        st.info("👆 Upload your Excel file to begin adding stories")
 
 # TAB 4: VIEW STORIES
 with tab4:

@@ -56,7 +56,7 @@ These guides explain:
 | **editor** | Content review & improvement | `"Use editor to review this content"` |
 | **social-media-manager** | X/Twitter, LinkedIn posts | `"Use social-media-manager for LinkedIn post"` |
 | **visual-designer** | GPT-4o image generation | `"Use visual-designer to create an image"` |
-| **video-producer** | Sora video creation | `"Use video-producer for video ad"` |
+| **video-producer** | Sora-2 video creation ✅ TESTED | `"Use video-producer for video ad"` |
 | **seo-specialist** | SEO research & keywords | `"Use seo-specialist to research keywords"` |
 | **email-specialist** | Email copywriting | `"Use email-specialist for email sequence"` |
 | **gmail-agent** | Email sending via Gmail | `"Use gmail-agent to send newsletter"` |
