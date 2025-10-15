@@ -280,20 +280,20 @@ PERPLEXITY_API_KEY=your_perplexity_api_key_here
 - ❌ Markdown output only
 - ❌ Standard web search
 - ❌ Manual formatting for review
-- ❌ 13 agents
+- ❌ 14 agents
 
 ### After This Session
 - ✅ Professional Word docs
 - ✅ Perplexity AI research
 - ✅ Team-ready output
-- ✅ 14 agents (research-agent added)
+- ✅ 15 agents (landing-page-specialist added)
 
 ---
 
 ## 📞 Support
 
 ### If You Need
-- More campaigns → Use your 14 agents
+- More campaigns → Use your 15 agents
 - Different formats → Agents adapt automatically
 - Deeper research → Use research-agent with Perplexity
 - Visual content → visual-designer (images), video-producer (videos)
@@ -316,7 +316,7 @@ PERPLEXITY_API_KEY=your_perplexity_api_key_here
 
 1. ✅ Professional Word document output
 2. ✅ Perplexity AI research capabilities
-3. ✅ 14 specialized marketing agents
+3. ✅ 15 specialized marketing agents
 4. ✅ Complete campaign in ~4 minutes
 
 **Ready to create your next campaign?** Just ask your agents!

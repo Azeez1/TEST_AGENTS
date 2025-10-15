@@ -11,7 +11,7 @@ Your fully autonomous marketing system is now built! Here's everything that's be
 ```
 MARKETING_TEAM/
 ├── .claude/
-│   ├── agents/                      # 13 specialized agent definitions
+│   ├── agents/                      # 15 specialized agent definitions
 │   │   ├── router-agent.md          # Conversational interface
 │   │   ├── content-strategist.md    # Campaign orchestrator
 │   │   ├── social-media-manager.md  # X/Twitter & LinkedIn posts
@@ -49,23 +49,25 @@ MARKETING_TEAM/
 
 ---
 
-## 🤖 13 Specialist Agents
+## 🤖 15 Specialist Agents
 
 | # | Agent | Purpose | Key Capabilities |
 |---|-------|---------|-----------------|
 | 1 | **Router Agent** | Conversational interface | Intent classification, agent routing |
 | 2 | **Content Strategist** | Campaign orchestrator | Coordinates all agents, full campaigns |
-| 3 | **Social Media Manager** | Platform posts | X/Twitter (280 chars), LinkedIn (1300-1900) |
-| 4 | **Visual Designer** | Image creation | GPT-4o generation, brand-consistent visuals |
-| 5 | **Video Producer** | Video ads | Sora generation, storyboards |
-| 6 | **Email Specialist** | Email campaigns | Sequences, subject lines, personalization |
-| 7 | **Gmail Agent** | Email automation | Send, draft, campaigns (rate limited) |
-| 8 | **SEO Specialist** | Web research | Playwright automation, keywords, trends |
-| 9 | **Copywriter** | Long-form content | 2000+ word blogs, SEO-optimized |
-| 10 | **Editor** | Quality assurance | Grammar, brand voice, flow |
-| 11 | **PDF Specialist** | PDF creation | Whitepapers, lead magnets, reports |
-| 12 | **Presentation Designer** | PowerPoint | Pitch decks, sales decks, webinar slides |
-| 13 | **Analyst** | Performance | Metrics, ROI, A/B testing, insights |
+| 3 | **Research Agent** | Evidence-backed insights | Perplexity research, competitor analysis |
+| 4 | **Landing Page Specialist** | Conversion experiences | UX architecture, responsive code |
+| 5 | **Copywriter** | Long-form content | 2000+ word blogs, SEO-optimized |
+| 6 | **Editor** | Quality assurance | Grammar, brand voice, flow |
+| 7 | **Social Media Manager** | Platform posts | X/Twitter (280 chars), LinkedIn (1300-1900) |
+| 8 | **Visual Designer** | Image creation | GPT-4o generation, brand-consistent visuals |
+| 9 | **Video Producer** | Video ads | Sora generation, storyboards |
+| 10 | **SEO Specialist** | Web research | Perplexity + Playwright research, keywords |
+| 11 | **Email Specialist** | Email campaigns | Sequences, subject lines, personalization |
+| 12 | **Gmail Agent** | Email automation | Send, draft, campaigns (rate limited) |
+| 13 | **PDF Specialist** | PDF creation | Whitepapers, lead magnets, reports |
+| 14 | **Presentation Designer** | PowerPoint | Pitch decks, sales decks, webinar slides |
+| 15 | **Analyst** | Performance | Metrics, ROI, A/B testing, insights |
 
 ---
 
@@ -255,7 +257,7 @@ python orchestrator.py
 | **Documents** | 4 | 2 | PDFs, PowerPoint decks |
 | **Analytics** | 1 | 1 | Performance reports, ROI |
 
-**Total: 22 tools, 13 agents, 50+ output types**
+**Total: 22 tools, 15 agents, 50+ output types**
 
 ---
 

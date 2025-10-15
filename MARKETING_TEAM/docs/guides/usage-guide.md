@@ -1,6 +1,6 @@
 # 🚀 MARKETING_TEAM Usage Guide
 
-## Your 13 Marketing Agents Are Ready!
+## Your 15 Marketing Agents Are Ready!
 
 No Python code to run. No setup. Just talk to Claude Code.
 
@@ -20,7 +20,7 @@ Claude: [becomes social-media-manager]
 
 ---
 
-## All 13 Agents
+## All 15 Agents
 
 ### 1. router-agent (The Coordinator)
 **When to use:** Complex multi-step marketing requests
@@ -31,11 +31,50 @@ Claude: [becomes social-media-manager]
 
 **It will:**
 - Classify your intent
-- Delegate to specialist agents (copywriter, designer, social manager)
+- Delegate to specialist agents (copywriter, designer, researcher, etc.)
 - Coordinate all work
 - Return complete campaign
 
-### 2. copywriter (Long-Form Content)
+### 2. content-strategist (Campaign Planning)
+**When to use:** Full campaign orchestration
+
+```
+"Use content-strategist to plan a Q1 marketing campaign"
+```
+
+**It will:**
+- Plan strategy across channels
+- Outline content mix and sequencing
+- Delegate to specialists automatically
+- Deliver end-to-end campaign packages
+
+### 3. research-agent (Evidence-Backed Insights)
+**When to use:** Market, UX, or competitor research that needs citations
+
+```
+"Use research-agent to investigate SaaS landing page best practices with sources"
+```
+
+**It will:**
+- Run Perplexity deep research with citations
+- Summarize key findings and trends
+- Capture competitor examples and benchmarks
+- Provide actionable recommendations with sources
+
+### 4. landing-page-specialist (Conversion Experiences)
+**When to use:** You need a high-performing landing page designed and coded
+
+```
+"Use landing-page-specialist to build a landing page for our AI marketing tool waitlist"
+```
+
+**It will:**
+- Research CRO best practices for your industry
+- Create UX architecture, copy deck, and visual guidance
+- Deliver responsive, accessible HTML/CSS ready to deploy
+- Recommend analytics events and A/B test ideas
+
+### 5. copywriter (Long-Form Content)
 **When to use:** Blog posts, articles, white papers
 
 ```
@@ -49,7 +88,7 @@ Claude: [becomes social-media-manager]
 - Include CTAs
 - Return Markdown format
 
-### 3. editor (Quality Assurance)
+### 6. editor (Quality Assurance)
 **When to use:** Review and improve content
 
 ```
@@ -62,7 +101,7 @@ Claude: [becomes social-media-manager]
 - Ensure brand voice
 - Suggest improvements
 
-### 4. social-media-manager (Social Posts)
+### 7. social-media-manager (Social Posts)
 **When to use:** X/Twitter, LinkedIn posts
 
 ```
@@ -75,7 +114,7 @@ Claude: [becomes social-media-manager]
 - Optimize for engagement
 - Create multiple versions
 
-### 5. visual-designer (Images)
+### 8. visual-designer (Images)
 **When to use:** Image generation with GPT-4o
 
 ```
@@ -88,7 +127,7 @@ Claude: [becomes social-media-manager]
 - Upload to Google Drive
 - Return shareable link
 
-### 6. video-producer (Videos)
+### 9. video-producer (Videos)
 **When to use:** Video generation with Sora
 
 ```
@@ -101,7 +140,7 @@ Claude: [becomes social-media-manager]
 - Upload to Google Drive
 - Return shareable link
 
-### 7. seo-specialist (SEO & Research)
+### 10. seo-specialist (SEO & Research)
 **When to use:** Keyword research, trend analysis
 
 ```
@@ -109,12 +148,12 @@ Claude: [becomes social-media-manager]
 ```
 
 **It will:**
-- Research with Playwright
+- Research with Perplexity and Playwright
 - Analyze competitors
 - Find keywords
 - Provide insights
 
-### 8. email-specialist (Email Copywriting)
+### 11. email-specialist (Email Copywriting)
 **When to use:** Email campaign writing
 
 ```
@@ -127,7 +166,7 @@ Claude: [becomes social-media-manager]
 - Include CTAs
 - Suggest send schedule
 
-### 9. gmail-agent (Email Sending)
+### 12. gmail-agent (Email Sending)
 **When to use:** Actually send emails via Gmail
 
 ```
@@ -140,7 +179,7 @@ Claude: [becomes social-media-manager]
 - Track sends
 - Report status
 
-### 10. pdf-specialist (PDF Creation)
+### 13. pdf-specialist (PDF Creation)
 **When to use:** Whitepapers, lead magnets
 
 ```
@@ -153,7 +192,7 @@ Claude: [becomes social-media-manager]
 - Upload to Google Drive
 - Return shareable link
 
-### 11. presentation-designer (PowerPoint)
+### 14. presentation-designer (PowerPoint)
 **When to use:** Presentation decks
 
 ```
@@ -166,7 +205,7 @@ Claude: [becomes social-media-manager]
 - Upload to Google Drive
 - Return shareable link
 
-### 12. analyst (Performance Analysis)
+### 15. analyst (Performance Analysis)
 **When to use:** Data analysis, insights
 
 ```
@@ -178,19 +217,6 @@ Claude: [becomes social-media-manager]
 - Provide insights
 - Create reports
 - Recommend improvements
-
-### 13. content-strategist (Campaign Planning)
-**When to use:** Full campaign orchestration
-
-```
-"Use content-strategist to plan a Q1 marketing campaign"
-```
-
-**It will:**
-- Plan strategy
-- Coordinate all content types
-- Delegate to specialists
-- Create complete campaign
 
 ---
 
@@ -442,7 +468,7 @@ Check `.claude/agents/` to see:
 
 4. **Explore agent definitions:**
    ```bash
-   ls .claude/agents/  # See all 13 agents
+  ls .claude/agents/  # See all 15 agents
    cat .claude/agents/copywriter.md  # Read agent instructions
    ```
 

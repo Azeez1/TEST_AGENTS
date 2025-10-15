@@ -433,7 +433,7 @@ Use this to track your setup progress:
 
 Once setup is complete:
 
-1. **Read [usage-guide.md](../guides/usage-guide.md)** - Learn to use all 13 agents
+1. **Read [usage-guide.md](../guides/usage-guide.md)** - Learn to use all 15 agents
 2. **Try your first agent** - Start with visual-designer (already working!)
 3. **Set up Gmail** - Enable email campaigns
 4. **Set up Drive** - Enable file sharing

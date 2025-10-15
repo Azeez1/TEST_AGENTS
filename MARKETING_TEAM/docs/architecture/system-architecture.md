@@ -1,6 +1,6 @@
 # Marketing Team: Complete System Architecture & Implementation Guide
 
-**A Deep Dive into Building an Autonomous 14-Agent Marketing System Using Claude Code & Agent SDK**
+**A Deep Dive into Building an Autonomous 15-Agent Marketing System Using Claude Code & Agent SDK**
 
 ---
 
@@ -11,7 +11,7 @@
 3. [Technical Architecture](#technical-architecture)
 4. [How Claude Code Powers the System](#how-claude-code-powers-the-system)
 5. [Agent SDK Implementation](#agent-sdk-implementation)
-6. [The 14 Specialized Agents](#the-14-specialized-agents)
+6. [The 15 Specialized Agents](#the-15-specialized-agents)
 7. [Custom Tools Development](#custom-tools-development)
 8. [MCP Server Integration](#mcp-server-integration)
 9. [Multi-Agent Coordination](#multi-agent-coordination)
@@ -26,7 +26,7 @@
 
 ### What Was Built
 
-An **autonomous marketing system** powered by 14 specialized AI agents that can:
+An **autonomous marketing system** powered by 15 specialized AI agents that can:
 - Generate complete marketing campaigns in minutes
 - Create blogs, social posts, images, videos, emails, PDFs, and presentations
 - Research web trends and competitor strategies in real-time
@@ -54,7 +54,7 @@ Instead of complex Python orchestration code, the system uses **Claude Code as t
 - **Time Savings:** 4 minutes vs 3 hours for complete campaigns
 - **Cost Efficiency:** $0.06 vs $300 per campaign
 - **Quality:** Professional-grade output across all formats
-- **Scalability:** 14 agents work in parallel when needed
+- **Scalability:** 15 agents work in parallel when needed
 
 ---
 
@@ -76,21 +76,22 @@ This vision is **fully implemented and working**. Here's the file structure:
 ```
 MARKETING_TEAM/
 ├── .claude/
-│   ├── agents/                      # 14 agent definitions
+│   ├── agents/                      # 15 agent definitions
 │   │   ├── router-agent.md          # Conversational coordinator
 │   │   ├── content-strategist.md    # Campaign orchestrator
-│   │   ├── social-media-manager.md  # Platform-specific posts
-│   │   ├── visual-designer.md       # GPT-4o image generation
-│   │   ├── video-producer.md        # Sora video creation
-│   │   ├── email-specialist.md      # Email copywriting
-│   │   ├── gmail-agent.md           # Email automation
-│   │   ├── seo-specialist.md        # Web research
-│   │   ├── copywriter.md            # Long-form content
-│   │   ├── editor.md                # Quality assurance
-│   │   ├── research-agent.md        # Perplexity research
-│   │   ├── pdf-specialist.md        # PDF creation
-│   │   ├── presentation-designer.md # PowerPoint decks
-│   │   └── analyst.md               # Performance analysis
+│   │   ├── social-media-manager.md      # Platform-specific posts
+│   │   ├── visual-designer.md           # GPT-4o image generation
+│   │   ├── video-producer.md            # Sora video creation
+│   │   ├── email-specialist.md          # Email copywriting
+│   │   ├── gmail-agent.md               # Email automation
+│   │   ├── seo-specialist.md            # Web research
+│   │   ├── copywriter.md                # Long-form content
+│   │   ├── editor.md                    # Quality assurance
+│   │   ├── research-agent.md            # Perplexity research
+│   │   ├── landing-page-specialist.md   # Conversion landing pages
+│   │   ├── pdf-specialist.md            # PDF creation
+│   │   ├── presentation-designer.md     # PowerPoint decks
+│   │   └── analyst.md                   # Performance analysis
 │   └── mcp_config.json              # MCP server configuration
 ├── tools/                           # 22 custom tools
 │   ├── openai_gpt4o_image.py        # GPT-4o image generation
@@ -564,7 +565,7 @@ When Claude Code becomes this agent:
 
 ---
 
-## The 14 Specialized Agents
+## The 15 Specialized Agents
 
 ### 1. Router Agent (Conversational Coordinator)
 
@@ -950,7 +951,45 @@ Engagement hook: ✅ Question at end
 4. Provides cited sources
 5. Returns comprehensive research report
 
-### 12. PDF Specialist (Document Creation)
+### 12. Landing Page Specialist (Conversion Experiences)
+
+**Role:** Designs conversion-focused landing pages by combining UX research, persuasive copy, and production-ready code.
+
+**Tools:**
+- `mcp__marketing__get_brand_voice` - Brand voice and messaging guidance
+- `mcp__marketing__get_visual_guidelines` - Brand colors, typography, imagery rules
+- `mcp__perplexity__*` - CRO and competitor research with citations
+- `mcp__google_workspace__create_doc` - Optional documentation handoff
+- `mcp__google_workspace__upload_to_drive` - Share deliverables with stakeholders
+
+**Capabilities:**
+- Landing page strategy and section architecture
+- Research-backed UX and conversion copy frameworks
+- Responsive HTML/CSS (with accessibility best practices)
+- CTA placement, form design, and analytics instrumentation
+- Experiment roadmap and optimization guidance
+
+**When to Use:**
+```
+"Use landing-page-specialist to build a responsive landing page for our AI product beta waitlist"
+```
+
+**Process:**
+1. Align on objective, audience, offer, brand assets, and constraints (CMS, embed needs)
+2. Run Perplexity research to gather current CRO best practices and competitor patterns with citations
+3. Produce a narrative-driven section blueprint with goals, messaging, UX notes, and CTAs
+4. Translate research into visual direction (layout grids, spacing, typography, imagery, motion)
+5. Deliver semantic HTML and modular CSS with responsive breakpoints and accessibility baked in
+6. Recommend analytics events, A/B tests, and follow-up improvements
+
+**Output:**
+- Research summary with sources
+- Page architecture table + copy deck
+- Visual/interaction guidance
+- Deploy-ready HTML/CSS (with optional lightweight JS)
+- Optimization checklist and analytics recommendations
+
+### 13. PDF Specialist (Document Creation)
 
 **Role:** Creates professional PDFs (whitepapers, lead magnets)
 
@@ -980,7 +1019,7 @@ Engagement hook: ✅ Question at end
 6. Uploads to Google Drive
 7. Returns shareable link
 
-### 13. Presentation Designer (PowerPoint Creation)
+### 14. Presentation Designer (PowerPoint Creation)
 
 **Role:** Creates professional PowerPoint presentations
 
@@ -1011,7 +1050,7 @@ Engagement hook: ✅ Question at end
 7. Uploads to Google Drive
 8. Returns shareable link
 
-### 14. Analyst (Performance Analysis)
+### 15. Analyst (Performance Analysis)
 
 **Role:** Analyzes marketing performance and metrics
 
@@ -2191,7 +2230,7 @@ async def send_gmail(args):
 
 ### What Was Achieved
 
-1. **14 Specialized Agents** - Each an expert in their domain
+1. **15 Specialized Agents** - Each an expert in their domain
 2. **22 Custom Tools** - Production-ready integrations
 3. **5 MCP Servers** - External service connections
 4. **Conversational Interface** - Natural language coordination
