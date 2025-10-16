@@ -213,7 +213,6 @@ TEST_AGENTS/
 ### Workflow Guides
 - [USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md](USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md) - Excel + Figma integration workflow
 - [USER_STORY_AGENT/CLEAN_CODEBASE.md](USER_STORY_AGENT/CLEAN_CODEBASE.md) - Codebase structure reference
-- [MARKETING_TEAM/HYBRID_MCP_TEST_SCENARIOS.md](MARKETING_TEAM/HYBRID_MCP_TEST_SCENARIOS.md) - MCP testing scenarios
 
 ---
 
@@ -337,15 +336,45 @@ OPENAI_API_KEY=your_openai_key_here          # For GPT-4o images and Sora videos
     "playwright": {
       "command": "npx",
       "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    },
+    "google-workspace": {
+      "command": "workspace-mcp.exe",
+      "args": ["--tool-tier", "core"],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "your_google_client_id",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "your_google_client_secret"
+      }
+    },
+    "perplexity": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "your_perplexity_api_key",
+        "PERPLEXITY_TIMEOUT_MS": "600000"
+      }
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+      "env": {
+        "GDRIVE_CLIENT_ID": "your_google_client_id",
+        "GDRIVE_CLIENT_SECRET": "your_google_client_secret"
+      }
     }
   }
 }
 ```
 
-**Install Playwright MCP:**
+**Install MCP Servers:**
 ```bash
-npm install -g @executeautomation/playwright-mcp-server
+# Playwright (browser automation)
 npx playwright install chromium
+
+# Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, etc.)
+pip install workspace-mcp
+
+# Perplexity and Google Drive are auto-installed via npx
 ```
 
 ### Dependencies Overview
@@ -485,6 +514,6 @@ These are gitignored and local-only.
 
 ---
 
-**Last Updated:** 2025-01-14
+**Last Updated:** 2025-10-16
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service

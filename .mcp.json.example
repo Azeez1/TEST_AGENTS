@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    },
+    "google-workspace": {
+      "command": "C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\Scripts\\workspace-mcp.exe",
+      "args": ["--tool-tier", "core"],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "your_google_oauth_client_id_here",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "your_google_oauth_client_secret_here"
+      }
+    },
+    "perplexity": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "your_perplexity_api_key_here",
+        "PERPLEXITY_TIMEOUT_MS": "600000"
+      }
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+      "env": {
+        "GDRIVE_CLIENT_ID": "your_google_oauth_client_id_here",
+        "GDRIVE_CLIENT_SECRET": "your_google_oauth_client_secret_here"
+      }
+    }
+  }
+}
