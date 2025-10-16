@@ -104,10 +104,7 @@ TEST_AGENTS/
 │   │       ├── mcp-config.md        ← MCP configuration details
 │   │       └── build-notes.md       ← Build process notes
 │   ├── requirements.txt             ← Python dependencies
-│   ├── .env.example                 ← Environment variables template
-│   ├── create_ai_email_presentation.py    ← AI presentation generator
-│   ├── enhance_presentation.py      ← Presentation enhancement
-│   └── generate_presentation_images.py    ← Image generation for slides
+│   └── .env.example                 ← Environment variables template
 │
 └── TEST_AGENT/                      ← 5 automated testing agents
     ├── README.md                    ← Quick start guide
@@ -294,6 +291,7 @@ Output format:
 - `__pycache__/`, `*.pyc` (Python cache)
 - `memory/`, `archive/` (runtime data)
 - `.env`, `credentials.json`, `*.key` (secrets)
+- `.claude.json`, `.mcp.json` (contain real API keys - stay local)
 - `.claude/settings.local.json` (local config)
 - `*.backup`, `.mcp.test-*.json` (backups and test configs)
 
@@ -301,7 +299,7 @@ Output format:
 - Source code (`.py` files)
 - Agent definitions (`.claude/agents/*.md`)
 - Documentation (`.md` files)
-- Configuration templates (`.env.example`)
+- Configuration templates (`.env.example`, `.claude.json.example`, `.mcp.json.example`)
 - Requirements files
 
 ---
@@ -329,42 +327,26 @@ OPENAI_API_KEY=your_openai_key_here          # For GPT-4o images and Sora videos
 
 ### MCP Server Configuration
 
-**Root-level MCP config (`.claude.json`):**
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@executeautomation/playwright-mcp-server"]
-    },
-    "google-workspace": {
-      "command": "workspace-mcp.exe",
-      "args": ["--tool-tier", "core"],
-      "env": {
-        "GOOGLE_OAUTH_CLIENT_ID": "your_google_client_id",
-        "GOOGLE_OAUTH_CLIENT_SECRET": "your_google_client_secret"
-      }
-    },
-    "perplexity": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@perplexity-ai/mcp-server"],
-      "env": {
-        "PERPLEXITY_API_KEY": "your_perplexity_api_key",
-        "PERPLEXITY_TIMEOUT_MS": "600000"
-      }
-    },
-    "google-drive": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
-      "env": {
-        "GDRIVE_CLIENT_ID": "your_google_client_id",
-        "GDRIVE_CLIENT_SECRET": "your_google_client_secret"
-      }
-    }
-  }
-}
-```
+**Configuration Files:**
+- **Template:** `.claude.json.example` or `.mcp.json.example` (tracked in git)
+- **Your Config:** `.claude.json` or `.mcp.json` (gitignored - contains your real API keys)
+
+**Setup Steps:**
+1. Copy the template: `cp .mcp.json.example .mcp.json`
+2. Edit `.mcp.json` and add your real API keys
+3. The config file stays local (never committed to git)
+
+**Available MCP Servers:**
+
+| Server | Purpose | Tools Provided |
+|--------|---------|----------------|
+| **playwright** | Browser automation for research | Navigate, screenshot, click, fill forms, evaluate JS |
+| **perplexity** | Web search and research | `perplexity_ask`, `perplexity_reason`, `perplexity_search`, `perplexity_research` |
+| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar | Send emails, manage files, create docs, schedule events |
+| **google-drive** | File uploads and sharing | Upload files, create folders, share links |
+
+**Configuration Example (`.mcp.json`):**
+See `.mcp.json.example` for the full template with placeholder values.
 
 **Install MCP Servers:**
 ```bash
@@ -374,8 +356,57 @@ npx playwright install chromium
 # Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, etc.)
 pip install workspace-mcp
 
-# Perplexity and Google Drive are auto-installed via npx
+# Perplexity and Google Drive are auto-installed via npx when first used
 ```
+
+**Security Note:**
+- `.mcp.json` and `.claude.json` contain real API keys and are gitignored
+- Never commit these files to version control
+- Use `.example` templates to share configuration structure without exposing secrets
+
+---
+
+## 🔒 Security Best Practices
+
+### API Key Management
+- **Never commit real API keys** to git repositories
+- Store keys in local config files (`.env`, `.mcp.json`, `.claude.json`)
+- All sensitive config files are gitignored automatically
+- Use `.example` templates to document configuration structure
+
+### Configuration File Security
+**Local-only files (gitignored):**
+- `.mcp.json` - MCP server configurations with real API keys
+- `.claude.json` - Claude Code settings with credentials
+- `.env` - Environment variables with API keys
+- `credentials.json`, `token.pickle` - OAuth tokens for Google services
+
+**Template files (tracked in git):**
+- `.mcp.json.example` - MCP configuration template
+- `.claude.json.example` - Claude Code settings template
+- `.env.example` - Environment variables template
+
+### If You Accidentally Commit Secrets
+1. Remove from git tracking: `git rm --cached .mcp.json`
+2. Commit the removal: `git commit -m "Remove secrets from tracking"`
+3. Force push to rewrite history: `git push --force-with-lease`
+4. **Rotate the exposed API keys immediately**
+5. Verify `.gitignore` includes the file
+
+### Perplexity MCP Capabilities
+The Perplexity MCP server provides four tools for web research:
+- **`perplexity_ask`** ✅ - Conversational search with citations (working)
+- **`perplexity_reason`** ✅ - Deep reasoning and comparative analysis (working)
+- **`perplexity_search`** - Ranked web search results (requires newer API key)
+- **`perplexity_research`** - Comprehensive research reports (may require specific plan)
+
+**Usage:**
+```
+"Use Perplexity to search for the latest AI trends"
+"Use Perplexity reasoning to compare multi-agent vs monolithic systems"
+```
+
+---
 
 ### Dependencies Overview
 
@@ -514,6 +545,6 @@ These are gitignored and local-only.
 
 ---
 
-**Last Updated:** 2025-10-16
+**Last Updated:** 2025-10-16 (Cleaned up obsolete test files, updated MCP configuration docs, added security best practices)
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
