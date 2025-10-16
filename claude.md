@@ -88,11 +88,15 @@ TEST_AGENTS/
 │   │   ├── sora_video.py            ← Sora video API
 │   │   ├── platform_formatters.py   ← Social media formatters
 │   │   ├── router_tools.py          ← Agent coordination tools
-│   │   └── create_presentation.py   ← Presentation creation
+│   │   ├── create_presentation.py   ← Presentation creation
+│   │   ├── send_email_with_attachment.py  ← Email attachments via Gmail API
+│   │   └── send_deliverables_email.py     ← Automated deliverables sender
 │   ├── scripts/                     ← Utility scripts
-│   │   ├── create_word_documents.py
-│   │   ├── generate_linkedin_image.py
-│   │   └── test_openai_connection.py
+│   │   ├── create_word_documents.py     ← Convert markdown to Word docs
+│   │   ├── generate_linkedin_image.py   ← Generate LinkedIn images
+│   │   ├── test_openai_connection.py    ← Test OpenAI API setup
+│   │   ├── create_ai_video.py           ← Sora video generation testing
+│   │   └── upload_video_to_drive.py     ← Manual Drive upload utility
 │   ├── docs/                        ← Comprehensive documentation
 │   │   ├── getting-started/
 │   │   │   └── api-setup.md         ← API configuration guide
@@ -283,6 +287,35 @@ Output format:
 - Inline code comments for complex logic
 - Workflow guides for multi-step processes
 
+### Tools vs Scripts Organization
+
+**tools/** - Production Agent Components
+- Reusable libraries called by multiple agents
+- SDK integration with @tool decorators
+- API wrappers (Gmail, OpenAI, Sora, Drive)
+- Robust error handling, rate limiting, authentication
+- Production-ready code with logging and validation
+- Examples: gmail_api.py (372 lines), send_email_with_attachment.py
+
+**scripts/** - One-Off Utilities
+- Standalone executables for specific tasks
+- Testing and debugging tools
+- Manual workflows and one-time conversions
+- Less robust, can have hardcoded values
+- Simple output, minimal error handling
+- Examples: test_openai_connection.py, create_word_documents.py
+
+**Decision Matrix:**
+
+| Question | tools/ | scripts/ |
+|----------|--------|----------|
+| Will agents call this repeatedly? | ✅ Yes | ❌ No |
+| Needs @tool decorator? | ✅ Yes | ❌ No |
+| Part of production workflow? | ✅ Yes | ❌ No |
+| One-time testing/debugging? | ❌ No | ✅ Yes |
+| Manual utility/conversion? | ❌ No | ✅ Yes |
+| Should be imported as module? | ✅ Yes | ❌ No |
+
 ### Git Workflow
 
 **What's Excluded (`.gitignore`):**
@@ -404,6 +437,55 @@ The Perplexity MCP server provides four tools for web research:
 ```
 "Use Perplexity to search for the latest AI trends"
 "Use Perplexity reasoning to compare multi-agent vs monolithic systems"
+```
+
+### Email Sending Strategy
+
+**Two approaches based on attachment needs:**
+
+**Without Attachments:**
+- Use `mcp__google-workspace__send_gmail_message` (Google Workspace MCP tool)
+- Fast and simple, already authenticated through MCP
+- Perfect for text-only emails
+- No file size limitations for body content
+
+**With Attachments:**
+- Use `tools/send_email_with_attachment.py` (Python Gmail API)
+- Supports file attachments via MIME multipart messages
+- Handles base64 encoding automatically
+- Requires full Gmail API scope authentication
+- Recommended for files under 25 MB
+
+**Email Formatting Rules (always apply):**
+- Clean plaintext body - No markdown symbols (no ##, **, ---, etc.)
+- Professional formatting with proper spacing and clear hierarchy
+- Use bullet points with • character instead of markdown lists
+- Section headers in UPPERCASE for emphasis
+- Concise, organized structure with greeting and closing
+- Business-appropriate tone
+
+**Example Clean Email Body:**
+```
+Hi,
+
+Here's the landing page we created today.
+
+LANDING PAGE OVERVIEW
+
+Platform: AI InvestIQ
+Purpose: Investment intelligence platform
+
+KEY FEATURES
+
+The page includes:
+
+• Hero section with compelling stats
+• 6 feature cards explaining benefits
+• Social proof with testimonials
+
+File is attached and ready to deploy.
+
+Best regards
 ```
 
 ---
@@ -545,6 +627,13 @@ These are gitignored and local-only.
 
 ---
 
-**Last Updated:** 2025-10-16 (Cleaned up obsolete test files, updated MCP configuration docs, added security best practices)
+**Last Updated:** 2025-10-16
+**Recent Changes:**
+- Added email attachment tool (send_email_with_attachment.py) and deliverables automation
+- Added video generation utilities (create_ai_video.py, upload_video_to_drive.py)
+- Documented email sending strategy (MCP vs attachment tool)
+- Clarified tools/ vs scripts/ organization with decision matrix
+- Updated security best practices and MCP configuration docs
+
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
