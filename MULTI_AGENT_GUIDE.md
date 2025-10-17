@@ -2,7 +2,7 @@
 
 ## The Simple Truth
 
-**You have 20 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 22 perfectly defined AI agents ready to use RIGHT NOW.**
 
 No Python code required. No orchestrators. No complex setup.
 
@@ -20,24 +20,25 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 20 Agents
+### You Have 22 Agents
 
-**MARKETING_TEAM (15 agents):**
+**MARKETING_TEAM (16 agents):**
 - router-agent - Coordinator
 - content-strategist - Campaign planning
-- research-agent - Evidence-backed research
-- landing-page-specialist - Landing page UX + code
+- research-agent - Evidence-backed research + competitive intelligence
+- lead-gen-agent - ✨ **NEW** B2B/local lead generation via web scraping
+- landing-page-specialist - Landing page UX, code, competitor analysis
 - copywriter - Blog & article writing
 - editor - Content review
 - social-media-manager - Social posts
 - visual-designer - Image generation
 - video-producer - Video creation
-- seo-specialist - SEO & research
+- seo-specialist - SEO research, SERP scraping, rank tracking
 - email-specialist - Email campaigns
 - gmail-agent - Email sending
 - pdf-specialist - PDF creation
 - presentation-designer - PowerPoint
-- analyst - Performance analysis
+- analyst - Performance analysis & competitive benchmarking
 
 **TEST_AGENT (5 agents):**
 - test-orchestrator - Testing coordinator
@@ -213,6 +214,12 @@ Ready to review or deploy?
 "Use router-agent to plan a product launch campaign"
 ```
 
+**lead-gen-agent** - ✨ **NEW** Use when: Finding business leads
+```
+"Use lead-gen-agent to find 100 SaaS companies in San Francisco with 50-200 employees"
+"Use lead-gen-agent to scrape Google Maps for dental clinics in Austin with 4.5+ stars"
+```
+
 **copywriter** - Use when: Blog posts, articles, long-form content
 ```
 "Use copywriter to write a 2000-word blog about AI marketing"
@@ -228,9 +235,9 @@ Ready to review or deploy?
 "Use visual-designer to create a LinkedIn header image"
 ```
 
-**seo-specialist** - Use when: SEO research, keyword analysis
+**seo-specialist** - Use when: SEO research, keyword analysis, SERP scraping
 ```
-"Use seo-specialist to research trending AI keywords"
+"Use seo-specialist to research trending AI keywords and check our ranking"
 ```
 
 **email-specialist** - Use when: Email copywriting
@@ -316,8 +323,9 @@ Each agent invocation happens in a **separate context window**:
 
 ### Q: How do I know which agents are available?
 **A:** Check the `.claude/agents/` folders:
-- `MARKETING_TEAM/.claude/agents/` - 15 marketing agents
+- `MARKETING_TEAM/.claude/agents/` - 16 marketing agents (including new lead-gen-agent)
 - `TEST_AGENT/.claude/agents/` - 5 testing agents
+- Plus USER_STORY_AGENT Streamlit system
 
 ### Q: Can I create my own agents?
 **A: YES!** Create a new `.md` file in `.claude/agents/` with:
@@ -387,7 +395,7 @@ Read the `.md` files to understand:
 
 ✅ **Verify agents exist:**
 ```bash
-ls MARKETING_TEAM/.claude/agents/  # Should show 15 .md files
+ls MARKETING_TEAM/.claude/agents/  # Should show 16 .md files (including lead-gen-agent)
 ls TEST_AGENT/.claude/agents/       # Should show 5 .md files
 ```
 
@@ -412,11 +420,12 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 20 agents perfectly defined
+- ✅ 22 agents perfectly defined (16 marketing + 5 testing + 1 user story system)
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run
 - ✅ Just talk to Claude Code
+- ✨ NEW: Lead generation with Bright Data (5,000 free requests/month)
 
 **Start using them:**
 ```

@@ -2,11 +2,11 @@
 
 ## 📋 Repository Overview
 
-This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **20 specialized agents** for user story generation, marketing automation, and test generation.
+This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **22 specialized agents** for user story generation, marketing automation, and test generation.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
-- **MARKETING_TEAM** - 15 marketing agents for content creation, social media, images, videos, emails, and landing pages
+- **MARKETING_TEAM** - **16 marketing agents** for content creation, social media, images, videos, emails, lead generation, and landing pages
 - **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
@@ -22,7 +22,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 | **TEST_AGENT** | Automated test generation | Talk to Claude Code agents | [README](TEST_AGENT/README.md) |
 
 **Key Documentation:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 20 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 22 agents
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation details
 
@@ -60,25 +60,26 @@ TEST_AGENTS/
 │   ├── start_ui.bat                 ← Windows launcher
 │   └── [Documentation]              ← CLEAN_CODEBASE.md, EXCEL_FIGMA_WORKFLOW.md, etc.
 │
-├── MARKETING_TEAM/                  ← 15 marketing automation agents
+├── MARKETING_TEAM/                  ← 16 marketing automation agents
 │   ├── README.md                    ← Quick start guide
 │   ├── .claude/
-│   │   └── agents/                  ← 15 agent definitions
+│   │   └── agents/                  ← 16 agent definitions
 │   │       ├── router-agent.md      ← Campaign coordinator
 │   │       ├── copywriter.md        ← Blog posts & articles
 │   │       ├── social-media-manager.md  ← X/Twitter, LinkedIn posts
 │   │       ├── visual-designer.md   ← GPT-4o image generation
 │   │       ├── video-producer.md    ← Sora video creation
-│   │       ├── seo-specialist.md    ← SEO research & keywords
+│   │       ├── seo-specialist.md    ← SEO research, SERP scraping, rank tracking
 │   │       ├── email-specialist.md  ← Email copywriting
 │   │       ├── gmail-agent.md       ← Email sending via Gmail API
 │   │       ├── pdf-specialist.md    ← PDF whitepaper creation
 │   │       ├── presentation-designer.md  ← PowerPoint decks
-│   │       ├── landing-page-specialist.md  ← Landing page UX & code
-│   │       ├── analyst.md           ← Performance analysis
+│   │       ├── landing-page-specialist.md  ← Landing page UX, code, competitor analysis
+│   │       ├── analyst.md           ← Performance analysis & competitive benchmarking
 │   │       ├── content-strategist.md     ← Campaign orchestration
 │   │       ├── editor.md            ← Content review
-│   │       └── research-agent.md    ← Web research
+│   │       ├── research-agent.md    ← Web research, competitive intelligence
+│   │       └── lead-gen-agent.md    ← ✨ NEW: B2B/local lead generation via web scraping
 │   ├── tools/                       ← Marketing tools
 │   │   ├── openai_gpt4o_image.py    ← GPT-4o image generation
 │   │   ├── gmail_api.py             ← Gmail integration
@@ -90,7 +91,8 @@ TEST_AGENTS/
 │   │   ├── router_tools.py          ← Agent coordination tools
 │   │   ├── create_presentation.py   ← Presentation creation
 │   │   ├── send_email_with_attachment.py  ← Email attachments via Gmail API
-│   │   └── send_deliverables_email.py     ← Automated deliverables sender
+│   │   ├── send_deliverables_email.py     ← Automated deliverables sender
+│   │   └── send_marketing_team_doc.py     ← Email marketing team documentation
 │   ├── scripts/                     ← Utility scripts
 │   │   ├── create_word_documents.py     ← Convert markdown to Word docs
 │   │   ├── generate_linkedin_image.py   ← Generate LinkedIn images
@@ -146,30 +148,32 @@ TEST_AGENTS/
 
 ---
 
-### MARKETING_TEAM (15 Agents)
+### MARKETING_TEAM (16 Agents)
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
 | **router-agent** | Coordinates complex multi-agent campaigns | `"Use router-agent to plan a product launch campaign"` |
 | **content-strategist** | Full campaign orchestration | `"Use content-strategist to plan Q1 content"` |
-| **research-agent** | Evidence-backed market research with citations | `"Use research-agent to investigate best practices"` |
+| **research-agent** | Evidence-backed market research, competitive intelligence, web scraping | `"Use research-agent to investigate best practices"` |
+| **lead-gen-agent** | ✨ **NEW** B2B/local lead generation via Bright Data web scraping | `"Use lead-gen-agent to find 50 SaaS leads in SF"` |
 | **copywriter** | Blog posts, articles, web copy (2000+ words) | `"Use copywriter to write a blog about AI trends"` |
 | **editor** | Content review, grammar, brand voice alignment | `"Use editor to review this blog post"` |
 | **social-media-manager** | X/Twitter, LinkedIn posts with hashtags | `"Use social-media-manager to create a LinkedIn post"` |
 | **visual-designer** | GPT-4o image generation | `"Use visual-designer to create a header image"` |
 | **video-producer** | Sora video creation | `"Use video-producer to create a 15s product video"` |
-| **seo-specialist** | Keyword research, trend analysis, Playwright web research | `"Use seo-specialist to research AI marketing keywords"` |
+| **seo-specialist** | Keyword research, SERP scraping, rank tracking, Playwright web research | `"Use seo-specialist to research AI marketing keywords"` |
 | **email-specialist** | Email sequences, newsletters, campaigns | `"Use email-specialist to write a welcome email"` |
 | **gmail-agent** | Email sending via Gmail API | `"Use gmail-agent to send this newsletter"` |
-| **landing-page-specialist** | Conversion-focused landing pages with UX & code | `"Use landing-page-specialist to build a landing page"` |
+| **landing-page-specialist** | Conversion-focused landing pages with UX, code, competitor analysis | `"Use landing-page-specialist to build a landing page"` |
 | **pdf-specialist** | PDF whitepaper/report creation | `"Use pdf-specialist to create a PDF guide"` |
 | **presentation-designer** | PowerPoint deck creation | `"Use presentation-designer to create a pitch deck"` |
-| **analyst** | Campaign performance analysis | `"Use analyst to analyze campaign metrics"` |
+| **analyst** | Campaign performance analysis & competitive benchmarking | `"Use analyst to analyze campaign metrics"` |
 
 **APIs Required:**
 - OpenAI API (images via GPT-4o, videos via Sora)
 - Gmail API (email sending)
 - Google Drive API (file uploads, optional)
+- Bright Data MCP (lead generation - 5,000 free requests/month)
 
 ---
 
@@ -377,6 +381,9 @@ OPENAI_API_KEY=your_openai_key_here          # For GPT-4o images and Sora videos
 | **perplexity** | Web search and research | `perplexity_ask`, `perplexity_reason`, `perplexity_search`, `perplexity_research` |
 | **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar | Send emails, manage files, create docs, schedule events |
 | **google-drive** | File uploads and sharing | Upload files, create folders, share links |
+| **brightdata** | ✨ **NEW** Web scraping & lead generation | 60+ scrapers (LinkedIn, Google Maps, directories, SERP) |
+| **sequential-thinking** | ✨ **NEW** Structured reasoning | Step-by-step problem decomposition, logical reasoning |
+| **fetch** | ✨ **NEW** HTTP requests | Web content retrieval, API calls, file downloads |
 
 **Configuration Example (`.mcp.json`):**
 See `.mcp.json.example` for the full template with placeholder values.
@@ -629,11 +636,12 @@ These are gitignored and local-only.
 
 **Last Updated:** 2025-10-16
 **Recent Changes:**
-- Added email attachment tool (send_email_with_attachment.py) and deliverables automation
-- Added video generation utilities (create_ai_video.py, upload_video_to_drive.py)
-- Documented email sending strategy (MCP vs attachment tool)
-- Clarified tools/ vs scripts/ organization with decision matrix
-- Updated security best practices and MCP configuration docs
+- ✨ **NEW lead-gen-agent** - B2B/local lead generation with Bright Data MCP (5,000 free requests/month)
+- ✨ **NEW MCP servers** - sequential-thinking and fetch for enhanced capabilities
+- **Enhanced agents** - research-agent, seo-specialist, analyst, landing-page-specialist with competitive intelligence
+- **NEW tool** - send_marketing_team_doc.py for documentation email automation
+- Updated .mcp.json.example with new MCP server configurations
+- Updated all documentation to reflect 22 total agents (16 marketing + 5 testing + 1 user story)
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service

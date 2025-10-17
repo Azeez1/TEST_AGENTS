@@ -1,8 +1,8 @@
 # 🤖 MARKETING_TEAM - Multi-Agent Marketing System
 
-**15 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
+**16 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
 
-Create complete marketing campaigns through natural conversation. Generate blog posts, social content, images, videos, emails, and more by simply talking to your AI marketing team.
+Create complete marketing campaigns and generate business leads through natural conversation. Generate blog posts, social content, images, videos, emails, leads, and more by simply talking to your AI marketing team.
 
 ---
 
@@ -16,7 +16,7 @@ You: "Use the social-media-manager subagent to create a LinkedIn post about AI t
 Claude: [Creates professional LinkedIn post with hashtags and formatting]
 ```
 
-**That's it!** Your 15 agents are ready to use right now.
+**That's it!** Your 16 agents are ready to use right now.
 
 ---
 
@@ -37,32 +37,33 @@ Claude: [Creates professional LinkedIn post with hashtags and formatting]
 
 These guides explain:
 - How to set up APIs (OpenAI, Gmail, Google Drive)
-- How to invoke each of the 15 agents
+- How to invoke each of the 16 agents
 - Real-world examples with actual output
 - Common workflows
 - Tips & best practices
 
 ---
 
-## 🤖 Your 15 Marketing Agents
+## 🤖 Your 16 Marketing Agents
 
 | Agent | Purpose | Invoke With |
 |-------|---------|-------------|
 | **router-agent** | Coordinates complex campaigns | `"Use router-agent to plan a campaign"` |
 | **content-strategist** | Full campaign orchestration | `"Use content-strategist for campaign"` |
-| **research-agent** | Evidence-backed market and UX research | `"Use research-agent to investigate best practices"` |
+| **research-agent** | Evidence-backed research + competitive intelligence | `"Use research-agent to investigate best practices"` |
+| **lead-gen-agent** | ✨ **NEW** B2B & local lead generation via web scraping | `"Use lead-gen-agent to find leads"` |
 | **landing-page-specialist** | Designs & codes conversion-focused landing pages | `"Use landing-page-specialist to build a landing page"` |
 | **copywriter** | Blog posts, articles (2000+ words) | `"Use copywriter to write a blog"` |
 | **editor** | Content review & improvement | `"Use editor to review this content"` |
 | **social-media-manager** | X/Twitter, LinkedIn posts | `"Use social-media-manager for LinkedIn post"` |
 | **visual-designer** | GPT-4o image generation | `"Use visual-designer to create an image"` |
 | **video-producer** | Sora-2 video creation ✅ TESTED | `"Use video-producer for video ad"` |
-| **seo-specialist** | SEO research & keywords | `"Use seo-specialist to research keywords"` |
+| **seo-specialist** | SEO research, SERP scraping & rank tracking | `"Use seo-specialist to research keywords"` |
 | **email-specialist** | Email copywriting | `"Use email-specialist for email sequence"` |
 | **gmail-agent** | Email sending via Gmail | `"Use gmail-agent to send newsletter"` |
 | **pdf-specialist** | PDF whitepaper creation | `"Use pdf-specialist for PDF"` |
 | **presentation-designer** | PowerPoint decks | `"Use presentation-designer for deck"` |
-| **analyst** | Performance analysis | `"Use analyst to analyze data"` |
+| **analyst** | Performance analysis + competitive benchmarking | `"Use analyst to analyze data"` |
 
 ---
 
@@ -165,6 +166,11 @@ pip install -r requirements.txt
 - Required for: file uploads and sharing
 - See [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md) for setup
 
+**Bright Data MCP (CONFIGURED):** ✨ **NEW**
+- Web scraping and lead generation - Ready!
+- 5,000 free requests/month
+- See usage examples below
+
 **Playwright (Auto-configured):**
 - Used for web research by seo-specialist
 - First run: `npx playwright install`
@@ -201,13 +207,19 @@ See [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for more memory con
 - **pdf-specialist** - PDF documents
 
 ### Research & Strategy
-- **research-agent** - Market, UX, and competitor research with citations
-- **seo-specialist** - Keyword research, trend analysis
-- **analyst** - Performance analysis, insights
+- **research-agent** - Market, UX, and competitor research with citations + web scraping
+- **seo-specialist** - Keyword research, SERP scraping, rank tracking
+- **analyst** - Performance analysis, competitive benchmarking
 - **content-strategist** - Campaign planning
 
+### Lead Generation ✨ NEW
+- **lead-gen-agent** - B2B lead generation (LinkedIn companies, Google Maps, directories)
+  - 5,000 free Bright Data requests/month = 2,000-5,000 leads
+  - Business contact enrichment
+  - CRM-ready export (CSV, Google Sheets)
+
 ### Conversion Experiences
-- **landing-page-specialist** - UX, copy, and code for high-converting landing pages
+- **landing-page-specialist** - UX, copy, code + competitor analysis
 
 ### Distribution
 - **email-specialist** - Email copywriting
@@ -235,11 +247,12 @@ MARKETING_TEAM/
 │       ├── mcp-config.md
 │       └── build-notes.md
 ├── .claude/
-│   └── agents/                       ← 15 agent definitions
+│   └── agents/                       ← 16 agent definitions
 │       ├── router-agent.md
+│       ├── lead-gen-agent.md         ← NEW!
 │       ├── copywriter.md
 │       ├── social-media-manager.md
-│       └── ... (10 more)
+│       └── ... (11 more)
 ├── tools/                            ← Custom tools
 │   ├── openai_gpt4o_image.py
 │   ├── gmail_api.py
@@ -321,6 +334,11 @@ MARKETING_TEAM/
 "Use social-media-manager to create posts about our new feature"
 ```
 
+**Generate leads:** ✨ NEW
+```
+"Use lead-gen-agent to find 50 SaaS companies in San Francisco with 50-200 employees"
+```
+
 **Full campaign:**
 ```
 "Use router-agent to plan a mini marketing campaign"
@@ -361,6 +379,8 @@ You'll find `orchestrator.py` in the `archive/` folder. This was an earlier atte
 
 ---
 
-**Your 15 marketing agents are ready!** Just start talking to Claude Code.
+**Your 16 marketing agents are ready!** Just start talking to Claude Code.
+
+**✨ NEW: Lead generation with Bright Data MCP - 5,000 free requests/month for business lead discovery!**
 
 See [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for detailed instructions and examples. 🚀
