@@ -48,6 +48,7 @@ temp/
 output/
 outputs/
 **/outputs/
+!examples/**
 .env
 
 # Autonomous mode preferences and memory

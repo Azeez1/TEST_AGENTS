@@ -62,6 +62,24 @@ TEST_AGENTS/
 │
 ├── MARKETING_TEAM/                  ← 16 marketing automation agents
 │   ├── README.md                    ← Quick start guide
+│   ├── examples/                    ← Curated examples (tracked in git)
+│   │   └── skills/                  ← Examples by skill
+│   │       ├── algorithmic-art/     ← Generative art examples
+│   │       ├── blog-posts/
+│   │       ├── landing-pages/
+│   │       └── [other skills]/
+│   ├── templates/                   ← Reusable templates (tracked in git)
+│   │   └── reusable/
+│   │       ├── blog_post_template.md
+│   │       ├── social_media_template.md
+│   │       ├── landing_page_template.html
+│   │       └── email_template.md
+│   ├── outputs/                     ← Real deliverables (GITIGNORED)
+│   │   ├── blog_posts/
+│   │   ├── social_media/
+│   │   ├── images/
+│   │   ├── videos/
+│   │   └── [other content]/
 │   ├── .claude/
 │   │   └── agents/                  ← 16 agent definitions
 │   │       ├── router-agent.md      ← Campaign coordinator
@@ -320,6 +338,30 @@ Output format:
 | Manual utility/conversion? | ❌ No | ✅ Yes |
 | Should be imported as module? | ✅ Yes | ❌ No |
 
+### Hybrid Output Management Strategy
+
+The repository uses a **hybrid approach** for managing agent outputs:
+
+| Folder | Purpose | Git Tracked | Use Case |
+|--------|---------|-------------|----------|
+| **examples/** | Reference materials | ✅ Yes | Curated demos, portfolio pieces, test artifacts |
+| **templates/** | Starting frameworks | ✅ Yes | Reusable templates for common deliverables |
+| **outputs/** | Real deliverables | ❌ No | Client work, campaigns, production content |
+
+**Why this approach?**
+- **Real work stays private** - Your actual deliverables in `outputs/` are never committed
+- **Examples preserved** - Reference materials in `examples/` are version controlled
+- **Templates shared** - Reusable starting points in `templates/` are tracked
+- **Clean separation** - Test vs production vs templates
+- **Flexible** - Can adjust later if needs change
+
+**How agents work with this:**
+- By default, agents output to `outputs/` (gitignored)
+- High-quality reference pieces can be copied to `examples/` for preservation
+- Agents can use templates from `templates/` as starting points
+
+📖 See [MARKETING_TEAM/examples/README.md](MARKETING_TEAM/examples/README.md) and [MARKETING_TEAM/templates/README.md](MARKETING_TEAM/templates/README.md) for complete guides.
+
 ### Git Workflow
 
 **What's Excluded (`.gitignore`):**
@@ -338,6 +380,159 @@ Output format:
 - Documentation (`.md` files)
 - Configuration templates (`.env.example`, `.claude.json.example`, `.mcp.json.example`)
 - Requirements files
+- **`examples/` folder** - Curated examples and reference materials (EXCEPTION to outputs/ rule)
+- **`templates/` folder** - Reusable starting templates for common deliverables
+
+---
+
+## 🎨 Skills & Advanced Capabilities
+
+### Overview
+
+All **16 MARKETING_TEAM agents** now have access to **13 powerful skills** and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
+
+**Skills Configuration:** Enabled in `MARKETING_TEAM/.claude/settings.json`
+**MCPs:** Inherited from root `.claude.json` via `"mcpServers": "inherit"`
+
+---
+
+### Available Skills (13 total)
+
+#### Visual Creation Skills (4)
+
+| Skill | Description | Best For | Example |
+|-------|-------------|----------|---------|
+| **algorithmic-art** | Generative art with p5.js (flow fields, particle systems, geometric patterns) | Unique social media visuals, abstract art, distinctive brand art | `"Use visual-designer with algorithmic-art to create flow field art"` |
+| **canvas-design** | Beautiful PNG/PDF visual art (posters, banners, designs) | Conference posters, print materials, professional designs | `"Use visual-designer with canvas-design to create a conference poster"` |
+| **slack-gif-creator** | Animated GIFs optimized for Slack with size validators | Product launches, animated content, eye-catching posts | `"Use social-media-manager with slack-gif-creator to make launch GIF"` |
+| **theme-factory** | 10 preset themes for consistent branding (modern, vibrant, minimal, professional, elegant, bold, calm, energetic, corporate, creative) | Themed presentations, branded landing pages, consistent artifacts | `"Use presentation-designer with theme-factory 'professional' theme"` |
+
+#### Development & Artifacts Skills (3)
+
+| Skill | Description | Best For | Example |
+|-------|-------------|----------|---------|
+| **artifacts-builder** | Complex React/Tailwind/shadcn/ui multi-component apps | Interactive landing pages, state-managed interfaces, modern web apps | `"Use landing-page-specialist with artifacts-builder to build landing page"` |
+| **mcp-builder** | Create MCP servers (Python FastMCP or Node/TypeScript SDK) | Custom API integrations, tool creation, service connectors | `"Use mcp-builder to create MCP server for our CRM API"` |
+| **skill-creator** | Create custom skills to extend Claude's capabilities | Domain-specific skills, specialized workflows, knowledge integration | `"Use skill-creator to design a legal marketing compliance skill"` |
+
+#### Content & Document Skills (3)
+
+| Skill | Description | Best For | Example |
+|-------|-------------|----------|---------|
+| **internal-comms** | Company-standard formats (status reports, newsletters, FAQs, incident reports) | Internal communications, structured reports, team updates | `"Use copywriter with internal-comms to write Q1 status report"` |
+| **brand-guidelines** | Anthropic's official brand colors & typography | Anthropic-branded materials, official documents | `"Use presentation-designer with brand-guidelines for Anthropic deck"` |
+| **pdf-filler** | Fill PDF forms, create fillable PDFs with form fields | Registration forms, surveys, applications, contracts | `"Use pdf-specialist with pdf-filler to create registration form PDF"` |
+
+#### Integration Skills (3)
+
+| Skill | Description | Best For | Example |
+|-------|-------------|----------|---------|
+| **filesystem** | File operations with C:\ and C:\Users access | Local file management, reading assets, batch processing | `"Use research-agent with filesystem to read competitor PDFs"` |
+| **figma** | Extract designs, components, assets from Figma files | Design handoff, brand asset extraction, Figma-to-code | `"Use visual-designer with figma to extract brand assets from [URL]"` |
+| **context7** | Enhanced context management (automatic) | Long conversations, complex tasks, context preservation | Automatic - works in background |
+
+---
+
+### Available MCP Servers (7 total)
+
+| MCP Server | Purpose | Key Tools | Best For |
+|------------|---------|-----------|----------|
+| **playwright** | Browser automation | navigate, screenshot, click, fill, evaluate, get_visible_text | Competitive research, website analysis, web scraping |
+| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar, Forms, Tasks | send_gmail_message, upload_to_drive, create_doc, create_event | Email automation, document management, calendar scheduling |
+| **perplexity** | Web search & research with citations | perplexity_ask, perplexity_reason, perplexity_search, perplexity_research | Market research, competitive intelligence, citation-backed insights |
+| **google-drive** | Drive file operations | search_drive_files, get_drive_file_content, create_drive_file | File storage, asset management, sharing |
+| **bright-data** | Web scraping & lead generation (5,000 free requests/month) | search_engine, scrape_as_markdown, search_engine_batch, scrape_batch | B2B lead gen, SERP scraping, competitor analysis |
+| **n8n-mcp** | Workflow automation (400+ integrations) | list_workflows, trigger_workflow, get_execution | Campaign orchestration, automated workflows |
+| **sequential-thinking** | Structured step-by-step reasoning | sequentialthinking | Complex problem-solving, strategic planning |
+
+---
+
+### Skills by Agent
+
+**Which agents use which skills:**
+
+- **visual-designer:** algorithmic-art, canvas-design, theme-factory, figma
+- **presentation-designer:** theme-factory, artifacts-builder
+- **social-media-manager:** algorithmic-art, slack-gif-creator
+- **landing-page-specialist:** artifacts-builder, theme-factory
+- **copywriter:** internal-comms
+- **pdf-specialist:** pdf-filler, canvas-design
+- **All other agents:** Can use any skill when appropriate, plus filesystem (all) and context7 (automatic)
+
+---
+
+### Quick Examples
+
+#### Generate Unique Social Media Art
+```
+"Use visual-designer with algorithmic-art to create a flow field design
+with brand colors (#FF5733, #3498DB) for Instagram. 1080x1080px."
+```
+
+#### Build Interactive React Landing Page
+```
+"Use landing-page-specialist with artifacts-builder to build a responsive
+landing page with hero section, features, testimonials, and contact form.
+Apply theme-factory 'modern' theme."
+```
+
+#### Create Themed Presentation
+```
+"Use presentation-designer with theme-factory to create a 15-slide sales
+deck with the 'professional' theme."
+```
+
+#### Generate Animated GIF
+```
+"Use social-media-manager with slack-gif-creator to make a 3-second
+'NEW FEATURE' announcement GIF with our brand colors."
+```
+
+#### Extract Figma Designs
+```
+"Use visual-designer with figma to extract designs from [Figma URL] and
+implement the landing page with artifacts-builder."
+```
+
+#### Create Fillable PDF Form
+```
+"Use pdf-specialist with pdf-filler to create a fillable registration form
+PDF with fields for name, email, company, title, and signature."
+```
+
+#### Write Internal Status Report
+```
+"Use copywriter with internal-comms to write a Q1 marketing status report
+including metrics, wins, challenges, and Q2 preview."
+```
+
+#### Find B2B Leads
+```
+"Use lead-gen-agent with bright-data to find 50 B2B SaaS companies in
+San Francisco with 50-200 employees."
+```
+
+#### Research with Citations
+```
+"Use research-agent with perplexity to research AI marketing trends and
+provide citation-backed insights on what's working in 2025."
+```
+
+#### Automate Browser Tasks
+```
+"Use research-agent with playwright to navigate to competitor-site.com,
+screenshot the homepage, and extract their headline and CTA copy."
+```
+
+---
+
+### Complete Documentation
+
+For comprehensive guides, examples, and workflows:
+
+- **[MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - 50+ page complete reference with detailed examples
+- **[MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Quick lookup tables and cheat sheets
+- **[MARKETING_TEAM/README.md](MARKETING_TEAM/README.md)** - Marketing team overview with skills
 
 ---
 

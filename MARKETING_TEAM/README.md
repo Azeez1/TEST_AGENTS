@@ -167,6 +167,43 @@ with hero, features, and contact form. Apply theme-factory 'modern' theme."
 
 ---
 
+## 📂 Examples & Templates
+
+### Examples Folder
+**[examples/](examples/)** - Curated examples showing what agents can produce
+
+- **Purpose:** Reference materials, testing artifacts, portfolio pieces
+- **Tracked in git:** Yes - permanent examples for learning
+- **Organization:** By skill and content type
+- **Current examples:** algorithmic-art (Data Flow Dynamics)
+
+📖 **[examples/README.md](examples/README.md)** - Complete examples guide
+
+### Templates Folder
+**[templates/reusable/](templates/reusable/)** - Starting points for common deliverables
+
+Available templates:
+- **[blog_post_template.md](templates/reusable/blog_post_template.md)** - SEO-optimized blog structure (1500-3000 words)
+- **[social_media_template.md](templates/reusable/social_media_template.md)** - Platform-specific formats (X/Twitter, LinkedIn, Instagram, Facebook)
+- **[landing_page_template.html](templates/reusable/landing_page_template.html)** - Conversion-focused landing page with hero, features, testimonials, pricing, FAQ
+- **[email_template.md](templates/reusable/email_template.md)** - Subject line formulas, welcome emails, newsletters, product launches, cart abandonment
+
+📖 **[templates/README.md](templates/README.md)** - Template usage guide
+
+### Outputs Folder (Gitignored)
+**outputs/** - Your actual work and deliverables
+
+- **Purpose:** Real client work, campaign content, production files
+- **Tracked in git:** No - stays private on your machine
+- **Organization:** By content type (blog_posts, social_media, images, videos, etc.)
+
+**The Difference:**
+- **examples/** = Reference materials (tracked in git for learning)
+- **templates/** = Starting frameworks (tracked in git for reuse)
+- **outputs/** = Your actual deliverables (gitignored - stays private)
+
+---
+
 ## 💡 Usage Examples
 
 ### Example 1: Create LinkedIn Post
