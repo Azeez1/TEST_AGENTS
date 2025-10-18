@@ -379,9 +379,9 @@ OPENAI_API_KEY=your_openai_key_here          # For GPT-4o images and Sora videos
 |--------|---------|----------------|
 | **playwright** | Browser automation for research | Navigate, screenshot, click, fill forms, evaluate JS |
 | **perplexity** | Web search and research | `perplexity_ask`, `perplexity_reason`, `perplexity_search`, `perplexity_research` |
-| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar | Send emails, manage files, create docs, schedule events |
-| **google-drive** | File uploads and sharing | Upload files, create folders, share links |
-| **brightdata** | ✨ **NEW** Web scraping & lead generation | 60+ scrapers (LinkedIn, Google Maps, directories, SERP) |
+| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar | Send emails, upload files, create docs/sheets, schedule events, manage Drive |
+| **bright-data** | ✨ **NEW** Web scraping & lead generation | 60+ scrapers (LinkedIn, Google Maps, directories, SERP) |
+| **n8n-mcp** | Workflow automation | Trigger n8n workflows, connect to 400+ integrations |
 | **sequential-thinking** | ✨ **NEW** Structured reasoning | Step-by-step problem decomposition, logical reasoning |
 | **fetch** | ✨ **NEW** HTTP requests | Web content retrieval, API calls, file downloads |
 
@@ -396,7 +396,7 @@ npx playwright install chromium
 # Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, etc.)
 pip install workspace-mcp
 
-# Perplexity and Google Drive are auto-installed via npx when first used
+# Perplexity, Bright Data, n8n, Sequential Thinking, and Fetch are auto-installed via npx when first used
 ```
 
 **Security Note:**
@@ -572,7 +572,7 @@ Talk to Claude Code:
 1. Talk to Claude Code: `"Use router-agent to create a social media campaign for [product]"`
 2. Router coordinates: copywriter → social-media-manager → visual-designer → email-specialist
 3. All content saved to `outputs/` folders
-4. Optionally upload to Google Drive with google-drive tool
+4. Optionally upload to Google Drive with Google Workspace MCP
 
 ### Test Suite Generation
 **Goal:** Generate comprehensive pytest test suite

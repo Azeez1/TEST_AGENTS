@@ -21,14 +21,6 @@
         "PERPLEXITY_TIMEOUT_MS": "600000"
       }
     },
-    "google-drive": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
-      "env": {
-        "GDRIVE_CLIENT_ID": "your_google_oauth_client_id_here",
-        "GDRIVE_CLIENT_SECRET": "your_google_oauth_client_secret_here"
-      }
-    },
     "n8n-mcp": {
       "command": "npx",
       "args": ["-y", "n8n-mcp"],

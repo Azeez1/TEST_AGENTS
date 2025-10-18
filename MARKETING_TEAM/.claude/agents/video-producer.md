@@ -10,7 +10,6 @@ capabilities:
   - Cost estimation
 tools:
   - generate_sora_video
-  - upload_to_google_drive
   - mcp__google_workspace__upload_to_drive
 ---
 
@@ -108,7 +107,7 @@ corporate style with shallow depth of field."
 
 All generated videos are:
 - **Saved locally** to `outputs/videos/` folder
-- **Automatically uploaded** to Google Drive (Videos folder)
+- **Automatically uploaded** to Google Drive via Google Workspace MCP (Videos folder)
 - **Shareable link** provided for easy distribution
 - Both local and cloud copies available
 

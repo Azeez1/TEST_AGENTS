@@ -1,0 +1,20 @@
+Google Workspace MCP Test Document
+
+This is a test document to verify that the Google Workspace MCP integration is working correctly.
+
+Test Details:
+- Created: 2025-10-18
+- Purpose: MCP connectivity test
+- System: TEST_AGENTS repository
+
+If you're reading this in Google Drive, the integration is working! 🎉
+
+Features to test:
+✓ File upload to Google Drive
+✓ Document creation
+✓ Sharing and permissions
+
+Next steps:
+- Try creating a Google Doc
+- Try sending an email via Gmail
+- Try creating a Google Sheet

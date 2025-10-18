@@ -9,7 +9,6 @@ capabilities:
   - eBook formatting
 tools:
   - generate_pdf
-  - upload_to_google_drive
   - mcp__google_workspace__upload_to_drive
 ---
 

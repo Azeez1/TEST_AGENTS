@@ -50,14 +50,37 @@ def get_gmail_service():
 
     return build('gmail', 'v1', credentials=creds)
 
-def send_email_with_attachment(to_email, subject, body, attachment_path):
-    """Send email with attachment"""
+def send_email_with_attachment(to_email, subject, body, attachment_path, cc=None, bcc=None):
+    """Send email with attachment
+
+    Args:
+        to_email: Recipient email address
+        subject: Email subject
+        body: Email body text
+        attachment_path: Path to file to attach
+        cc: Optional CC email address(es) - single string or list
+        bcc: Optional BCC email address(es) - single string or list
+    """
     service = get_gmail_service()
 
     # Create message
     message = MIMEMultipart()
     message['to'] = to_email
     message['subject'] = subject
+
+    # Add CC if provided
+    if cc:
+        if isinstance(cc, list):
+            message['cc'] = ', '.join(cc)
+        else:
+            message['cc'] = cc
+
+    # Add BCC if provided
+    if bcc:
+        if isinstance(bcc, list):
+            message['bcc'] = ', '.join(bcc)
+        else:
+            message['bcc'] = bcc
 
     # Add body
     message.attach(MIMEText(body, 'plain'))

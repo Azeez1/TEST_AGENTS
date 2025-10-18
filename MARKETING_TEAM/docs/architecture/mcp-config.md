@@ -147,15 +147,17 @@ The OfficeMCP server enables:
 
 ## 📊 Complete MCP Server List
 
-Your MARKETING_TEAM now has 5 MCP servers configured:
+Your MARKETING_TEAM now has 7 MCP servers configured:
 
 | Server | Type | Status | Purpose |
 |--------|------|--------|---------|
 | Playwright | NPX | ✅ Active | Browser automation, web scraping |
+| **Google Workspace** | **Python** | **✅ Active** | **Gmail, Drive, Docs, Sheets, Calendar** |
 | **Perplexity** | **NPX** | **✅ Active** | **Real-time web research** |
-| **Office** | **Python** | **✅ Active** | **Microsoft Office automation** |
-| Gmail | Python | ⚠️ Needs Auth | Email sending and campaigns |
-| Marketing | Python | ✅ Active | Custom brand voice and memory |
+| **Bright Data** | **NPX** | **✅ Active** | **Web scraping, lead generation** |
+| **n8n** | **NPX** | **✅ Active** | **Workflow automation (400+ integrations)** |
+| Sequential Thinking | NPX | ✅ Active | Structured reasoning |
+| Fetch | NPX | ✅ Active | HTTP requests, web content retrieval |
 
 ---
 
@@ -223,9 +225,9 @@ Expected output:
 4. Try researching with Perplexity MCP
 
 ### Optional Enhancements
-- Configure Gmail API for email campaigns (see [api-setup.md](../getting-started/api-setup.md))
-- Set up Google Drive for file sharing (see [api-setup.md](../getting-started/api-setup.md))
+- Complete Google Workspace OAuth for email and Drive features (see [api-setup.md](../getting-started/api-setup.md))
 - Install Playwright browsers: `npx playwright install`
+- Explore n8n workflow automation for advanced integrations
 
 ---
 
