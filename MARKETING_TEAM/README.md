@@ -89,6 +89,84 @@ When you say:
 
 ---
 
+## 🎨 Skills & Advanced Capabilities
+
+Your marketing agents now have access to **13 powerful skills** and **7 MCP servers**!
+
+### Available Skills
+
+**Visual Creation (4 skills):**
+- **algorithmic-art** - Generative art with p5.js (flow fields, particle systems, unique social art)
+- **canvas-design** - Beautiful PNG/PDF posters and banners
+- **slack-gif-creator** - Animated GIFs optimized for Slack and social media
+- **theme-factory** - 10 preset themes (modern, vibrant, minimal, professional, elegant, bold, calm, energetic, corporate, creative)
+
+**Development (3 skills):**
+- **artifacts-builder** - Complex React/Tailwind/shadcn/ui apps (interactive landing pages)
+- **mcp-builder** - Create custom MCP servers (Python FastMCP or Node SDK)
+- **skill-creator** - Create custom skills to extend Claude's capabilities
+
+**Content & Documents (3 skills):**
+- **internal-comms** - Company-standard formats (status reports, newsletters, FAQs)
+- **brand-guidelines** - Anthropic's official brand colors & typography
+- **pdf-filler** - Fill PDF forms, create fillable PDFs
+
+**Integrations (3 skills):**
+- **filesystem** - File operations (C:\ and C:\Users access)
+- **figma** - Extract designs from Figma files
+- **context7** - Enhanced context management (automatic)
+
+### Available MCP Servers
+
+- **playwright** - Browser automation for research & testing
+- **google-workspace** - Gmail, Drive, Docs, Sheets, Calendar, Forms, Tasks (40+ tools)
+- **perplexity** - Web search & research with citations
+- **google-drive** - Drive file operations
+- **bright-data** - Web scraping & lead generation (5,000 free requests/month)
+- **n8n-mcp** - Workflow automation (400+ integrations)
+- **sequential-thinking** - Structured step-by-step reasoning
+
+### Quick Skill Examples
+
+**Generate Unique Art:**
+```
+"Use visual-designer with algorithmic-art to create flow field art for Instagram"
+```
+
+**Build Interactive Landing Page:**
+```
+"Use landing-page-specialist with artifacts-builder to build a React landing page
+with hero, features, and contact form. Apply theme-factory 'modern' theme."
+```
+
+**Create Animated GIF:**
+```
+"Use social-media-manager with slack-gif-creator to make a launch GIF"
+```
+
+**Find B2B Leads:**
+```
+"Use lead-gen-agent with bright-data to find 50 SaaS companies in SF"
+```
+
+**Research with Citations:**
+```
+"Use research-agent with perplexity to research AI marketing trends"
+```
+
+**Fillable PDF Form:**
+```
+"Use pdf-specialist with pdf-filler to create a registration form PDF"
+```
+
+### Complete Skills Documentation
+
+📖 **[docs/guides/skills-and-mcp-guide.md](docs/guides/skills-and-mcp-guide.md)** - 50+ page comprehensive guide with detailed examples
+
+📋 **[docs/SKILLS_QUICK_REFERENCE.md](docs/SKILLS_QUICK_REFERENCE.md)** - Quick lookup tables and cheat sheets
+
+---
+
 ## 💡 Usage Examples
 
 ### Example 1: Create LinkedIn Post

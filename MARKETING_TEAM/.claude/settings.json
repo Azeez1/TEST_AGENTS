@@ -1,0 +1,50 @@
+{
+  "skills": {
+    "algorithmic-art": {
+      "enabled": true
+    },
+    "artifacts-builder": {
+      "enabled": true
+    },
+    "brand-guidelines": {
+      "enabled": true
+    },
+    "canvas-design": {
+      "enabled": true
+    },
+    "internal-comms": {
+      "enabled": true
+    },
+    "mcp-builder": {
+      "enabled": true
+    },
+    "skill-creator": {
+      "enabled": true
+    },
+    "slack-gif-creator": {
+      "enabled": true
+    },
+    "theme-factory": {
+      "enabled": true
+    },
+    "filesystem": {
+      "enabled": true,
+      "userConfig": {
+        "allowed_directories": [
+          "C:\\",
+          "C:\\Users"
+        ]
+      }
+    },
+    "figma": {
+      "enabled": true
+    },
+    "pdf-filler": {
+      "enabled": true
+    },
+    "context7": {
+      "enabled": true
+    }
+  },
+  "mcpServers": "inherit"
+}
