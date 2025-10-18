@@ -13,6 +13,42 @@ All agents work through natural conversation with Claude Code - no Python orches
 
 ---
 
+## ⚠️ CRITICAL: Use Existing Tools First
+
+**IMPORTANT INSTRUCTION FOR ALL AI ASSISTANTS:**
+
+When working with this repository, **ALWAYS use existing agents, tools, skills, and MCP servers FIRST**. Do NOT create new implementations when functionality already exists.
+
+**Priority Order:**
+1. **Use existing agents** (`.claude/agents/*.md` files) - Invoke them explicitly
+2. **Use existing tools** (`tools/*.py` files) - They're production-ready
+3. **Use installed skills** (`.claude/skills/*`) - 13 skills available
+4. **Use MCP servers** - 7 servers configured (Playwright, Google Workspace, etc.)
+5. **Only if none exist** - Then create new implementations
+
+**Examples of What NOT To Do:**
+- ❌ Writing new Python code for PowerPoint when `tools/create_presentation.py` exists
+- ❌ Creating new email scripts when `tools/send_email_with_attachment.py` exists
+- ❌ Building new image generation when `tools/openai_gpt4o_image.py` exists
+- ❌ Installing new libraries when existing tools already have dependencies
+
+**Examples of What TO Do:**
+- ✅ "Use the presentation-designer agent to create slides"
+- ✅ "Use the gmail-agent to send this email"
+- ✅ "Use our existing PowerPoint tool in tools/create_presentation.py"
+- ✅ "Use the visual-designer agent with GPT-4o"
+
+**How to Check What Exists:**
+1. Check `.claude/agents/` for available agents
+2. Check `tools/` for existing Python tools
+3. Check `.claude/skills/` for installed skills
+4. Check `.claude.json` or `.mcp.json` for MCP servers
+5. Ask the user if unsure: "Do we have a tool for this already?"
+
+**This saves time, avoids duplication, and uses battle-tested code.**
+
+---
+
 ## 🚀 Quick Navigation
 
 | System | Purpose | Quick Start | Docs |
