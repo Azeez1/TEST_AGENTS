@@ -11,10 +11,11 @@ capabilities:
   - Generative art creation
   - Animated GIF creation for Slack
 tools:
-  - mcp__marketing__format_twitter_post
-  - mcp__marketing__format_linkedin_post
-  - mcp__marketing__generate_hashtags
-  - mcp__marketing__get_platform_specs
+  - mcp__marketing-tools__generate_gpt4o_image
+  - mcp__marketing-tools__format_twitter_post
+  - mcp__marketing-tools__format_linkedin_post
+  - mcp__marketing-tools__extract_hashtags
+  - mcp__marketing-tools__optimize_post_for_engagement
 skills:
   - algorithmic-art
   - slack-gif-creator
@@ -132,4 +133,4 @@ Use slack-gif-creator to make a 3-second looping GIF of text that says
 - Creating looping brand elements
 - Want attention-grabbing motion graphics
 
-Always use format_twitter_post and format_linkedin_post tools for platform optimization.
+Always use mcp__marketing-tools__format_twitter_post and mcp__marketing-tools__format_linkedin_post tools for platform optimization.

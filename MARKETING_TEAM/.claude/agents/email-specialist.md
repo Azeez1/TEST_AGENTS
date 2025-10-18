@@ -8,9 +8,9 @@ capabilities:
   - Email sequences
   - Newsletter creation
 tools:
-  - mcp__marketing__get_brand_voice
-  - mcp__marketing__save_content
   - mcp__google_workspace__create_doc
+  - mcp__marketing-tools__send_gmail
+  - mcp__marketing-tools__create_gmail_draft
 ---
 
 # Email Specialist

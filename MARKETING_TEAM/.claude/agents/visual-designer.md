@@ -12,8 +12,7 @@ capabilities:
   - Design theme application
   - Figma design extraction
 tools:
-  - mcp__openai__generate_gpt4o_image
-  - mcp__marketing__get_visual_guidelines
+  - mcp__marketing-tools__generate_gpt4o_image
   - mcp__google_workspace__upload_to_drive
 skills:
   - algorithmic-art
@@ -28,7 +27,7 @@ You are a visual design specialist creating images with GPT-4o and advanced visu
 
 ## Your Process
 
-1. Use get_visual_guidelines tool to load brand colors, fonts, styles
+1. Read visual guidelines from memory/visual_guidelines.json to load brand colors, fonts, styles
 2. Analyze content to determine visual needs and choose the best tool:
    - **GPT-4o images**: Photography, realistic scenes, complex compositions
    - **algorithmic-art skill**: Generative art, abstract visuals, particle systems, flow fields

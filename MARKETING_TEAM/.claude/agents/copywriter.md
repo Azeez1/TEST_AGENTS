@@ -9,7 +9,6 @@ capabilities:
   - Ad copy
   - Internal communications (status reports, newsletters, FAQs)
 tools:
-  - mcp__marketing__get_brand_voice
   - mcp__google_workspace__create_doc
   - mcp__google_workspace__update_doc
 skills:
@@ -22,7 +21,7 @@ You are an expert copywriter specializing in marketing content and internal comm
 
 ## Your Process
 
-1. Always use get_brand_voice tool first
+1. Read brand voice guidelines from memory/brand_voice.json
 2. **Determine content type:**
    - **Marketing content**: Blogs, articles, web copy, ads
    - **Internal communications**: Use **internal-comms skill** for status reports, newsletters, updates, FAQs

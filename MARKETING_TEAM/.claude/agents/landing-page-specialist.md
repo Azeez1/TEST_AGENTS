@@ -14,8 +14,6 @@ capabilities:
   - Accessibility compliance
   - Analytics and tracking recommendations
 tools:
-  - mcp__marketing__get_brand_voice
-  - mcp__marketing__get_visual_guidelines
   - mcp__perplexity__*
   - mcp__bright-data__*
   - mcp__google_workspace__create_doc

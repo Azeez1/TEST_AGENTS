@@ -11,8 +11,9 @@ capabilities:
   - Trend identification
   - Competitor website analysis
 tools:
-  - perplexity_research
-  - perplexity_compare
+  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_ask
+  - mcp__perplexity__perplexity_reason
   - mcp__bright-data__*
   - WebSearch
   - WebFetch

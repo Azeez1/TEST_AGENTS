@@ -63,12 +63,20 @@ async def generate_gpt4o_image(args):
             n=1
         )
 
-        image_url = response.data[0].url
+        # GPT-4o returns base64-encoded images, not URLs
+        import base64
+        image_b64 = response.data[0].b64_json
 
-        # Download image
-        async with httpx.AsyncClient() as client:
-            image_response = await client.get(image_url, timeout=30.0)
-            image_data = image_response.content
+        if image_b64:
+            # Decode base64 image data
+            image_data = base64.b64decode(image_b64)
+            image_url = "Generated via base64 (GPT-4o)"
+        else:
+            # Fallback to URL if provided
+            image_url = response.data[0].url
+            async with httpx.AsyncClient() as client:
+                image_response = await client.get(image_url, timeout=30.0)
+                image_data = image_response.content
 
         # Save locally
         output_path = f"outputs/images/final/{filename}.png"

@@ -9,7 +9,8 @@ capabilities:
   - Platform optimization (social, ads)
   - Cost estimation
 tools:
-  - generate_sora_video
+  - mcp__marketing-tools__generate_sora_video
+  - create_video_storyboard
   - mcp__google_workspace__upload_to_drive
 ---
 

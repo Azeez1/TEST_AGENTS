@@ -8,9 +8,9 @@ capabilities:
   - Send email campaigns
   - Email automation
 tools:
-  - send_gmail
-  - create_gmail_draft
-  - send_email_campaign
+  - mcp__marketing-tools__send_gmail
+  - mcp__marketing-tools__create_gmail_draft
+  - mcp__marketing-tools__send_email_campaign
   - mcp__google_workspace__send_email
   - mcp__google_workspace__create_draft
 ---
