@@ -424,14 +424,14 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ### Overview
 
-All **16 MARKETING_TEAM agents** now have access to **13 powerful skills** and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
+All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 user-installed + 4 document-skills) and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
 
 **Skills Configuration:** Enabled in `MARKETING_TEAM/.claude/settings.json`
 **MCPs:** Inherited from root `.claude.json` via `"mcpServers": "inherit"`
 
 ---
 
-### Available Skills (13 total)
+### Available Skills (17 total)
 
 #### Visual Creation Skills (4)
 
@@ -440,7 +440,7 @@ All **16 MARKETING_TEAM agents** now have access to **13 powerful skills** and *
 | **algorithmic-art** | Generative art with p5.js (flow fields, particle systems, geometric patterns) | Unique social media visuals, abstract art, distinctive brand art | `"Use visual-designer with algorithmic-art to create flow field art"` |
 | **canvas-design** | Beautiful PNG/PDF visual art (posters, banners, designs) | Conference posters, print materials, professional designs | `"Use visual-designer with canvas-design to create a conference poster"` |
 | **slack-gif-creator** | Animated GIFs optimized for Slack with size validators | Product launches, animated content, eye-catching posts | `"Use social-media-manager with slack-gif-creator to make launch GIF"` |
-| **theme-factory** | 10 preset themes for consistent branding (modern, vibrant, minimal, professional, elegant, bold, calm, energetic, corporate, creative) | Themed presentations, branded landing pages, consistent artifacts | `"Use presentation-designer with theme-factory 'professional' theme"` |
+| **theme-factory** | 11 preset themes for consistent branding (vibrant, modern-minimalist, midnight-galaxy, golden-hour, tech-innovation, botanical-garden, arctic-frost, forest-canopy, ocean-depths, desert-rose, sunset-boulevard) | Themed presentations, branded landing pages, consistent artifacts | `"Use presentation-designer with theme-factory 'vibrant' theme"` |
 
 #### Development & Artifacts Skills (3)
 
@@ -458,6 +458,17 @@ All **16 MARKETING_TEAM agents** now have access to **13 powerful skills** and *
 | **brand-guidelines** | Anthropic's official brand colors & typography | Anthropic-branded materials, official documents | `"Use presentation-designer with brand-guidelines for Anthropic deck"` |
 | **pdf-filler** | Fill PDF forms, create fillable PDFs with form fields | Registration forms, surveys, applications, contracts | `"Use pdf-specialist with pdf-filler to create registration form PDF"` |
 
+#### Document Creation Skills (4) - Claude Code Built-in
+
+| Skill | Description | Best For | Example |
+|-------|-------------|----------|---------|
+| **pptx** | PowerPoint creation with html2pptx & PptxGenJS workflows | Professional presentations, pitch decks, marketing slides | `"Use presentation-designer with pptx skill for PowerPoint"` |
+| **pdf** | PDF generation with forms, layouts, and styling | Whitepapers, reports, fillable forms | `"Use pdf-specialist with pdf skill to create report"` |
+| **xlsx** | Excel spreadsheet creation with formulas & formatting | Data reports, financial models, dashboards | `"Create Excel report with xlsx skill"` |
+| **docx** | Word document creation with styles & formatting | Documentation, contracts, proposals | `"Create Word document with docx skill"` |
+
+**Note:** These are built-in Claude Code skills (always available). The pdf-filler skill listed above is a separate user-installed skill for form filling.
+
 #### Integration Skills (3)
 
 | Skill | Description | Best For | Example |
@@ -473,12 +484,12 @@ All **16 MARKETING_TEAM agents** now have access to **13 powerful skills** and *
 | MCP Server | Purpose | Key Tools | Best For |
 |------------|---------|-----------|----------|
 | **playwright** | Browser automation | navigate, screenshot, click, fill, evaluate, get_visible_text | Competitive research, website analysis, web scraping |
-| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar, Forms, Tasks | send_gmail_message, upload_to_drive, create_doc, create_event | Email automation, document management, calendar scheduling |
+| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar, Forms, Tasks | send_gmail_message, create_drive_file, upload_to_drive, create_doc, create_event, search_drive_files | Email automation, Drive uploads, document management, calendar scheduling |
 | **perplexity** | Web search & research with citations | perplexity_ask, perplexity_reason, perplexity_search, perplexity_research | Market research, competitive intelligence, citation-backed insights |
-| **google-drive** | Drive file operations | search_drive_files, get_drive_file_content, create_drive_file | File storage, asset management, sharing |
 | **bright-data** | Web scraping & lead generation (5,000 free requests/month) | search_engine, scrape_as_markdown, search_engine_batch, scrape_batch | B2B lead gen, SERP scraping, competitor analysis |
 | **n8n-mcp** | Workflow automation (400+ integrations) | list_workflows, trigger_workflow, get_execution | Campaign orchestration, automated workflows |
 | **sequential-thinking** | Structured step-by-step reasoning | sequentialthinking | Complex problem-solving, strategic planning |
+| **marketing-tools** | Custom MCP for OpenAI APIs | generate_gpt4o_image, generate_sora_video | GPT-4o image generation, Sora video creation |
 
 ---
 

@@ -10,7 +10,7 @@ capabilities:
   - Google Drive upload integration
 tools:
   - mcp__marketing-tools__generate_gpt4o_image
-  - mcp__marketing-tools__upload_file_to_drive
+  - mcp__google-workspace__create_drive_file
 skills:
   - pptx (from document-skills)
   - theme-factory
@@ -215,10 +215,12 @@ slide.addChart(pptx.charts.BAR, [{
 ### Phase 6: Upload to Google Drive
 
 ```javascript
-mcp__marketing-tools__upload_file_to_drive({
-  file_path: "MARKETING_TEAM/outputs/presentations/presentation.pptx",
-  folder_type: "presentations",
-  description: "Marketing presentation with vibrant theme and data charts"
+mcp__google-workspace__create_drive_file({
+  user_google_email: "user@example.com",
+  file_name: "presentation.pptx",
+  folder_id: "root",  // or specific folder ID
+  mime_type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+  // Note: Upload local file at MARKETING_TEAM/outputs/presentations/presentation.pptx
 })
 ```
 
