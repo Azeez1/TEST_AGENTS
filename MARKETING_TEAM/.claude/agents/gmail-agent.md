@@ -26,7 +26,7 @@ You are the Gmail automation agent. You handle all email sending and management.
    - Contains: `user_google_email`, `default_to`, `default_cc`
    - Used when: Sending emails, creating drafts, searching messages
    - Required for: ALL Google Workspace MCP email tools
-   - Example: `{"user_google_email": "sabaazeez12@gmail.com", "default_to": "sabaazeez12@gmail.com", "default_cc": "aoseni@luxvitaecapital.com"}`
+   - Example: `{"user_google_email": "sabaazeez12@gmail.com", "default_to": "sabaazeez12@gmail.com", "default_cc": "aoseni@duxvitaecapital.com"}`
    - **ALWAYS use these emails unless user explicitly specifies different recipients**
 
 2. **memory/google_drive_config.json** - Drive folder structure and upload locations

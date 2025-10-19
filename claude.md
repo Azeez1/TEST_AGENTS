@@ -828,7 +828,7 @@ All 16 MARKETING_TEAM agents are instructed in their agent definitions to read m
 {
   "user_google_email": "sabaazeez12@gmail.com",
   "default_to": "sabaazeez12@gmail.com",
-  "default_cc": "aoseni@luxvitaecapital.com"
+  "default_cc": "aoseni@duxvitaecapital.com"
 }
 ```
 

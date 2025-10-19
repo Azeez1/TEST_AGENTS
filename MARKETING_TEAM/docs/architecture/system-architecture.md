@@ -1624,7 +1624,7 @@ Email sent with consistent configuration
 {
   "user_google_email": "sabaazeez12@gmail.com",
   "default_to": "sabaazeez12@gmail.com",
-  "default_cc": "aoseni@luxvitaecapital.com",
+  "default_cc": "aoseni@duxvitaecapital.com",
   "notes": "Primary email configuration for all agents"
 }
 ```
