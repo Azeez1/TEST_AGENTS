@@ -758,7 +758,9 @@ The Perplexity MCP server provides four tools for web research:
 "Use Perplexity reasoning to compare multi-agent vs monolithic systems"
 ```
 
-### Email Sending Strategy
+### Configuration Files in memory/
+
+**All agents should read these configuration files for consistent settings:**
 
 **Email Configuration (MARKETING_TEAM/memory/email_config.json):**
 ```json
@@ -769,7 +771,34 @@ The Perplexity MCP server provides four tools for web research:
 }
 ```
 
-**IMPORTANT:** All agents sending emails must use these default addresses unless user specifies different recipients.
+**Google Drive Configuration (MARKETING_TEAM/memory/google_drive_config.json):**
+```json
+{
+  "user_google_email": "sabaazeez12@gmail.com",
+  "folders": {
+    "ai_marketing_team": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
+    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
+    "social_media": "1mFHE1aKOIzhxL3BmIC593WfNt5G1GBxi",
+    "lead_gen": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
+  },
+  "upload_defaults": {
+    "presentations": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "documents": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
+    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
+    "leads": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
+  }
+}
+```
+
+**IMPORTANT:**
+- All agents sending emails must use email_config.json defaults unless user specifies different recipients
+- All agents uploading to Google Drive must read google_drive_config.json to get proper folder IDs
+
+---
+
+### Email Sending Strategy
 
 **Two approaches based on attachment needs:**
 

@@ -1,0 +1,47 @@
+{
+  "user_google_email": "sabaazeez12@gmail.com",
+  "default_folder_id": "root",
+  "folders": {
+    "ai_marketing_team": {
+      "id": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+      "name": "AI_Marketing_Team_Files",
+      "use_for": "All marketing agent outputs (default upload location)"
+    },
+    "videos": {
+      "id": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
+      "name": "Videos ",
+      "use_for": "Video content from video-producer agent"
+    },
+    "images": {
+      "id": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
+      "name": "Image",
+      "use_for": "Images from visual-designer agent"
+    },
+    "social_media": {
+      "id": "1mFHE1aKOIzhxL3BmIC593WfNt5G1GBxi",
+      "name": "Social_Media Post",
+      "use_for": "Social media content from social-media-manager"
+    },
+    "infographics": {
+      "id": "1piNwcvocg2DW8RC0VDaxxBrImkhh320R",
+      "name": "Infographics",
+      "use_for": "Infographics and visual content"
+    },
+    "lead_gen": {
+      "id": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_",
+      "name": "LEAD_GEN",
+      "use_for": "Lead lists from lead-gen-agent"
+    }
+  },
+  "upload_defaults": {
+    "presentations": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "documents": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "spreadsheets": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "pdfs": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
+    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
+    "social_media": "1mFHE1aKOIzhxL3BmIC593WfNt5G1GBxi",
+    "leads": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
+  },
+  "notes": "Google Drive configuration for all agents. Agents should read this file to determine where to upload files. Default location is AI_Marketing_Team_Files folder unless content type requires specific folder."
+}
