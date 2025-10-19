@@ -137,7 +137,7 @@ TEST_AGENTS/
 │   ├── tools/                       ← Marketing tools
 │   │   ├── openai_gpt4o_image.py    ← GPT-4o image generation
 │   │   ├── gmail_api.py             ← Gmail integration
-│   │   ├── google_drive.py          ← Google Drive uploads
+│   │   ├── upload_to_drive.py       ← Google Drive binary file uploads (fills MCP gap)
 │   │   ├── pdf_generator.py         ← PDF generation
 │   │   ├── sora_video.py            ← Sora video API
 │   │   ├── platform_formatters.py   ← Social media formatters
@@ -349,10 +349,11 @@ Output format:
 - Reusable libraries called by multiple agents
 - SDK integration with @tool decorators
 - Unique tools not available in MCP servers (GPT-4o images, Sora videos, PDF generation, PowerPoint)
+- **MCP gap fillers** - Functions that MCP servers can't handle (e.g., upload_to_drive.py for local binary files)
 - Robust error handling, rate limiting, authentication
 - Production-ready code with logging and validation
-- Examples: openai_gpt4o_image.py, sora_video.py, send_email_with_attachment.py
-- **Note:** Google Drive/Gmail now handled by google-workspace MCP server
+- Examples: openai_gpt4o_image.py, sora_video.py, send_email_with_attachment.py, upload_to_drive.py
+- **Note:** Google Drive/Gmail text operations handled by google-workspace MCP server
 
 **scripts/** - One-Off Utilities & Test Tools
 - Standalone executables for specific tasks
@@ -795,6 +796,37 @@ The Perplexity MCP server provides four tools for web research:
 **IMPORTANT:**
 - All agents sending emails must use email_config.json defaults unless user specifies different recipients
 - All agents uploading to Google Drive must read google_drive_config.json to get proper folder IDs
+
+---
+
+### Google Drive Upload Strategy
+
+**Two approaches based on file type:**
+
+**Text Files (Docs, Sheets, etc.):**
+- Use `mcp__google-workspace__create_drive_file` (Google Workspace MCP tool)
+- Perfect for creating Google Docs, Sheets, Forms from text content
+- Fast and simple, already authenticated through MCP
+- Requires text content or HTTP URL
+
+**Binary Files (PowerPoint, PDF, Excel, Images, Videos):**
+- Use `tools/upload_to_drive.py` (Python Drive API)
+- Handles local binary file uploads (PPTX, PDF, XLSX, PNG, MP4, etc.)
+- Fills the MCP gap - google-workspace MCP can't upload local binary files
+- Auto-detects MIME types from file extensions
+- **Always read folder IDs from memory/google_drive_config.json**
+
+**Usage Example:**
+```python
+from tools.upload_to_drive import upload_to_drive
+
+result = upload_to_drive(
+    file_path="outputs/presentations/deck.pptx",
+    file_name="My Presentation.pptx",
+    folder_id="1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv"  # From google_drive_config.json
+)
+# Returns: {'file_id': '...', 'file_name': '...', 'web_view_link': '...'}
+```
 
 ---
 
