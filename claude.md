@@ -206,7 +206,7 @@ TEST_AGENTS/
 |-------|-----------|-------------|
 | **router-agent** | Coordinates complex multi-agent campaigns | `"Use router-agent to plan a product launch campaign"` |
 | **content-strategist** | Full campaign orchestration | `"Use content-strategist to plan Q1 content"` |
-| **research-agent** | Evidence-backed market research, competitive intelligence, web scraping | `"Use research-agent to investigate best practices"` |
+| **research-agent** | 🔥 **HYBRID:** Custom Perplexity research tools + MCP for comprehensive market research, competitive intelligence, web scraping | `"Use research-agent to research AI marketing trends"` |
 | **lead-gen-agent** | ✨ **NEW** B2B/local lead generation via Bright Data web scraping | `"Use lead-gen-agent to find 50 SaaS leads in SF"` |
 | **copywriter** | Blog posts, articles, web copy (2000+ words) | `"Use copywriter to write a blog about AI trends"` |
 | **editor** | Content review, grammar, brand voice alignment | `"Use editor to review this blog post"` |
@@ -553,11 +553,23 @@ All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
   - **editor** - get_doc_content, modify_doc_text, create_doc
   - **content-strategist** - create_event, create_spreadsheet, create_doc
 
-#### perplexity MCP (Web Search & Research)
-- **research-agent** - All perplexity tools (ask, reason, search, research)
-- **seo-specialist** - All perplexity tools
-- **lead-gen-agent** - All perplexity tools
-- **landing-page-specialist** - All perplexity tools
+#### perplexity MCP (Web Search & Research) + Custom Research Tools
+
+**🔥 HYBRID APPROACH:** research-agent uses BOTH custom Python tools AND MCP tools
+
+**Custom Perplexity Tools (Primary):**
+- **research-agent** - `conduct_research()`, `quick_research()`, `strategic_analysis()` (marketing-optimized)
+- **seo-specialist** - Can use custom tools via import
+- **copywriter** - Can use custom tools for research
+- **content-strategist** - Can use custom tools for strategic planning
+
+**Working MCP Tools (Backup & Specialized):**
+- ✅ **mcp__perplexity__perplexity_ask** - Conversational search (all agents)
+- ✅ **mcp__perplexity__perplexity_reason** - Reasoning analysis (all agents)
+- ✅ **mcp__perplexity__perplexity_search** - Web search/SERP results (all agents)
+- ❌ **mcp__perplexity__perplexity_research** - BROKEN (replaced by `conduct_research`)
+
+**Strategy:** Use custom tools for comprehensive research, MCP tools for lightweight queries and backup
 
 #### bright-data MCP (Web Scraping & Lead Generation)
 - **research-agent** - search_engine, scrape_as_markdown
@@ -630,10 +642,27 @@ including metrics, wins, challenges, and Q2 preview."
 San Francisco with 50-200 employees."
 ```
 
-#### Research with Citations
+#### Comprehensive Research (Custom Tool)
 ```
-"Use research-agent with perplexity to research AI marketing trends and
-provide citation-backed insights on what's working in 2025."
+"Use research-agent to conduct comprehensive research on AI marketing automation
+trends in 2025. Include adoption rates, ROI data, and top tools."
+
+# Uses conduct_research() - returns 2000-4000 word formatted report with citations
+```
+
+#### Quick Stat Lookup (MCP Tool)
+```
+"Use research-agent to get the average email open rate for B2B SaaS"
+
+# Uses mcp__perplexity__perplexity_ask - fast, lightweight
+```
+
+#### Strategic Analysis (Custom Tool)
+```
+"Use research-agent to analyze whether we should invest in multi-agent AI
+vs traditional marketing automation. Include strategic comparison."
+
+# Uses strategic_analysis() - deep reasoning with visible thinking
 ```
 
 #### Automate Browser Tasks
@@ -1019,14 +1048,18 @@ These are gitignored and local-only.
 
 ---
 
-**Last Updated:** 2025-10-16
+**Last Updated:** 2025-01-19
 **Recent Changes:**
+- 🔥 **HYBRID Perplexity Research** - Custom Python tools + MCP tools for research-agent (maximum reliability)
+  - 3 custom tools: `conduct_research()`, `quick_research()`, `strategic_analysis()`
+  - Kept 3 working MCP tools: `perplexity_ask`, `perplexity_reason`, `perplexity_search`
+  - Redundancy strategy: if custom fails → fallback to MCP
+  - See [PERPLEXITY_RESEARCH_TOOLS.md](MARKETING_TEAM/docs/PERPLEXITY_RESEARCH_TOOLS.md)
 - ✨ **NEW lead-gen-agent** - B2B/local lead generation with Bright Data MCP (5,000 free requests/month)
 - ✨ **NEW MCP servers** - sequential-thinking and fetch for enhanced capabilities
-- **Enhanced agents** - research-agent, seo-specialist, analyst, landing-page-specialist with competitive intelligence
+- **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated .mcp.json.example with new MCP server configurations
-- Updated all documentation to reflect 22 total agents (16 marketing + 5 testing + 1 user story)
+- Updated all documentation to reflect hybrid research approach
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
