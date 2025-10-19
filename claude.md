@@ -497,13 +497,84 @@ All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
 
 **Which agents use which skills:**
 
+#### Visual & Creative Agents
 - **visual-designer:** algorithmic-art, canvas-design, theme-factory, figma
-- **presentation-designer:** theme-factory, artifacts-builder
-- **social-media-manager:** algorithmic-art, slack-gif-creator
-- **landing-page-specialist:** artifacts-builder, theme-factory
+- **social-media-manager:** algorithmic-art, slack-gif-creator, canvas-design
+- **presentation-designer:** pptx, theme-factory, artifacts-builder, canvas-design
+- **video-producer:** *(No skills - uses marketing-tools MCP directly)*
+
+#### Content & Strategy Agents
 - **copywriter:** internal-comms
+- **landing-page-specialist:** artifacts-builder, theme-factory
 - **pdf-specialist:** pdf-filler, canvas-design
-- **All other agents:** Can use any skill when appropriate, plus filesystem (all) and context7 (automatic)
+- **email-specialist:** *(No skills)*
+- **editor:** *(No skills)*
+- **gmail-agent:** *(No skills)*
+
+#### Research & Analysis Agents
+- **research-agent:** filesystem
+- **seo-specialist:** filesystem
+- **lead-gen-agent:** filesystem
+- **analyst:** filesystem
+
+#### Orchestration Agents
+- **router-agent:** context7
+- **content-strategist:** context7
+
+**Note:** All agents inherit access to all 17 skills via MARKETING_TEAM/.claude/settings.json, but the above lists show which skills each agent is designed to use based on their agent definitions.
+
+---
+
+### Agent MCP Tools Reference
+
+**Which agents use which MCP servers:**
+
+#### marketing-tools MCP (OpenAI APIs)
+- **visual-designer** - generate_gpt4o_image
+- **social-media-manager** - generate_gpt4o_image
+- **video-producer** - generate_sora_video
+- **presentation-designer** - generate_gpt4o_image
+
+#### google-workspace MCP (Gmail, Drive, Docs, Sheets, Calendar)
+- **All agents** can use google-workspace tools when needed
+- **Primary users:**
+  - **gmail-agent** - send_gmail_message, search_gmail_messages, get_gmail_message_content
+  - **email-specialist** - send_gmail_message, create_doc
+  - **copywriter** - create_doc, update_doc
+  - **visual-designer** - create_drive_file (file uploads)
+  - **presentation-designer** - create_drive_file (file uploads)
+  - **pdf-specialist** - create_doc, create_drive_file
+  - **landing-page-specialist** - create_doc, upload_to_drive
+  - **seo-specialist** - Spreadsheet operations
+  - **research-agent** - create_doc
+  - **lead-gen-agent** - Spreadsheet operations, create_drive_file
+  - **analyst** - Spreadsheet operations, create_doc
+  - **editor** - get_doc_content, modify_doc_text, create_doc
+  - **content-strategist** - create_event, create_spreadsheet, create_doc
+
+#### perplexity MCP (Web Search & Research)
+- **research-agent** - All perplexity tools (ask, reason, search, research)
+- **seo-specialist** - All perplexity tools
+- **lead-gen-agent** - All perplexity tools
+- **landing-page-specialist** - All perplexity tools
+
+#### bright-data MCP (Web Scraping & Lead Generation)
+- **research-agent** - search_engine, scrape_as_markdown
+- **seo-specialist** - search_engine, scrape_as_markdown
+- **lead-gen-agent** - All bright-data tools (60+ scrapers)
+- **landing-page-specialist** - All bright-data tools
+- **analyst** - search_engine, scrape_as_markdown
+
+#### playwright MCP (Browser Automation)
+- **seo-specialist** - navigate, screenshot, click, fill, get_visible_text
+- **research-agent** - navigate, screenshot, evaluate, get_visible_html
+
+#### sequential-thinking MCP (Structured Reasoning)
+- **router-agent** - sequentialthinking
+- **content-strategist** - sequentialthinking
+
+#### n8n-mcp (Workflow Automation)
+- Available to all agents but typically used by orchestration agents for campaign automation
 
 ---
 
