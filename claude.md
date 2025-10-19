@@ -760,6 +760,17 @@ The Perplexity MCP server provides four tools for web research:
 
 ### Email Sending Strategy
 
+**Email Configuration (MARKETING_TEAM/memory/email_config.json):**
+```json
+{
+  "user_google_email": "sabaazeez12@gmail.com",
+  "default_to": "sabaazeez12@gmail.com",
+  "default_cc": "aoseni@luxvitaecapital.com"
+}
+```
+
+**IMPORTANT:** All agents sending emails must use these default addresses unless user specifies different recipients.
+
 **Two approaches based on attachment needs:**
 
 **Without Attachments:**
@@ -767,6 +778,7 @@ The Perplexity MCP server provides four tools for web research:
 - Fast and simple, already authenticated through MCP
 - Perfect for text-only emails
 - No file size limitations for body content
+- **Always use user_google_email from email_config.json**
 
 **With Attachments:**
 - Use `tools/send_email_with_attachment.py` (Python Gmail API)
