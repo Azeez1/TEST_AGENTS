@@ -11,6 +11,7 @@ tools:
   - mcp__google-workspace__send_gmail_message
   - mcp__google-workspace__search_gmail_messages
   - mcp__google-workspace__get_gmail_message_content
+skills: []
 ---
 
 # Gmail Agent
