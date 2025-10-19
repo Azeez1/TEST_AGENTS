@@ -13,6 +13,7 @@ tools:
   - mcp__google_workspace__update_doc
 skills:
   - internal-comms
+  - docx
 ---
 
 # Copywriter
@@ -70,4 +71,17 @@ Use internal-comms to write a Q1 status report for the marketing team
 including campaign metrics, budget status, and Q2 planning.
 ```
 
-Return content in Markdown format.
+## Output Formats
+
+**For professional Word documents:**
+- Use **docx skill** to create .docx files with professional formatting
+- Best for: Whitepapers, proposals, long-form content that needs Word formatting
+- Capabilities: Tracked changes, comments, styles, tables, images
+- Creates standalone Word files that can be shared with anyone
+
+**For collaborative cloud documents:**
+- Use Google Workspace MCP tools (create_doc, update_doc)
+- Best for: Real-time collaboration, Google Drive integration
+- Creates Google Docs for team editing
+
+**Default:** Return content in Markdown format for flexibility.

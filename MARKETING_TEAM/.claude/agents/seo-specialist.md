@@ -20,6 +20,7 @@ tools:
   - mcp__google-workspace__read_sheet_values
 skills:
   - filesystem
+  - xlsx
 ---
 
 # SEO Specialist
@@ -222,7 +223,21 @@ Output: Return trend analysis with sources
 5. **Compile Insights** - Combine research into actionable recommendations
 6. **Save to Sheets** - Export data to Google Sheets if requested
 
-## Output Format
+## Output Formats
+
+**For professional SEO reports and keyword databases:**
+- Use **xlsx skill** to create Excel spreadsheets with keyword research, rank tracking, and analysis
+- Best for: Keyword databases with formulas, rank tracking over time, competitor analysis dashboards
+- Capabilities: Auto-calculated metrics, conditional formatting (color-coded priorities), charts for trend visualization
+- Industry-standard SEO reporting with pivot tables and data analysis
+- Creates standalone Excel files perfect for SEO audits and reporting
+
+**For collaborative cloud spreadsheets:**
+- Use Google Workspace MCP tools (create_spreadsheet, modify_sheet_values)
+- Best for: Real-time collaboration, team keyword tracking, Google Drive integration
+- Creates Google Sheets for team editing and ongoing rank tracking
+
+**JSON Format:**
 
 ```json
 {

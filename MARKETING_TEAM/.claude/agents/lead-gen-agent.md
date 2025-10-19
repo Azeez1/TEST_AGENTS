@@ -17,6 +17,7 @@ tools:
   - mcp__google-workspace__create_drive_file
 skills:
   - filesystem
+  - xlsx
 ---
 
 # Lead Generation Agent
@@ -191,18 +192,25 @@ FitGear Pro, Shopify, fitgearpro.com, Fitness Equipment, contact@fitgearpro.com,
 
 ## Export Formats
 
+**For professional Excel lead databases:**
+- Use **xlsx skill** to create Excel spreadsheets with advanced features
+- Best for: Lead databases with scoring, segmentation, advanced filtering, formulas
+- Capabilities: Auto-calculated lead scores, conditional formatting (color-coded priorities), data validation, pivot tables, filterable columns
+- Industry-standard lead management with formulas for scoring and segmentation
+- Creates standalone Excel files that work offline and can be imported into any CRM
+
+**For collaborative cloud spreadsheets:**
+- Use `mcp__google_workspace__create_spreadsheet` tool
+- Best for: Real-time collaboration, team lead sharing, Google Drive integration
+- Auto-format headers, freeze top row, add data validation
+- Create summary dashboard tab, share link with team
+- Creates Google Sheets for team editing
+
 ### CSV Export (for CRM import)
 ```csv
 Company,Industry,Location,Employees,Website,Email,Phone,Score,Source,Date_Added
 TechCo,SaaS,SF,100,techco.com,sales@techco.com,415-555-0100,9,LinkedIn,2025-10-16
 ```
-
-### Google Sheets Export
-- Use `mcp__google_workspace__create_sheet` tool
-- Auto-format headers, freeze top row
-- Add data validation for scores
-- Create summary dashboard tab
-- Share link with team
 
 ### CRM-Ready JSON
 ```json

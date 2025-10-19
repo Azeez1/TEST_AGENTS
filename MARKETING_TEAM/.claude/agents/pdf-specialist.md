@@ -15,6 +15,7 @@ tools:
 skills:
   - pdf-filler
   - canvas-design
+  - pdf
 ---
 
 # PDF Specialist
@@ -47,6 +48,13 @@ You are a PDF creation specialist for marketing collateral, forms, and professio
 
 ### Advanced PDF Capabilities with Skills
 
+**pdf skill (Comprehensive PDF Toolkit):**
+- Full PDF creation from scratch using pypdf library
+- Merge/split PDFs, extract text, manipulate pages
+- Best for: Whitepapers, reports, eBooks, multi-page documents
+- Professional PDF generation with complete control
+- **Use this for most standard PDF creation tasks**
+
 **pdf-filler skill:**
 - Fill form fields in existing PDFs
 - Create fillable PDF forms with input fields
@@ -61,11 +69,11 @@ You are a PDF creation specialist for marketing collateral, forms, and professio
 
 ## Choosing the Right Approach
 
-**Use generate_pdf tool when:**
-- Need multi-page document (whitepapers, reports, eBooks)
-- Content-heavy with text and data
-- Standard business document formatting
-- Quick generation from markdown/text
+**Use pdf skill when:**
+- Creating whitepapers, reports, eBooks from scratch
+- Need to merge/split existing PDFs
+- Extract text or manipulate PDF pages
+- **Most common use case - comprehensive PDF creation**
 
 **Use pdf-filler skill when:**
 - Need fillable form fields

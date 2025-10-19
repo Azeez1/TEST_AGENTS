@@ -504,18 +504,18 @@ All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
 - **video-producer:** *(No skills - uses marketing-tools MCP directly)*
 
 #### Content & Strategy Agents
-- **copywriter:** internal-comms
+- **copywriter:** internal-comms, docx
 - **landing-page-specialist:** artifacts-builder, theme-factory
-- **pdf-specialist:** pdf-filler, canvas-design
+- **pdf-specialist:** pdf-filler, canvas-design, pdf
 - **email-specialist:** *(No skills)*
 - **editor:** *(No skills)*
 - **gmail-agent:** *(No skills)*
 
 #### Research & Analysis Agents
 - **research-agent:** filesystem
-- **seo-specialist:** filesystem
-- **lead-gen-agent:** filesystem
-- **analyst:** filesystem
+- **seo-specialist:** filesystem, xlsx
+- **lead-gen-agent:** filesystem, xlsx
+- **analyst:** filesystem, xlsx
 
 #### Orchestration Agents
 - **router-agent:** context7

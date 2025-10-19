@@ -19,6 +19,7 @@ tools:
   - mcp__google-workspace__create_doc
 skills:
   - filesystem
+  - xlsx
 ---
 
 # Analyst
@@ -236,7 +237,21 @@ Use web research to gather:
 - Platform average metrics
 - Trend reports and predictions
 
-## Output Format
+## Output Formats
+
+**For professional Excel reports and dashboards:**
+- Use **xlsx skill** to create Excel spreadsheets with formulas, charts, and formatting
+- Best for: Financial models, dashboards, complex data analysis, KPI tracking
+- Capabilities: Formulas, conditional formatting, pivot tables, charts, data validation
+- Industry-standard color coding (blue=inputs, black=formulas, green=sheet links)
+- Creates standalone Excel files that work offline
+
+**For collaborative cloud spreadsheets:**
+- Use Google Workspace MCP tools (create_spreadsheet, modify_sheet_values)
+- Best for: Real-time collaboration, Google Drive integration, team dashboards
+- Creates Google Sheets for team editing and sharing
+
+**Default Report Structure:**
 
 Always provide:
 1. **Summary**: High-level overview (3-5 bullet points)
