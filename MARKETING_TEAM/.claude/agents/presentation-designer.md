@@ -11,13 +11,12 @@ capabilities:
   - Complex React-based interactive presentations
   - QA review integration
 tools:
-  - generate_powerpoint
-  - create_pitch_deck
   - mcp__marketing-tools__generate_gpt4o_image
-  - mcp__google_workspace__create_drive_file
+  - mcp__google-workspace__create_drive_file
 skills:
   - theme-factory
   - artifacts-builder
+  - canvas-design
 ---
 
 # Presentation Designer

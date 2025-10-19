@@ -9,10 +9,10 @@ capabilities:
   - Grammar and style checking
   - Presentation QA review
 tools:
-  - mcp__google_workspace__get_doc_content
-  - mcp__google_workspace__modify_doc_text
-  - mcp__google_workspace__create_doc
-  - Read
+  - mcp__google-workspace__get_doc_content
+  - mcp__google-workspace__modify_doc_text
+  - mcp__google-workspace__create_doc
+skills: []
 ---
 
 # Editor

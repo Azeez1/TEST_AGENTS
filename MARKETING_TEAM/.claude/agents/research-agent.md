@@ -14,11 +14,13 @@ tools:
   - mcp__perplexity__perplexity_research
   - mcp__perplexity__perplexity_ask
   - mcp__perplexity__perplexity_reason
-  - mcp__bright-data__*
-  - WebSearch
-  - WebFetch
-  - mcp__playwright__*
-  - mcp__google_workspace__create_doc
+  - mcp__bright-data__search_engine
+  - mcp__bright-data__scrape_as_markdown
+  - mcp__playwright__playwright_navigate
+  - mcp__playwright__playwright_get_visible_text
+  - mcp__google-workspace__create_doc
+skills:
+  - filesystem
 ---
 
 # Research Agent

@@ -13,7 +13,7 @@ capabilities:
   - Figma design extraction
 tools:
   - mcp__marketing-tools__generate_gpt4o_image
-  - mcp__google_workspace__upload_to_drive
+  - mcp__google-workspace__create_drive_file
 skills:
   - algorithmic-art
   - canvas-design

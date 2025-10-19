@@ -10,8 +10,7 @@ capabilities:
   - Cost estimation
 tools:
   - mcp__marketing-tools__generate_sora_video
-  - create_video_storyboard
-  - mcp__google_workspace__upload_to_drive
+  - mcp__google-workspace__create_drive_file
 ---
 
 # Video Producer

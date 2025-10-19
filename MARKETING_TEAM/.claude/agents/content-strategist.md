@@ -8,9 +8,12 @@ capabilities:
   - Quality oversight
   - Multi-channel strategy
 tools:
-  - mcp__google_workspace__create_calendar_event
-  - mcp__google_workspace__create_sheet
-  - mcp__google_workspace__create_doc
+  - mcp__google-workspace__create_event
+  - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__create_doc
+  - mcp__sequential-thinking__sequentialthinking
+skills:
+  - context7
 ---
 
 # Content Strategist

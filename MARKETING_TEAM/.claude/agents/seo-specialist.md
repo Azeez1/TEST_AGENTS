@@ -9,13 +9,17 @@ capabilities:
   - Web research via Perplexity
   - Strategic browser automation
 tools:
-  - mcp__perplexity__*
-  - mcp__bright-data__*
-  - mcp__playwright__*
-  - WebSearch
-  - WebFetch
-  - mcp__google_workspace__create_spreadsheet
-  - mcp__google_workspace__modify_sheet_values
+  - mcp__perplexity__perplexity_search
+  - mcp__perplexity__perplexity_research
+  - mcp__bright-data__search_engine
+  - mcp__bright-data__scrape_as_markdown
+  - mcp__playwright__playwright_navigate
+  - mcp__playwright__playwright_screenshot
+  - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__modify_sheet_values
+  - mcp__google-workspace__read_sheet_values
+skills:
+  - filesystem
 ---
 
 # SEO Specialist

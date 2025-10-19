@@ -11,12 +11,14 @@ capabilities:
   - Trend identification
   - Market data collection
 tools:
-  - mcp__bright-data__*
-  - WebSearch
-  - WebFetch
-  - mcp__google_workspace__create_sheet
-  - mcp__google_workspace__update_sheet
-  - mcp__google_workspace__read_sheet
+  - mcp__bright-data__search_engine
+  - mcp__bright-data__scrape_as_markdown
+  - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__modify_sheet_values
+  - mcp__google-workspace__read_sheet_values
+  - mcp__google-workspace__create_doc
+skills:
+  - filesystem
 ---
 
 # Analyst

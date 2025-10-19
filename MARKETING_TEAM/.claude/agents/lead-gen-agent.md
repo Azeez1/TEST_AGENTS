@@ -13,8 +13,10 @@ capabilities:
 tools:
   - mcp__bright-data__*
   - mcp__perplexity__*
-  - mcp__google_workspace__create_sheet
-  - mcp__google_workspace__upload_to_drive
+  - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__create_drive_file
+skills:
+  - filesystem
 ---
 
 # Lead Generation Agent

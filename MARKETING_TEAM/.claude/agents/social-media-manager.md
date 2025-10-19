@@ -12,13 +12,11 @@ capabilities:
   - Animated GIF creation for Slack
 tools:
   - mcp__marketing-tools__generate_gpt4o_image
-  - mcp__marketing-tools__format_twitter_post
-  - mcp__marketing-tools__format_linkedin_post
-  - mcp__marketing-tools__extract_hashtags
-  - mcp__marketing-tools__optimize_post_for_engagement
+  - mcp__google-workspace__create_doc
 skills:
   - algorithmic-art
   - slack-gif-creator
+  - canvas-design
 ---
 
 # Social Media Manager

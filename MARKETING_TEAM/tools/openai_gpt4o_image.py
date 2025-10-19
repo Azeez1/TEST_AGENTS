@@ -9,9 +9,21 @@ import json
 import httpx
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
-# Initialize OpenAI client
-openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Ensure environment variables (including OPENAI_API_KEY) are loaded before use
+BASE_DIR = Path(__file__).resolve().parents[1]
+load_dotenv(BASE_DIR / ".env")
+
+
+def _get_openai_client() -> AsyncOpenAI:
+    """Create an OpenAI client after verifying configuration."""
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "OPENAI_API_KEY not found. Add it to MARKETING_TEAM/.env or export it before running."
+        )
+    return AsyncOpenAI(api_key=api_key)
 
 
 @tool(
@@ -55,8 +67,10 @@ async def generate_gpt4o_image(args):
     size = size_map.get(aspect_ratio, "1024x1024")
 
     try:
+        client = _get_openai_client()
+
         # Call GPT-4o image generation
-        response = await openai_client.images.generate(
+        response = await client.images.generate(
             model="gpt-image-1",  # GPT-4o image model
             prompt=prompt,
             size=size,
@@ -125,9 +139,19 @@ async def generate_gpt4o_image(args):
         }
 
     except Exception as e:
+        error_message = (
+            str(e)
+            if isinstance(e, RuntimeError)
+            else f"{type(e).__name__}: {e}"
+        )
         return {
             "content": [{
                 "type": "text",
-                "text": f"Error generating image: {str(e)}\n\nMake sure OPENAI_API_KEY is set in environment."
+                "text": (
+                    "Error generating image "
+                    f"(generate_gpt4o_image): {error_message}\n\n"
+                    "Verify OPENAI_API_KEY is present in MARKETING_TEAM/.env"
+                    " and dependencies are installed."
+                )
             }]
         }

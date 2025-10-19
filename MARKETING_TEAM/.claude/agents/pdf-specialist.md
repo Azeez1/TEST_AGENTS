@@ -10,8 +10,8 @@ capabilities:
   - PDF form filling
   - Beautiful PDF document design
 tools:
-  - generate_pdf
-  - mcp__google_workspace__upload_to_drive
+  - mcp__google-workspace__create_doc
+  - mcp__google-workspace__create_drive_file
 skills:
   - pdf-filler
   - canvas-design

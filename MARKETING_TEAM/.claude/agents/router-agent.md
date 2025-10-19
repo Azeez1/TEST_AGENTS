@@ -9,10 +9,9 @@ capabilities:
   - Multi-turn dialogue
   - Clarification questions
 tools:
-  - mcp__marketing-tools__classify_intent
-  - mcp__marketing-tools__get_agent_capabilities
-  - mcp__marketing-tools__list_available_agents
-  - mcp__marketing-tools__format_agent_response
+  - mcp__sequential-thinking__sequentialthinking
+skills:
+  - context7
 ---
 
 # Router Agent

@@ -350,14 +350,15 @@ Output format:
 **tools/** - Production Agent Components
 - Reusable libraries called by multiple agents
 - SDK integration with @tool decorators
-- API wrappers (Gmail, OpenAI, Sora, Drive)
+- Unique tools not available in MCP servers (GPT-4o images, Sora videos, PDF generation, PowerPoint)
 - Robust error handling, rate limiting, authentication
 - Production-ready code with logging and validation
-- Examples: gmail_api.py (372 lines), send_email_with_attachment.py
+- Examples: openai_gpt4o_image.py, sora_video.py, send_email_with_attachment.py
+- **Note:** Google Drive/Gmail now handled by google-workspace MCP server
 
-**scripts/** - One-Off Utilities
+**scripts/** - One-Off Utilities & Test Tools
 - Standalone executables for specific tasks
-- Testing and debugging tools
+- Testing and debugging tools (test_mcp_connection.py, test_mcp_imports.py)
 - Manual workflows and one-time conversions
 - Less robust, can have hardcoded values
 - Simple output, minimal error handling

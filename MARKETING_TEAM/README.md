@@ -370,8 +370,6 @@ MARKETING_TEAM/
 │       └── ... (11 more)
 ├── tools/                            ← Custom tools
 │   ├── openai_gpt4o_image.py
-│   ├── gmail_api.py
-│   ├── google_drive.py
 │   └── ... (more tools)
 ├── scripts/                          ← Utility scripts
 │   ├── create_word_documents.py
