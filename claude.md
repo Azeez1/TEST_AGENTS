@@ -21,28 +21,28 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 **Priority Order:**
 1. **Use existing agents** (`.claude/agents/*.md` files) - Invoke them explicitly
-2. **Use existing tools** (`tools/*.py` files) - They're production-ready
-3. **Use installed skills** (`.claude/skills/*`) - 13 skills available
-4. **Use MCP servers** - 7 servers configured (Playwright, Google Workspace, etc.)
+2. **Use installed skills** (`.claude/skills/*`) - 13 powerful skills available
+3. **Use MCP servers** - 7 external integrations (Playwright, Google Workspace, Perplexity, Bright Data, etc.)
+4. **Use existing tools** (`tools/*.py`) - Simpler utilities and API wrappers
 5. **Only if none exist** - Then create new implementations
 
 **Examples of What NOT To Do:**
-- ❌ Writing new Python code for PowerPoint when `tools/create_presentation.py` exists
-- ❌ Creating new email scripts when `tools/send_email_with_attachment.py` exists
+- ❌ Writing new Python code for PowerPoint when pptx skill exists
+- ❌ Creating new email scripts when Gmail MCP exists
 - ❌ Building new image generation when `tools/openai_gpt4o_image.py` exists
 - ❌ Installing new libraries when existing tools already have dependencies
 
 **Examples of What TO Do:**
-- ✅ "Use the presentation-designer agent to create slides"
-- ✅ "Use the gmail-agent to send this email"
-- ✅ "Use our existing PowerPoint tool in tools/create_presentation.py"
-- ✅ "Use the visual-designer agent with GPT-4o"
+- ✅ "Use the presentation-designer agent with pptx skill for PowerPoint"
+- ✅ "Use gmail-agent with Google Workspace MCP to send emails"
+- ✅ "Use the visual-designer agent with GPT-4o image generation"
+- ✅ "Use existing tools in tools/ for simple API wrappers"
 
 **How to Check What Exists:**
 1. Check `.claude/agents/` for available agents
-2. Check `tools/` for existing Python tools
-3. Check `.claude/skills/` for installed skills
-4. Check `.claude.json` or `.mcp.json` for MCP servers
+2. Check `.claude/skills/` for installed skills
+3. Check `.claude.json` or `.mcp.json` for MCP servers
+4. Check `tools/` for existing Python tools
 5. Ask the user if unsure: "Do we have a tool for this already?"
 
 **This saves time, avoids duplication, and uses battle-tested code.**
@@ -138,12 +138,10 @@ TEST_AGENTS/
 │   │   ├── openai_gpt4o_image.py    ← GPT-4o image generation
 │   │   ├── gmail_api.py             ← Gmail integration
 │   │   ├── google_drive.py          ← Google Drive uploads
-│   │   ├── powerpoint_generator.py  ← PowerPoint creation
 │   │   ├── pdf_generator.py         ← PDF generation
 │   │   ├── sora_video.py            ← Sora video API
 │   │   ├── platform_formatters.py   ← Social media formatters
 │   │   ├── router_tools.py          ← Agent coordination tools
-│   │   ├── create_presentation.py   ← Presentation creation
 │   │   ├── send_email_with_attachment.py  ← Email attachments via Gmail API
 │   │   ├── send_deliverables_email.py     ← Automated deliverables sender
 │   │   └── send_marketing_team_doc.py     ← Email marketing team documentation
