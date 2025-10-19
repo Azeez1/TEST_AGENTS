@@ -1590,7 +1590,165 @@ Result: ✅ Ready to publish
 - Permission management
 - Storage tracking
 
-### 2. Rate Limiting & Safety
+---
+
+### 2. Memory System - Centralized Configuration
+
+**All 16 agents automatically read configuration from memory files** - eliminating hardcoded values and ensuring consistency.
+
+#### Architecture
+
+**Memory Files Location:** `MARKETING_TEAM/memory/`
+
+**Configuration Flow:**
+```
+User invokes agent (e.g., "Use gmail-agent to send email")
+    ↓
+Agent definition (.claude/agents/gmail-agent.md) loaded by Claude Code
+    ↓
+Agent reads "⚙️ Configuration Files (READ FIRST)" section
+    ↓
+Agent uses Read tool to load memory/email_config.json
+    ↓
+Agent extracts user_google_email, default_to, default_cc
+    ↓
+Agent uses configuration values in MCP tool calls
+    ↓
+Email sent with consistent configuration
+```
+
+#### Memory Files
+
+**1. email_config.json** - Email Defaults
+```json
+{
+  "user_google_email": "sabaazeez12@gmail.com",
+  "default_to": "sabaazeez12@gmail.com",
+  "default_cc": "aoseni@luxvitaecapital.com",
+  "notes": "Primary email configuration for all agents"
+}
+```
+
+**Used by:** ALL agents sending emails (gmail-agent, email-specialist, copywriter, etc.)
+**Why:** Ensures consistent email addresses across all email operations
+
+**2. google_drive_config.json** - Drive Folder Structure
+```json
+{
+  "user_google_email": "sabaazeez12@gmail.com",
+  "folders": {
+    "ai_marketing_team": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
+    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
+    "social_media": "1mFHE1aKOIzhxL3BmIC593WfNt5G1GBxi",
+    "lead_gen": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
+  },
+  "upload_defaults": {
+    "presentations": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "documents": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
+    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
+    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
+    "leads": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
+  }
+}
+```
+
+**Used by:** ALL agents uploading files to Google Drive
+**Why:** Ensures organized folder structure and prevents hardcoded folder IDs
+
+**3. brand_voice.json** - Brand Voice Guidelines
+```json
+{
+  "tone": "professional yet conversational",
+  "style": "clear, actionable, data-driven",
+  "keywords": ["AI", "automation", "efficiency"],
+  "avoid": ["jargon", "buzzwords", "hype"]
+}
+```
+
+**Used by:** copywriter, social-media-manager, email-specialist
+**Why:** Ensures consistent brand voice across all written content
+
+**4. visual_guidelines.json** - Visual Design Standards
+```json
+{
+  "brand_colors": {
+    "primary": "#FF5733",
+    "secondary": "#3498DB"
+  },
+  "fonts": {
+    "heading": "Montserrat",
+    "body": "Open Sans"
+  },
+  "image_styles": ["modern", "clean", "professional"]
+}
+```
+
+**Used by:** visual-designer, presentation-designer, pdf-specialist
+**Why:** Ensures consistent visual identity across all branded materials
+
+**5. docs_folder_structure.json** - Documentation Organization
+```json
+{
+  "subfolders": {
+    "getting-started": "Setup and configuration guides",
+    "guides": "How-to guides and workflows",
+    "architecture": "Technical architecture and build docs",
+    "reference": "API references and quick lookups"
+  }
+}
+```
+
+**Used by:** AI assistants (Claude Code, Cursor) when creating documentation
+**Why:** Ensures consistent documentation organization
+
+#### Implementation in Agent Definitions
+
+**Each agent `.md` file includes this section:**
+
+```markdown
+## ⚙️ Configuration Files (READ FIRST)
+
+**ALWAYS read these memory files before starting work:**
+
+1. **memory/email_config.json** - Email defaults
+   - Contains: `user_google_email`, `default_to`, `default_cc`
+   - Used when: Sending emails, creating drafts
+   - Required for: Google Workspace MCP email tools
+
+2. **memory/google_drive_config.json** - Drive folder structure
+   - Contains: Folder IDs for organized file storage
+   - Used when: Uploading files to Drive
+   - Required for: Google Drive file uploads
+
+**Why this matters:** These files ensure consistent email addresses and Drive organization across all agents. Never hardcode email addresses or folder IDs - always read from memory.
+```
+
+#### Benefits
+
+✅ **No Hardcoding** - Zero hardcoded email addresses or folder IDs in agent definitions
+✅ **Single Source of Truth** - Update one memory file, all 16 agents benefit
+✅ **Consistency** - All agents use same email addresses, same Drive folders, same brand voice
+✅ **Scalability** - Add new configuration fields without modifying agent definitions
+✅ **Environment-Agnostic** - Easy to switch between dev/staging/production configurations
+
+#### Update Process
+
+**To change email configuration for all agents:**
+1. Edit `memory/email_config.json`
+2. Change `default_to` from `user1@example.com` to `user2@example.com`
+3. Save file
+4. **All 16 agents now use new email address** - no code changes needed
+
+**To reorganize Drive folders:**
+1. Create new folders in Google Drive
+2. Copy new folder IDs
+3. Update `memory/google_drive_config.json`
+4. **All agents now upload to new folders** - no code changes needed
+
+---
+
+### 3. Rate Limiting & Safety
 
 **Gmail Rate Limiting:**
 ```python

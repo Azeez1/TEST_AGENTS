@@ -89,6 +89,38 @@ When you say:
 
 ---
 
+## 🧠 Memory System - Automatic Configuration
+
+**All agents automatically read configuration from memory files** - no hardcoded values!
+
+### How It Works
+
+1. **Each agent has a "⚙️ Configuration Files (READ FIRST)" section** in their definition
+2. **Agents read memory files at task start** using the Read tool or filesystem skill
+3. **Configuration is applied automatically** - emails, Drive folders, brand voice, visual styles
+4. **Update once, affects all agents** - change email config, all 16 agents use it
+
+### Memory Files (MARKETING_TEAM/memory/)
+
+| File | Purpose | Used By |
+|------|---------|---------|
+| `email_config.json` | Email defaults (`user_google_email`, `default_to`, `default_cc`) | ALL agents sending emails |
+| `google_drive_config.json` | Drive folder IDs for organized uploads | ALL agents uploading files |
+| `brand_voice.json` | Brand tone, style, writing guidelines | copywriter, social-media-manager, email-specialist |
+| `visual_guidelines.json` | Brand colors, fonts, image styles | visual-designer, presentation-designer, pdf-specialist |
+| `docs_folder_structure.json` | Documentation organization (AI assistants only) | Claude Code when creating docs |
+
+### Why This Matters
+
+✅ **No hardcoding** - Email addresses and folder IDs never hardcoded in agent definitions
+✅ **Consistency** - All agents use same email addresses, same Drive folders, same brand voice
+✅ **Easy updates** - Change one memory file, all agents benefit immediately
+✅ **Single source of truth** - Configuration lives in one place, not scattered across 16 files
+
+**Example:** Change `default_to` in `email_config.json` from `user1@example.com` to `user2@example.com` → all 16 agents now send emails to `user2@example.com` by default.
+
+---
+
 ## 🎨 Skills & Advanced Capabilities
 
 Your marketing agents now have access to **13 powerful skills** and **7 MCP servers**!

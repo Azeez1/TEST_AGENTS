@@ -788,9 +788,40 @@ The Perplexity MCP server provides four tools for web research:
 "Use Perplexity reasoning to compare multi-agent vs monolithic systems"
 ```
 
+## 🧠 Memory System - How It Works
+
+**Automatic Configuration Loading:**
+
+All 16 MARKETING_TEAM agents are instructed in their agent definitions to read memory configuration files at the start of each task. This ensures:
+- ✅ Consistent email addresses across all email operations (no hardcoding)
+- ✅ Consistent Drive folder structure for uploads (no hardcoded folder IDs)
+- ✅ Consistent brand voice and visual guidelines (no style drift)
+- ✅ Single source of truth for configuration (update once, affects all agents)
+
+**How Agents Access Memory:**
+
+1. **Agent Definition Includes Configuration Section** - Each agent's `.claude/agents/*.md` file contains a "⚙️ Configuration Files (READ FIRST)" section
+2. **Explicit Instructions to Read Files** - Section lists which memory files to read and when to use them
+3. **Agent Reads Files at Task Start** - Agent uses Read tool or filesystem skill to load configuration
+4. **Agent Uses Configuration Throughout Task** - Configuration values used instead of hardcoded defaults
+
+**Example from gmail-agent.md:**
+```markdown
+## ⚙️ Configuration Files (READ FIRST)
+
+**ALWAYS read these memory files before starting work:**
+
+1. **memory/email_config.json** - Email defaults (CRITICAL for ALL email operations)
+   - Contains: `user_google_email`, `default_to`, `default_cc`
+   - Used when: Sending emails, creating drafts, searching messages
+   - Required for: ALL Google Workspace MCP email tools
+```
+
+---
+
 ### Configuration Files in memory/
 
-**All agents should read these configuration files for consistent settings:**
+**Memory files provide centralized configuration for all agents:**
 
 **Email Configuration (MARKETING_TEAM/memory/email_config.json):**
 ```json
@@ -822,9 +853,27 @@ The Perplexity MCP server provides four tools for web research:
 }
 ```
 
-**IMPORTANT:**
-- All agents sending emails must use email_config.json defaults unless user specifies different recipients
-- All agents uploading to Google Drive must read google_drive_config.json to get proper folder IDs
+**Brand Voice (MARKETING_TEAM/memory/brand_voice.json):**
+- Tone, style, keywords, avoid-words, writing guidelines
+- Read by: copywriter, social-media-manager, email-specialist
+- Ensures consistent brand voice across all content
+
+**Visual Guidelines (MARKETING_TEAM/memory/visual_guidelines.json):**
+- Brand colors, fonts, image styles, design preferences
+- Read by: visual-designer, presentation-designer, pdf-specialist
+- Ensures consistent visual identity
+
+**Docs Folder Structure (MARKETING_TEAM/memory/docs_folder_structure.json):**
+- Documentation organization rules for AI assistants
+- Read by: AI assistants (Claude Code, Cursor, etc.) creating documentation
+- NOT for marketing agents - for codebase maintenance only
+
+**IMPORTANT - How Agents Use Memory:**
+- ✅ All agents sending emails → Read `email_config.json` for user_google_email, default_to, default_cc
+- ✅ All agents uploading to Drive → Read `google_drive_config.json` for folder IDs
+- ✅ Content agents → Read `brand_voice.json` for tone and style
+- ✅ Visual agents → Read `visual_guidelines.json` for brand colors and fonts
+- ✅ AI assistants → Read `docs_folder_structure.json` when creating docs
 
 ---
 
@@ -1039,22 +1088,37 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - Simpler and more powerful to just talk to Claude
 
 ### About Memory/Preferences
-Some agents store learned preferences:
-- `memory/brand_voice.json` - Marketing brand voice
-- `memory/learned_patterns.json` - Test generation patterns
-- `preferences_store.json` - User preferences
 
-These are gitignored and local-only.
+**All agents automatically read memory configuration files** - See "🧠 Memory System - How It Works" section above for complete details.
+
+**Memory files (MARKETING_TEAM/memory/):**
+- `email_config.json` - Email defaults (read by ALL agents sending emails)
+- `google_drive_config.json` - Drive folder IDs (read by ALL agents uploading files)
+- `brand_voice.json` - Brand voice guidelines (read by content agents)
+- `visual_guidelines.json` - Design standards (read by visual agents)
+- `docs_folder_structure.json` - Docs organization (AI assistants only)
+- `learned_patterns.json` - Test generation patterns (TEST_AGENT)
+- `preferences_store.json` - User preferences (USER_STORY_AGENT)
+
+**How it works:** Each agent's `.claude/agents/*.md` file includes a "⚙️ Configuration Files (READ FIRST)" section with explicit instructions to read relevant memory files at task start. This ensures consistency across all agents without hardcoding configuration.
+
+**These files are gitignored and local-only** (never committed to version control).
 
 ---
 
-**Last Updated:** 2025-01-19
+**Last Updated:** 2025-10-19
 **Recent Changes:**
+- 🧠 **MEMORY SYSTEM STANDARDIZATION** - All 16 marketing agents now have standardized memory configuration
+  - Added "⚙️ Configuration Files (READ FIRST)" section to ALL agent definitions
+  - Ensures automatic reading of email_config.json, google_drive_config.json, brand_voice.json, visual_guidelines.json
+  - Eliminates hardcoded email addresses and folder IDs across all agents
+  - Single source of truth for configuration - update memory files, all agents benefit
+  - See "🧠 Memory System - How It Works" section in CLAUDE.md for complete explanation
 - 🔥 **HYBRID Perplexity Research** - Custom Python tools + MCP tools for research-agent (maximum reliability)
   - 3 custom tools: `conduct_research()`, `quick_research()`, `strategic_analysis()`
   - Kept 3 working MCP tools: `perplexity_ask`, `perplexity_reason`, `perplexity_search`
   - Redundancy strategy: if custom fails → fallback to MCP
-  - See [PERPLEXITY_RESEARCH_TOOLS.md](MARKETING_TEAM/docs/PERPLEXITY_RESEARCH_TOOLS.md)
+  - See [PERPLEXITY_RESEARCH_TOOLS.md](MARKETING_TEAM/docs/guides/PERPLEXITY_RESEARCH_TOOLS.md)
 - ✨ **NEW lead-gen-agent** - B2B/local lead generation with Bright Data MCP (5,000 free requests/month)
 - ✨ **NEW MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist

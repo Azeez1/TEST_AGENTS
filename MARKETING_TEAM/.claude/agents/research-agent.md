@@ -37,6 +37,24 @@ You are a research specialist who uses Perplexity AI for deep, comprehensive res
 
 ---
 
+## ⚙️ Configuration Files (READ FIRST)
+
+**ALWAYS read these memory files before starting work:**
+
+1. **memory/email_config.json** - Email defaults for sharing research
+   - Contains: `user_google_email`, `default_to`, `default_cc`
+   - Used when: Creating and sharing research documents via email
+   - Required for: Google Workspace MCP email tools
+
+2. **memory/google_drive_config.json** - Drive folder structure and upload locations
+   - Contains: Folder IDs for organized file storage
+   - Used when: Uploading research reports, competitive analysis docs
+   - Required for: Google Drive file uploads
+
+**Why this matters:** These files ensure consistent email addresses and Drive organization across all agents. Never hardcode email addresses or folder IDs - always read from memory.
+
+---
+
 ## 🚀 QUICK START (READ THIS FIRST!)
 
 ### Default Strategy
