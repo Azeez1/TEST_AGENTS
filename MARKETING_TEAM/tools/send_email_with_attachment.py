@@ -1,5 +1,7 @@
 """
 Send Gmail with attachment using Google Workspace API
+
+PURE UTILITY - No hardcoded content. Always called by gmail-agent with explicit parameters.
 """
 import os
 import base64
@@ -49,13 +51,29 @@ def send_email_with_attachment(to_email, subject, body, attachment_path, cc=None
     """Send email with attachment
 
     Args:
-        to_email: Recipient email address
-        subject: Email subject
-        body: Email body text
-        attachment_path: Path to file to attach
+        to_email: Recipient email address (required)
+        subject: Email subject (required)
+        body: Email body text (required)
+        attachment_path: Path to file to attach (required)
         cc: Optional CC email address(es) - single string or list
         bcc: Optional BCC email address(es) - single string or list
+
+    Returns:
+        str: Message ID of sent email
+
+    Raises:
+        Exception: If email sending fails
+
+    Note:
+        This is a pure utility function. No hardcoded content.
+        Always called by gmail-agent with explicit parameters.
     """
+    if not all([to_email, subject, body, attachment_path]):
+        raise ValueError("to_email, subject, body, and attachment_path are required")
+
+    if not os.path.exists(attachment_path):
+        raise FileNotFoundError(f"Attachment not found: {attachment_path}")
+
     service = get_gmail_service()
 
     # Create message
@@ -77,8 +95,45 @@ def send_email_with_attachment(to_email, subject, body, attachment_path, cc=None
         else:
             message['bcc'] = bcc
 
-    # Add body
-    message.attach(MIMEText(body, 'plain'))
+    # Convert plaintext to HTML with proper formatting
+    # Step 1: Process line by line to detect UPPERCASE headers and make them bold
+    lines = body.split('\n')
+    processed_lines = []
+
+    for line in lines:
+        stripped = line.strip()
+        # Auto-detect UPPERCASE headers (line is all uppercase letters/spaces and not empty)
+        if stripped and stripped.isupper() and any(c.isalpha() for c in stripped):
+            # Make UPPERCASE headers bold
+            processed_lines.append(f'<strong>{line}</strong>')
+        else:
+            processed_lines.append(line)
+
+    # Rejoin lines
+    html_body = '\n'.join(processed_lines)
+
+    # Step 2: Replace line breaks with HTML breaks
+    html_body = html_body.replace('\n\n', '<PARAGRAPH_BREAK>')  # Temporary marker for paragraphs
+    html_body = html_body.replace('\n', '<br>')  # Single line breaks
+    html_body = html_body.replace('<PARAGRAPH_BREAK>', '<br><br>')  # Double line breaks (paragraphs)
+
+    # Step 3: Wrap in basic HTML structure for better rendering
+    html_email = f"""
+    <html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="font-family: Arial, Calibri, sans-serif; font-size: 11pt; line-height: 1.5; color: #333333;">
+        {html_body}
+    </body>
+    </html>
+    """
+
+    # Attach HTML body (Gmail will render this beautifully)
+    message.attach(MIMEText(html_email, 'html', 'utf-8'))
+
+    # Also attach plain text version as fallback for old email clients
+    message.attach(MIMEText(body, 'plain', 'utf-8'))
 
     # Add attachment
     filename = os.path.basename(attachment_path)
@@ -108,47 +163,28 @@ def send_email_with_attachment(to_email, subject, body, attachment_path, cc=None
         raise
 
 if __name__ == "__main__":
-    # Email details
-    to_email = "sabaazeez12@gmail.com"
-    subject = "AI Investment Platform Landing Page"
-    body = """Hi,
-
-Here's the AI Investment Platform landing page we created today.
-
-LANDING PAGE OVERVIEW
-
-Platform: AI InvestIQ
-Purpose: AI-powered investment intelligence for stock investors
-Target Audience: Investors looking for high-growth AI stocks
-
-KEY FEATURES
-
-The landing page includes:
-
-• Hero section with 3,200% QUBT return headline and compelling stats
-• 6 feature cards explaining platform benefits (early detection, real-time analysis, smart alerts, portfolio tracking, AI trend analysis, expert research)
-• Top 6 AI stocks being tracked (NVDA, QUBT, AVGO, PLTR, GOOGL, TSM) with performance data
-• Social proof with 3 investor testimonials
-• Lead capture form for email signups
-• Professional blue/cyan gradient design theme
-• Fully responsive mobile-friendly layout
-
-DEPLOYMENT
-
-The HTML file is attached and ready to deploy. It's a single self-contained file with all CSS embedded - just upload to your hosting provider or open directly in a browser to view.
-
-File: ai_investment_platform.html
-Size: 20 KB
-
-Best regards"""
-
-    attachment_path = os.path.join(
-        os.path.dirname(__file__),
-        '..',
-        'outputs',
-        'landing_pages',
-        'ai_investment_platform.html'
-    )
-
-    # Send email
-    send_email_with_attachment(to_email, subject, body, attachment_path)
+    # Pure utility - no hardcoded content
+    print("=" * 70)
+    print("send_email_with_attachment.py - Pure Utility Function")
+    print("=" * 70)
+    print()
+    print("This tool should be called by gmail-agent with explicit parameters.")
+    print("It contains NO hardcoded email content.")
+    print()
+    print("Usage from Python:")
+    print("  from send_email_with_attachment import send_email_with_attachment")
+    print("  message_id = send_email_with_attachment(")
+    print("      to_email='recipient@example.com',")
+    print("      subject='Your Subject',")
+    print("      body='Your email body text',")
+    print("      attachment_path='/path/to/file.pdf',")
+    print("      cc='cc@example.com'  # Optional")
+    print("  )")
+    print()
+    print("Usage from gmail-agent:")
+    print("  1. Read memory/email_config.json for default email addresses")
+    print("  2. Compose email content (or delegate to email-specialist)")
+    print("  3. Call this tool with explicit parameters")
+    print("  4. Report message ID to user")
+    print()
+    print("=" * 70)

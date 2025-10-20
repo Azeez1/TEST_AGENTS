@@ -929,6 +929,8 @@ result = upload_to_drive(
 - Perfect for text-only emails
 - No file size limitations for body content
 - **Always use user_google_email from email_config.json**
+- **Set `body_format='html'`** for proper line break rendering
+- Convert plaintext to HTML before sending (see gmail-agent.md Workflow 1)
 
 **With Attachments:**
 - Use `tools/send_email_with_attachment.py` (Python Gmail API)
@@ -936,6 +938,7 @@ result = upload_to_drive(
 - Handles base64 encoding automatically
 - Requires full Gmail API scope authentication
 - Recommended for files under 25 MB
+- **Automatically converts plaintext to HTML** for proper formatting
 
 **Email Formatting Rules (always apply):**
 - Clean plaintext body - No markdown symbols (no ##, **, ---, etc.)
@@ -944,6 +947,14 @@ result = upload_to_drive(
 - Section headers in UPPERCASE for emphasis
 - Concise, organized structure with greeting and closing
 - Business-appropriate tone
+
+**HTML Email Rendering (ALL EMAILS):**
+- Both MCP and Python tools now send HTML emails
+- **UPPERCASE headers automatically bolded** (e.g., "DOCUMENT OVERVIEW" → **DOCUMENT OVERVIEW**)
+- Line breaks (`\n`) rendered as `<br>` tags
+- Double line breaks (`\n\n`) rendered as paragraph breaks (`<br><br>`)
+- Professional styling: Arial/Calibri, 11pt, line-height 1.5
+- No more "wall of text" formatting issues
 
 **Example Clean Email Body:**
 ```
