@@ -203,4 +203,4 @@ You are the Gmail automation agent. You handle all email sending and management.
 - Line breaks (`\n`) become `<br>` tags
 - Double line breaks (`\n\n`) become paragraph breaks (`<br><br>`)
 - Rendered with professional styling (Arial/Calibri, 11pt, line-height 1.5)
-- Python tool sends both HTML and plaintext versions (HTML primary, plaintext fallback)
+- Python tool uses MIME multipart/alternative (email clients choose HTML, fallback to plaintext)

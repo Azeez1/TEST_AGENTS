@@ -76,8 +76,8 @@ def send_email_with_attachment(to_email, subject, body, attachment_path, cc=None
 
     service = get_gmail_service()
 
-    # Create message
-    message = MIMEMultipart()
+    # Create message container with mixed content (body + attachments)
+    message = MIMEMultipart('mixed')
     message['to'] = to_email
     message['subject'] = subject
 
@@ -129,11 +129,17 @@ def send_email_with_attachment(to_email, subject, body, attachment_path, cc=None
     </html>
     """
 
-    # Attach HTML body (Gmail will render this beautifully)
-    message.attach(MIMEText(html_email, 'html', 'utf-8'))
+    # Create alternative part (for email clients to choose HTML or plaintext)
+    msg_alternative = MIMEMultipart('alternative')
 
-    # Also attach plain text version as fallback for old email clients
-    message.attach(MIMEText(body, 'plain', 'utf-8'))
+    # Attach plaintext version first (lower priority)
+    msg_alternative.attach(MIMEText(body, 'plain', 'utf-8'))
+
+    # Attach HTML version second (higher priority - email clients will show this)
+    msg_alternative.attach(MIMEText(html_email, 'html', 'utf-8'))
+
+    # Attach the alternative part to the main message
+    message.attach(msg_alternative)
 
     # Add attachment
     filename = os.path.basename(attachment_path)
