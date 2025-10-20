@@ -48,6 +48,11 @@ temp/
 output/
 outputs/
 **/outputs/
+!MARKETING_TEAM/outputs/
+MARKETING_TEAM/outputs/*
+!MARKETING_TEAM/outputs/automation/
+MARKETING_TEAM/outputs/automation/*
+!MARKETING_TEAM/outputs/automation/README.md
 !examples/**
 .env
 

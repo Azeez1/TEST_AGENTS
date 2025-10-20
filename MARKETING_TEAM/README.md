@@ -1,6 +1,6 @@
 # 🤖 MARKETING_TEAM - Multi-Agent Marketing System
 
-**16 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
+**17 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
 
 Create complete marketing campaigns and generate business leads through natural conversation. Generate blog posts, social content, images, videos, emails, leads, and more by simply talking to your AI marketing team.
 
@@ -16,7 +16,7 @@ You: "Use the social-media-manager subagent to create a LinkedIn post about AI t
 Claude: [Creates professional LinkedIn post with hashtags and formatting]
 ```
 
-**That's it!** Your 16 agents are ready to use right now.
+**That's it!** Your 17 agents are ready to use right now.
 
 ---
 
@@ -37,18 +37,19 @@ Claude: [Creates professional LinkedIn post with hashtags and formatting]
 
 These guides explain:
 - How to set up APIs (OpenAI, Gmail, Google Drive)
-- How to invoke each of the 16 agents
+- How to invoke each of the 17 agents
 - Real-world examples with actual output
 - Common workflows
 - Tips & best practices
 
 ---
 
-## 🤖 Your 16 Marketing Agents
+## 🤖 Your 17 Marketing Agents
 
 | Agent | Purpose | Invoke With |
 |-------|---------|-------------|
 | **router-agent** | Coordinates complex campaigns | `"Use router-agent to plan a campaign"` |
+| **automation-agent** | Designs & maintains n8n workflow automations | `"Use automation-agent to build an automation"` |
 | **content-strategist** | Full campaign orchestration | `"Use content-strategist for campaign"` |
 | **research-agent** | Evidence-backed research + competitive intelligence | `"Use research-agent to investigate best practices"` |
 | **lead-gen-agent** | ✨ **NEW** B2B & local lead generation via web scraping | `"Use lead-gen-agent to find leads"` |
@@ -98,7 +99,7 @@ When you say:
 1. **Each agent has a "⚙️ Configuration Files (READ FIRST)" section** in their definition
 2. **Agents read memory files at task start** using the Read tool or filesystem skill
 3. **Configuration is applied automatically** - emails, Drive folders, brand voice, visual styles
-4. **Update once, affects all agents** - change email config, all 16 agents use it
+4. **Update once, affects all agents** - change email config, all 17 agents use it
 
 ### Memory Files (MARKETING_TEAM/memory/)
 
@@ -115,9 +116,9 @@ When you say:
 ✅ **No hardcoding** - Email addresses and folder IDs never hardcoded in agent definitions
 ✅ **Consistency** - All agents use same email addresses, same Drive folders, same brand voice
 ✅ **Easy updates** - Change one memory file, all agents benefit immediately
-✅ **Single source of truth** - Configuration lives in one place, not scattered across 16 files
+✅ **Single source of truth** - Configuration lives in one place, not scattered across 17 files
 
-**Example:** Change `default_to` in `email_config.json` from `user1@example.com` to `user2@example.com` → all 16 agents now send emails to `user2@example.com` by default.
+**Example:** Change `default_to` in `email_config.json` from `user1@example.com` to `user2@example.com` → all 17 agents now send emails to `user2@example.com` by default.
 
 ---
 
@@ -394,7 +395,7 @@ MARKETING_TEAM/
 │       ├── mcp-config.md
 │       └── build-notes.md
 ├── .claude/
-│   └── agents/                       ← 16 agent definitions
+│   └── agents/                       ← 17 agent definitions
 │       ├── router-agent.md
 │       ├── lead-gen-agent.md         ← NEW!
 │       ├── copywriter.md
@@ -524,7 +525,7 @@ You'll find `orchestrator.py` in the `archive/` folder. This was an earlier atte
 
 ---
 
-**Your 16 marketing agents are ready!** Just start talking to Claude Code.
+**Your 17 marketing agents are ready!** Just start talking to Claude Code.
 
 **✨ NEW: Lead generation with Bright Data MCP - 5,000 free requests/month for business lead discovery!**
 
