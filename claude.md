@@ -2,11 +2,11 @@
 
 ## 📋 Repository Overview
 
-This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **22 specialized agents** for user story generation, marketing automation, and test generation.
+This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **23 specialized agents** for user story generation, marketing automation, and test generation.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
-- **MARKETING_TEAM** - **16 marketing agents** for content creation, social media, images, videos, emails, lead generation, and landing pages
+- **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
 - **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
@@ -96,7 +96,7 @@ TEST_AGENTS/
 │   ├── start_ui.bat                 ← Windows launcher
 │   └── [Documentation]              ← CLEAN_CODEBASE.md, EXCEL_FIGMA_WORKFLOW.md, etc.
 │
-├── MARKETING_TEAM/                  ← 16 marketing automation agents
+├── MARKETING_TEAM/                  ← 17 marketing automation agents
 │   ├── README.md                    ← Quick start guide
 │   ├── examples/                    ← Curated examples (tracked in git)
 │   │   └── skills/                  ← Examples by skill
@@ -115,9 +115,10 @@ TEST_AGENTS/
 │   │   ├── social_media/
 │   │   ├── images/
 │   │   ├── videos/
+│   │   ├── automation/              ← n8n workflow specs and artifacts
 │   │   └── [other content]/
 │   ├── .claude/
-│   │   └── agents/                  ← 16 agent definitions
+│   │   └── agents/                  ← 17 agent definitions
 │   │       ├── router-agent.md      ← Campaign coordinator
 │   │       ├── copywriter.md        ← Blog posts & articles
 │   │       ├── social-media-manager.md  ← X/Twitter, LinkedIn posts
@@ -133,7 +134,8 @@ TEST_AGENTS/
 │   │       ├── content-strategist.md     ← Campaign orchestration
 │   │       ├── editor.md            ← Content review
 │   │       ├── research-agent.md    ← Web research, competitive intelligence
-│   │       └── lead-gen-agent.md    ← ✨ NEW: B2B/local lead generation via web scraping
+│   │       ├── lead-gen-agent.md    ← B2B/local lead generation via web scraping
+│   │       └── automation-agent.md  ← ✨ NEW: n8n workflow automation & orchestration
 │   ├── tools/                       ← Marketing tools
 │   │   ├── openai_gpt4o_image.py    ← GPT-4o image generation
 │   │   ├── gmail_api.py             ← Gmail integration
@@ -200,14 +202,15 @@ TEST_AGENTS/
 
 ---
 
-### MARKETING_TEAM (16 Agents)
+### MARKETING_TEAM (17 Agents)
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
 | **router-agent** | Coordinates complex multi-agent campaigns | `"Use router-agent to plan a product launch campaign"` |
 | **content-strategist** | Full campaign orchestration | `"Use content-strategist to plan Q1 content"` |
 | **research-agent** | 🔥 **HYBRID:** Custom Perplexity research tools + MCP for comprehensive market research, competitive intelligence, web scraping | `"Use research-agent to research AI marketing trends"` |
-| **lead-gen-agent** | ✨ **NEW** B2B/local lead generation via Bright Data web scraping | `"Use lead-gen-agent to find 50 SaaS leads in SF"` |
+| **lead-gen-agent** | B2B/local lead generation via Bright Data web scraping | `"Use lead-gen-agent to find 50 SaaS leads in SF"` |
+| **automation-agent** | ✨ **NEW** n8n workflow automation & orchestration for marketing processes | `"Use automation-agent to create a lead nurture workflow"` |
 | **copywriter** | Blog posts, articles, web copy (2000+ words) | `"Use copywriter to write a blog about AI trends"` |
 | **editor** | Content review, grammar, brand voice alignment | `"Use editor to review this blog post"` |
 | **social-media-manager** | X/Twitter, LinkedIn posts with hashtags | `"Use social-media-manager to create a LinkedIn post"` |
@@ -256,7 +259,7 @@ TEST_AGENTS/
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 20 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 23 agents
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
 - [TEST_AGENT/HOW_TO_USE.md](TEST_AGENT/HOW_TO_USE.md) - Testing agent usage with examples
@@ -425,7 +428,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ### Overview
 
-All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 user-installed + 4 document-skills) and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
+All **17 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 user-installed + 4 document-skills) and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
 
 **Skills Configuration:** Enabled in `MARKETING_TEAM/.claude/settings.json`
 **MCPs:** Inherited from root `.claude.json` via `"mcpServers": "inherit"`
@@ -521,6 +524,7 @@ All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
 #### Orchestration Agents
 - **router-agent:** context7
 - **content-strategist:** context7
+- **automation-agent:** context7
 
 **Note:** All agents inherit access to all 17 skills via MARKETING_TEAM/.claude/settings.json, but the above lists show which skills each agent is designed to use based on their agent definitions.
 
@@ -585,9 +589,11 @@ All **16 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
 #### sequential-thinking MCP (Structured Reasoning)
 - **router-agent** - sequentialthinking
 - **content-strategist** - sequentialthinking
+- **automation-agent** - sequentialthinking
 
 #### n8n-mcp (Workflow Automation)
-- Available to all agents but typically used by orchestration agents for campaign automation
+- **automation-agent** - All n8n-mcp tools (list_workflows, create_workflow, update_workflow, trigger_workflow, get_execution, list_credentials)
+- Available to all agents but primarily used by automation-agent for marketing workflow orchestration
 
 ---
 
@@ -792,7 +798,7 @@ The Perplexity MCP server provides four tools for web research:
 
 **Automatic Configuration Loading:**
 
-All 16 MARKETING_TEAM agents are instructed in their agent definitions to read memory configuration files at the start of each task. This ensures:
+All 17 MARKETING_TEAM agents are instructed in their agent definitions to read memory configuration files at the start of each task. This ensures:
 - ✅ Consistent email addresses across all email operations (no hardcoding)
 - ✅ Consistent Drive folder structure for uploads (no hardcoded folder IDs)
 - ✅ Consistent brand voice and visual guidelines (no style drift)
@@ -1106,9 +1112,16 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ---
 
-**Last Updated:** 2025-10-19
+**Last Updated:** 2025-10-20
 **Recent Changes:**
-- 🧠 **MEMORY SYSTEM STANDARDIZATION** - All 16 marketing agents now have standardized memory configuration
+- ✨ **NEW automation-agent** - 17th marketing agent for n8n workflow automation & orchestration
+  - Process discovery, workflow architecture, n8n node mapping
+  - Automation QA, testing, and iteration
+  - Cross-tool orchestration with marketing platforms (CRM, email, ads, analytics)
+  - Uses n8n-mcp tools + sequential-thinking for complex workflow planning
+  - Memory system integration (reads email_config, google_drive_config, brand_voice)
+  - Outputs to `MARKETING_TEAM/outputs/automation/` folder
+- 🧠 **MEMORY SYSTEM STANDARDIZATION** - All 17 marketing agents now have standardized memory configuration
   - Added "⚙️ Configuration Files (READ FIRST)" section to ALL agent definitions
   - Ensures automatic reading of email_config.json, google_drive_config.json, brand_voice.json, visual_guidelines.json
   - Eliminates hardcoded email addresses and folder IDs across all agents
@@ -1119,11 +1132,11 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
   - Kept 3 working MCP tools: `perplexity_ask`, `perplexity_reason`, `perplexity_search`
   - Redundancy strategy: if custom fails → fallback to MCP
   - See [PERPLEXITY_RESEARCH_TOOLS.md](MARKETING_TEAM/docs/guides/PERPLEXITY_RESEARCH_TOOLS.md)
-- ✨ **NEW lead-gen-agent** - B2B/local lead generation with Bright Data MCP (5,000 free requests/month)
-- ✨ **NEW MCP servers** - sequential-thinking and fetch for enhanced capabilities
+- ✨ **lead-gen-agent** - B2B/local lead generation with Bright Data MCP (5,000 free requests/month)
+- ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect hybrid research approach
+- Updated all documentation to reflect 17 agents and new automation capabilities
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
