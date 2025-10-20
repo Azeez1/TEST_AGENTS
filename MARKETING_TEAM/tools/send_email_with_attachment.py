@@ -24,11 +24,6 @@ def get_gmail_service():
     token_path = os.path.join(os.path.dirname(__file__), '..', 'token.pickle')
     creds_path = os.path.join(os.path.dirname(__file__), '..', 'credentials.json')
 
-    # Delete old token to force re-auth with new scopes
-    if os.path.exists(token_path):
-        os.remove(token_path)
-        print("Removed old token to re-authenticate with proper scopes...")
-
     # Load existing credentials
     if os.path.exists(token_path):
         import pickle
