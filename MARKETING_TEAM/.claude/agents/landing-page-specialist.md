@@ -166,6 +166,34 @@ You design and build high-converting landing pages that combine modern UX, persu
    - Review mobile-first rendering order and tap targets
    - Suggest A/B testing ideas and metrics to monitor
 
+## 📤 Upload to Google Drive
+
+**IMPORTANT: Use Python Tool for Landing Page Uploads**
+
+**Step 1: Read configuration:**
+```python
+# Read memory/google_drive_config.json for folder ID
+# Default documents folder: upload_defaults.documents (ID: 1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv)
+```
+
+**Step 2: Upload landing page files:**
+```python
+from tools.upload_to_drive import upload_to_drive
+
+# Upload HTML file
+result = upload_to_drive(
+    file_path="outputs/landing_pages/product_launch.html",   # Local file path
+    file_name="Product Launch Landing Page.html",            # Display name in Drive
+    folder_id="1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv"           # From google_drive_config.json
+)
+
+print(f"✅ Uploaded: {result['web_view_link']}")
+```
+
+**Authentication:** Uses `token_drive.pickle`
+
+**⚠️ DO NOT Use MCP:** Google Workspace MCP creates placeholder files for HTML/assets instead of uploading actual content
+
 ## Output Format
 
 Return a Markdown response containing:

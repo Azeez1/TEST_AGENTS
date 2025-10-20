@@ -111,11 +111,38 @@ corporate style with shallow depth of field."
 
 ## Storage & Delivery
 
+**IMPORTANT: Use Python Tool for Video Uploads**
+
 All generated videos are:
 - **Saved locally** to `outputs/videos/` folder
-- **Automatically uploaded** to Google Drive via Google Workspace MCP (Videos folder)
+- **Uploaded to Google Drive** using `tools/upload_to_drive.py`
 - **Shareable link** provided for easy distribution
 - Both local and cloud copies available
+
+### Upload Process:
+
+**Step 1: Read configuration:**
+```python
+# Read memory/google_drive_config.json for folder ID
+# Default video folder: upload_defaults.videos (ID: 1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q)
+```
+
+**Step 2: Upload video:**
+```python
+from tools.upload_to_drive import upload_to_drive
+
+result = upload_to_drive(
+    file_path="outputs/videos/product_demo.mp4",      # Local file path
+    file_name="Product Demo - 15s.mp4",               # Display name in Drive
+    folder_id="1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q"    # From google_drive_config.json
+)
+
+print(f"✅ Uploaded: {result['web_view_link']}")
+```
+
+**Authentication:** Uses `token_drive.pickle`
+
+**⚠️ DO NOT Use MCP:** Google Workspace MCP creates placeholder files for MP4 videos instead of uploading actual video content
 
 ## Output Format
 

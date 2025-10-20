@@ -220,15 +220,34 @@ slide.addChart(pptx.charts.BAR, [{
 
 ### Phase 6: Upload to Google Drive
 
-```javascript
-mcp__google-workspace__create_drive_file({
-  user_google_email: "user@example.com",
-  file_name: "presentation.pptx",
-  folder_id: "root",  // or specific folder ID
-  mime_type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-  // Note: Upload local file at MARKETING_TEAM/outputs/presentations/presentation.pptx
-})
+**IMPORTANT: Use Python Tool (MCP is unreliable for binary files)**
+
+**Step 1: Read configuration files:**
+```python
+# Read memory/google_drive_config.json for folder ID
+# Read memory/email_config.json for user_google_email
+# Default presentation folder: upload_defaults.presentations
 ```
+
+**Step 2: Upload using Python tool:**
+```python
+from tools.upload_to_drive import upload_to_drive
+
+result = upload_to_drive(
+    file_path="outputs/presentations/my_presentation.pptx",  # Local file path
+    file_name="My Presentation.pptx",                         # Display name in Drive
+    folder_id="1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv"            # From google_drive_config.json
+)
+
+print(f"✅ Uploaded: {result['web_view_link']}")
+print(f"📁 File ID: {result['file_id']}")
+```
+
+**Authentication:** Uses `token_drive.pickle` (separate from Gmail token)
+
+**⚠️ DO NOT Use MCP:**
+- `mcp__google-workspace__create_drive_file` creates 116-byte placeholder files instead of uploading actual PPTX content
+- Use Python tool for ALL PowerPoint uploads
 
 ### Phase 7: Delivery
 

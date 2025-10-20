@@ -89,6 +89,33 @@ For each visual, provide:
 - **Brand Elements**: Logo placement, color palette
 - **Platform**: twitter, linkedin, blog
 
+## 📤 Upload to Google Drive
+
+**IMPORTANT: Use Python Tool for Image Uploads**
+
+**Step 1: Read configuration:**
+```python
+# Read memory/google_drive_config.json for folder ID
+# Default image folder: upload_defaults.images (ID: 12DaX0JJ5K6_os1ANj6FgovF72ymdson1)
+```
+
+**Step 2: Upload image:**
+```python
+from tools.upload_to_drive import upload_to_drive
+
+result = upload_to_drive(
+    file_path="outputs/images/my_image.png",      # Local file path
+    file_name="Brand Header Image.png",           # Display name in Drive
+    folder_id="12DaX0JJ5K6_os1ANj6FgovF72ymdson1" # From google_drive_config.json
+)
+
+print(f"✅ Uploaded: {result['web_view_link']}")
+```
+
+**Authentication:** Uses `token_drive.pickle`
+
+**⚠️ DO NOT Use MCP:** MCP creates placeholder files for binary images (PNG, JPG) instead of uploading actual content
+
 ## Output Format
 
 ### For GPT-4o Images

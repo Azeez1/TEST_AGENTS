@@ -27,7 +27,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
 # Scopes for Google Drive
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
 # Common MIME types
 MIME_TYPES = {
@@ -48,7 +48,7 @@ MIME_TYPES = {
 def get_drive_service():
     """Authenticate and return Google Drive service."""
     creds = None
-    token_path = 'token.pickle'
+    token_path = 'token_drive.pickle'  # Separate token for Drive operations
 
     # Load existing credentials
     if os.path.exists(token_path):

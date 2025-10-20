@@ -140,6 +140,33 @@ You are a PDF creation specialist for marketing collateral, forms, and professio
 - High contrast text
 - Sans-serif fonts for readability
 
+## 📤 Upload to Google Drive
+
+**IMPORTANT: Use Python Tool for PDF Uploads**
+
+**Step 1: Read configuration:**
+```python
+# Read memory/google_drive_config.json for folder ID
+# Default PDF folder: upload_defaults.pdfs (ID: 1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv)
+```
+
+**Step 2: Upload PDF:**
+```python
+from tools.upload_to_drive import upload_to_drive
+
+result = upload_to_drive(
+    file_path="outputs/pdfs/whitepaper.pdf",          # Local file path
+    file_name="AI Marketing Whitepaper 2025.pdf",     # Display name in Drive
+    folder_id="1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv"    # From google_drive_config.json
+)
+
+print(f"✅ Uploaded: {result['web_view_link']}")
+```
+
+**Authentication:** Uses `token_drive.pickle`
+
+**⚠️ DO NOT Use MCP:** Google Workspace MCP creates placeholder files for PDFs instead of uploading actual content
+
 ## Output Format
 
 Provide:

@@ -79,6 +79,8 @@ memory/
 # Keep example output
 !examples/*.xlsx
 token.pickle
+token_drive.pickle
 temp_upload.txt
 **/token.pickle
+**/token_drive.pickle
 **/temp_upload.txt

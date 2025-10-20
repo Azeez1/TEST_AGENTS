@@ -885,20 +885,19 @@ All 17 MARKETING_TEAM agents are instructed in their agent definitions to read m
 
 ### Google Drive Upload Strategy
 
-**Two approaches based on file type:**
+**⚠️ CRITICAL: MCP is BROKEN for Binary File Uploads**
 
-**Text Files (Docs, Sheets, etc.):**
-- Use `mcp__google-workspace__create_drive_file` (Google Workspace MCP tool)
-- Perfect for creating Google Docs, Sheets, Forms from text content
-- Fast and simple, already authenticated through MCP
-- Requires text content or HTTP URL
+Google Workspace MCP's `create_drive_file` has a critical bug: it creates 116-byte placeholder files instead of uploading actual binary content. Test confirmed PPTX file (26 KB) uploaded as only 116 bytes.
 
-**Binary Files (PowerPoint, PDF, Excel, Images, Videos):**
-- Use `tools/upload_to_drive.py` (Python Drive API)
-- Handles local binary file uploads (PPTX, PDF, XLSX, PNG, MP4, etc.)
-- Fills the MCP gap - google-workspace MCP can't upload local binary files
+**PRIMARY METHOD: Use Python Tool (Reliable)**
+
+✅ **ALL File Types (Recommended):**
+- Use `tools/upload_to_drive.py` (Python Drive API) - **PRIMARY METHOD**
+- Uses `token_drive.pickle` (separate authentication from Gmail)
+- Handles all file uploads: PPTX, PDF, XLSX, PNG, MP4, HTML, DOCX, etc.
 - Auto-detects MIME types from file extensions
 - **Always read folder IDs from memory/google_drive_config.json**
+- Verified working with full file content
 
 **Usage Example:**
 ```python
@@ -911,6 +910,12 @@ result = upload_to_drive(
 )
 # Returns: {'file_id': '...', 'file_name': '...', 'web_view_link': '...'}
 ```
+
+**❌ AVOID: MCP for Binary Files**
+- `mcp__google-workspace__create_drive_file` - **DO NOT USE for binary files**
+- Creates placeholder files (116 bytes) instead of uploading actual content
+- Fails silently - returns "success" but file is unusable
+- Only safe for Google Workspace text documents (Docs, Sheets, Forms created from text)
 
 ---
 
