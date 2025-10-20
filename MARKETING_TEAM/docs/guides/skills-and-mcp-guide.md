@@ -38,7 +38,7 @@ Your MARKETING_TEAM agents now have access to **13 powerful skills**:
 **Configuration inheritance:**
 1. Skills are enabled in `MARKETING_TEAM/.claude/settings.json`
 2. MCPs are inherited from root `.claude.json` via `"mcpServers": "inherit"`
-3. All 16 marketing agents automatically get access to both skills and MCPs
+3. All 17 marketing agents automatically get access to both skills and MCPs
 4. Agent definitions can specify which skills they emphasize in their `skills:` frontmatter
 
 **Example agent invocation:**
@@ -817,6 +817,7 @@ industry, and estimated employee count."
 - Orchestrate complex processes
 
 **Which agents use it:**
+- automation-agent (primary builder for end-to-end workflow design)
 - router-agent (for campaign orchestration)
 - Any agent (for workflow triggers)
 
@@ -1360,7 +1361,7 @@ You now have **13 powerful skills** and **7 MCP servers** available to all your 
 - Skills and MCPs work automatically when agents need them
 - Be explicit when you want specific skills used
 - Combine multiple skills for complex workflows
-- All 16 marketing agents have access to everything
+- All 17 marketing agents have access to everything
 - Experiment and iterate to find optimal workflows
 
 **Next steps:**
