@@ -1,0 +1,46 @@
+{
+  "description": "ENGINEERING_TEAM settings - Engineering agents with full workspace access",
+  "mcpServers": "inherit",
+  "tools": {
+    "allowed": [
+      "bash",
+      "read",
+      "write",
+      "edit",
+      "glob",
+      "grep",
+      "task"
+    ]
+  },
+  "skills": {
+    "allowed": [
+      "algorithmic-art",
+      "artifacts-builder",
+      "brand-guidelines",
+      "canvas-design",
+      "context7",
+      "figma",
+      "filesystem",
+      "internal-comms",
+      "mcp-builder",
+      "pdf-filler",
+      "skill-creator",
+      "slack-gif-creator",
+      "theme-factory",
+      "pptx",
+      "pdf",
+      "xlsx",
+      "docx"
+    ]
+  },
+  "workspace_access": {
+    "description": "Engineering agents can access entire workspace",
+    "paths": [
+      "/home/user/TEST_AGENTS/MARKETING_TEAM",
+      "/home/user/TEST_AGENTS/TEST_AGENT",
+      "/home/user/TEST_AGENTS/USER_STORY_AGENT",
+      "/home/user/TEST_AGENTS/ENGINEERING_TEAM"
+    ],
+    "permissions": "read_write"
+  }
+}

@@ -2,12 +2,13 @@
 
 ## 📋 Repository Overview
 
-This repository contains **3 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **23 specialized agents** for user story generation, marketing automation, and test generation.
+This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **28 specialized agents** for user story generation, marketing automation, test generation, and software engineering.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
 - **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
+- **ENGINEERING_TEAM** - **5 engineering agents** for DevOps, security, frontend, backend development, and documentation
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
@@ -56,9 +57,10 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 | **USER_STORY_AGENT** | Meeting notes → User stories | `cd USER_STORY_AGENT && streamlit run app_ui.py` | [README](USER_STORY_AGENT/README.md) |
 | **MARKETING_TEAM** | Marketing content automation | Talk to Claude Code agents | [README](MARKETING_TEAM/README.md) |
 | **TEST_AGENT** | Automated test generation | Talk to Claude Code agents | [README](TEST_AGENT/README.md) |
+| **ENGINEERING_TEAM** | Software engineering & infrastructure | Talk to Claude Code agents | [README](ENGINEERING_TEAM/README.md) |
 
 **Key Documentation:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 22 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 28 agents
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation details
 
@@ -249,6 +251,30 @@ TEST_AGENTS/
 
 ---
 
+### ENGINEERING_TEAM (5 Agents)
+
+| Agent | Capability | Invoke With |
+|-------|-----------|-------------|
+| **devops-engineer** | Docker, Kubernetes, CI/CD pipelines, cloud deployment (AWS/GCP/Azure) | `"Use devops-engineer to containerize MARKETING_TEAM"` |
+| **security-auditor** | Code security analysis, vulnerability scanning, OWASP compliance, penetration testing | `"Use security-auditor to scan for hardcoded API keys"` |
+| **frontend-developer** | React, Next.js, TypeScript, Tailwind CSS, UI/UX design, dashboards | `"Use frontend-developer to build an agent control panel"` |
+| **backend-developer** | Python, FastAPI, REST APIs, databases (PostgreSQL/MongoDB), microservices | `"Use backend-developer to create an agent management API"` |
+| **technical-writer** | PRDs, technical specs, API docs, architecture diagrams, user guides | `"Use technical-writer to write a PRD for agent scheduling"` |
+
+**Engineering Stack:**
+- **DevOps:** Docker, Kubernetes, Terraform, GitHub Actions
+- **Backend:** FastAPI, SQLAlchemy, Celery, Redis
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Security:** Bandit, Safety, pip-audit
+- **Docs:** Markdown, Mermaid diagrams, OpenAPI/Swagger
+
+**Special Features:**
+- ✅ **Full workspace access** - Can work with all 28 agents across 4 systems
+- ✅ **Cross-team collaboration** - DevOps can deploy MARKETING_TEAM, Security can audit TEST_AGENT
+- ✅ **End-to-end workflows** - From PRD (technical-writer) → API (backend-developer) → UI (frontend-developer) → Deploy (devops-engineer) → Audit (security-auditor)
+
+---
+
 ## 📖 Documentation Map
 
 ### Getting Started
@@ -256,19 +282,22 @@ TEST_AGENTS/
 - [MARKETING_TEAM/README.md](MARKETING_TEAM/README.md) - Marketing agents overview
 - [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - API configuration (OpenAI, Gmail, Drive)
 - [TEST_AGENT/README.md](TEST_AGENT/README.md) - Testing agents overview
+- [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering agents overview
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 23 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 28 agents
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
 - [TEST_AGENT/HOW_TO_USE.md](TEST_AGENT/HOW_TO_USE.md) - Testing agent usage with examples
+- [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering workflows and examples
 
 ### Technical Documentation
 - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation overview
 - [MARKETING_TEAM/docs/architecture/system-architecture.md](MARKETING_TEAM/docs/architecture/system-architecture.md) - Marketing system architecture
 - [MARKETING_TEAM/docs/architecture/mcp-config.md](MARKETING_TEAM/docs/architecture/mcp-config.md) - MCP configuration details
 - [TEST_AGENT/BUILD_SUMMARY.md](TEST_AGENT/BUILD_SUMMARY.md) - Testing system build notes
+- [ENGINEERING_TEAM/docs/](ENGINEERING_TEAM/docs/) - PRDs, technical specs, API docs, deployment guides
 
 ### Workflow Guides
 - [USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md](USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md) - Excel + Figma integration workflow
@@ -1128,8 +1157,18 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ---
 
-**Last Updated:** 2025-10-20
+**Last Updated:** 2025-10-21
 **Recent Changes:**
+- ✨ **NEW ENGINEERING_TEAM** - 5 engineering agents added to the workspace (23 → 28 agents total)
+  - **devops-engineer:** Docker, Kubernetes, CI/CD pipelines, cloud deployment (AWS/GCP/Azure)
+  - **security-auditor:** Code security analysis, vulnerability scanning, OWASP compliance
+  - **frontend-developer:** React, Next.js, TypeScript, Tailwind CSS, UI/UX design
+  - **backend-developer:** Python, FastAPI, REST APIs, databases, microservices
+  - **technical-writer:** PRDs, technical specs, API docs, architecture diagrams, user guides
+  - **Full workspace access:** All engineering agents can work with MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT
+  - **Cross-team collaboration:** DevOps can deploy any agent, Security can audit all systems, Frontend/Backend can build management dashboards
+  - **End-to-end workflows:** From PRD → API → UI → Deploy → Audit
+  - See [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) for complete guide
 - ✨ **NEW automation-agent** - 17th marketing agent for n8n workflow automation & orchestration
   - Process discovery, workflow architecture, n8n node mapping
   - Automation QA, testing, and iteration
@@ -1152,7 +1191,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect 17 agents and new automation capabilities
+- Updated all documentation to reflect 28 agents (4 systems: MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT, ENGINEERING_TEAM)
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
