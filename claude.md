@@ -2,13 +2,13 @@
 
 ## 📋 Repository Overview
 
-This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **28 specialized agents** for user story generation, marketing automation, test generation, and software engineering.
+This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **30 specialized agents** for user story generation, marketing automation, test generation, software engineering, and AI/ML development.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
 - **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
-- **ENGINEERING_TEAM** - **5 engineering agents** for DevOps, security, frontend, backend development, and documentation
+- **ENGINEERING_TEAM** - **7 engineering agents** for DevOps, security, frontend, backend, AI/ML, UX design, and documentation
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
@@ -251,27 +251,34 @@ TEST_AGENTS/
 
 ---
 
-### ENGINEERING_TEAM (5 Agents)
+### ENGINEERING_TEAM (7 Agents)
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
-| **devops-engineer** | Docker, Kubernetes, CI/CD pipelines, cloud deployment (AWS/GCP/Azure) | `"Use devops-engineer to containerize MARKETING_TEAM"` |
-| **security-auditor** | Code security analysis, vulnerability scanning, OWASP compliance, penetration testing | `"Use security-auditor to scan for hardcoded API keys"` |
-| **frontend-developer** | React, Next.js, TypeScript, Tailwind CSS, UI/UX design, dashboards | `"Use frontend-developer to build an agent control panel"` |
-| **backend-developer** | Python, FastAPI, REST APIs, databases (PostgreSQL/MongoDB), microservices | `"Use backend-developer to create an agent management API"` |
-| **technical-writer** | PRDs, technical specs, API docs, architecture diagrams, user guides | `"Use technical-writer to write a PRD for agent scheduling"` |
+| **devops-engineer** ⭐ | **Production-ready** CI/CD (GitHub Actions), Terraform (AWS/GCP), Kubernetes (Helm), monitoring (Prometheus/Grafana), security scanning | `"Use devops-engineer to create complete deployment pipeline"` |
+| **frontend-developer** | React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG) | `"Use frontend-developer to build agent dashboard in Next.js"` |
+| **backend-architect** | RESTful API design, microservices architecture, database schema, caching strategies, scalability planning | `"Use backend-architect to design API for 30 agents"` |
+| **security-auditor** | Code security analysis, vulnerability scanning (OWASP Top 10), dependency audits, compliance (GDPR/HIPAA) | `"Use security-auditor to scan for hardcoded API keys"` |
+| **technical-writer** | **Product Requirements Documents (PRDs)**, technical specs, API docs (OpenAPI), architecture diagrams, user guides | `"Use technical-writer to write PRD for agent scheduling"` |
+| **ai-engineer** ⭐ | **LLM integration** (OpenAI/Anthropic), RAG systems (vector DBs), prompt optimization, agent frameworks (LangChain/LangGraph), token management | `"Use ai-engineer to optimize prompts for all 30 agents"` |
+| **ui-ux-designer** ⭐ | User research, wireframes, design systems, accessibility, user flows, usability testing | `"Use ui-ux-designer to create wireframes for dashboard"` |
 
 **Engineering Stack:**
-- **DevOps:** Docker, Kubernetes, Terraform, GitHub Actions
-- **Backend:** FastAPI, SQLAlchemy, Celery, Redis
-- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **Security:** Bandit, Safety, pip-audit
-- **Docs:** Markdown, Mermaid diagrams, OpenAPI/Swagger
+- **DevOps:** Docker, Kubernetes, Terraform, Helm, GitHub Actions, Prometheus, Grafana
+- **Backend:** Python, FastAPI, SQLAlchemy, Celery, Redis, PostgreSQL
+- **Frontend:** React, Next.js, TypeScript, Tailwind CSS, shadcn/ui
+- **AI/ML:** LangChain, LangGraph, OpenAI, Anthropic Claude, vector databases
+- **Design:** Wireframes, design systems, Figma integration, accessibility (WCAG)
+- **Security:** Trivy, kube-bench, gitleaks, Bandit, Safety, pip-audit
+- **Docs:** Markdown, Mermaid diagrams, OpenAPI/Swagger, PlantUML
 
 **Special Features:**
-- ✅ **Full workspace access** - Can work with all 28 agents across 4 systems
-- ✅ **Cross-team collaboration** - DevOps can deploy MARKETING_TEAM, Security can audit TEST_AGENT
-- ✅ **End-to-end workflows** - From PRD (technical-writer) → API (backend-developer) → UI (frontend-developer) → Deploy (devops-engineer) → Audit (security-auditor)
+- ✅ **Full workspace access** - Can work with all 30 agents across 4 systems
+- ✅ **Production-ready code** - devops-engineer provides 886 lines of battle-tested CI/CD, Terraform, Helm
+- ✅ **AI optimization** - ai-engineer can improve prompts, build RAG systems, create agent orchestration
+- ✅ **Design → Develop → Deploy** - Complete workflow from UX design to production deployment
+- ✅ **Cross-team collaboration** - DevOps deploys all systems, AI Engineer optimizes all agents, Security audits everything
+- ✅ **End-to-end workflows** - PRD (technical-writer) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Deploy (devops-engineer) → Audit (security-auditor) → AI Features (ai-engineer)
 
 ---
 
@@ -286,7 +293,7 @@ TEST_AGENTS/
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 28 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 30 agents
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
 - [TEST_AGENT/HOW_TO_USE.md](TEST_AGENT/HOW_TO_USE.md) - Testing agent usage with examples
@@ -1159,16 +1166,18 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 **Last Updated:** 2025-10-21
 **Recent Changes:**
-- ✨ **NEW ENGINEERING_TEAM** - 5 engineering agents added to the workspace (23 → 28 agents total)
-  - **devops-engineer:** Docker, Kubernetes, CI/CD pipelines, cloud deployment (AWS/GCP/Azure)
-  - **security-auditor:** Code security analysis, vulnerability scanning, OWASP compliance
-  - **frontend-developer:** React, Next.js, TypeScript, Tailwind CSS, UI/UX design
-  - **backend-developer:** Python, FastAPI, REST APIs, databases, microservices
-  - **technical-writer:** PRDs, technical specs, API docs, architecture diagrams, user guides
-  - **Full workspace access:** All engineering agents can work with MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT
-  - **Cross-team collaboration:** DevOps can deploy any agent, Security can audit all systems, Frontend/Backend can build management dashboards
-  - **End-to-end workflows:** From PRD → API → UI → Deploy → Audit
-  - See [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) for complete guide
+- ✨ **ENGINEERING_TEAM UPGRADED** - 7 engineering agents (28 → **30 agents total**)
+  - ⭐ **devops-engineer:** UPGRADED with official production-ready template - 886 lines of battle-tested CI/CD (GitHub Actions), Terraform (AWS EKS, RDS, Redis, ALB), Kubernetes (Helm charts), monitoring (Prometheus/Grafana), security scanning (Trivy, kube-bench, gitleaks)
+  - ⭐ **frontend-developer:** REPLACED with official template - React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG)
+  - ⭐ **backend-architect:** NEW official template - RESTful API design, microservices architecture, database schema, caching strategies, scalability planning
+  - ⭐ **ai-engineer:** NEW - LLM integration (OpenAI/Anthropic), RAG systems (vector DBs), prompt optimization, agent frameworks (LangChain/LangGraph), token management - **PERFECT for optimizing all 30 AI agents!**
+  - ⭐ **ui-ux-designer:** NEW - User research, wireframes, design systems, accessibility, user flows, usability testing - **Complements frontend-developer for complete Design → Develop workflow**
+  - ✅ **security-auditor:** KEPT custom version - Comprehensive code security analysis, vulnerability scanning (OWASP Top 10), compliance audits (GDPR/HIPAA)
+  - ✅ **technical-writer:** KEPT custom version - PRDs, technical specs, API docs (OpenAPI), architecture diagrams, user guides
+  - **Full workspace access:** All 7 engineering agents can work with MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT
+  - **Cross-team collaboration:** DevOps deploys all systems, AI Engineer optimizes all agents, Security audits everything
+  - **End-to-end workflows:** PRD (technical-writer) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Deploy (devops-engineer) → Audit (security-auditor) → AI Features (ai-engineer)
+  - See [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) for complete guide with production-ready code examples
 - ✨ **NEW automation-agent** - 17th marketing agent for n8n workflow automation & orchestration
   - Process discovery, workflow architecture, n8n node mapping
   - Automation QA, testing, and iteration
@@ -1191,7 +1200,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect 28 agents (4 systems: MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT, ENGINEERING_TEAM)
+- Updated all documentation to reflect 30 agents (4 systems: MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT, ENGINEERING_TEAM)
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
