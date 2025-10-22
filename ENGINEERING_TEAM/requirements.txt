@@ -1,0 +1,50 @@
+# ENGINEERING_TEAM Dependencies
+
+# API Development
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# Database
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.9
+redis>=5.0.0
+
+# Task Queue
+celery>=5.3.4
+kombu>=5.3.4
+
+# Cloud SDKs
+boto3>=1.29.0  # AWS
+google-cloud-storage>=2.10.0  # GCP
+
+# Container & Infrastructure
+docker>=6.1.0
+kubernetes>=28.1.0
+
+# Security Scanning
+bandit>=1.7.5
+safety>=2.3.5
+pip-audit>=2.6.1
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.25.0  # For FastAPI testing
+
+# Code Quality
+black>=23.11.0
+flake8>=6.1.0
+mypy>=1.7.0
+pylint>=3.0.0
+
+# Documentation
+mkdocs>=1.5.3
+mkdocs-material>=9.4.0
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+aiohttp>=3.9.0
