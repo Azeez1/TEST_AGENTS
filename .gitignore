@@ -76,6 +76,11 @@ archive/
 memory/
 **/memory/
 
+# Voice interface data
+memory/voice_*.json
+outputs/voice_*.mp3
+*.mp3
+
 # Keep example output
 !examples/*.xlsx
 token.pickle

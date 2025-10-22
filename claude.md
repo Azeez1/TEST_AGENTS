@@ -117,6 +117,18 @@ TEST_AGENTS/
 │   │   ├── videos/
 │   │   ├── automation/              ← n8n workflow specs and artifacts
 │   │   └── [other content]/
+│   ├── voice_interface/             ← ✨ NEW: Voice interface modules
+│   │   ├── config.py                ← Voice configuration loader
+│   │   ├── websocket_client.py      ← ElevenLabs WebSocket connection
+│   │   ├── audio_handler.py         ← Microphone & speaker I/O
+│   │   ├── voice_agent_router.py    ← Natural language agent routing
+│   │   ├── context_manager.py       ← Multi-context lifecycle
+│   │   └── conversation_memory.py   ← Session persistence
+│   ├── voice_cli_simple.py          ← ✅ WORKING: Text-based conversation with audio
+│   ├── voice_cli.py                 ← ⚠️ Has threading issues (real-time audio)
+│   ├── voice_app.py                 ← Streamlit UI (session viewer only)
+│   ├── start_voice_cli.bat          ← Launcher for working voice CLI
+│   ├── requirements_voice.txt       ← Voice dependencies
 │   ├── .claude/
 │   │   └── agents/                  ← 17 agent definitions
 │   │       ├── router-agent.md      ← Campaign coordinator
@@ -155,10 +167,14 @@ TEST_AGENTS/
 │   │   └── upload_video_to_drive.py     ← Manual Drive upload utility
 │   ├── docs/                        ← Comprehensive documentation
 │   │   ├── getting-started/
-│   │   │   └── api-setup.md         ← API configuration guide
+│   │   │   ├── api-setup.md         ← API configuration guide
+│   │   │   └── voice-setup.md       ← ✨ NEW: Voice interface setup (60-second guide)
 │   │   ├── guides/
 │   │   │   ├── usage-guide.md       ← Complete usage examples
-│   │   │   └── campaign-examples.md ← Real campaign examples
+│   │   │   ├── campaign-examples.md ← Real campaign examples
+│   │   │   └── voice/               ← ✨ NEW: Voice interface documentation
+│   │   │       ├── user-guide.md    ← What works and why
+│   │   │       └── technical.md     ← Technical documentation
 │   │   └── architecture/
 │   │       ├── system-architecture.md   ← Technical architecture
 │   │       ├── mcp-config.md        ← MCP configuration details
@@ -229,6 +245,24 @@ TEST_AGENTS/
 - Gmail API (email sending)
 - Google Drive API (file uploads, optional)
 - Bright Data MCP (lead generation - 5,000 free requests/month)
+- ElevenLabs API (voice interface - text-to-speech)
+
+**Voice Interface (COMING SOON):**
+
+**Status:** Custom voice implementation archived, switching to ElevenLabs Conversational AI for true real-time voice.
+
+**What's changing:**
+- Custom voice infrastructure archived to `MARKETING_TEAM/archive/voice_custom_implementation/`
+- Switching to ElevenLabs platform for real-time microphone → speaker conversation
+- Implementation coming soon
+
+**Current Options:**
+1. Wait for ElevenLabs integration (recommended - full real-time voice)
+2. Use archived text-based CLI (see `archive/voice_custom_implementation/` - type messages, get audio files)
+
+📖 **Documentation:**
+- [MARKETING_TEAM/docs/guides/voice/REALTIME_VOICE_OPTIONS.md](MARKETING_TEAM/docs/guides/voice/REALTIME_VOICE_OPTIONS.md) - Why switching to ElevenLabs
+- [MARKETING_TEAM/archive/voice_custom_implementation/VOICE_IMPLEMENTATION_SUMMARY.md](MARKETING_TEAM/archive/voice_custom_implementation/VOICE_IMPLEMENTATION_SUMMARY.md) - Previous custom implementation
 
 ---
 

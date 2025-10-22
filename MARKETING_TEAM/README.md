@@ -20,6 +20,25 @@ Claude: [Creates professional LinkedIn post with hashtags and formatting]
 
 ---
 
+## 🎤 Voice Interface (Coming Soon)
+
+**Status:** Custom voice implementation archived, switching to **ElevenLabs Conversational AI** for true real-time voice.
+
+**What's changing:**
+- ❌ Custom voice infrastructure archived to `archive/voice_custom_implementation/`
+- ✅ Switching to ElevenLabs platform for real-time microphone → speaker conversation
+- 🔄 Implementation coming soon
+
+**Current Options:**
+1. **Wait for ElevenLabs integration** (recommended - full real-time voice)
+2. **Use archived text-based CLI** (see `archive/voice_custom_implementation/` - type messages, get audio files)
+
+**📖 Documentation:**
+- [docs/guides/voice/REALTIME_VOICE_OPTIONS.md](docs/guides/voice/REALTIME_VOICE_OPTIONS.md) - Why we're switching to ElevenLabs
+- [archive/voice_custom_implementation/VOICE_IMPLEMENTATION_SUMMARY.md](archive/voice_custom_implementation/VOICE_IMPLEMENTATION_SUMMARY.md) - Previous custom implementation
+
+---
+
 ## 📚 **READ THIS FIRST**
 
 ### Getting Started
