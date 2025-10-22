@@ -1,17 +1,24 @@
-# ENGINEERING_TEAM - 7 Engineering & Infrastructure Agents
+# ENGINEERING_TEAM - 12 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
 
 ## 🎯 Overview
 
-The **ENGINEERING_TEAM** contains 7 specialized agents for software engineering, infrastructure, security, AI/ML, design, and documentation. These agents have **full workspace access** and can work with all 30 agents across the 4 systems.
+The **ENGINEERING_TEAM** contains **12 specialized agents** for software engineering, infrastructure, security, AI/ML, design, quality, and optimization. These agents have **full workspace access** and can work with all 35 agents across the 4 systems.
 
-**Agents:**
-- **devops-engineer** - CI/CD, Docker, Kubernetes, Terraform, cloud infrastructure, monitoring
+**Core Agents (7 - Custom Built):**
+- **devops-engineer** ⭐ - CI/CD, Docker, Kubernetes, Terraform, cloud infrastructure, monitoring (production-ready with 886 lines of code)
 - **frontend-developer** - React components, responsive design, state management, performance
 - **backend-architect** - RESTful APIs, microservices, database schema, scalability planning
-- **security-auditor** - Code security analysis, vulnerability scanning, compliance audits
-- **technical-writer** - Documentation, PRDs, technical specs, API docs, user guides
-- **ai-engineer** - LLM integration, RAG systems, prompt optimization, agent frameworks
+- **security-auditor** ⭐ - Code security analysis, vulnerability scanning, compliance audits (unique comprehensive security)
+- **technical-writer** ⭐ - Documentation, PRDs, technical specs, API docs, user guides (broader scope)
+- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 35 agents!)
 - **ui-ux-designer** - User research, wireframes, design systems, accessibility, user flows
+
+**Specialist Agents (5 - From aitmpl.com):**
+- **code-reviewer** - Quality, security, maintainability reviews (3.2K community downloads)
+- **test-engineer** - Test automation, quality assurance, CI/CD testing (1.3K downloads)
+- **prompt-engineer** - LLM prompt optimization for all 35 agents (2.4K downloads)
+- **database-architect** - Database design, data modeling, scalability (1.2K downloads)
+- **debugger** - Root cause analysis, troubleshooting, error investigation (1.7K downloads)
 
 ---
 
@@ -244,25 +251,166 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
+### 8. Code Reviewer ⭐ **NEW - QUALITY LAYER**
+**Purpose:** Expert code review for quality, security, and maintainability
+
+**Capabilities:**
+- ✅ Code quality analysis (readability, naming, duplication)
+- ✅ Security review (exposed secrets, API keys, input validation)
+- ✅ Error handling verification
+- ✅ Test coverage assessment
+- ✅ Performance considerations
+- ✅ Automatic git diff analysis on invocation
+
+**Approach:**
+- Proactively reviews after code writing/modification
+- Organizes feedback by priority (Critical/Warnings/Suggestions)
+- Provides specific fix examples for all issues
+- Works alongside security-auditor for comprehensive coverage
+
+**Example Tasks:**
+```
+"Use code-reviewer to review the new MARKETING_TEAM email tool for quality and security"
+"Use code-reviewer after modifying devops-engineer templates to ensure best practices"
+```
+
+**Outputs:** `outputs/quality/reviews/`
+
+---
+
+### 9. Test Engineer ⭐ **NEW - TEST AUTOMATION**
+**Purpose:** Comprehensive test automation and quality assurance
+
+**Capabilities:**
+- ✅ Test pyramid strategy (70% unit, 20% integration, 10% E2E)
+- ✅ Automation frameworks (Jest, Playwright, pytest, Cypress)
+- ✅ Performance testing (load, stress, benchmark)
+- ✅ Test suite management and CI/CD integration
+- ✅ Coverage analysis and quality gates
+- ✅ Test data management
+
+**Approach:**
+- Focuses on engineering test automation (different from TEST_AGENT)
+- Creates comprehensive test strategies
+- Implements full testing pipelines
+- Provides test configuration templates
+
+**Example Tasks:**
+```
+"Use test-engineer to create a complete test strategy for the 35-agent workspace"
+"Use test-engineer to build E2E tests for MARKETING_TEAM agent workflows"
+```
+
+**Outputs:** `outputs/testing/strategies/`, `outputs/testing/automation/`
+
+---
+
+### 10. Prompt Engineer ⭐ **NEW - AI OPTIMIZATION**
+**Purpose:** Expert LLM prompt optimization for AI systems
+
+**Capabilities:**
+- ✅ Prompt techniques (few-shot, chain-of-thought, role-playing)
+- ✅ Model-specific optimization (Claude, GPT, open models)
+- ✅ Structured output formatting
+- ✅ Constitutional AI principles
+- ✅ Prompt chaining and pipelines
+- ✅ Performance benchmarking
+
+**Why Perfect for This Workspace:**
+- You have **35 AI agents** that all use prompts!
+- Can optimize every agent definition for better performance
+- Reduce token usage across all agents
+- Improve output quality and consistency
+
+**Example Tasks:**
+```
+"Use prompt-engineer to optimize the copywriter agent prompt to reduce tokens by 30%"
+"Use prompt-engineer to create a prompt pipeline for multi-agent campaigns"
+```
+
+**Outputs:** `outputs/optimization/prompts/`, `outputs/optimization/benchmarks/`
+
+---
+
+### 11. Database Architect ⭐ **NEW - DATA LAYER**
+**Purpose:** Database architecture and data modeling specialist
+
+**Capabilities:**
+- ✅ Data modeling (ER design, normalization, dimensional modeling)
+- ✅ Scalability planning (sharding, replication, partitioning)
+- ✅ Polyglot persistence (SQL, NoSQL, cache, search, time-series)
+- ✅ Microservices data patterns (database per service, CQRS, event sourcing)
+- ✅ Migration strategies with rollback support
+- ✅ Performance monitoring and optimization
+
+**Why Needed:**
+- Design unified analytics database for 35 agents
+- Optimize MARKETING_TEAM content storage
+- Track agent performance metrics
+- Store test results and coverage data
+
+**Example Tasks:**
+```
+"Use database-architect to design an analytics database tracking all 35 agent metrics"
+"Use database-architect to create a content management schema for MARKETING_TEAM"
+```
+
+**Outputs:** `outputs/database/schemas/`, `outputs/database/migrations/`
+
+---
+
+### 12. Debugger ⭐ **NEW - TROUBLESHOOTING**
+**Purpose:** Root cause analysis and debugging specialist
+
+**Capabilities:**
+- ✅ Error message and stack trace analysis
+- ✅ Reproduction step identification
+- ✅ Failure location isolation
+- ✅ Hypothesis formation and testing
+- ✅ Strategic debug logging
+- ✅ Variable state inspection
+
+**Common Debugging Scenarios:**
+- Agent coordination failures
+- API integration issues
+- MCP server problems
+- Tool execution errors
+- Workflow orchestration bugs
+
+**Example Tasks:**
+```
+"Use debugger to investigate why the MARKETING_TEAM copywriter agent is timing out"
+"Use debugger to fix the MCP connection issues in USER_STORY_AGENT"
+```
+
+**Outputs:** `outputs/debugging/reports/`, `outputs/debugging/fixes/`
+
+---
+
 ## 🌐 Workspace-Wide Access
 
 All ENGINEERING_TEAM agents can access and work with:
 
 | System | Agents | What Engineering Agents Can Do |
 |--------|--------|--------------------------------|
-| **MARKETING_TEAM/** | 17 agents | Deploy, audit security, build dashboards, document APIs, optimize prompts |
-| **TEST_AGENT/** | 5 agents | Review test code, containerize, build CI/CD, document testing |
-| **USER_STORY_AGENT/** | 1 app | Dockerize Streamlit app, security audit, create web alternative, improve UX |
-| **ENGINEERING_TEAM/** | 7 agents | Self-improvement, documentation, deployment, AI optimization |
+| **MARKETING_TEAM/** | 17 agents | Deploy, audit security, build dashboards, document APIs, optimize prompts, review code, test workflows, design databases |
+| **TEST_AGENT/** | 5 agents | Review test code, containerize, build CI/CD, document testing, debug failures |
+| **USER_STORY_AGENT/** | 1 app | Dockerize Streamlit app, security audit, create web alternative, improve UX, optimize prompts |
+| **ENGINEERING_TEAM/** | 12 agents | Self-improvement, documentation, deployment, AI optimization, quality assurance, database design |
 
 **Cross-Team Collaboration:**
-- DevOps can deploy ANY of the 30 agents
-- AI Engineer can optimize prompts for ALL agents
-- Security Auditor can scan ALL 4 systems
-- UI/UX Designer can design dashboards for ALL teams
-- Frontend Developer can build UIs for ANY system
-- Backend Architect can create APIs for ALL agents
-- Technical Writer can document ALL 30 agents
+- **DevOps** can deploy ANY of the 35 agents
+- **AI Engineer** can optimize prompts for ALL agents
+- **Prompt Engineer** can refine all 35 agent definitions
+- **Security Auditor** can scan ALL 4 systems
+- **Code Reviewer** ensures quality across ALL codebases
+- **UI/UX Designer** can design dashboards for ALL teams
+- **Frontend Developer** can build UIs for ANY system
+- **Backend Architect** can create APIs for ALL agents
+- **Database Architect** can design unified data layer
+- **Technical Writer** can document ALL 35 agents
+- **Test Engineer** can create test strategies for ALL systems
+- **Debugger** can troubleshoot ANY agent or workflow
 
 ---
 
@@ -271,14 +419,19 @@ All ENGINEERING_TEAM agents can access and work with:
 ```
 ENGINEERING_TEAM/
 ├── .claude/
-│   ├── agents/                  ← 7 agent definitions
+│   ├── agents/                  ← 12 agent definitions (7 custom + 5 specialists)
 │   │   ├── devops-engineer.md       (24K - production CI/CD, Terraform, Helm)
 │   │   ├── frontend-developer.md    (1.3K - React, responsive design)
 │   │   ├── backend-architect.md     (1.3K - API design, microservices)
 │   │   ├── security-auditor.md      (8.1K - code security, vulnerability scanning)
 │   │   ├── technical-writer.md      (16K - PRDs, specs, API docs)
 │   │   ├── ai-engineer.md           (1.3K - LLM, RAG, prompt optimization)
-│   │   └── ui-ux-designer.md        (1.2K - UX design, wireframes, accessibility)
+│   │   ├── ui-ux-designer.md        (1.2K - UX design, wireframes, accessibility)
+│   │   ├── code-reviewer.md         ⭐ NEW (quality & security reviews)
+│   │   ├── test-engineer.md         ⭐ NEW (test automation & QA)
+│   │   ├── prompt-engineer.md       ⭐ NEW (LLM prompt optimization)
+│   │   ├── database-architect.md    ⭐ NEW (database design & modeling)
+│   │   └── debugger.md              ⭐ NEW (troubleshooting & debugging)
 │   └── settings.json            ← Workspace-wide access config
 │
 ├── tools/                       ← Shared engineering tools
@@ -294,7 +447,12 @@ ENGINEERING_TEAM/
 │   ├── frontend/
 │   ├── backend/
 │   ├── design/
-│   └── ai/
+│   ├── ai/
+│   ├── quality/                 ⭐ NEW (code reviews)
+│   ├── testing/                 ⭐ NEW (test strategies, automation)
+│   ├── optimization/            ⭐ NEW (prompt optimization, benchmarks)
+│   ├── database/                ⭐ NEW (schemas, migrations)
+│   └── debugging/               ⭐ NEW (debugging reports, fixes)
 │
 ├── docs/                        ← Documentation
 │   ├── prds/
@@ -311,26 +469,33 @@ ENGINEERING_TEAM/
 
 ## 💡 Common Use Cases
 
-### 1. Full-Stack Agent Dashboard (All 7 Agents Working Together)
+### 1. Full-Stack Agent Dashboard (All 12 Agents Working Together)
 ```
 Step 1: "Use technical-writer to write a PRD for an agent control dashboard"
 Step 2: "Use ui-ux-designer to create wireframes and user flows for the dashboard"
-Step 3: "Use backend-architect to design the API for agent management"
-Step 4: "Use frontend-developer to implement the dashboard in Next.js"
-Step 5: "Use devops-engineer to containerize and deploy to Kubernetes"
-Step 6: "Use security-auditor to audit the dashboard for vulnerabilities"
-Step 7: "Use ai-engineer to add intelligent agent recommendations"
+Step 3: "Use database-architect to design the analytics database schema"
+Step 4: "Use backend-architect to design the API for agent management"
+Step 5: "Use frontend-developer to implement the dashboard in Next.js"
+Step 6: "Use code-reviewer to review the implementation for quality"
+Step 7: "Use test-engineer to create comprehensive test strategy"
+Step 8: "Use security-auditor to audit the dashboard for vulnerabilities"
+Step 9: "Use devops-engineer to containerize and deploy to Kubernetes"
+Step 10: "Use ai-engineer to add intelligent agent recommendations"
+Step 11: "Use prompt-engineer to optimize all AI prompts in the dashboard"
+Step 12: "Use debugger to troubleshoot any deployment issues"
 ```
 
-### 2. Optimize All 30 Agents with AI Engineer
+### 2. Optimize All 35 Agents (AI Engineer + Prompt Engineer Collaboration)
 ```
-"Use ai-engineer to:
-1. Analyze prompts for all 30 agents
+"Use ai-engineer and prompt-engineer together to:
+1. Analyze prompts for all 35 agents
 2. Optimize for token reduction (30% target)
 3. Improve structured outputs with JSON mode
 4. Add fallback strategies for API failures
 5. Create a prompt versioning system
-6. Implement A/B testing for prompt variants"
+6. Implement A/B testing for prompt variants
+7. Build RAG system for agent knowledge base
+8. Track performance metrics across all agents"
 ```
 
 ### 3. Production Deployment Pipeline
@@ -387,22 +552,32 @@ Step 7: "Use ai-engineer to add intelligent agent recommendations"
 
 ---
 
-## 📊 Agent Statistics
+## 📊 Agent Statistics ⭐ **SUPER TEAM**
 
 **Total Workspace:**
-- 30 AI agents across 4 teams
-- 17 marketing + 5 testing + 1 user story + **7 engineering**
+- **35 AI agents** across 4 teams
+- 17 marketing + 5 testing + 1 user story + **12 engineering**
 - 4 systems working together
 
-**ENGINEERING_TEAM Agents:**
-- 7 specialized engineering agents
+**ENGINEERING_TEAM Agents (12 Total):**
+
+**Core 7 (Custom Built):**
 - 3 official templates (devops, frontend, ui-ux) ← Production-ready
 - 2 new additions (ai-engineer, ui-ux-designer) ← Perfect for this workspace
 - 1 architecture-focused (backend-architect)
-- 2 custom comprehensive (security-auditor, technical-writer)
-- Full workspace access to all 30 agents
+- 2 custom comprehensive (security-auditor, technical-writer) ← Unique capabilities
+
+**Specialist 5 (aitmpl.com Community):**
+- code-reviewer (3.2K downloads) ← Quality layer
+- test-engineer (1.3K downloads) ← QA automation
+- prompt-engineer (2.4K downloads) ← AI optimization
+- database-architect (1.2K downloads) ← Data layer
+- debugger (1.7K downloads) ← Troubleshooting
+
+**Resources:**
+- Full workspace access to all 35 agents
 - 17 skills available (inherited from workspace)
-- 7 MCP servers (playwright, google-workspace, perplexity, bright-data, n8n-mcp, sequential-thinking, fetch)
+- 7 MCP servers (playwright, google-workspace, perplexity, bright-data, n8n-mcp, sequential-thinking, marketing-tools)
 
 ---
 
@@ -433,29 +608,35 @@ All ENGINEERING_TEAM agents follow these security standards:
    "Use devops-engineer to create a complete Kubernetes deployment for MARKETING_TEAM"
    ```
 
-2. **Optimize AI Agents**
+2. **Optimize All 35 AI Agents**
    ```
-   "Use ai-engineer to analyze and optimize prompts for all 30 agents"
+   "Use ai-engineer and prompt-engineer to optimize prompts for all 35 agents"
    ```
 
 3. **Build Agent Dashboard**
    ```
-   "Use ui-ux-designer and frontend-developer to build a control panel"
+   "Use ui-ux-designer, frontend-developer, and database-architect to build a control panel"
    ```
 
 4. **Create Documentation**
    ```
-   "Use technical-writer to document all 30 agents with PRDs and API specs"
+   "Use technical-writer to document all 35 agents with PRDs and API specs"
    ```
 
-5. **Security Audit**
+5. **Security & Quality Audit**
    ```
-   "Use security-auditor to scan for vulnerabilities across all 4 systems"
+   "Use security-auditor and code-reviewer to scan and review all 4 systems"
+   ```
+
+6. **Comprehensive Testing**
+   ```
+   "Use test-engineer to create test strategies for all systems"
    ```
 
 ---
 
-**Last Updated:** 2025-10-21
-**Version:** 2.0 (7 agents - upgraded from 5)
-**Total Workspace Agents:** 30 (17 marketing + 5 testing + 1 user story + 7 engineering)
+**Last Updated:** 2025-10-22
+**Version:** 3.0 - ENGINEERING SUPER TEAM ⭐ (12 agents - upgraded from 7)
+**Total Workspace Agents:** 35 (17 marketing + 5 testing + 1 user story + **12 engineering**)
+**New Specialists:** code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
