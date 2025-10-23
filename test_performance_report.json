@@ -1,0 +1,77 @@
+{
+  "timestamp": "2025-10-23T12:49:10.607781",
+  "tests": [
+    {
+      "name": "Google Workspace MCP Connection",
+      "script": "/home/user/TEST_AGENTS/MARKETING_TEAM/scripts/test_google_workspace_mcp.py",
+      "start_time": 1761223750.6081867,
+      "status": "PASSED",
+      "duration_ms": 10057.673215866089,
+      "output": "============================================================\n  Google Workspace MCP Connection Test\n============================================================\n\nTesting Google Workspace MCP Connection...\n\n[ERROR] Command timed out\n\nTesting workspace-mcp.exe...\n\n[ERROR] workspace-mcp.exe not found at: C:\\Users\\sabaa\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\Scripts\\workspace-mcp.exe\n\n============================================================\n  TEST SUMMARY\n============================================================\nMCP Connection:    [FAIL]\nExecutable Access: [FAIL]\n\n[WARNING] Some tests failed. Check the errors above.\n\nTroubleshooting:\n  1. Verify workspace-mcp is installed: pip install workspace-mcp\n  2. Check .mcp.json configuration\n  3. Ensure Google OAuth credentials are set up\n",
+      "error": "",
+      "end_time": 1761223760.66586,
+      "return_code": 0
+    },
+    {
+      "name": "OpenAI API Connection",
+      "script": "/home/user/TEST_AGENTS/MARKETING_TEAM/scripts/test_openai_connection.py",
+      "start_time": 1761223760.6663373,
+      "status": "FAILED",
+      "duration_ms": 40.58670997619629,
+      "output": "",
+      "error": "Traceback (most recent call last):\n  File \"/home/user/TEST_AGENTS/MARKETING_TEAM/scripts/test_openai_connection.py\", line 8, in <module>\n    from dotenv import load_dotenv\nModuleNotFoundError: No module named 'dotenv'\n",
+      "end_time": 1761223760.706924,
+      "return_code": 1
+    },
+    {
+      "name": "Perplexity Research API",
+      "script": "/home/user/TEST_AGENTS/MARKETING_TEAM/scripts/test_perplexity_research.py",
+      "start_time": 1761223760.7071967,
+      "status": "FAILED",
+      "duration_ms": 160.45022010803223,
+      "output": "",
+      "error": "Traceback (most recent call last):\n  File \"/home/user/TEST_AGENTS/MARKETING_TEAM/scripts/test_perplexity_research.py\", line 9, in <module>\n    from dotenv import load_dotenv\nModuleNotFoundError: No module named 'dotenv'\n",
+      "end_time": 1761223760.867647,
+      "return_code": 1
+    },
+    {
+      "name": "Pytest Smoke Tests",
+      "script": "pytest -m smoke",
+      "start_time": 1761223760.8678136,
+      "status": "FAILED",
+      "duration_ms": 235.76760292053223,
+      "output": "",
+      "error": "ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]\npytest: error: unrecognized arguments: --timeout=60\n  inifile: None\n  rootdir: /home/user/TEST_AGENTS\n\n",
+      "return_code": 4
+    }
+  ],
+  "summary": {
+    "total_tests": 4,
+    "passed": 1,
+    "failed": 3,
+    "timeouts": 0,
+    "errors": 0,
+    "no_tests": 0,
+    "total_duration_ms": 10494.47774887085,
+    "average_duration_ms": 2623.6194372177124
+  },
+  "bottlenecks": [
+    {
+      "test": "Google Workspace MCP Connection",
+      "duration_ms": 10057.673215866089,
+      "duration_s": 10.057673215866089
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "issue": "1 test(s) taking >2 seconds",
+      "recommendation": "Consider parallelizing tests or reducing I/O operations"
+    },
+    {
+      "priority": "HIGH",
+      "issue": "3 test(s) failing",
+      "recommendation": "Review test failures and fix underlying issues"
+    }
+  ]
+}
