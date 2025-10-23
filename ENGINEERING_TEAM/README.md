@@ -1,8 +1,11 @@
-# ENGINEERING_TEAM - 12 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
+# ENGINEERING_TEAM - 13 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
 
 ## 🎯 Overview
 
-The **ENGINEERING_TEAM** contains **12 specialized agents** for software engineering, infrastructure, security, AI/ML, design, quality, and optimization. These agents have **full workspace access** and can work with all 35 agents across the 4 systems.
+The **ENGINEERING_TEAM** contains **13 specialized agents** (12 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, and optimization. These agents have **full workspace access** and can work with all 35 agents across the 4 systems.
+
+**CTO Coordinator:**
+- **cto** ⭐ **NEW** - Chief Technology Officer for strategic coordination of all 12 specialists
 
 **Core Agents (7 - Custom Built):**
 - **devops-engineer** ⭐ - CI/CD, Docker, Kubernetes, Terraform, cloud infrastructure, monitoring (production-ready with 886 lines of code)
@@ -26,12 +29,22 @@ The **ENGINEERING_TEAM** contains **12 specialized agents** for software enginee
 
 ### Talk to Claude Code
 
+**Using the CTO Coordinator (Recommended for Complex Tasks):**
+```
+"Use cto to build an AI-powered analytics dashboard"
+"Use cto to deploy all 4 systems to AWS with Kubernetes"
+"Use cto to optimize prompts for all 35 agents"
+"Use cto to conduct a comprehensive security audit"
+"Use cto to troubleshoot the MARKETING_TEAM timeout issues"
+```
+
+**Using Individual Specialists Directly:**
 ```
 "Use the devops-engineer to create a complete CI/CD pipeline with GitHub Actions"
-"Use the ai-engineer to optimize prompts for the 30 agents in this workspace"
+"Use the ai-engineer to optimize prompts for the 35 agents in this workspace"
 "Use the ui-ux-designer to create wireframes for an agent control dashboard"
 "Use the frontend-developer to implement the dashboard in Next.js"
-"Use the backend-architect to design an API for managing all 30 agents"
+"Use the backend-architect to design an API for managing all 35 agents"
 "Use the security-auditor to scan for hardcoded API keys across all systems"
 "Use the technical-writer to write a PRD for agent analytics"
 ```
@@ -39,6 +52,52 @@ The **ENGINEERING_TEAM** contains **12 specialized agents** for software enginee
 ---
 
 ## 🤖 Agent Capabilities
+
+### 0. CTO (Chief Technology Officer) ⭐ **NEW - STRATEGIC COORDINATOR**
+**Purpose:** Strategic coordination of all 12 ENGINEERING_TEAM specialists
+
+**Capabilities:**
+- ✅ **Strategic planning** - Break down complex requests into phased execution plans
+- ✅ **Intelligent routing** - Classify requests and delegate to the right specialists
+- ✅ **Workflow orchestration** - Coordinate multi-agent workflows with dependency tracking
+- ✅ **Quality gates** - Ensure code review, security audit, and testing before deployment
+- ✅ **Balanced approach** - Both strategic CTO and hands-on technical lead
+
+**Coordination Tools:**
+- `classify_engineering_request` - Intent classification and agent recommendation
+- `get_engineer_capabilities` - Agent capability lookup
+- `list_engineering_agents` - Complete agent directory
+- `create_execution_plan` - Multi-phase workflow planning with dependencies
+- `sequential-thinking` MCP - Complex problem decomposition
+
+**Workflow Patterns:**
+- **End-to-End Feature Development** - PRD → Design → Build → Test → Deploy → Document
+- **Infrastructure Deployment** - Terraform → Security Scan → Testing → Documentation
+- **AI Optimization** - Analyze → Optimize → Benchmark → Document
+- **Security Audit** - Code Review → Security Scan → Test Coverage → Report
+- **Troubleshooting** - Root Cause → Fix → Validate → Review
+
+**Example Tasks:**
+```
+"Use cto to build an AI-powered analytics dashboard"
+→ Coordinates: technical-writer (PRD) → ui-ux-designer (wireframes) →
+   database-architect (schema) → backend-architect (API) →
+   frontend-developer (UI) → test-engineer (tests) →
+   code-reviewer (review) → security-auditor (audit) →
+   devops-engineer (deploy) → technical-writer (docs)
+
+"Use cto to deploy MARKETING_TEAM to AWS with Kubernetes"
+→ Coordinates: devops-engineer (infra) → security-auditor (scan) →
+   test-engineer (validation) → technical-writer (docs)
+
+"Use cto to optimize prompts for all 35 agents"
+→ Coordinates: ai-engineer + prompt-engineer (analyze & optimize) →
+   technical-writer (document improvements)
+```
+
+**Special Note:** The CTO agent coordinates **ONLY the 12 ENGINEERING_TEAM specialists**. It does not coordinate MARKETING_TEAM, TEST_AGENT, or USER_STORY_AGENT (they have their own coordinators).
+
+---
 
 ### 1. DevOps Engineer ⭐ **PRODUCTION-READY**
 **Purpose:** Full-stack DevOps automation with production-grade configurations
@@ -419,7 +478,8 @@ All ENGINEERING_TEAM agents can access and work with:
 ```
 ENGINEERING_TEAM/
 ├── .claude/
-│   ├── agents/                  ← 12 agent definitions (7 custom + 5 specialists)
+│   ├── agents/                  ← 13 agent definitions (1 coordinator + 12 specialists)
+│   │   ├── cto.md                   ⭐ NEW (30K - CTO coordinator for all 12 specialists)
 │   │   ├── devops-engineer.md       (24K - production CI/CD, Terraform, Helm)
 │   │   ├── frontend-developer.md    (1.3K - React, responsive design)
 │   │   ├── backend-architect.md     (1.3K - API design, microservices)
@@ -427,14 +487,16 @@ ENGINEERING_TEAM/
 │   │   ├── technical-writer.md      (16K - PRDs, specs, API docs)
 │   │   ├── ai-engineer.md           (1.3K - LLM, RAG, prompt optimization)
 │   │   ├── ui-ux-designer.md        (1.2K - UX design, wireframes, accessibility)
-│   │   ├── code-reviewer.md         ⭐ NEW (quality & security reviews)
-│   │   ├── test-engineer.md         ⭐ NEW (test automation & QA)
-│   │   ├── prompt-engineer.md       ⭐ NEW (LLM prompt optimization)
-│   │   ├── database-architect.md    ⭐ NEW (database design & modeling)
-│   │   └── debugger.md              ⭐ NEW (troubleshooting & debugging)
+│   │   ├── code-reviewer.md         (quality & security reviews)
+│   │   ├── test-engineer.md         (test automation & QA)
+│   │   ├── prompt-engineer.md       (LLM prompt optimization)
+│   │   ├── database-architect.md    (database design & modeling)
+│   │   └── debugger.md              (troubleshooting & debugging)
 │   └── settings.json            ← Workspace-wide access config
 │
 ├── tools/                       ← Shared engineering tools
+│   ├── engineering_coordinator_tools.py  ⭐ NEW (CTO coordination tools)
+│   └── validate_agents.py       ← Agent definition validator
 ├── scripts/                     ← Utility scripts
 ├── memory/                      ← Configuration and memory
 │   └── config.json              ← Workspace info, deployment defaults
@@ -469,7 +531,9 @@ ENGINEERING_TEAM/
 
 ## 💡 Common Use Cases
 
-### 1. Full-Stack Agent Dashboard (All 12 Agents Working Together)
+### 1. Full-Stack Agent Dashboard (CTO Coordinates All 12 Specialists)
+
+**Without CTO (Manual Coordination - 12 Steps):**
 ```
 Step 1: "Use technical-writer to write a PRD for an agent control dashboard"
 Step 2: "Use ui-ux-designer to create wireframes and user flows for the dashboard"
@@ -483,6 +547,19 @@ Step 9: "Use devops-engineer to containerize and deploy to Kubernetes"
 Step 10: "Use ai-engineer to add intelligent agent recommendations"
 Step 11: "Use prompt-engineer to optimize all AI prompts in the dashboard"
 Step 12: "Use debugger to troubleshoot any deployment issues"
+```
+
+**With CTO (Single Command - Automated Coordination):**
+```
+"Use cto to build an AI-powered analytics dashboard for tracking all 35 agents"
+
+→ CTO automatically:
+  1. Classifies request as "build_feature"
+  2. Creates execution plan with 6 phases
+  3. Delegates to all 12 specialists in proper sequence
+  4. Ensures quality gates (review + security + testing)
+  5. Coordinates deployment
+  6. Generates complete documentation
 ```
 
 ### 2. Optimize All 35 Agents (AI Engineer + Prompt Engineer Collaboration)
@@ -555,13 +632,18 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 ## 📊 Agent Statistics ⭐ **SUPER TEAM**
 
 **Total Workspace:**
-- **35 AI agents** across 4 teams
-- 17 marketing + 5 testing + 1 user story + **12 engineering**
+- **36 AI agents** across 4 teams
+- 17 marketing + 5 testing + 1 user story + **13 engineering**
 - 4 systems working together
 
-**ENGINEERING_TEAM Agents (12 Total):**
+**ENGINEERING_TEAM Agents (13 Total):**
 
-**Core 7 (Custom Built):**
+**CTO Coordinator (1 - Custom Built):**
+- ⭐ **cto** - Strategic coordinator for all 12 specialists (~850 lines)
+  - Tools: classify_engineering_request, get_engineer_capabilities, list_engineering_agents, create_execution_plan
+  - Workflow patterns: End-to-end feature, infrastructure deployment, AI optimization, security audit, troubleshooting
+
+**Core 7 Specialists (Custom Built):**
 - 3 official templates (devops, frontend, ui-ux) ← Production-ready
 - 2 new additions (ai-engineer, ui-ux-designer) ← Perfect for this workspace
 - 1 architecture-focused (backend-architect)
@@ -635,8 +717,8 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 ---
 
-**Last Updated:** 2025-10-22
-**Version:** 3.0 - ENGINEERING SUPER TEAM ⭐ (12 agents - upgraded from 7)
-**Total Workspace Agents:** 35 (17 marketing + 5 testing + 1 user story + **12 engineering**)
-**New Specialists:** code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**Last Updated:** 2025-10-23
+**Version:** 4.0 - CTO COORDINATOR ADDED ⭐ (13 agents: 1 coordinator + 12 specialists)
+**Total Workspace Agents:** 36 (17 marketing + 5 testing + 1 user story + **13 engineering**)
+**Latest Addition:** CTO agent - Strategic coordinator with intelligent routing and multi-agent orchestration
 **Repository:** https://github.com/Azeez1/TEST_AGENTS

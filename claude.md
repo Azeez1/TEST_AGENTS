@@ -2,13 +2,13 @@
 
 ## 📋 Repository Overview
 
-This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **35 specialized agents** for user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
+This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **36 specialized agents** for user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
 - **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
-- **ENGINEERING_TEAM** - **12 engineering agents** ⭐ **SUPER TEAM** for DevOps, security, frontend, backend, AI/ML, UX design, quality assurance, testing, optimization, database design, and troubleshooting
+- **ENGINEERING_TEAM** - **13 engineering agents** ⭐ **SUPER TEAM** (1 CTO coordinator + 12 specialists) for DevOps, security, frontend, backend, AI/ML, UX design, quality assurance, testing, optimization, database design, and troubleshooting
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
@@ -476,18 +476,24 @@ TEST_AGENTS/
 
 ---
 
-### ENGINEERING_TEAM (12 Agents) ⭐ **SUPER TEAM**
+### ENGINEERING_TEAM (13 Agents) ⭐ **SUPER TEAM**
 
-**Core 7 Agents (Custom Built):**
+**CTO Coordinator (1 Agent - NEW):**
+
+| Agent | Capability | Invoke With |
+|-------|-----------|-------------|
+| **cto** ⭐ **NEW** | **Strategic coordinator** for all 12 specialists - Intelligent routing, multi-agent orchestration, workflow planning with sequential-thinking, quality gates, dependency tracking | `"Use cto to build an AI-powered analytics dashboard"` `"Use cto to deploy all systems to AWS"` `"Use cto to optimize all 36 agents"` |
+
+**Core 7 Specialists (Custom Built):**
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
 | **devops-engineer** ⭐ | **Production-ready** CI/CD (GitHub Actions), Terraform (AWS/GCP), Kubernetes (Helm), monitoring (Prometheus/Grafana), security scanning (886 lines of code) | `"Use devops-engineer to create complete deployment pipeline"` |
 | **frontend-developer** | React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG) | `"Use frontend-developer to build agent dashboard in Next.js"` |
-| **backend-architect** | RESTful API design, microservices architecture, database schema, caching strategies, scalability planning | `"Use backend-architect to design API for 35 agents"` |
+| **backend-architect** | RESTful API design, microservices architecture, database schema, caching strategies, scalability planning | `"Use backend-architect to design API for 36 agents"` |
 | **security-auditor** ⭐ | **Unique comprehensive security** - Code security analysis, vulnerability scanning (OWASP Top 10), compliance (GDPR/HIPAA) | `"Use security-auditor to scan for hardcoded API keys"` |
 | **technical-writer** ⭐ | **Broader scope** - PRDs, technical specs, API docs (OpenAPI), architecture diagrams, user guides | `"Use technical-writer to write PRD for agent scheduling"` |
-| **ai-engineer** ⭐ | **Perfect for 35 agents** - LLM integration, RAG systems, prompt optimization, agent frameworks (LangChain/LangGraph) | `"Use ai-engineer to optimize prompts for all 35 agents"` |
+| **ai-engineer** ⭐ | **Perfect for 36 agents** - LLM integration, RAG systems, prompt optimization, agent frameworks (LangChain/LangGraph) | `"Use ai-engineer to optimize prompts for all 36 agents"` |
 | **ui-ux-designer** | User research, wireframes, design systems, accessibility, user flows, usability testing | `"Use ui-ux-designer to create wireframes for dashboard"` |
 
 **Specialist 5 Agents (From aitmpl.com - Community Validated):**
@@ -495,9 +501,9 @@ TEST_AGENTS/
 | Agent | Capability | Downloads | Invoke With |
 |-------|-----------|-----------|-------------|
 | **code-reviewer** | Quality, security, maintainability reviews - automatic git diff analysis | 3.2K | `"Use code-reviewer to review MARKETING_TEAM email tool"` |
-| **test-engineer** | Test automation (Jest, Playwright, pytest), QA strategy, CI/CD testing | 1.3K | `"Use test-engineer to create test strategy for 35 agents"` |
+| **test-engineer** | Test automation (Jest, Playwright, pytest), QA strategy, CI/CD testing | 1.3K | `"Use test-engineer to create test strategy for 36 agents"` |
 | **prompt-engineer** | LLM prompt optimization, techniques (few-shot, chain-of-thought), benchmarking | 2.4K | `"Use prompt-engineer to optimize copywriter prompt"` |
-| **database-architect** | Database design, data modeling, scalability (sharding, replication), polyglot persistence | 1.2K | `"Use database-architect to design analytics DB for 35 agents"` |
+| **database-architect** | Database design, data modeling, scalability (sharding, replication), polyglot persistence | 1.2K | `"Use database-architect to design analytics DB for 36 agents"` |
 | **debugger** | Root cause analysis, troubleshooting, error investigation, hypothesis testing | 1.7K | `"Use debugger to fix MARKETING_TEAM timeout issues"` |
 
 **Engineering Stack:**
@@ -512,15 +518,17 @@ TEST_AGENTS/
 - **Docs:** Markdown, Mermaid diagrams, OpenAPI/Swagger, PlantUML
 
 **Special Features:**
-- ✅ **Full workspace access** - All 12 agents can work with all 35 agents across 4 systems
+- ✅ **CTO Coordinator** - Single command orchestration for complex multi-agent workflows
+- ✅ **Intelligent routing** - CTO classifies requests and delegates to the right specialists
+- ✅ **Full workspace access** - All 13 agents can work with all 36 agents across 4 systems
 - ✅ **Production-ready code** - devops-engineer provides 886 lines of battle-tested CI/CD, Terraform, Helm
 - ✅ **Community validated** - 5 specialist agents with thousands of downloads (proven in production)
-- ✅ **AI optimization powerhouse** - ai-engineer + prompt-engineer can optimize all 35 agent prompts
+- ✅ **AI optimization powerhouse** - ai-engineer + prompt-engineer can optimize all 36 agent prompts
 - ✅ **Quality layer** - code-reviewer + security-auditor ensure comprehensive code quality
 - ✅ **Complete testing** - test-engineer builds strategies, TEST_AGENT generates tests
 - ✅ **Design → Develop → Test → Deploy** - Complete SDLC from UX to production
 - ✅ **Cross-team collaboration** - DevOps deploys all systems, AI/Prompt engineers optimize all agents, Security/Code reviewers audit everything
-- ✅ **End-to-end workflows** - PRD (technical-writer) → Database (database-architect) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Review (code-reviewer) → Test (test-engineer) → Deploy (devops-engineer) → Audit (security-auditor) → Optimize (ai-engineer + prompt-engineer) → Debug (debugger)
+- ✅ **End-to-end workflows** - CTO coordinates: PRD (technical-writer) → Database (database-architect) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Review (code-reviewer) → Test (test-engineer) → Deploy (devops-engineer) → Audit (security-auditor) → Optimize (ai-engineer + prompt-engineer) → Debug (debugger)
 
 ---
 
@@ -1406,9 +1414,15 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ---
 
-**Last Updated:** 2025-10-22
+**Last Updated:** 2025-10-23
 **Recent Changes:**
-- ✨ **ENGINEERING SUPER TEAM CREATED** - 12 engineering agents (30 → **35 agents total**)
+- ✨ **CTO COORDINATOR ADDED** - Engineering team now has strategic coordinator (35 → **36 agents total**)
+  - **cto agent** - Intelligent routing, multi-agent orchestration, workflow planning
+  - 4 coordination tools: `classify_engineering_request`, `get_engineer_capabilities`, `list_engineering_agents`, `create_execution_plan`
+  - 7 workflow patterns: End-to-end feature, infrastructure deployment, AI optimization, security audit, troubleshooting, database design, UI/UX implementation
+  - Single-command coordination: `"Use cto to build analytics dashboard"` → CTO delegates to all 12 specialists automatically
+  - See [ENGINEERING_TEAM/.claude/agents/cto.md](ENGINEERING_TEAM/.claude/agents/cto.md) (~850 lines) and [ENGINEERING_TEAM/tools/engineering_coordinator_tools.py](ENGINEERING_TEAM/tools/engineering_coordinator_tools.py) (~400 lines)
+- ✨ **ENGINEERING SUPER TEAM CREATED** - 12 engineering agents (30 → 35 agents, now 36 with CTO)
   - **Core 7 Agents (Custom Built):**
     - ⭐ **devops-engineer:** UPGRADED with official production-ready template - 886 lines of battle-tested CI/CD (GitHub Actions), Terraform (AWS EKS, RDS, Redis, ALB), Kubernetes (Helm charts), monitoring (Prometheus/Grafana), security scanning (Trivy, kube-bench, gitleaks)
     - ⭐ **frontend-developer:** REPLACED with official template - React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG)
@@ -1449,7 +1463,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect 35 agents (4 systems: MARKETING_TEAM (17), TEST_AGENT (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (12))
+- Updated all documentation to reflect 36 agents (4 systems: MARKETING_TEAM (17), TEST_AGENT (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (13))
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service
