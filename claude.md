@@ -48,6 +48,197 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 **This saves time, avoids duplication, and uses battle-tested code.**
 
+**See "🤖 Agent Invocation Guidelines" below for how to properly invoke agents without over-specification.**
+
+---
+
+## 🤖 Agent Invocation Guidelines (For AI Assistants)
+
+### Trust Agent Definitions - Minimal Invocation
+
+**Agents already know:**
+- ✅ Which tools to use (defined in YAML frontmatter under `tools:`)
+- ✅ Which memory files to read (defined in "⚙️ Configuration Files" section)
+- ✅ How to execute their responsibilities (defined in agent persona/instructions)
+- ✅ When to use skills and MCP servers (defined in agent capabilities)
+
+### ✅ Correct Invocation Pattern: High-Level Goals Only
+
+**Format:** "Use [agent-name] to [high-level goal with key context]"
+
+**Examples:**
+- ✅ "Use copywriter to create Engineering Team partner summary as Word document"
+- ✅ "Use gmail-agent to send the document with professional email about the Engineering Super Team"
+- ✅ "Use visual-designer to create LinkedIn header image with brand colors"
+- ✅ "Use router-agent to coordinate a product launch campaign"
+
+**What to include:**
+- Agent name
+- High-level goal (what you want accomplished)
+- Key context (subject matter, deliverables, constraints)
+
+**What NOT to include:**
+- Implementation steps (reading files, importing tools, calling functions)
+- Tool names or function calls
+- Memory file paths
+- Code-level instructions
+
+### ❌ Incorrect Invocation Pattern: Over-Specification
+
+**Anti-Pattern:** "Use [agent]. First read X file. Then import Y tool. Then call Z function with parameters..."
+
+**Why This Breaks Autonomy:**
+- Agent thinks it needs to CREATE the workflow instead of using existing tools
+- Causes duplicate code generation (temp scripts, new implementations)
+- Defeats the purpose of having agent definitions
+- Ignores pre-configured tools, memory files, and skills
+
+**Real Example of What Went Wrong:**
+```
+❌ BAD: "Use gmail-agent. Read memory/email_config.json for addresses.
+         Import tools/send_email_with_attachment.py. Call it with these params..."
+
+Result: Agent created temp_send_email.py instead of using existing tool
+
+✅ GOOD: "Use gmail-agent to send Engineering_Team_Partner_Summary.docx
+          with professional message about the 12-agent Engineering Super Team"
+
+Result: Agent reads its definition, imports existing tool, sends email
+```
+
+### 🎯 The Golden Rule: Let Agents Be Autonomous
+
+**If the agent definition says:**
+- "Always read memory/email_config.json" → DON'T tell it to read that file
+- "Tools: send_email_with_attachment" → DON'T tell it to import that tool
+- "Use docx skill for documents" → DON'T tell it to use the docx skill
+
+**The agent already knows. Trust the definition.**
+
+### 🔍 How Agents Process Instructions
+
+**Minimal Invocation (Autonomous):**
+1. Agent receives: "Use gmail-agent to send document X"
+2. Agent reads: `.claude/agents/gmail-agent.md`
+3. Agent sees: `tools: [send_email_with_attachment]`
+4. Agent sees: "Read memory/email_config.json for addresses"
+5. Agent executes autonomously: imports tool → reads config → sends email
+
+**Over-Specified Invocation (Breaks Autonomy):**
+1. Agent receives: "Read config. Import tool. Call function..."
+2. Agent thinks: "I'm being told HOW to do this, must be a new workflow"
+3. Agent creates: `temp_send_email.py` with new implementation
+4. Result: Duplicate code, ignored existing tools
+
+### 📊 When to Add More Context
+
+**DO add context for:**
+- Subject matter: "about AI marketing trends"
+- Deliverable specifics: "as 10-slide PowerPoint with professional theme"
+- Constraints: "under 500 words" or "for executive audience"
+- Content requirements: "include ROI analysis and case studies"
+
+**DON'T add context for:**
+- Which files to read
+- Which tools to import
+- Which functions to call
+- Step-by-step implementation
+
+### ✅ More Good Examples
+
+**Copywriter:**
+```
+✅ "Use copywriter to write 2000-word blog post about AI automation trends,
+    including case studies and ROI data"
+
+❌ "Use copywriter. Import brand_voice.json. Use docx skill. Write blog.
+    Save to outputs/blog_posts/"
+```
+
+**Visual Designer:**
+```
+✅ "Use visual-designer to create LinkedIn header image for product launch,
+    using brand colors from visual guidelines"
+
+❌ "Use visual-designer. Read memory/visual_guidelines.json. Import
+    openai_gpt4o_image.py. Generate image. Save to outputs/images/"
+```
+
+**Router Agent:**
+```
+✅ "Use router-agent to coordinate complete product launch campaign
+    with blog, social posts, email sequence, and landing page"
+
+❌ "Use router-agent. Invoke copywriter for blog. Then invoke social-media-manager.
+    Then invoke email-specialist. Then invoke landing-page-specialist."
+```
+
+### 🚫 What This Prevents
+
+**Duplicate Code Creation:**
+- ❌ temp_send_email.py (when send_email_with_attachment.py exists)
+- ❌ temp_image_gen.py (when openai_gpt4o_image.py exists)
+- ❌ temp_pdf_create.py (when pdf_generator.py exists)
+
+**Ignored Existing Tools:**
+- ❌ Creating new Gmail scripts when tools/gmail_api.py exists
+- ❌ Installing new libraries when dependencies already exist
+- ❌ Writing new MCP clients when servers are configured
+
+**Wasted Time:**
+- ❌ Debugging new code instead of using battle-tested tools
+- ❌ Recreating functionality that works perfectly
+- ❌ Creating files that need to be deleted
+
+### 💡 Remember
+
+**Your agents are autonomous experts.** Give them goals, not instructions.
+
+**Trust the system:**
+- 35 agent definitions with pre-configured tools
+- 17 skills providing advanced capabilities
+- 7 MCP servers for external integrations
+- 50+ production-ready tools in tools/ folders
+- Memory system with centralized configuration
+
+### 📚 Skills Have Their Own Workflows - Agents Must Read Documentation
+
+**Many skills (docx, pptx, pdf, xlsx) require agents to read documentation files before use.**
+
+**✅ Correct Agent Pattern (see presentation-designer.md):**
+
+Agent definitions should include explicit "Required Reading" sections:
+
+```markdown
+## 🧠 Required Reading (ALWAYS READ FIRST)
+
+1. Read `.claude/skills/document-skills/pptx/SKILL.md` completely
+2. Read `.claude/skills/document-skills/pptx/html2pptx.md` completely
+3. Never set range limits when reading these files - read them completely
+```
+
+**Why this matters:**
+- Skills have specific workflows (e.g., docx uses JavaScript for NEW docs, Python for EDITING docs)
+- Without reading SKILL.md, agents may use wrong libraries (python-docx instead of docx-js)
+- Leads to incorrect implementations that violate "Use existing tools first" principle
+
+**❌ Common Mistake:**
+- Agent definition just says "Use docx skill"
+- Agent doesn't read SKILL.md
+- Agent uses wrong library or creates duplicate implementation
+- Results in 800+ line Python script when JavaScript was required
+
+**✅ How to Fix:**
+1. Add "Required Reading" section to agent definition
+2. List specific SKILL.md files to read
+3. Clarify workflow selection (create vs edit, which library to use)
+4. Agent will automatically follow documented workflows
+
+**Reference Implementation:** See [MARKETING_TEAM/.claude/agents/presentation-designer.md](MARKETING_TEAM/.claude/agents/presentation-designer.md) (lines 351-355) for correct pattern.
+
+**Your job as invoker:** Define WHAT you want
+**Agent's job:** Figure out HOW to do it
+
 ---
 
 ## 🚀 Quick Navigation

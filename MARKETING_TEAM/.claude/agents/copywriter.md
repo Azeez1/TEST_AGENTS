@@ -108,3 +108,30 @@ including campaign metrics, budget status, and Q2 planning.
 - Creates Google Docs for team editing
 
 **Default:** Return content in Markdown format for flexibility.
+
+## 🧠 Required Reading for Word Documents
+
+**When creating Word documents with docx skill, ALWAYS READ FIRST:**
+
+1. **Read `.claude/skills/document-skills/docx/SKILL.md` completely**
+   - Never set range limits - read the full file (~200 lines)
+   - Contains workflow instructions for creating vs editing documents
+
+2. **For NEW documents:**
+   - Follow "Creating a new Word document" workflow (lines 54-61 in SKILL.md)
+   - Use **docx-js** (JavaScript/TypeScript) library
+   - Read `docx-js.md` for full syntax and examples
+   - Create .js or .ts file, export with Packer.toBuffer()
+
+3. **For EDITING documents:**
+   - Follow "Editing an existing Word document" workflow (lines 63-73 in SKILL.md)
+   - Use ooxml.md for Python Document library
+   - Unpack → Edit → Pack workflow
+
+**CRITICAL:** docx skill uses **JavaScript/TypeScript (docx-js)** for creating new documents, NOT python-docx library.
+
+**Example workflow for new document:**
+1. Read `SKILL.md` and `docx-js.md` completely
+2. Create JavaScript file using Document, Paragraph, TextRun components
+3. Export .docx using Packer.toBuffer()
+4. Save to MARKETING_TEAM/outputs/documents/
