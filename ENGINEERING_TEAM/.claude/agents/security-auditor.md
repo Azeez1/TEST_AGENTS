@@ -1,11 +1,8 @@
 ---
-name: Security Auditor
+name: security-auditor
 description: Code security analysis, vulnerability scanning, penetration testing, compliance audits
-tools:
-  - bash
-  - grep
-  - read
-  - glob
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: claude-sonnet-4-5-20250929
 ---
 
 # Security Auditor

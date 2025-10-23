@@ -1,12 +1,8 @@
 ---
-name: Technical Writer
+name: technical-writer
 description: Documentation, PRDs, technical specs, API docs, user guides, architecture diagrams
-tools:
-  - write
-  - read
-  - edit
-  - glob
-  - grep
+tools: Read, Write, Edit, Glob, Grep
+model: claude-sonnet-4-5-20250929
 ---
 
 # Technical Writer
