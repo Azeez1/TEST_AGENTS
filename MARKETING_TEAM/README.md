@@ -109,6 +109,62 @@ When you say:
 
 ---
 
+## 🔄 Context-Aware Brand Voice Enforcement
+
+**Marketing content is automatically reviewed by editor. Internal communications skip review.**
+
+### How It Works
+
+**Conditional Editor Review Based on Content Type:**
+
+**✅ EXTERNAL-FACING CONTENT (Gets Editor Review):**
+- **Marketing blogs, articles, web copy** → copywriter automatically invokes editor
+- **Marketing email campaigns, newsletters** → email-specialist automatically invokes editor
+- **Client presentations, pitch decks, sales decks** → presentation-designer automatically invokes editor
+- **Marketing PDFs (whitepapers, lead magnets, case studies)** → pdf-specialist automatically invokes editor
+- **Social media posts (LinkedIn, X/Twitter)** → social-media-manager automatically invokes editor
+- **Landing pages** → landing-page-specialist automatically invokes editor
+
+**⏭️ INTERNAL CONTENT (Skips Editor Review):**
+- **Internal communications** (status reports, team updates, internal newsletters) → copywriter skips editor, uses internal-comms skill
+- **Operational/transactional emails** (receipts, confirmations, password resets) → email-specialist skips editor
+- **Internal presentations** (team updates, planning sessions) → presentation-designer skips editor
+- **Internal PDFs** (status reports, technical docs, process documentation) → pdf-specialist skips editor
+
+**Editor Review Process (for marketing content):**
+1. Content agent creates external-facing content
+2. Agent **automatically invokes editor** to review against Dux Machina brand voice
+3. Editor scores content (1-10 scale, target: 7+) and checks:
+   - ✅ 5 voice principles (precision over fluff, authority without arrogance, modern warrior tone, execution-driven language, clarity is supremacy)
+   - ✅ Messaging pillar alignment (5 pillars: intelligence as infrastructure, elite systems thinking, anti-software sprawl, human x machine harmony, dark leverage)
+   - ✅ Anti-pattern detection (hype tech bro, weak language, jargon overload, trend-chasing, over-emotion)
+4. If score < 7: Agent revises and resubmits to editor
+5. If score >= 7: Editor approves, agent delivers to user
+
+**You never need to explicitly ask for editor review** - it happens automatically for marketing content based on context.
+
+### Dux Machina Brand Voice
+
+**"Tech Samurai meets McKinsey Strategist"**
+
+**Voice Principles:**
+- Precision over fluff (no filler, every word has intent)
+- Authority without arrogance (educate, don't lecture)
+- Modern warrior tone (calm strength, stoic confidence)
+- Execution-driven language (vision connected to action)
+- Clarity is supremacy (complexity simplified)
+
+**What to expect:**
+- Bold short sentences, clean logic
+- Declarative statements ("We build" not "We can help you build")
+- Strategic insights with tactical action
+- Minimal emojis (0-1 max, prefer none)
+- Dark sophisticated visual aesthetic (Void Black #0A0E14, Precision Gold #B8860B)
+
+**Reference:** See `docs/guides/voice/voice-in-action.md` for complete examples.
+
+---
+
 ## 🧠 Memory System - Automatic Configuration
 
 **All agents automatically read configuration from memory files** - no hardcoded values!
@@ -124,10 +180,10 @@ When you say:
 
 | File | Purpose | Used By |
 |------|---------|---------|
+| `brand_voice.json` | **Dux Machina brand voice** - "Tech Samurai meets McKinsey Strategist" tone, 5 voice principles, messaging pillars, signature phrases | **ALL 6 content agents** (copywriter, social-media-manager, email-specialist, landing-page-specialist, presentation-designer, pdf-specialist) |
+| `visual_guidelines.json` | **Dux Machina visual identity** - Dark sophisticated aesthetic (Void Black #0A0E14, Precision Gold #B8860B), Inter typography, elite design principles | **ALL visual agents** (visual-designer, presentation-designer, pdf-specialist) |
 | `email_config.json` | Email defaults (`user_google_email`, `default_to`, `default_cc`) | ALL agents sending emails |
 | `google_drive_config.json` | Drive folder IDs for organized uploads | ALL agents uploading files |
-| `brand_voice.json` | Brand tone, style, writing guidelines | copywriter, social-media-manager, email-specialist |
-| `visual_guidelines.json` | Brand colors, fonts, image styles | visual-designer, presentation-designer, pdf-specialist |
 | `docs_folder_structure.json` | Documentation organization (AI assistants only) | Claude Code when creating docs |
 
 ### Why This Matters

@@ -421,7 +421,7 @@ TEST_AGENTS/
 | **lead-gen-agent** | B2B/local lead generation via Bright Data web scraping | `"Use lead-gen-agent to find 50 SaaS leads in SF"` |
 | **automation-agent** | ✨ **NEW** n8n workflow automation & orchestration for marketing processes | `"Use automation-agent to create a lead nurture workflow"` |
 | **copywriter** | Blog posts, articles, web copy (2000+ words) | `"Use copywriter to write a blog about AI trends"` |
-| **editor** | Content review, grammar, brand voice alignment | `"Use editor to review this blog post"` |
+| **editor** | **Dux Machina brand voice enforcement** - Automatically reviews ALL content (blogs, posts, emails, landing pages, presentations, PDFs) for tone score 7+, checks 5 voice principles, flags anti-patterns | **Automatic** - content agents invoke editor themselves (or manual: `"Use editor to review this content"`) |
 | **social-media-manager** | X/Twitter, LinkedIn posts with hashtags | `"Use social-media-manager to create a LinkedIn post"` |
 | **visual-designer** | GPT-4o image generation | `"Use visual-designer to create a header image"` |
 | **video-producer** | Sora video creation | `"Use video-producer to create a 15s product video"` |

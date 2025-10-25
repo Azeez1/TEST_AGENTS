@@ -22,14 +22,15 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ### You Have 22 Agents
 
-**MARKETING_TEAM (16 agents):**
+**MARKETING_TEAM (17 agents):**
 - router-agent - Coordinator
+- automation-agent - ✨ **NEW** n8n workflow automation & orchestration
 - content-strategist - Campaign planning
 - research-agent - Evidence-backed research + competitive intelligence
 - lead-gen-agent - ✨ **NEW** B2B/local lead generation via web scraping
 - landing-page-specialist - Landing page UX, code, competitor analysis
 - copywriter - Blog & article writing
-- editor - Content review
+- **editor** - **Dux Machina brand voice enforcement** (automatically reviews ALL content for tone score 7+)
 - social-media-manager - Social posts
 - visual-designer - Image generation
 - video-producer - Video creation
@@ -371,6 +372,25 @@ Read the `.md` files to understand:
 ```
 "Use copywriter to write a blog, then use social-media-manager to create posts about it, then use visual-designer to create images"
 ```
+
+### 6. Trust Automatic Brand Voice Enforcement (NEW!)
+
+**All MARKETING_TEAM content is automatically reviewed for Dux Machina brand compliance.**
+
+**How it works:**
+1. Content agent (copywriter, social-media-manager, email-specialist, landing-page-specialist, presentation-designer, pdf-specialist) creates content
+2. Agent **automatically invokes editor** to review
+3. Editor scores content (1-10 scale, target: 7+)
+4. Editor checks:
+   - ✅ 5 voice principles (precision over fluff, authority without arrogance, modern warrior tone, execution-driven language, clarity is supremacy)
+   - ✅ 5 messaging pillars (intelligence as infrastructure, elite systems thinking, anti-software sprawl, human x machine harmony, dark leverage)
+   - ✅ Anti-patterns (hype tech bro, weak language, jargon, trend-chasing, over-emotion)
+5. If score < 7: Agent revises and resubmits to editor
+6. If score >= 7: Editor approves, agent delivers to you
+
+**You never need to explicitly ask for editor review** - it happens automatically for all content!
+
+**Dux Machina voice:** "Tech Samurai meets McKinsey Strategist" - Bold short sentences, zero fluff, declarative statements, strategic precision, minimal emojis (0-1 max), dark sophisticated visuals.
 
 ---
 

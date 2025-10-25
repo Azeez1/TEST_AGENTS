@@ -20,7 +20,56 @@ Claude: [becomes social-media-manager]
 
 ---
 
-## All 15 Agents
+## 🔄 Context-Aware Brand Voice Enforcement (NEW!)
+
+**Marketing content is automatically reviewed for Dux Machina brand compliance. Internal communications skip review.**
+
+### What Happens Behind the Scenes
+
+**The editor knows when to review based on content type:**
+
+**✅ MARKETING CONTENT (Gets Editor Review):**
+- Blogs, articles, web copy
+- Marketing emails, newsletters, campaigns
+- Client presentations, pitch decks
+- Marketing PDFs (whitepapers, lead magnets)
+- Social media posts
+- Landing pages
+
+**⏭️ INTERNAL CONTENT (Skips Editor Review):**
+- Internal communications (status reports, team updates)
+- Operational emails (receipts, confirmations, password resets)
+- Internal presentations (team planning sessions)
+- Internal PDFs (technical docs, process documentation)
+
+**When creating marketing content:**
+
+1. **Agent creates content** (blog, marketing email, client presentation, whitepaper, social post, landing page)
+2. **Agent automatically invokes editor** to review against Dux Machina brand voice
+3. **Editor scores content** (1-10 scale, target: 7+)
+4. **Editor checks:**
+   - ✅ Voice principles (precision over fluff, authority without arrogance, modern warrior tone, execution-driven language, clarity is supremacy)
+   - ✅ Messaging pillars (intelligence as infrastructure, elite systems thinking, anti-software sprawl, human x machine harmony, dark leverage)
+   - ✅ Anti-patterns (hype tech bro, weak language, jargon, trend-chasing, over-emotion)
+5. **If score < 7:** Agent revises and resubmits to editor
+6. **If score >= 7:** Editor approves, agent delivers to you
+
+**You never need to ask for editor review** - it happens automatically for marketing content based on context!
+
+### Dux Machina Voice: "Tech Samurai meets McKinsey Strategist"
+
+**What to expect in all content:**
+- Bold short sentences, zero fluff
+- Declarative statements ("We build" not "We can help")
+- Strategic precision with tactical execution
+- Minimal emojis (0-1 max, prefer none)
+- Dark sophisticated visuals (Void Black, Precision Gold accents)
+
+**Reference:** See `docs/guides/voice/voice-in-action.md` for complete examples with before/after comparisons.
+
+---
+
+## All 17 Agents
 
 ### 1. router-agent (The Coordinator)
 **When to use:** Complex multi-step marketing requests
