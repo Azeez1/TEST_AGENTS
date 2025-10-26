@@ -41,7 +41,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - presentation-designer - PowerPoint
 - analyst - Performance analysis & competitive benchmarking
 
-**TEST_AGENT (5 agents):**
+**QA_TEAM (5 agents):**
 - test-orchestrator - Testing coordinator
 - unit-test-agent - Unit test generation
 - integration-test-agent - Integration tests
@@ -148,7 +148,7 @@ Would you like me to also generate a header image using the visual-designer suba
 ```
 You: "Use the test-orchestrator subagent to scan USER_STORY_AGENT and generate tests"
 
-Me: [Reading TEST_AGENT/.claude/agents/test-orchestrator.md...]
+Me: [Reading QA_TEAM/.claude/agents/test-orchestrator.md...]
 
 I'll coordinate comprehensive test generation for USER_STORY_AGENT.
 
@@ -251,7 +251,7 @@ Ready to review or deploy?
 "Use gmail-agent to send this newsletter to my subscribers"
 ```
 
-### TEST_AGENT Agents
+### QA_TEAM Agents
 
 **test-orchestrator** - Use when: Complete test suite generation
 ```
@@ -325,7 +325,7 @@ Each agent invocation happens in a **separate context window**:
 ### Q: How do I know which agents are available?
 **A:** Check the `.claude/agents/` folders:
 - `MARKETING_TEAM/.claude/agents/` - 16 marketing agents (including new lead-gen-agent)
-- `TEST_AGENT/.claude/agents/` - 5 testing agents
+- `QA_TEAM/.claude/agents/` - 5 testing agents
 - Plus USER_STORY_AGENT Streamlit system
 
 ### Q: Can I create my own agents?
@@ -416,7 +416,7 @@ Read the `.md` files to understand:
 ✅ **Verify agents exist:**
 ```bash
 ls MARKETING_TEAM/.claude/agents/  # Should show 16 .md files (including lead-gen-agent)
-ls TEST_AGENT/.claude/agents/       # Should show 5 .md files
+ls QA_TEAM/.claude/agents/       # Should show 5 .md files
 ```
 
 ✅ **Try your first agent:**

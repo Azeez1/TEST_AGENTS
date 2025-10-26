@@ -7,7 +7,7 @@ This repository contains **4 autonomous AI agent systems** powered by the Claude
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
-- **TEST_AGENT** - 5 testing agents for automated pytest test suite generation
+- **QA_TEAM** - 5 testing agents for automated pytest test suite generation
 - **ENGINEERING_TEAM** - **13 engineering agents** ⭐ **SUPER TEAM** (1 CTO coordinator + 12 specialists) for DevOps, security, frontend, backend, AI/ML, UX design, quality assurance, testing, optimization, database design, and troubleshooting
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
@@ -247,7 +247,7 @@ Agent definitions should include explicit "Required Reading" sections:
 |--------|---------|-------------|------|
 | **USER_STORY_AGENT** | Meeting notes → User stories | `cd USER_STORY_AGENT && streamlit run app_ui.py` | [README](USER_STORY_AGENT/README.md) |
 | **MARKETING_TEAM** | Marketing content automation | Talk to Claude Code agents | [README](MARKETING_TEAM/README.md) |
-| **TEST_AGENT** | Automated test generation | Talk to Claude Code agents | [README](TEST_AGENT/README.md) |
+| **QA_TEAM** | Automated test generation | Talk to Claude Code agents | [README](QA_TEAM/README.md) |
 | **ENGINEERING_TEAM** | Software engineering & infrastructure | Talk to Claude Code agents | [README](ENGINEERING_TEAM/README.md) |
 
 **Key Documentation:**
@@ -375,7 +375,7 @@ TEST_AGENTS/
 │   ├── requirements.txt             ← Python dependencies
 │   └── .env.example                 ← Environment variables template
 │
-└── TEST_AGENT/                      ← 5 automated testing agents
+└── QA_TEAM/                         ← 5 automated testing agents
     ├── README.md                    ← Quick start guide
     ├── HOW_TO_USE.md                ← Detailed usage guide
     ├── BUILD_SUMMARY.md             ← Build and architecture summary
@@ -459,7 +459,7 @@ TEST_AGENTS/
 
 ---
 
-### TEST_AGENT (5 Agents)
+### QA_TEAM (5 Agents)
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
@@ -525,7 +525,7 @@ TEST_AGENTS/
 - ✅ **Community validated** - 5 specialist agents with thousands of downloads (proven in production)
 - ✅ **AI optimization powerhouse** - ai-engineer + prompt-engineer can optimize all 36 agent prompts
 - ✅ **Quality layer** - code-reviewer + security-auditor ensure comprehensive code quality
-- ✅ **Complete testing** - test-engineer builds strategies, TEST_AGENT generates tests
+- ✅ **Complete testing** - test-engineer builds strategies, QA_TEAM generates tests
 - ✅ **Design → Develop → Test → Deploy** - Complete SDLC from UX to production
 - ✅ **Cross-team collaboration** - DevOps deploys all systems, AI/Prompt engineers optimize all agents, Security/Code reviewers audit everything
 - ✅ **End-to-end workflows** - CTO coordinates: PRD (technical-writer) → Database (database-architect) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Review (code-reviewer) → Test (test-engineer) → Deploy (devops-engineer) → Audit (security-auditor) → Optimize (ai-engineer + prompt-engineer) → Debug (debugger)
@@ -538,7 +538,7 @@ TEST_AGENTS/
 - [USER_STORY_AGENT/README.md](USER_STORY_AGENT/README.md) - User story generation quick start
 - [MARKETING_TEAM/README.md](MARKETING_TEAM/README.md) - Marketing agents overview
 - [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - API configuration (OpenAI, Gmail, Drive)
-- [TEST_AGENT/README.md](TEST_AGENT/README.md) - Testing agents overview
+- [QA_TEAM/README.md](QA_TEAM/README.md) - Testing agents overview
 - [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering agents overview
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
@@ -546,14 +546,14 @@ TEST_AGENTS/
 - [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 35 agents
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
-- [TEST_AGENT/HOW_TO_USE.md](TEST_AGENT/HOW_TO_USE.md) - Testing agent usage with examples
+- [QA_TEAM/HOW_TO_USE.md](QA_TEAM/HOW_TO_USE.md) - Testing agent usage with examples
 - [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering workflows and examples
 
 ### Technical Documentation
 - [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation overview
 - [MARKETING_TEAM/docs/architecture/system-architecture.md](MARKETING_TEAM/docs/architecture/system-architecture.md) - Marketing system architecture
 - [MARKETING_TEAM/docs/architecture/mcp-config.md](MARKETING_TEAM/docs/architecture/mcp-config.md) - MCP configuration details
-- [TEST_AGENT/BUILD_SUMMARY.md](TEST_AGENT/BUILD_SUMMARY.md) - Testing system build notes
+- [QA_TEAM/BUILD_SUMMARY.md](QA_TEAM/BUILD_SUMMARY.md) - Testing system build notes
 - [ENGINEERING_TEAM/docs/](ENGINEERING_TEAM/docs/) - PRDs, technical specs, API docs, deployment guides
 
 ### Workflow Guides
@@ -1284,9 +1284,9 @@ pip install -r requirements.txt
 # anthropic, openai, google-auth, google-api-python-client, python-pptx, fpdf
 ```
 
-**TEST_AGENT:**
+**QA_TEAM:**
 ```bash
-cd TEST_AGENT
+cd QA_TEAM
 pip install -r requirements.txt
 # pytest, pytest-cov, pytest-asyncio, pytest-mock, anthropic
 ```
@@ -1347,7 +1347,7 @@ Talk to Claude Code:
 
 ### Test Suite Generation
 **Goal:** Generate comprehensive pytest test suite
-**System:** TEST_AGENT
+**System:** QA_TEAM
 **Agent:** test-orchestrator
 **Steps:**
 1. Talk to Claude Code: `"Use test-orchestrator to scan [folder] and generate tests"`
@@ -1405,7 +1405,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - `brand_voice.json` - Brand voice guidelines (read by content agents)
 - `visual_guidelines.json` - Design standards (read by visual agents)
 - `docs_folder_structure.json` - Docs organization (AI assistants only)
-- `learned_patterns.json` - Test generation patterns (TEST_AGENT)
+- `learned_patterns.json` - Test generation patterns (QA_TEAM)
 - `preferences_store.json` - User preferences (USER_STORY_AGENT)
 
 **How it works:** Each agent's `.claude/agents/*.md` file includes a "⚙️ Configuration Files (READ FIRST)" section with explicit instructions to read relevant memory files at task start. This ensures consistency across all agents without hardcoding configuration.
@@ -1437,7 +1437,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
     - ⭐ **prompt-engineer:** LLM prompt optimization, techniques (few-shot, chain-of-thought), benchmarking (2.4K downloads) - **Can optimize all 35 agents!**
     - ⭐ **database-architect:** Database design, data modeling, scalability (sharding, replication), polyglot persistence (1.2K downloads)
     - ⭐ **debugger:** Root cause analysis, troubleshooting, error investigation, hypothesis testing (1.7K downloads)
-  - **Full workspace access:** All 12 engineering agents can work with MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT
+  - **Full workspace access:** All 12 engineering agents can work with MARKETING_TEAM, QA_TEAM, USER_STORY_AGENT
   - **Cross-team collaboration:** DevOps deploys all systems, AI Engineer + Prompt Engineer optimize all 35 agents, Security + Code Reviewer audit everything, Database Architect designs unified analytics
   - **End-to-end workflows:** PRD (technical-writer) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Tests (test-engineer) → Review (code-reviewer) → Deploy (devops-engineer) → Audit (security-auditor) → AI Features (ai-engineer) → Prompt Optimization (prompt-engineer) → Debug (debugger)
   - See [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) for complete guide with production-ready code examples
@@ -1463,7 +1463,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect 36 agents (4 systems: MARKETING_TEAM (17), TEST_AGENT (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (13))
+- Updated all documentation to reflect 36 agents (4 systems: MARKETING_TEAM (17), QA_TEAM (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (13))
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service

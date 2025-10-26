@@ -9,7 +9,7 @@ Your testing agent is fully functional and ready to scan codebases and generate 
 ## 📁 Complete Folder Structure
 
 ```
-TEST_AGENT/
+QA_TEAM/
 ├── .claude/
 │   └── agents/                      # 5 specialized testing agents
 │       ├── test-orchestrator.md     # Main coordinator
@@ -68,7 +68,7 @@ TEST_AGENT/
 
 ```bash
 # 1. Install dependencies
-cd TEST_AGENT
+cd QA_TEAM
 pip install -r requirements.txt
 
 # 2. Run the Test Agent

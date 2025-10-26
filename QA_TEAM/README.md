@@ -1,4 +1,4 @@
-# 🧪 TEST_AGENT - Multi-Agent Testing System
+# 🧪 QA_TEAM - Multi-Agent Testing System
 
 **5 AI testing agents powered by Claude Agent SDK - ready to use through Claude Code**
 
@@ -183,7 +183,7 @@ Claude: [Automatically invokes test-orchestrator]
 ### 1. Install Dependencies
 
 ```bash
-cd TEST_AGENT
+cd QA_TEAM
 pip install -r requirements.txt
 ```
 
@@ -237,7 +237,7 @@ markers =
 ## 📖 Documentation Structure
 
 ```
-TEST_AGENT/
+QA_TEAM/
 ├── HOW_TO_USE.md                    ← Start here!
 ├── README.md                         ← You are here
 ├── .claude/

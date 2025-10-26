@@ -1,4 +1,4 @@
-# 🧪 TEST_AGENT Usage Guide
+# 🧪 QA_TEAM Usage Guide
 
 ## Your 5 Testing Agents Are Ready!
 

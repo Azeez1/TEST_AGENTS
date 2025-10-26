@@ -307,7 +307,7 @@ async def extract_target_path(args):
 
     # If no path found, check for common folder names
     if not extracted_path:
-        common_folders = ["USER_STORY_AGENT", "MARKETING_TEAM", "TEST_AGENT"]
+        common_folders = ["USER_STORY_AGENT", "MARKETING_TEAM", "QA_TEAM"]
         for folder in common_folders:
             if folder in user_message:
                 extracted_path = f"../{folder}"
