@@ -537,10 +537,10 @@ async def generate_multi_clip_video(args):
             "ffmpeg",
             "-f", "concat",
             "-safe", "0",
-            "-i", str(concat_file),
+            "-i", concat_file.name,
             "-c", "copy",  # Copy without re-encoding for speed
             "-y",  # Overwrite output file
-            str(final_output_path)
+            output_filename
         ]
 
         print(f"Stitching {len(clip_paths)} clips together...")
@@ -559,12 +559,12 @@ async def generate_multi_clip_video(args):
                 "ffmpeg",
                 "-f", "concat",
                 "-safe", "0",
-                "-i", str(concat_file),
+                "-i", concat_file.name,
                 "-c:v", "libx264",
                 "-preset", "medium",
                 "-crf", "23",
                 "-y",
-                str(final_output_path)
+                output_filename
             ]
 
             result = subprocess.run(
