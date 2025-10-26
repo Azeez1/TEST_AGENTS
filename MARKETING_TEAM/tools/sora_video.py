@@ -409,6 +409,228 @@ def _save_to_video_queue(request_data: dict):
 
 
 @tool(
+    "generate_multi_clip_video",
+    "Generate longer videos (30+ seconds) by creating multiple Sora clips and stitching them together",
+    {
+        "script_segments": list,  # List of dicts with "prompt" and "duration" ("4", "8", or "12")
+        "orientation": str,  # "portrait" or "landscape"
+        "output_filename": str,
+        "style_consistency": str,  # Common visual style instructions (camera, lighting, mood)
+        "upload_to_drive": bool  # Optional: upload to Google Drive videos folder
+    }
+)
+async def generate_multi_clip_video(args):
+    """
+    Generate longer videos by stitching multiple Sora clips together.
+
+    This tool overcomes Sora's 12-second limit by:
+    1. Generating multiple clips with consistent visual style
+    2. Stitching them together using ffmpeg
+    3. Creating seamless 30-second (or longer) ads
+
+    Example usage for 30-second ad:
+    script_segments = [
+        {"prompt": "Hook scene description", "duration": "12"},
+        {"prompt": "Value prop scene description", "duration": "12"},
+        {"prompt": "CTA scene description", "duration": "8"}
+    ]
+
+    Duration combinations for ~30 seconds:
+    - 12s + 12s + 8s = 32 seconds
+    - 12s + 12s + 4s = 28 seconds
+    - 8s + 8s + 8s + 8s = 32 seconds
+
+    Style consistency tips:
+    - Use the same camera movement style across all segments
+    - Specify consistent lighting (e.g., "golden hour sunlight")
+    - Maintain the same visual mood (e.g., "cinematic, warm tones")
+    - Keep color grading consistent (e.g., "vibrant colors, high contrast")
+
+    Requirements:
+    - ffmpeg must be installed on the system
+    - Each segment prompt should include the style_consistency instructions
+    """
+
+    script_segments = args["script_segments"]
+    orientation = args.get("orientation", "landscape")
+    output_filename = args.get("output_filename", "stitched_video.mp4")
+    style_consistency = args.get("style_consistency", "Cinematic style, smooth camera movements, professional lighting")
+    upload_to_drive = args.get("upload_to_drive", True)
+
+    # Validate segments
+    if not script_segments or len(script_segments) < 2:
+        return {
+            "content": [{
+                "type": "text",
+                "text": "Error: Need at least 2 segments to stitch. For single clips, use generate_sora_video instead."
+            }]
+        }
+
+    # Check ffmpeg availability
+    import subprocess
+    try:
+        subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return {
+            "content": [{
+                "type": "text",
+                "text": "❌ ffmpeg not found. Please install ffmpeg:\n\nUbuntu/Debian: sudo apt-get install ffmpeg\nMac: brew install ffmpeg\nWindows: Download from https://ffmpeg.org/download.html"
+            }]
+        }
+
+    try:
+        output_dir = Path("outputs/videos")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Generate each clip
+        clip_paths = []
+        total_cost = 0.0
+        total_duration = 0
+
+        for i, segment in enumerate(script_segments):
+            segment_prompt = segment["prompt"]
+            segment_duration = segment.get("duration", "12")
+
+            # Add style consistency to each prompt
+            full_prompt = f"{segment_prompt}. {style_consistency}"
+
+            # Generate filename for this clip
+            clip_filename = f"clip_{i+1}_{segment_duration}s.mp4"
+
+            print(f"Generating clip {i+1}/{len(script_segments)}: {segment_duration}s...")
+
+            # Generate the clip using existing tool
+            result = await generate_sora_video({
+                "prompt": full_prompt,
+                "seconds": segment_duration,
+                "orientation": orientation,
+                "filename": clip_filename,
+                "upload_to_drive": False  # Don't upload individual clips
+            })
+
+            # Extract the file path from result
+            clip_path = output_dir / clip_filename
+            if not clip_path.exists():
+                return {
+                    "content": [{
+                        "type": "text",
+                        "text": f"❌ Failed to generate clip {i+1}. Check the error above."
+                    }]
+                }
+
+            clip_paths.append(str(clip_path))
+            total_cost += int(segment_duration) * 0.10
+            total_duration += int(segment_duration)
+
+            print(f"✅ Clip {i+1} generated: {clip_path}")
+
+        # Create ffmpeg concat file
+        concat_file = output_dir / "concat_list.txt"
+        with open(concat_file, 'w') as f:
+            for clip_path in clip_paths:
+                f.write(f"file '{os.path.basename(clip_path)}'\n")
+
+        # Stitch videos together using ffmpeg
+        final_output_path = output_dir / output_filename
+
+        ffmpeg_cmd = [
+            "ffmpeg",
+            "-f", "concat",
+            "-safe", "0",
+            "-i", str(concat_file),
+            "-c", "copy",  # Copy without re-encoding for speed
+            "-y",  # Overwrite output file
+            str(final_output_path)
+        ]
+
+        print(f"Stitching {len(clip_paths)} clips together...")
+
+        result = subprocess.run(
+            ffmpeg_cmd,
+            cwd=str(output_dir),
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+            # If copy fails, try re-encoding
+            print("Copy mode failed, trying with re-encoding...")
+            ffmpeg_cmd = [
+                "ffmpeg",
+                "-f", "concat",
+                "-safe", "0",
+                "-i", str(concat_file),
+                "-c:v", "libx264",
+                "-preset", "medium",
+                "-crf", "23",
+                "-y",
+                str(final_output_path)
+            ]
+
+            result = subprocess.run(
+                ffmpeg_cmd,
+                cwd=str(output_dir),
+                capture_output=True,
+                text=True
+            )
+
+            if result.returncode != 0:
+                return {
+                    "content": [{
+                        "type": "text",
+                        "text": f"❌ ffmpeg stitching failed:\n\n{result.stderr}"
+                    }]
+                }
+
+        # Clean up temporary files
+        concat_file.unlink()
+        for clip_path in clip_paths:
+            Path(clip_path).unlink()
+
+        # Upload to Google Drive if requested
+        drive_url = None
+        if upload_to_drive and GOOGLE_DRIVE_AVAILABLE:
+            try:
+                drive_manager = get_drive_manager()
+                drive_url = drive_manager.upload_file(
+                    str(final_output_path),
+                    "videos",
+                    f"Multi-clip Sora video ({total_duration}s)"
+                )
+            except Exception as e:
+                drive_url = f"Upload failed: {str(e)}"
+
+        result_text = (
+            f"✅ Multi-clip video generated successfully!\n\n"
+            f"**Segments:** {len(script_segments)} clips\n"
+            f"**Total Duration:** {total_duration} seconds\n"
+            f"**Orientation:** {orientation}\n"
+            f"**Total Cost:** ${total_cost:.2f} (@ $0.10/second)\n\n"
+            f"**Saved to:** {final_output_path}\n"
+        )
+
+        if drive_url:
+            result_text += f"\n**📤 Google Drive:** {drive_url}\n"
+
+        result_text += "\n💡 Tips for next time:\n- Keep visual style consistent across all segments\n- Use similar camera movements and lighting\n- Consider transitions between scenes in your prompts"
+
+        return {
+            "content": [{
+                "type": "text",
+                "text": result_text
+            }]
+        }
+
+    except Exception as e:
+        return {
+            "content": [{
+                "type": "text",
+                "text": f"❌ Error in multi-clip generation: {str(e)}"
+            }]
+        }
+
+
+@tool(
     "create_video_storyboard",
     "Create detailed storyboard for video production",
     {
