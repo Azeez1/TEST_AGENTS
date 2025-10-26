@@ -533,14 +533,15 @@ async def generate_multi_clip_video(args):
         # Stitch videos together using ffmpeg
         final_output_path = output_dir / output_filename
 
+        # Use relative paths since we set cwd to output_dir
         ffmpeg_cmd = [
             "ffmpeg",
             "-f", "concat",
             "-safe", "0",
-            "-i", str(concat_file),
+            "-i", "concat_list.txt",  # Relative to output_dir
             "-c", "copy",  # Copy without re-encoding for speed
             "-y",  # Overwrite output file
-            str(final_output_path)
+            output_filename  # Relative to output_dir
         ]
 
         print(f"Stitching {len(clip_paths)} clips together...")
@@ -559,12 +560,12 @@ async def generate_multi_clip_video(args):
                 "ffmpeg",
                 "-f", "concat",
                 "-safe", "0",
-                "-i", str(concat_file),
+                "-i", "concat_list.txt",  # Relative to output_dir
                 "-c:v", "libx264",
                 "-preset", "medium",
                 "-crf", "23",
                 "-y",
-                str(final_output_path)
+                output_filename  # Relative to output_dir
             ]
 
             result = subprocess.run(
