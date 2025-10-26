@@ -39,6 +39,9 @@
     "figma": {
       "enabled": true
     },
+    "flow-diagram": {
+      "enabled": true
+    },
     "pdf-filler": {
       "enabled": true
     },
