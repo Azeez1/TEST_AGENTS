@@ -1,25 +1,26 @@
-# ENGINEERING_TEAM - 13 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
+# ENGINEERING_TEAM - 14 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
 
 ## 🎯 Overview
 
-The **ENGINEERING_TEAM** contains **13 specialized agents** (12 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, and optimization. These agents have **full workspace access** and can work with all 35 agents across the 4 systems.
+The **ENGINEERING_TEAM** contains **14 specialized agents** (13 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, and optimization. These agents have **full workspace access** and can work with all 37 agents across the 4 systems.
 
 **CTO Coordinator:**
-- **cto** ⭐ **NEW** - Chief Technology Officer for strategic coordination of all 12 specialists
+- **cto** ⭐ - Chief Technology Officer for strategic coordination of all 13 specialists
 
-**Core Agents (7 - Custom Built):**
+**Core Agents (8 - Custom Built):**
 - **devops-engineer** ⭐ - CI/CD, Docker, Kubernetes, Terraform, cloud infrastructure, monitoring (production-ready with 886 lines of code)
 - **frontend-developer** - React components, responsive design, state management, performance
 - **backend-architect** - RESTful APIs, microservices, database schema, scalability planning
 - **security-auditor** ⭐ - Code security analysis, vulnerability scanning, compliance audits (unique comprehensive security)
 - **technical-writer** ⭐ - Documentation, PRDs, technical specs, API docs, user guides (broader scope)
-- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 35 agents!)
+- **system-architect** ⭐ **NEW** - System architecture design, professional flow diagrams with Mermaid.js, interactive visualizations
+- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 37 agents!)
 - **ui-ux-designer** - User research, wireframes, design systems, accessibility, user flows
 
 **Specialist Agents (5 - From aitmpl.com):**
 - **code-reviewer** - Quality, security, maintainability reviews (3.2K community downloads)
 - **test-engineer** - Test automation, quality assurance, CI/CD testing (1.3K downloads)
-- **prompt-engineer** - LLM prompt optimization for all 35 agents (2.4K downloads)
+- **prompt-engineer** - LLM prompt optimization for all 37 agents (2.4K downloads)
 - **database-architect** - Database design, data modeling, scalability (1.2K downloads)
 - **debugger** - Root cause analysis, troubleshooting, error investigation (1.7K downloads)
 
@@ -33,7 +34,7 @@ The **ENGINEERING_TEAM** contains **13 specialized agents** (12 specialists + 1 
 ```
 "Use cto to build an AI-powered analytics dashboard"
 "Use cto to deploy all 4 systems to AWS with Kubernetes"
-"Use cto to optimize prompts for all 35 agents"
+"Use cto to optimize prompts for all 37 agents"
 "Use cto to conduct a comprehensive security audit"
 "Use cto to troubleshoot the MARKETING_TEAM timeout issues"
 ```
@@ -41,10 +42,11 @@ The **ENGINEERING_TEAM** contains **13 specialized agents** (12 specialists + 1 
 **Using Individual Specialists Directly:**
 ```
 "Use the devops-engineer to create a complete CI/CD pipeline with GitHub Actions"
-"Use the ai-engineer to optimize prompts for the 35 agents in this workspace"
+"Use the system-architect to create microservices architecture diagram"
+"Use the ai-engineer to optimize prompts for the 37 agents in this workspace"
 "Use the ui-ux-designer to create wireframes for an agent control dashboard"
 "Use the frontend-developer to implement the dashboard in Next.js"
-"Use the backend-architect to design an API for managing all 35 agents"
+"Use the backend-architect to design an API for managing all 37 agents"
 "Use the security-auditor to scan for hardcoded API keys across all systems"
 "Use the technical-writer to write a PRD for agent analytics"
 ```
@@ -53,8 +55,8 @@ The **ENGINEERING_TEAM** contains **13 specialized agents** (12 specialists + 1 
 
 ## 🤖 Agent Capabilities
 
-### 0. CTO (Chief Technology Officer) ⭐ **NEW - STRATEGIC COORDINATOR**
-**Purpose:** Strategic coordination of all 12 ENGINEERING_TEAM specialists
+### 0. CTO (Chief Technology Officer) ⭐ **STRATEGIC COORDINATOR**
+**Purpose:** Strategic coordination of all 13 ENGINEERING_TEAM specialists
 
 **Capabilities:**
 - ✅ **Strategic planning** - Break down complex requests into phased execution plans
@@ -90,12 +92,15 @@ The **ENGINEERING_TEAM** contains **13 specialized agents** (12 specialists + 1 
 → Coordinates: devops-engineer (infra) → security-auditor (scan) →
    test-engineer (validation) → technical-writer (docs)
 
-"Use cto to optimize prompts for all 35 agents"
+"Use cto to optimize prompts for all 37 agents"
 → Coordinates: ai-engineer + prompt-engineer (analyze & optimize) →
    technical-writer (document improvements)
+
+"Use cto to create system architecture diagram for microservices"
+→ Coordinates: system-architect (diagrams) → technical-writer (documentation)
 ```
 
-**Special Note:** The CTO agent coordinates **ONLY the 12 ENGINEERING_TEAM specialists**. It does not coordinate MARKETING_TEAM, TEST_AGENT, or USER_STORY_AGENT (they have their own coordinators).
+**Special Note:** The CTO agent coordinates **ONLY the 13 ENGINEERING_TEAM specialists**. It does not coordinate MARKETING_TEAM, TEST_AGENT, or USER_STORY_AGENT (they have their own coordinators).
 
 ---
 
@@ -243,7 +248,45 @@ with endpoint descriptions, request/response examples, and authentication detail
 
 ---
 
-### 6. AI Engineer ⭐ **NEW - PERFECT FOR THIS WORKSPACE**
+### 6. System Architect ⭐ **NEW - PROFESSIONAL FLOW DIAGRAMS**
+**Purpose:** System architecture design and professional flow diagram creation
+
+**Capabilities:**
+- ✅ **System architecture design** - Microservices, cloud infrastructure, distributed systems
+- ✅ **Flow diagrams** - Mermaid.js with 9+ diagram types (flowcharts, sequence, ER, state, CI/CD)
+- ✅ **Interactive visualizations** - HTML output with pan/zoom navigation
+- ✅ **Data flow diagrams** - How data moves through systems and components
+- ✅ **Technical documentation** - Architecture decision records, system design docs
+- ✅ **Integration specifications** - API architectures, event-driven systems
+
+**Diagram Types:**
+- System architecture diagrams (components, services, infrastructure)
+- Sequence diagrams (API interactions, authentication flows)
+- ER diagrams (database schemas, relationships)
+- State diagrams (lifecycle, workflow states)
+- Flowcharts (business logic, decision trees)
+- CI/CD pipeline visualizations
+- User journey and UX flows
+
+**Example Tasks:**
+```
+"Use system-architect to create a microservices architecture diagram for the
+MARKETING_TEAM system with API gateway, service mesh, and database interactions"
+
+"Use system-architect to visualize the CI/CD pipeline for deploying all 37 agents
+to AWS with Kubernetes, including security scanning and automated testing"
+
+"Use system-architect to create an ER diagram for the agent analytics database
+showing relationships between agents, executions, and performance metrics"
+```
+
+**Outputs:** `outputs/diagrams/` (Mermaid code + interactive HTML)
+
+**Uses:** flow-diagram skill for professional Mermaid diagram generation
+
+---
+
+### 7. AI Engineer ⭐ **PERFECT FOR THIS WORKSPACE**
 **Purpose:** LLM applications, RAG systems, agent frameworks
 
 **Capabilities:**
@@ -255,7 +298,7 @@ with endpoint descriptions, request/response examples, and authentication detail
 - ✅ **Token optimization** - Cost management and monitoring
 
 **Why Perfect for Your Workspace:**
-- You have **30 AI agents** - ai-engineer can help improve them!
+- You have **37 AI agents** - ai-engineer can help improve them!
 - You use **Anthropic Claude** - ai-engineer knows prompt optimization
 - You could build **RAG systems** for agent knowledge
 - Can help with **agent orchestration** frameworks
@@ -276,7 +319,7 @@ that coordinates workflow between copywriter, visual-designer, and email-special
 
 ---
 
-### 7. UI/UX Designer ⭐ **NEW - COMPLEMENTS FRONTEND**
+### 8. UI/UX Designer ⭐ **COMPLEMENTS FRONTEND**
 **Purpose:** User-centered design and interface systems
 
 **Capabilities:**
@@ -310,7 +353,7 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
-### 8. Code Reviewer ⭐ **NEW - QUALITY LAYER**
+### 9. Code Reviewer ⭐ **QUALITY LAYER**
 **Purpose:** Expert code review for quality, security, and maintainability
 
 **Capabilities:**
@@ -337,7 +380,7 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
-### 9. Test Engineer ⭐ **NEW - TEST AUTOMATION**
+### 10. Test Engineer ⭐ **TEST AUTOMATION**
 **Purpose:** Comprehensive test automation and quality assurance
 
 **Capabilities:**
@@ -364,7 +407,7 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
-### 10. Prompt Engineer ⭐ **NEW - AI OPTIMIZATION**
+### 11. Prompt Engineer ⭐ **AI OPTIMIZATION**
 **Purpose:** Expert LLM prompt optimization for AI systems
 
 **Capabilities:**
@@ -391,7 +434,7 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
-### 11. Database Architect ⭐ **NEW - DATA LAYER**
+### 12. Database Architect ⭐ **DATA LAYER**
 **Purpose:** Database architecture and data modeling specialist
 
 **Capabilities:**
@@ -403,7 +446,7 @@ color palette, typography, spacing, and component patterns"
 - ✅ Performance monitoring and optimization
 
 **Why Needed:**
-- Design unified analytics database for 35 agents
+- Design unified analytics database for 37 agents
 - Optimize MARKETING_TEAM content storage
 - Track agent performance metrics
 - Store test results and coverage data
@@ -418,7 +461,7 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
-### 12. Debugger ⭐ **NEW - TROUBLESHOOTING**
+### 13. Debugger ⭐ **TROUBLESHOOTING**
 **Purpose:** Root cause analysis and debugging specialist
 
 **Capabilities:**
@@ -458,16 +501,16 @@ All ENGINEERING_TEAM agents can access and work with:
 | **ENGINEERING_TEAM/** | 12 agents | Self-improvement, documentation, deployment, AI optimization, quality assurance, database design |
 
 **Cross-Team Collaboration:**
-- **DevOps** can deploy ANY of the 35 agents
+- **DevOps** can deploy ANY of the 37 agents
 - **AI Engineer** can optimize prompts for ALL agents
-- **Prompt Engineer** can refine all 35 agent definitions
+- **Prompt Engineer** can refine all 37 agent definitions
 - **Security Auditor** can scan ALL 4 systems
 - **Code Reviewer** ensures quality across ALL codebases
 - **UI/UX Designer** can design dashboards for ALL teams
 - **Frontend Developer** can build UIs for ANY system
 - **Backend Architect** can create APIs for ALL agents
 - **Database Architect** can design unified data layer
-- **Technical Writer** can document ALL 35 agents
+- **Technical Writer** can document ALL 37 agents
 - **Test Engineer** can create test strategies for ALL systems
 - **Debugger** can troubleshoot ANY agent or workflow
 
@@ -478,8 +521,8 @@ All ENGINEERING_TEAM agents can access and work with:
 ```
 ENGINEERING_TEAM/
 ├── .claude/
-│   ├── agents/                  ← 13 agent definitions (1 coordinator + 12 specialists)
-│   │   ├── cto.md                   ⭐ NEW (30K - CTO coordinator for all 12 specialists)
+│   ├── agents/                  ← 14 agent definitions (1 coordinator + 13 specialists)
+│   │   ├── cto.md                   ⭐ (30K - CTO coordinator for all 13 specialists)
 │   │   ├── devops-engineer.md       (24K - production CI/CD, Terraform, Helm)
 │   │   ├── frontend-developer.md    (1.3K - React, responsive design)
 │   │   ├── backend-architect.md     (1.3K - API design, microservices)
@@ -551,12 +594,12 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 
 **With CTO (Single Command - Automated Coordination):**
 ```
-"Use cto to build an AI-powered analytics dashboard for tracking all 35 agents"
+"Use cto to build an AI-powered analytics dashboard for tracking all 37 agents"
 
 → CTO automatically:
   1. Classifies request as "build_feature"
   2. Creates execution plan with 6 phases
-  3. Delegates to all 12 specialists in proper sequence
+  3. Delegates to all 13 specialists in proper sequence
   4. Ensures quality gates (review + security + testing)
   5. Coordinates deployment
   6. Generates complete documentation
@@ -565,7 +608,7 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 ### 2. Optimize All 35 Agents (AI Engineer + Prompt Engineer Collaboration)
 ```
 "Use ai-engineer and prompt-engineer together to:
-1. Analyze prompts for all 35 agents
+1. Analyze prompts for all 37 agents
 2. Optimize for token reduction (30% target)
 3. Improve structured outputs with JSON mode
 4. Add fallback strategies for API failures
@@ -639,7 +682,7 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 **ENGINEERING_TEAM Agents (13 Total):**
 
 **CTO Coordinator (1 - Custom Built):**
-- ⭐ **cto** - Strategic coordinator for all 12 specialists (~850 lines)
+- ⭐ **cto** - Strategic coordinator for all 13 specialists (~850 lines)
   - Tools: classify_engineering_request, get_engineer_capabilities, list_engineering_agents, create_execution_plan
   - Workflow patterns: End-to-end feature, infrastructure deployment, AI optimization, security audit, troubleshooting
 
@@ -657,7 +700,7 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 - debugger (1.7K downloads) ← Troubleshooting
 
 **Resources:**
-- Full workspace access to all 35 agents
+- Full workspace access to all 37 agents
 - 17 skills available (inherited from workspace)
 - 7 MCP servers (playwright, google-workspace, perplexity, bright-data, n8n-mcp, sequential-thinking, marketing-tools)
 
@@ -692,7 +735,7 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 2. **Optimize All 35 AI Agents**
    ```
-   "Use ai-engineer and prompt-engineer to optimize prompts for all 35 agents"
+   "Use ai-engineer and prompt-engineer to optimize prompts for all 37 agents"
    ```
 
 3. **Build Agent Dashboard**
@@ -702,7 +745,7 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 4. **Create Documentation**
    ```
-   "Use technical-writer to document all 35 agents with PRDs and API specs"
+   "Use technical-writer to document all 37 agents with PRDs and API specs"
    ```
 
 5. **Security & Quality Audit**
@@ -717,8 +760,8 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 ---
 
-**Last Updated:** 2025-10-23
-**Version:** 4.0 - CTO COORDINATOR ADDED ⭐ (13 agents: 1 coordinator + 12 specialists)
-**Total Workspace Agents:** 36 (17 marketing + 5 testing + 1 user story + **13 engineering**)
-**Latest Addition:** CTO agent - Strategic coordinator with intelligent routing and multi-agent orchestration
+**Last Updated:** 2025-10-26
+**Version:** 4.1 - SYSTEM ARCHITECT ADDED ⭐ (14 agents: 1 coordinator + 13 specialists)
+**Total Workspace Agents:** 37 (17 marketing + 5 testing + 1 user story + **14 engineering**)
+**Latest Addition:** system-architect agent - Professional flow diagrams with Mermaid.js and interactive visualizations
 **Repository:** https://github.com/Azeez1/TEST_AGENTS

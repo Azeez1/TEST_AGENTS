@@ -30,6 +30,20 @@ client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE_URL = "https://api.openai.com/v1"
 
+# FFmpeg path detection for Windows
+FFMPEG_CMD = "ffmpeg"  # Default for Linux/Mac
+if os.name == 'nt':  # Windows
+    # Check common Windows installation paths
+    windows_ffmpeg_paths = [
+        r"C:\Users\sabaa\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-8.0-full_build\bin\ffmpeg.exe",
+        r"C:\ffmpeg\bin\ffmpeg.exe",
+        r"C:\Program Files\ffmpeg\bin\ffmpeg.exe",
+    ]
+    for path in windows_ffmpeg_paths:
+        if Path(path).exists():
+            FFMPEG_CMD = path
+            break
+
 
 @tool(
     "generate_sora_video",
@@ -469,7 +483,7 @@ async def generate_multi_clip_video(args):
     # Check ffmpeg availability
     import subprocess
     try:
-        subprocess.run(["ffmpeg", "-version"], capture_output=True, check=True)
+        subprocess.run([FFMPEG_CMD, "-version"], capture_output=True, check=True)
     except (subprocess.CalledProcessError, FileNotFoundError):
         return {
             "content": [{
@@ -534,7 +548,7 @@ async def generate_multi_clip_video(args):
         final_output_path = output_dir / output_filename
 
         ffmpeg_cmd = [
-            "ffmpeg",
+            FFMPEG_CMD,
             "-f", "concat",
             "-safe", "0",
             "-i", concat_file.name,
@@ -556,7 +570,7 @@ async def generate_multi_clip_video(args):
             # If copy fails, try re-encoding
             print("Copy mode failed, trying with re-encoding...")
             ffmpeg_cmd = [
-                "ffmpeg",
+                FFMPEG_CMD,
                 "-f", "concat",
                 "-safe", "0",
                 "-i", concat_file.name,
@@ -712,3 +726,219 @@ async def create_video_storyboard(args):
             "text": json.dumps(storyboard, indent=2)
         }]
     }
+
+
+@tool(
+    "stitch_existing_videos",
+    "Stitch pre-existing video files together using FFmpeg (no video generation - just stitching)",
+    {
+        "video_files": list,  # List of video filenames in outputs/videos/ folder
+        "output_filename": str,  # Final stitched video filename
+        "upload_to_drive": bool  # Optional: upload to Google Drive videos folder
+    }
+)
+async def stitch_existing_videos(args):
+    """
+    Stitch pre-existing video files together using FFmpeg.
+
+    This tool is for when you already have video clips and just need to combine them.
+    Unlike generate_multi_clip_video, this does NOT generate any new videos via Sora.
+
+    Use cases:
+    - Combining separately generated Sora clips
+    - Stitching manually edited video segments
+    - Combining clips from different sources
+
+    Requirements:
+    - FFmpeg must be installed on the system
+    - Video files must exist in MARKETING_TEAM/outputs/videos/ folder
+    - All videos should ideally have same resolution/codec for best results
+
+    Example usage:
+    video_files = [
+        "segment_1_intro.mp4",
+        "segment_2_demo.mp4",
+        "segment_3_cta.mp4"
+    ]
+    output_filename = "final_video_30s.mp4"
+    """
+    import subprocess
+
+    video_files = args["video_files"]
+    output_filename = args.get("output_filename", "stitched_video.mp4")
+    upload_to_drive = args.get("upload_to_drive", True)
+
+    # Validate inputs
+    if not video_files or len(video_files) < 2:
+        return {
+            "content": [{
+                "type": "text",
+                "text": "❌ Error: Need at least 2 video files to stitch together"
+            }]
+        }
+
+    # Setup paths
+    output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Validate all video files exist
+    video_paths = []
+    missing_files = []
+    for video_file in video_files:
+        video_path = output_dir / video_file
+        if not video_path.exists():
+            missing_files.append(video_file)
+        else:
+            video_paths.append(video_path)
+
+    if missing_files:
+        return {
+            "content": [{
+                "type": "text",
+                "text": f"❌ Error: Video files not found:\n" + "\n".join(f"- {f}" for f in missing_files)
+            }]
+        }
+
+    # Check FFmpeg is available
+    try:
+        subprocess.run([FFMPEG_CMD, "-version"], capture_output=True, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return {
+            "content": [{
+                "type": "text",
+                "text": "❌ ffmpeg not found. Please install ffmpeg first."
+            }]
+        }
+
+    print(f"[OK] Stitching {len(video_files)} video files together...")
+    print(f"[OK] Input files:")
+    for i, vf in enumerate(video_files, 1):
+        print(f"  {i}. {vf}")
+
+    try:
+        # Create ffmpeg concat file
+        concat_file = output_dir / "concat_list.txt"
+        with open(concat_file, 'w', encoding='utf-8') as f:
+            for video_path in video_paths:
+                f.write(f"file '{video_path.name}'\n")
+
+        # Stitch videos together using ffmpeg
+        final_output_path = output_dir / output_filename
+
+        # Try with copy codec first (fastest, no re-encoding)
+        ffmpeg_cmd = [
+            FFMPEG_CMD,
+            "-f", "concat",
+            "-safe", "0",
+            "-i", str(concat_file),
+            "-c", "copy",  # Copy without re-encoding
+            "-y",  # Overwrite output file
+            str(final_output_path)
+        ]
+
+        print(f"[OK] Running FFmpeg (copy mode)...")
+        result = subprocess.run(
+            ffmpeg_cmd,
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+            # If copy fails, try re-encoding (slower but more compatible)
+            print("[OK] Copy mode failed, trying with re-encoding...")
+            ffmpeg_cmd = [
+                FFMPEG_CMD,
+                "-f", "concat",
+                "-safe", "0",
+                "-i", str(concat_file),
+                "-c:v", "libx264",
+                "-preset", "medium",
+                "-crf", "23",
+                "-y",
+                str(final_output_path)
+            ]
+
+            result = subprocess.run(
+                ffmpeg_cmd,
+                capture_output=True,
+                text=True
+            )
+
+            if result.returncode != 0:
+                # Clean up and return error
+                concat_file.unlink(missing_ok=True)
+                return {
+                    "content": [{
+                        "type": "text",
+                        "text": f"❌ FFmpeg stitching failed:\n\n{result.stderr}"
+                    }]
+                }
+
+        # Clean up temporary concat file (keep original video files)
+        concat_file.unlink(missing_ok=True)
+
+        print(f"[OK] Video stitching complete: {final_output_path}")
+
+        # Get video file size
+        file_size_mb = final_output_path.stat().st_size / (1024 * 1024)
+
+        # Upload to Google Drive if requested
+        drive_url = None
+        if upload_to_drive and GOOGLE_DRIVE_AVAILABLE:
+            try:
+                print("[OK] Uploading to Google Drive...")
+                drive_manager = get_drive_manager()
+                drive_url = drive_manager.upload_file(
+                    str(final_output_path),
+                    "videos",
+                    f"Stitched video - {len(video_files)} clips"
+                )
+                print(f"[OK] Upload complete: {drive_url}")
+            except Exception as e:
+                drive_url = f"Upload failed: {str(e)}"
+
+        # Build success message
+        result_text = (
+            f"[OK] Video stitching complete!\n\n"
+            f"**Input Segments:** {len(video_files)} clips\n"
+            f"**Input Files:**\n"
+        )
+
+        for i, vf in enumerate(video_files, 1):
+            result_text += f"  {i}. {vf}\n"
+
+        result_text += (
+            f"\n**Output File:** {output_filename}\n"
+            f"**File Size:** {file_size_mb:.2f} MB\n"
+            f"**Saved to:** {final_output_path}\n"
+        )
+
+        if drive_url:
+            result_text += f"\n**[UPLOAD] Google Drive:** {drive_url}\n"
+
+        result_text += (
+            "\n[INFO] Tips:\n"
+            "- Original segment files are preserved (not deleted)\n"
+            "- Use same resolution/codec across segments for best results\n"
+            "- FFmpeg will try copy mode first (fast), then re-encode if needed"
+        )
+
+        return {
+            "content": [{
+                "type": "text",
+                "text": result_text
+            }]
+        }
+
+    except Exception as e:
+        # Clean up on error
+        if concat_file.exists():
+            concat_file.unlink(missing_ok=True)
+
+        return {
+            "content": [{
+                "type": "text",
+                "text": f"❌ Error during video stitching: {str(e)}"
+            }]
+        }
+

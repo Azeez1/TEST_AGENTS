@@ -53,6 +53,13 @@ MARKETING_TEAM/outputs/*
 !MARKETING_TEAM/outputs/automation/
 MARKETING_TEAM/outputs/automation/*
 !MARKETING_TEAM/outputs/automation/README.md
+!ENGINEERING_TEAM/outputs/
+ENGINEERING_TEAM/outputs/*
+!ENGINEERING_TEAM/outputs/design/
+ENGINEERING_TEAM/outputs/design/*
+!ENGINEERING_TEAM/outputs/design/diagrams/
+ENGINEERING_TEAM/outputs/design/diagrams/*
+!ENGINEERING_TEAM/outputs/design/diagrams/README.md
 !examples/**
 .env
 

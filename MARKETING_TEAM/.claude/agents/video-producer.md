@@ -11,6 +11,7 @@ capabilities:
 tools:
   - mcp__marketing-tools__generate_sora_video
   - mcp__marketing-tools__generate_multi_clip_video
+  - mcp__marketing-tools__stitch_existing_videos
   - mcp__google-workspace__create_drive_file
 ---
 
@@ -114,6 +115,39 @@ Use the `generate_multi_clip_video` tool:
     "upload_to_drive": true
 }
 ```
+
+**Step 5: Alternative - Stitch Pre-Generated Clips**
+
+If you already have video clips generated separately and just need to combine them:
+
+Use the `stitch_existing_videos` tool:
+
+```python
+{
+    "video_files": [
+        "segment_1_intro.mp4",
+        "segment_2_demo.mp4",
+        "segment_3_cta.mp4"
+    ],
+    "output_filename": "final_video_30s.mp4",
+    "upload_to_drive": true
+}
+```
+
+**When to use stitch_existing_videos:**
+- You already have video segments in `outputs/videos/` folder
+- You want to combine clips without regenerating them (saves cost)
+- You're iterating on stitching order/combinations
+- You have clips from different sources (Sora, stock footage, etc.)
+
+**How it works:**
+1. Validates all video files exist in `outputs/videos/` folder
+2. Creates FFmpeg concat file listing all segments
+3. Stitches using FFmpeg (tries copy mode first, re-encodes if needed)
+4. Preserves original segment files (doesn't delete them)
+5. Uploads final video to Google Drive if requested
+
+**Cost:** $0 (no Sora generation, just FFmpeg stitching)
 
 ### Tips for Seamless Stitching
 

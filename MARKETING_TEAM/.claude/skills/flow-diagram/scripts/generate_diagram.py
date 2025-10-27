@@ -32,7 +32,7 @@ def read_template(skill_dir: Path) -> str:
         print(f"Error: Template not found at {template_path}", file=sys.stderr)
         sys.exit(1)
 
-    return template_path.read_text()
+    return template_path.read_text(encoding='utf-8')
 
 
 def read_mermaid_code(mermaid_file: str) -> str:
@@ -43,7 +43,7 @@ def read_mermaid_code(mermaid_file: str) -> str:
         print(f"Error: Mermaid file not found: {mermaid_file}", file=sys.stderr)
         sys.exit(1)
 
-    content = mermaid_path.read_text().strip()
+    content = mermaid_path.read_text(encoding='utf-8').strip()
 
     # If content is wrapped in code blocks, extract the mermaid code
     if content.startswith("```mermaid") or content.startswith("```"):
@@ -85,9 +85,9 @@ def save_html(html: str, output_file: str) -> None:
     # Create parent directories if they don't exist
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    output_path.write_text(html)
-    print(f"✓ Interactive diagram generated: {output_path.absolute()}")
-    print(f"✓ Open in browser to view, pan/zoom, and export to PNG/SVG")
+    output_path.write_text(html, encoding='utf-8')
+    print(f"[OK] Interactive diagram generated: {output_path.absolute()}")
+    print(f"[OK] Open in browser to view, pan/zoom, and export to PNG/SVG")
 
 
 def main():

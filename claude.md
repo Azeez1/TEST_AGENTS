@@ -2,13 +2,13 @@
 
 ## 📋 Repository Overview
 
-This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **36 specialized agents** for user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
+This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **37 specialized agents** for user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
 
 **Systems:**
 - **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
 - **QA_TEAM** - 5 testing agents for automated pytest test suite generation
-- **ENGINEERING_TEAM** - **13 engineering agents** ⭐ **SUPER TEAM** (1 CTO coordinator + 12 specialists) for DevOps, security, frontend, backend, AI/ML, UX design, quality assurance, testing, optimization, database design, and troubleshooting
+- **ENGINEERING_TEAM** - **14 engineering agents** ⭐ **SUPER TEAM** (1 CTO coordinator + 13 specialists) for DevOps, security, frontend, backend, AI/ML, UX design, system architecture, quality assurance, testing, optimization, database design, and troubleshooting
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
@@ -22,7 +22,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 **Priority Order:**
 1. **Use existing agents** (`.claude/agents/*.md` files) - Invoke them explicitly
-2. **Use installed skills** (`.claude/skills/*`) - 13 powerful skills available
+2. **Use installed skills** (`.claude/skills/*`) - 18 powerful skills available
 3. **Use MCP servers** - 7 external integrations (Playwright, Google Workspace, Perplexity, Bright Data, etc.)
 4. **Use existing tools** (`tools/*.py`) - Simpler utilities and API wrappers
 5. **Only if none exist** - Then create new implementations
@@ -476,24 +476,25 @@ TEST_AGENTS/
 
 ---
 
-### ENGINEERING_TEAM (13 Agents) ⭐ **SUPER TEAM**
+### ENGINEERING_TEAM (14 Agents) ⭐ **SUPER TEAM**
 
-**CTO Coordinator (1 Agent - NEW):**
+**CTO Coordinator (1 Agent):**
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
-| **cto** ⭐ **NEW** | **Strategic coordinator** for all 12 specialists - Intelligent routing, multi-agent orchestration, workflow planning with sequential-thinking, quality gates, dependency tracking | `"Use cto to build an AI-powered analytics dashboard"` `"Use cto to deploy all systems to AWS"` `"Use cto to optimize all 36 agents"` |
+| **cto** ⭐ | **Strategic coordinator** for all 13 specialists - Intelligent routing, multi-agent orchestration, workflow planning with sequential-thinking, quality gates, dependency tracking | `"Use cto to build an AI-powered analytics dashboard"` `"Use cto to deploy all systems to AWS"` `"Use cto to optimize all 37 agents"` |
 
-**Core 7 Specialists (Custom Built):**
+**Core 8 Specialists (Custom Built):**
 
 | Agent | Capability | Invoke With |
 |-------|-----------|-------------|
 | **devops-engineer** ⭐ | **Production-ready** CI/CD (GitHub Actions), Terraform (AWS/GCP), Kubernetes (Helm), monitoring (Prometheus/Grafana), security scanning (886 lines of code) | `"Use devops-engineer to create complete deployment pipeline"` |
 | **frontend-developer** | React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG) | `"Use frontend-developer to build agent dashboard in Next.js"` |
-| **backend-architect** | RESTful API design, microservices architecture, database schema, caching strategies, scalability planning | `"Use backend-architect to design API for 36 agents"` |
+| **backend-architect** | RESTful API design, microservices architecture, database schema, caching strategies, scalability planning | `"Use backend-architect to design API for 37 agents"` |
 | **security-auditor** ⭐ | **Unique comprehensive security** - Code security analysis, vulnerability scanning (OWASP Top 10), compliance (GDPR/HIPAA) | `"Use security-auditor to scan for hardcoded API keys"` |
 | **technical-writer** ⭐ | **Broader scope** - PRDs, technical specs, API docs (OpenAPI), architecture diagrams, user guides | `"Use technical-writer to write PRD for agent scheduling"` |
-| **ai-engineer** ⭐ | **Perfect for 36 agents** - LLM integration, RAG systems, prompt optimization, agent frameworks (LangChain/LangGraph) | `"Use ai-engineer to optimize prompts for all 36 agents"` |
+| **system-architect** ⭐ **NEW** | **Professional flow diagrams** - System architecture design, Mermaid diagrams (flowcharts, sequence, ER, state, CI/CD), interactive HTML visualizations with pan/zoom | `"Use system-architect to create microservices architecture diagram"` `"Use system-architect to visualize CI/CD pipeline"` |
+| **ai-engineer** ⭐ | **Perfect for 37 agents** - LLM integration, RAG systems, prompt optimization, agent frameworks (LangChain/LangGraph) | `"Use ai-engineer to optimize prompts for all 37 agents"` |
 | **ui-ux-designer** | User research, wireframes, design systems, accessibility, user flows, usability testing | `"Use ui-ux-designer to create wireframes for dashboard"` |
 
 **Specialist 5 Agents (From aitmpl.com - Community Validated):**
@@ -501,9 +502,9 @@ TEST_AGENTS/
 | Agent | Capability | Downloads | Invoke With |
 |-------|-----------|-----------|-------------|
 | **code-reviewer** | Quality, security, maintainability reviews - automatic git diff analysis | 3.2K | `"Use code-reviewer to review MARKETING_TEAM email tool"` |
-| **test-engineer** | Test automation (Jest, Playwright, pytest), QA strategy, CI/CD testing | 1.3K | `"Use test-engineer to create test strategy for 36 agents"` |
+| **test-engineer** | Test automation (Jest, Playwright, pytest), QA strategy, CI/CD testing | 1.3K | `"Use test-engineer to create test strategy for 37 agents"` |
 | **prompt-engineer** | LLM prompt optimization, techniques (few-shot, chain-of-thought), benchmarking | 2.4K | `"Use prompt-engineer to optimize copywriter prompt"` |
-| **database-architect** | Database design, data modeling, scalability (sharding, replication), polyglot persistence | 1.2K | `"Use database-architect to design analytics DB for 36 agents"` |
+| **database-architect** | Database design, data modeling, scalability (sharding, replication), polyglot persistence | 1.2K | `"Use database-architect to design analytics DB for 37 agents"` |
 | **debugger** | Root cause analysis, troubleshooting, error investigation, hypothesis testing | 1.7K | `"Use debugger to fix MARKETING_TEAM timeout issues"` |
 
 **Engineering Stack:**
@@ -520,15 +521,16 @@ TEST_AGENTS/
 **Special Features:**
 - ✅ **CTO Coordinator** - Single command orchestration for complex multi-agent workflows
 - ✅ **Intelligent routing** - CTO classifies requests and delegates to the right specialists
-- ✅ **Full workspace access** - All 13 agents can work with all 36 agents across 4 systems
+- ✅ **Full workspace access** - All 14 agents can work with all 37 agents across 4 systems
 - ✅ **Production-ready code** - devops-engineer provides 886 lines of battle-tested CI/CD, Terraform, Helm
+- ✅ **Professional diagrams** - system-architect creates interactive Mermaid flow diagrams with pan/zoom
 - ✅ **Community validated** - 5 specialist agents with thousands of downloads (proven in production)
-- ✅ **AI optimization powerhouse** - ai-engineer + prompt-engineer can optimize all 36 agent prompts
+- ✅ **AI optimization powerhouse** - ai-engineer + prompt-engineer can optimize all 37 agent prompts
 - ✅ **Quality layer** - code-reviewer + security-auditor ensure comprehensive code quality
 - ✅ **Complete testing** - test-engineer builds strategies, QA_TEAM generates tests
 - ✅ **Design → Develop → Test → Deploy** - Complete SDLC from UX to production
 - ✅ **Cross-team collaboration** - DevOps deploys all systems, AI/Prompt engineers optimize all agents, Security/Code reviewers audit everything
-- ✅ **End-to-end workflows** - CTO coordinates: PRD (technical-writer) → Database (database-architect) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Review (code-reviewer) → Test (test-engineer) → Deploy (devops-engineer) → Audit (security-auditor) → Optimize (ai-engineer + prompt-engineer) → Debug (debugger)
+- ✅ **End-to-end workflows** - CTO coordinates: PRD (technical-writer) → Architecture Diagrams (system-architect) → Database (database-architect) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Review (code-reviewer) → Test (test-engineer) → Deploy (devops-engineer) → Audit (security-auditor) → Optimize (ai-engineer + prompt-engineer) → Debug (debugger)
 
 ---
 
@@ -543,7 +545,7 @@ TEST_AGENTS/
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 35 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 37 agents
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
 - [QA_TEAM/HOW_TO_USE.md](QA_TEAM/HOW_TO_USE.md) - Testing agent usage with examples
@@ -714,16 +716,16 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ### Overview
 
-All **17 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 user-installed + 4 document-skills) and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
+All **17 MARKETING_TEAM agents** now have access to **18 powerful skills** (14 user-installed + 4 document-skills) and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
 
 **Skills Configuration:** Enabled in `MARKETING_TEAM/.claude/settings.json`
 **MCPs:** Inherited from root `.claude.json` via `"mcpServers": "inherit"`
 
 ---
 
-### Available Skills (17 total)
+### Available Skills (18 total)
 
-#### Visual Creation Skills (4)
+#### Visual Creation Skills (5)
 
 | Skill | Description | Best For | Example |
 |-------|-------------|----------|---------|
@@ -731,6 +733,7 @@ All **17 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
 | **canvas-design** | Beautiful PNG/PDF visual art (posters, banners, designs) | Conference posters, print materials, professional designs | `"Use visual-designer with canvas-design to create a conference poster"` |
 | **slack-gif-creator** | Animated GIFs optimized for Slack with size validators | Product launches, animated content, eye-catching posts | `"Use social-media-manager with slack-gif-creator to make launch GIF"` |
 | **theme-factory** | 11 preset themes for consistent branding (vibrant, modern-minimalist, midnight-galaxy, golden-hour, tech-innovation, botanical-garden, arctic-frost, forest-canopy, ocean-depths, desert-rose, sunset-boulevard) | Themed presentations, branded landing pages, consistent artifacts | `"Use presentation-designer with theme-factory 'vibrant' theme"` |
+| **flow-diagram** ⭐ **NEW** | Professional Mermaid diagrams (flowcharts, sequence, ER, state, CI/CD) with interactive HTML pan/zoom | System architecture, data flows, technical documentation, process visualization | `"Use system-architect with flow-diagram to create microservices diagram"` |
 
 #### Development & Artifacts Skills (3)
 
@@ -812,7 +815,7 @@ All **17 MARKETING_TEAM agents** now have access to **17 powerful skills** (13 u
 - **content-strategist:** context7
 - **automation-agent:** context7
 
-**Note:** All agents inherit access to all 17 skills via MARKETING_TEAM/.claude/settings.json, but the above lists show which skills each agent is designed to use based on their agent definitions.
+**Note:** All agents inherit access to all 18 skills via MARKETING_TEAM/.claude/settings.json, but the above lists show which skills each agent is designed to use based on their agent definitions. The **flow-diagram** skill is also enabled in ENGINEERING_TEAM/.claude/settings.json for the **system-architect** agent.
 
 ---
 
@@ -1414,15 +1417,33 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ---
 
-**Last Updated:** 2025-10-23
+**Last Updated:** 2025-10-26
 **Recent Changes:**
-- ✨ **CTO COORDINATOR ADDED** - Engineering team now has strategic coordinator (35 → **36 agents total**)
+- ✨ **SYSTEM ARCHITECT AGENT ADDED** - Engineering team grows to 14 specialists (36 → **37 agents total**)
+  - **system-architect** - Professional flow diagram creation with Mermaid.js
+  - System architecture design (microservices, cloud infrastructure, APIs, distributed systems)
+  - 9+ diagram types: flowcharts, sequence diagrams, ER diagrams, state diagrams, CI/CD pipelines, class diagrams, user journeys
+  - Interactive HTML visualizations with pan/zoom capabilities
+  - Uses new **flow-diagram skill** for professional technical documentation
+  - See [ENGINEERING_TEAM/.claude/agents/system-architect.md](ENGINEERING_TEAM/.claude/agents/system-architect.md) (~582 lines)
+- ✨ **FLOW-DIAGRAM SKILL ADDED** - 18th skill for professional Mermaid diagram generation
+  - Complete Mermaid.js syntax support (671-line comprehensive SKILL.md)
+  - Interactive HTML template with pan/zoom navigation
+  - Best practices guide and syntax reference included
+  - Python generation script for automation
+  - Enabled in both MARKETING_TEAM and ENGINEERING_TEAM settings
+  - See [MARKETING_TEAM/.claude/skills/flow-diagram/](MARKETING_TEAM/.claude/skills/flow-diagram/)
+- 🎬 **ENHANCED VIDEO PRODUCER** - Multi-clip video stitching with improved FFmpeg path resolution
+  - New [sora_video.py](MARKETING_TEAM/tools/sora_video.py) tool (222 lines)
+  - Fixed FFmpeg path resolution bugs for Windows
+  - Multi-clip stitching capabilities for complex video compositions
+- ✨ **CTO COORDINATOR ADDED** - Engineering team now has strategic coordinator (35 → 36 agents, now **37 with system-architect**)
   - **cto agent** - Intelligent routing, multi-agent orchestration, workflow planning
   - 4 coordination tools: `classify_engineering_request`, `get_engineer_capabilities`, `list_engineering_agents`, `create_execution_plan`
   - 7 workflow patterns: End-to-end feature, infrastructure deployment, AI optimization, security audit, troubleshooting, database design, UI/UX implementation
-  - Single-command coordination: `"Use cto to build analytics dashboard"` → CTO delegates to all 12 specialists automatically
+  - Single-command coordination: `"Use cto to build analytics dashboard"` → CTO delegates to all 13 specialists automatically
   - See [ENGINEERING_TEAM/.claude/agents/cto.md](ENGINEERING_TEAM/.claude/agents/cto.md) (~850 lines) and [ENGINEERING_TEAM/tools/engineering_coordinator_tools.py](ENGINEERING_TEAM/tools/engineering_coordinator_tools.py) (~400 lines)
-- ✨ **ENGINEERING SUPER TEAM CREATED** - 12 engineering agents (30 → 35 agents, now 36 with CTO)
+- ✨ **ENGINEERING SUPER TEAM CREATED** - 13 engineering agents (30 → 35 agents, now 37 with CTO + system-architect)
   - **Core 7 Agents (Custom Built):**
     - ⭐ **devops-engineer:** UPGRADED with official production-ready template - 886 lines of battle-tested CI/CD (GitHub Actions), Terraform (AWS EKS, RDS, Redis, ALB), Kubernetes (Helm charts), monitoring (Prometheus/Grafana), security scanning (Trivy, kube-bench, gitleaks)
     - ⭐ **frontend-developer:** REPLACED with official template - React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG)
@@ -1463,7 +1484,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
 - **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
 - **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect 36 agents (4 systems: MARKETING_TEAM (17), QA_TEAM (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (13))
+- Updated all documentation to reflect 37 agents (4 systems: MARKETING_TEAM (17), QA_TEAM (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (14))
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service

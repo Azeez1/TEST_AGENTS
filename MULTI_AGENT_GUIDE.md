@@ -2,7 +2,7 @@
 
 ## The Simple Truth
 
-**You have 22 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 37 perfectly defined AI agents ready to use RIGHT NOW.**
 
 No Python code required. No orchestrators. No complex setup.
 
@@ -20,7 +20,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 22 Agents
+### You Have 37 Agents
 
 **MARKETING_TEAM (17 agents):**
 - router-agent - Coordinator
@@ -47,6 +47,25 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - integration-test-agent - Integration tests
 - edge-case-agent - Edge case identification
 - fixture-agent - Pytest fixtures
+
+**ENGINEERING_TEAM (14 agents) ⭐ SUPER TEAM:**
+- cto - Strategic coordinator & intelligent routing for all specialists
+- devops-engineer - CI/CD, Terraform, Kubernetes, monitoring, security scanning
+- frontend-developer - React, responsive design, state management, accessibility
+- backend-architect - RESTful APIs, microservices, database schema, scalability
+- security-auditor - Code security, vulnerability scanning, compliance audits
+- technical-writer - PRDs, technical specs, API docs, architecture diagrams
+- system-architect - ✨ **NEW** System architecture design & professional flow diagrams
+- ai-engineer - LLM integration, RAG systems, prompt optimization, agent frameworks
+- ui-ux-designer - User research, wireframes, design systems, user flows
+- code-reviewer - Quality, security, maintainability reviews (3.2K downloads)
+- test-engineer - Test automation, QA strategy, CI/CD testing (1.3K downloads)
+- prompt-engineer - LLM prompt optimization, techniques, benchmarking (2.4K downloads)
+- database-architect - Database design, data modeling, scalability (1.2K downloads)
+- debugger - Root cause analysis, troubleshooting, error investigation (1.7K downloads)
+
+**USER_STORY_AGENT (1 system):**
+- Streamlit application for converting meeting notes to user stories with Excel export
 
 ---
 
@@ -415,8 +434,9 @@ Read the `.md` files to understand:
 
 ✅ **Verify agents exist:**
 ```bash
-ls MARKETING_TEAM/.claude/agents/  # Should show 16 .md files (including lead-gen-agent)
-ls QA_TEAM/.claude/agents/       # Should show 5 .md files
+ls MARKETING_TEAM/.claude/agents/    # Should show 17 .md files
+ls QA_TEAM/.claude/agents/           # Should show 5 .md files
+ls ENGINEERING_TEAM/.claude/agents/  # Should show 14 .md files
 ```
 
 ✅ **Try your first agent:**
@@ -440,11 +460,13 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 22 agents perfectly defined (16 marketing + 5 testing + 1 user story system)
+- ✅ 37 agents perfectly defined (17 marketing + 5 testing + 14 engineering + 1 user story system)
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run
 - ✅ Just talk to Claude Code
+- ✨ NEW: System architect with professional flow diagrams
+- ✨ NEW: Flow-diagram skill for Mermaid visualizations
 - ✨ NEW: Lead generation with Bright Data (5,000 free requests/month)
 
 **Start using them:**
