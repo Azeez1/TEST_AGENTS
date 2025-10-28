@@ -1,0 +1,53 @@
+graph TB
+    subgraph Frontend["🎨 Frontend Layer"]
+        WebApp["Web App<br/>React + TypeScript"]
+        Mobile["Mobile App<br/>React Native"]
+    end
+
+    subgraph API["⚡ API Gateway"]
+        Gateway["API Gateway<br/>Rate Limiting + Auth"]
+    end
+
+    subgraph Services["🚀 Microservices"]
+        Auth["Auth Service<br/>JWT + OAuth"]
+        Users["User Service<br/>Profile Management"]
+        Data["Data Service<br/>Business Logic"]
+        Analytics["Analytics Service<br/>Tracking + Insights"]
+    end
+
+    subgraph Storage["💾 Data Layer"]
+        PostgreSQL["PostgreSQL<br/>Primary DB"]
+        Redis["Redis<br/>Cache + Sessions"]
+        S3["AWS S3<br/>File Storage"]
+    end
+
+    WebApp --> Gateway
+    Mobile --> Gateway
+
+    Gateway --> Auth
+    Gateway --> Users
+    Gateway --> Data
+    Gateway --> Analytics
+
+    Auth --> PostgreSQL
+    Auth --> Redis
+
+    Users --> PostgreSQL
+    Users --> Redis
+
+    Data --> PostgreSQL
+    Data --> S3
+
+    Analytics --> PostgreSQL
+    Analytics --> Redis
+
+    style WebApp fill:#667eea,stroke:#333,stroke-width:3px,color:#fff
+    style Mobile fill:#667eea,stroke:#333,stroke-width:3px,color:#fff
+    style Gateway fill:#f093fb,stroke:#333,stroke-width:3px,color:#fff
+    style Auth fill:#4facfe,stroke:#333,stroke-width:3px,color:#fff
+    style Users fill:#4facfe,stroke:#333,stroke-width:3px,color:#fff
+    style Data fill:#4facfe,stroke:#333,stroke-width:3px,color:#fff
+    style Analytics fill:#4facfe,stroke:#333,stroke-width:3px,color:#fff
+    style PostgreSQL fill:#43e97b,stroke:#333,stroke-width:3px,color:#fff
+    style Redis fill:#43e97b,stroke:#333,stroke-width:3px,color:#fff
+    style S3 fill:#43e97b,stroke:#333,stroke-width:3px,color:#fff

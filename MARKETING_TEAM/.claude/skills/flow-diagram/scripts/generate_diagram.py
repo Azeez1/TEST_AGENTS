@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """
-Generate interactive flow diagrams from Mermaid code.
+Generate EYE-POPPING, attention-grabbing flow diagrams from Mermaid code.
 
-This script creates beautiful, interactive HTML diagrams with pan/zoom capabilities
-and export options (PNG, SVG).
+This enhanced script creates stunning, LinkedIn-ready diagrams with multiple visual styles:
+- Glassmorphism (modern, premium look)
+- Neon/Cyberpunk (bold, attention-grabbing)
+- Hand-drawn/Sketch (friendly, approachable)
+- Classic (original professional style)
 
 Usage:
     python generate_diagram.py <mermaid_file> [options]
@@ -11,12 +14,15 @@ Usage:
 Options:
     --output, -o      Output file path (default: diagram.html)
     --title, -t       Diagram title (default: Flow Diagram)
-    --theme           Theme: default, forest, dark, neutral, base (default: default)
-    --background, -b  Background color (default: #f5f5f5)
+    --style, -s       Visual style: glassmorphism, neon, hand-drawn, classic (default: glassmorphism)
+    --theme           Mermaid theme (for classic style only)
+    --background, -b  Background color (for classic style only)
 
 Examples:
-    python generate_diagram.py architecture.mmd -o system-arch.html
-    python generate_diagram.py flow.mmd -t "User Flow" --theme dark
+    python generate_diagram.py architecture.mmd --style glassmorphism
+    python generate_diagram.py flow.mmd -t "User Flow" --style neon
+    python generate_diagram.py process.mmd --style hand-drawn -o process.html
+    python generate_diagram.py system.mmd --style classic --theme dark
 """
 
 import argparse
@@ -24,12 +30,23 @@ import sys
 from pathlib import Path
 
 
-def read_template(skill_dir: Path) -> str:
-    """Read the HTML template from assets directory."""
-    template_path = skill_dir / "assets" / "interactive-diagram-template.html"
+def read_template(skill_dir: Path, style: str = "glassmorphism") -> str:
+    """Read the HTML template from assets directory based on style."""
+
+    # Map style names to template files
+    style_templates = {
+        "glassmorphism": "glassmorphism-template.html",
+        "neon": "neon-template.html",
+        "hand-drawn": "hand-drawn-template.html",
+        "classic": "interactive-diagram-template.html"
+    }
+
+    template_file = style_templates.get(style, "glassmorphism-template.html")
+    template_path = skill_dir / "assets" / template_file
 
     if not template_path.exists():
         print(f"Error: Template not found at {template_path}", file=sys.stderr)
+        print(f"Available styles: {', '.join(style_templates.keys())}", file=sys.stderr)
         sys.exit(1)
 
     return template_path.read_text(encoding='utf-8')
@@ -59,15 +76,17 @@ def generate_html(
     mermaid_code: str,
     title: str = "Flow Diagram",
     theme: str = "default",
-    background: str = "#f5f5f5"
+    background: str = "#f5f5f5",
+    style: str = "glassmorphism"
 ) -> str:
     """Generate HTML by replacing placeholders in template."""
 
-    # Validate theme
-    valid_themes = ["default", "forest", "dark", "neutral", "base"]
-    if theme not in valid_themes:
-        print(f"Warning: Unknown theme '{theme}'. Using 'default'.", file=sys.stderr)
-        theme = "default"
+    # For classic style, validate theme
+    if style == "classic":
+        valid_themes = ["default", "forest", "dark", "neutral", "base"]
+        if theme not in valid_themes:
+            print(f"Warning: Unknown theme '{theme}'. Using 'default'.", file=sys.stderr)
+            theme = "default"
 
     # Replace placeholders
     html = template.replace("{{DIAGRAM_TITLE}}", title)
@@ -78,7 +97,7 @@ def generate_html(
     return html
 
 
-def save_html(html: str, output_file: str) -> None:
+def save_html(html: str, output_file: str, style: str) -> None:
     """Save generated HTML to file."""
     output_path = Path(output_file)
 
@@ -86,19 +105,36 @@ def save_html(html: str, output_file: str) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     output_path.write_text(html, encoding='utf-8')
-    print(f"[OK] Interactive diagram generated: {output_path.absolute()}")
-    print(f"[OK] Open in browser to view, pan/zoom, and export to PNG/SVG")
+
+    style_emojis = {
+        "glassmorphism": "✨",
+        "neon": "⚡",
+        "hand-drawn": "✏️",
+        "classic": "📊"
+    }
+    emoji = style_emojis.get(style, "🎨")
+
+    print(f"\n{emoji} STUNNING DIAGRAM GENERATED!")
+    print(f"   Style: {style.upper()}")
+    print(f"   File: {output_path.absolute()}")
+    print(f"\n💡 Open in browser to:")
+    print(f"   • View your eye-catching diagram")
+    print(f"   • Pan/zoom interactively")
+    print(f"   • Export to high-quality PNG/SVG")
+    print(f"\n🚀 Ready for LinkedIn, Twitter, or any social media!")
+    print()
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate interactive flow diagrams from Mermaid code",
+        description="Generate EYE-POPPING, LinkedIn-ready flow diagrams from Mermaid code",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python generate_diagram.py architecture.mmd
-  python generate_diagram.py flow.mmd -o user-flow.html -t "User Journey"
-  python generate_diagram.py system.mmd --theme dark --background "#1a1a1a"
+  python generate_diagram.py architecture.mmd --style glassmorphism
+  python generate_diagram.py flow.mmd -t "User Flow" --style neon
+  python generate_diagram.py process.mmd --style hand-drawn -o process.html
+  python generate_diagram.py system.mmd --style classic --theme dark
         """
     )
 
@@ -120,16 +156,23 @@ Examples:
     )
 
     parser.add_argument(
+        "-s", "--style",
+        default="glassmorphism",
+        choices=["glassmorphism", "neon", "hand-drawn", "classic"],
+        help="Visual style (default: glassmorphism)"
+    )
+
+    parser.add_argument(
         "--theme",
         default="default",
         choices=["default", "forest", "dark", "neutral", "base"],
-        help="Mermaid theme (default: default)"
+        help="Mermaid theme (for classic style only, default: default)"
     )
 
     parser.add_argument(
         "-b", "--background",
         default="#f5f5f5",
-        help="Background color (default: #f5f5f5)"
+        help="Background color (for classic style only, default: #f5f5f5)"
     )
 
     args = parser.parse_args()
@@ -138,7 +181,7 @@ Examples:
     skill_dir = Path(__file__).parent.parent
 
     # Read template and mermaid code
-    template = read_template(skill_dir)
+    template = read_template(skill_dir, args.style)
     mermaid_code = read_mermaid_code(args.mermaid_file)
 
     # Generate HTML
@@ -147,11 +190,12 @@ Examples:
         mermaid_code,
         title=args.title,
         theme=args.theme,
-        background=args.background
+        background=args.background,
+        style=args.style
     )
 
     # Save to file
-    save_html(html, args.output)
+    save_html(html, args.output, args.style)
 
 
 if __name__ == "__main__":
