@@ -79,10 +79,12 @@ def parse_mermaid_for_carousel(mermaid_code: str, num_slides: int):
 
             # Prioritize connections that reference existing nodes
             new_connections = []
+            # Ensure connection quota is at least 1 to avoid isolating nodes
+            connection_quota = max(1, items_per_slide // 2)
             for conn in remaining_connections[:]:
                 # Simple check if connection references existing nodes
                 should_add = any(node.split('[')[0].strip() in conn for node in current_nodes if '[' in node)
-                if should_add and len(new_connections) < items_per_slide // 2:
+                if should_add and len(new_connections) < connection_quota:
                     new_connections.append(conn)
                     remaining_connections.remove(conn)
 
