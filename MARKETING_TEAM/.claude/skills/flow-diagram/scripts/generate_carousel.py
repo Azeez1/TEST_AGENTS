@@ -264,11 +264,18 @@ Examples:
 
     args = parser.parse_args()
 
-    print(f"\n🎨 LINKEDIN CAROUSEL GENERATOR")
-    print(f"   Style: {args.style}")
-    print(f"   Slides: {args.slides}")
-    print(f"   Size: {args.size}")
-    print()
+    try:
+        print(f"\n🎨 LINKEDIN CAROUSEL GENERATOR")
+        print(f"   Style: {args.style}")
+        print(f"   Slides: {args.slides}")
+        print(f"   Size: {args.size}")
+        print()
+    except UnicodeEncodeError:
+        print(f"\nLINKEDIN CAROUSEL GENERATOR")
+        print(f"   Style: {args.style}")
+        print(f"   Slides: {args.slides}")
+        print(f"   Size: {args.size}")
+        print()
 
     # Find skill directory
     skill_dir = Path(__file__).parent.parent
@@ -291,7 +298,10 @@ Examples:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Create title slide
-    print("📄 Generating slides...")
+    try:
+        print("📄 Generating slides...")
+    except UnicodeEncodeError:
+        print("Generating slides...")
     create_title_slide(args.title, args.style, output_dir / "slide_0.html", args.size)
 
     # Parse and create slides
@@ -305,21 +315,39 @@ Examples:
         slide_path = output_dir / f"slide_{i}.html"
         slide_path.write_text(slide_html, encoding='utf-8')
 
-        print(f"   ✓ Slide {i}: {slide_data['title']}")
+        try:
+            print(f"   ✓ Slide {i}: {slide_data['title']}")
+        except UnicodeEncodeError:
+            print(f"   * Slide {i}: {slide_data['title']}")
 
-    print(f"\n✨ SUCCESS! Generated {len(slides) + 1} carousel slides")
-    print(f"   Location: {output_dir.absolute()}")
-    print(f"\n📱 Next steps:")
-    print(f"   1. Open each slide_*.html in your browser")
-    print(f"   2. Use browser tools or screenshot tool to capture as PNG")
-    print(f"   3. Upload to LinkedIn as a carousel post")
-    print(f"\n💡 LinkedIn Pro Tips:")
-    print(f"   • Use 6-10 slides for best engagement")
-    print(f"   • Keep text minimal (under 50 words per slide)")
-    print(f"   • End with a call-to-action slide")
-    print(f"   • Post during business hours for B2B content")
-    print(f"\n🚀 Carousels have 45.85% engagement rate - the HIGHEST on LinkedIn!")
-    print()
+    try:
+        print(f"\n✨ SUCCESS! Generated {len(slides) + 1} carousel slides")
+        print(f"   Location: {output_dir.absolute()}")
+        print(f"\n📱 Next steps:")
+        print(f"   1. Open each slide_*.html in your browser")
+        print(f"   2. Use browser tools or screenshot tool to capture as PNG")
+        print(f"   3. Upload to LinkedIn as a carousel post")
+        print(f"\n💡 LinkedIn Pro Tips:")
+        print(f"   • Use 6-10 slides for best engagement")
+        print(f"   • Keep text minimal (under 50 words per slide)")
+        print(f"   • End with a call-to-action slide")
+        print(f"   • Post during business hours for B2B content")
+        print(f"\n🚀 Carousels have 45.85% engagement rate - the HIGHEST on LinkedIn!")
+        print()
+    except UnicodeEncodeError:
+        print(f"\nSUCCESS! Generated {len(slides) + 1} carousel slides")
+        print(f"   Location: {output_dir.absolute()}")
+        print(f"\nNext steps:")
+        print(f"   1. Open each slide_*.html in your browser")
+        print(f"   2. Use browser tools or screenshot tool to capture as PNG")
+        print(f"   3. Upload to LinkedIn as a carousel post")
+        print(f"\nLinkedIn Pro Tips:")
+        print(f"   - Use 6-10 slides for best engagement")
+        print(f"   - Keep text minimal (under 50 words per slide)")
+        print(f"   - End with a call-to-action slide")
+        print(f"   - Post during business hours for B2B content")
+        print(f"\nCarousels have 45.85% engagement rate - the HIGHEST on LinkedIn!")
+        print()
 
 
 if __name__ == "__main__":

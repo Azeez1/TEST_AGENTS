@@ -114,15 +114,27 @@ def save_html(html: str, output_file: str, style: str) -> None:
     }
     emoji = style_emojis.get(style, "🎨")
 
-    print(f"\n{emoji} STUNNING DIAGRAM GENERATED!")
-    print(f"   Style: {style.upper()}")
-    print(f"   File: {output_path.absolute()}")
-    print(f"\n💡 Open in browser to:")
-    print(f"   • View your eye-catching diagram")
-    print(f"   • Pan/zoom interactively")
-    print(f"   • Export to high-quality PNG/SVG")
-    print(f"\n🚀 Ready for LinkedIn, Twitter, or any social media!")
-    print()
+    try:
+        print(f"\n{emoji} STUNNING DIAGRAM GENERATED!")
+        print(f"   Style: {style.upper()}")
+        print(f"   File: {output_path.absolute()}")
+        print(f"\n💡 Open in browser to:")
+        print(f"   • View your eye-catching diagram")
+        print(f"   • Pan/zoom interactively")
+        print(f"   • Export to high-quality PNG/SVG")
+        print(f"\n🚀 Ready for LinkedIn, Twitter, or any social media!")
+        print()
+    except UnicodeEncodeError:
+        # Fallback for Windows console encoding issues
+        print(f"\nSTUNNING DIAGRAM GENERATED!")
+        print(f"   Style: {style.upper()}")
+        print(f"   File: {output_path.absolute()}")
+        print(f"\nOpen in browser to:")
+        print(f"   - View your eye-catching diagram")
+        print(f"   - Pan/zoom interactively")
+        print(f"   - Export to high-quality PNG/SVG")
+        print(f"\nReady for LinkedIn, Twitter, or any social media!")
+        print()
 
 
 def main():

@@ -1,0 +1,34 @@
+graph LR
+    Web[Web App]
+    Mobile[Mobile App]
+    Gateway[API Gateway]
+    Auth[Auth Service]
+    UserService[User Service]
+    OrderService[Order Service]
+    NotifyService[Notification Service]
+    DB[(PostgreSQL)]
+    Cache[(Redis Cache)]
+    Queue[Message Queue]
+
+    Web --> Gateway
+    Mobile --> Gateway
+    Gateway --> Auth
+    Auth --> UserService
+    Gateway --> OrderService
+    Gateway --> NotifyService
+
+    UserService --> DB
+    UserService --> Cache
+    OrderService --> DB
+    OrderService -.->|Events| Queue
+    Queue -.-> NotifyService
+
+    classDef ui fill:#FFE5B4,stroke:#8B4513,stroke-width:3px
+    classDef api fill:#B0E0E6,stroke:#4682B4,stroke-width:3px
+    classDef service fill:#DDA0DD,stroke:#8B008B,stroke-width:3px
+    classDef data fill:#98FB98,stroke:#228B22,stroke-width:3px
+
+    class Web,Mobile ui
+    class Gateway,Auth api
+    class UserService,OrderService,NotifyService service
+    class DB,Cache,Queue data

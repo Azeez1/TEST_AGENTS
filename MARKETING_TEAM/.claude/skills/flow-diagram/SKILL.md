@@ -809,6 +809,125 @@ Before delivering a diagram, verify:
 - [ ] Context documentation provided
 - [ ] Tested in target viewing environment
 
+## Critical Best Practices for Mermaid Rendering
+
+### ⚠️ NEVER Use `display: none` for Hiding Diagrams
+
+**Problem:** Mermaid cannot calculate diagram dimensions when elements have `display: none`. This causes diagrams to render as tiny boxes or not render at all.
+
+**❌ WRONG - This will break rendering:**
+```css
+.slide {
+    display: none;  /* Mermaid can't render! */
+}
+.slide.active {
+    display: block;
+}
+```
+
+**✅ CORRECT - Use visibility-based hiding:**
+```css
+.slide {
+    opacity: 0;
+    visibility: hidden;
+    /* Elements stay in DOM, Mermaid can calculate size */
+}
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+```
+
+### Best Practices for Combined Slideshows
+
+When creating slideshows with multiple Mermaid diagrams:
+
+1. **Render all diagrams on page load:**
+```javascript
+window.addEventListener('load', async () => {
+    await mermaid.run();  // Render ALL diagrams first
+    showFirstSlide();      // Then switch slides
+});
+```
+
+2. **Use visibility-based hiding** (not `display: none`)
+
+3. **Give each diagram a unique ID:**
+```html
+<div class="mermaid" id="mermaid-1">...</div>
+<div class="mermaid" id="mermaid-2">...</div>
+```
+
+4. **Set minimum sizes to prevent tiny rendering:**
+```css
+.mermaid {
+    min-width: 600px;
+    min-height: 400px;
+}
+```
+
+5. **Use a template:** See `templates/combined-slideshow-template.html` for a battle-tested approach
+
+### Common Rendering Issues
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Tiny yellow boxes | `display: none` used | Use visibility-based hiding |
+| Diagrams don't appear | Rendered after slide switch | Render all on page load |
+| Layout broken | No min-width/height | Add minimum dimensions |
+| Duplicate IDs | Multiple diagrams same ID | Use unique IDs per diagram |
+
+## Troubleshooting Mermaid Rendering
+
+### Diagrams Not Appearing
+
+**Check 1: Are elements hidden with `display: none`?**
+- Solution: Use `opacity: 0` + `visibility: hidden` instead
+
+**Check 2: Did you render diagrams before showing them?**
+- Solution: Call `mermaid.run()` on page load, before any slide switching
+
+**Check 3: Do you have unique IDs for each diagram?**
+- Solution: Each `<div class="mermaid">` needs a unique `id` attribute
+
+### Diagrams Rendering Tiny
+
+**Check 1: Are minimum dimensions set?**
+```css
+.mermaid {
+    min-width: 600px;
+    min-height: 400px;
+}
+```
+
+**Check 2: Is `useMaxWidth` configured correctly?**
+```javascript
+mermaid.initialize({
+    flowchart: {
+        useMaxWidth: true,  // Allows proper scaling
+        nodeSpacing: 80,
+        rankSpacing: 80
+    }
+});
+```
+
+### Browser Console Errors
+
+Check browser DevTools console (F12) for:
+- Mermaid syntax errors
+- CDN loading issues
+- JavaScript errors blocking rendering
+
+**Fix:** Add error handling:
+```javascript
+try {
+    await mermaid.run();
+    console.log('Diagrams rendered successfully');
+} catch (error) {
+    console.error('Mermaid error:', error);
+}
+```
+
 ## Summary
 
 This skill provides everything needed to create professional, interactive flow diagrams:
