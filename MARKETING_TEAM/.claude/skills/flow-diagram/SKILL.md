@@ -1,16 +1,28 @@
 ---
 name: flow-diagram
-description: Create professional, interactive flow diagrams for system architecture, data flows, user journeys, and technical documentation using Mermaid. Use this skill when designing systems, documenting architectures, visualizing workflows, creating sequence diagrams, ER diagrams, state machines, or any technical diagram. Outputs include interactive HTML with pan/zoom, PNG, and SVG exports.
+description: Create EYE-POPPING, attention-grabbing flow diagrams with multiple stunning visual styles (glassmorphism, neon, hand-drawn, animated) optimized for LinkedIn and social media. Generate interactive diagrams, carousels, animations, and professional visualizations that stop the scroll. Supports Mermaid, D3.js, Excalidraw-style, with exports to HTML, PNG, GIF, MP4, and LinkedIn carousels.
 license: Apache 2.0
 ---
 
-# Flow Diagram Skill
+# Flow Diagram Skill - Enhanced Edition
 
-Create high-end, professional flow diagrams for system design, architecture documentation, and technical visualization using Mermaid diagram-as-code.
+Create stunning, viral-worthy flow diagrams that grab attention on LinkedIn and social media. Go beyond basic Mermaid with eye-popping gradients, animations, hand-drawn styles, and LinkedIn carousel generation.
+
+## Why This Enhanced Version?
+
+**LinkedIn carousels have 45.85% engagement rate** - the highest of any content type! This skill creates:
+- **Attention-grabbing visuals** with gradients, glassmorphism, neon effects
+- **LinkedIn-optimized carousels** that automatically split your diagram into swipeable slides
+- **Animated diagrams** (GIF/MP4) with smooth transitions and particle effects
+- **Multiple stunning styles** from professional to hand-drawn to futuristic
+- **Social media ready** exports sized perfectly for LinkedIn, Twitter, Instagram
 
 ## When to Use This Skill
 
 Use this skill when tasked with:
+- **Creating LinkedIn content** - viral-worthy diagrams and carousels
+- **Social media visuals** - eye-catching infographics and process flows
+- **Portfolio pieces** - stunning visualizations that showcase your work
 - Designing system architectures (microservices, cloud infrastructure, API design)
 - Creating data flow diagrams (how data moves through systems)
 - Documenting user journeys and UX flows
@@ -23,12 +35,54 @@ Use this skill when tasked with:
 - Building technical documentation diagrams
 
 **Trigger phrases include:**
+- "Create an eye-catching diagram for LinkedIn..."
+- "Make this diagram pop..."
+- "I need an attention-grabbing flow chart..."
+- "Create a carousel showing..."
 - "Design the architecture for..."
 - "Draw a flow diagram showing..."
 - "Create a sequence diagram for..."
 - "Visualize the data flow..."
 - "Show me how [system] works..."
 - "Document the [process/workflow]..."
+
+## Visual Styles Available
+
+### 1. GLASSMORPHISM (Modern, Premium)
+Frosted glass effects with blur, transparency, and vibrant gradients
+- **Perfect for:** Tech products, SaaS platforms, modern architecture
+- **Exports:** Interactive HTML, 4K PNG, animated GIF
+- **LinkedIn Performance:** High engagement with tech audiences
+
+### 2. NEON/CYBERPUNK (Bold, Attention-Grabbing)
+Electric glow effects, vibrant colors, dark backgrounds
+- **Perfect for:** Developer tools, blockchain, AI/ML topics
+- **Exports:** Animated HTML with glow effects, PNG, MP4 video
+- **LinkedIn Performance:** Maximum scroll-stopping power
+
+### 3. HAND-DRAWN/SKETCH (Friendly, Approachable)
+Excalidraw-style rough edges, hand-drawn look
+- **Perfect for:** Tutorials, educational content, creative industries
+- **Exports:** Static PNG, animated drawing sequence (GIF/MP4)
+- **LinkedIn Performance:** High engagement, feels authentic
+
+### 4. VIBRANT GRADIENTS (Maximalist, Bold)
+Bold color combinations, dramatic gradients, high contrast
+- **Perfect for:** Marketing, creative agencies, bold statements
+- **Exports:** All formats, optimized for social media
+- **LinkedIn Performance:** Excellent for catching attention in feed
+
+### 5. PROFESSIONAL CORPORATE (Clean, Business)
+Subtle colors, clean lines, corporate aesthetics
+- **Perfect for:** Business processes, enterprise content, formal docs
+- **Exports:** PDF, PNG, interactive HTML
+- **LinkedIn Performance:** Great for B2B audiences
+
+### 6. ANIMATED PARTICLES (Dynamic, Interactive)
+Moving particles, flowing connections, animated elements
+- **Perfect for:** Data flows, network visualizations, processes
+- **Exports:** Interactive HTML, GIF, MP4
+- **LinkedIn Performance:** High engagement, mesmerizing effect
 
 ## Skill Resources
 
@@ -64,34 +118,69 @@ Read this reference when:
 
 ### 2. Scripts
 
-**`scripts/generate_diagram.py`** - Python script to generate interactive HTML diagrams from Mermaid code.
+**`scripts/generate_diagram.py`** - ENHANCED script for creating stunning diagrams
 
 **Usage:**
 ```bash
 python scripts/generate_diagram.py <mermaid_file> [options]
 
 Options:
-  -o, --output <file>        Output HTML file (default: diagram.html)
-  -t, --title <title>        Diagram title (default: Flow Diagram)
-  --theme <theme>            Theme: default, forest, dark, neutral, base
-  -b, --background <color>   Background color (default: #f5f5f5)
+  -o, --output <file>         Output HTML file (default: diagram.html)
+  -t, --title <title>         Diagram title
+  --style <style>             Visual style: glassmorphism, neon, hand-drawn,
+                              vibrant, corporate, animated, classic (default)
+  --export <format>           Export format: html, png, gif, mp4, carousel
+  --size <preset>             Size preset: linkedin-post, linkedin-carousel,
+                              twitter, instagram, 4k, hd
+  --animate                   Add smooth animations and transitions
 ```
 
-**When to use the script:**
-- After creating Mermaid code to generate the final interactive output
-- To apply custom themes and styling
-- When the user requests downloadable/shareable diagrams
-- For batch processing multiple diagrams
+**New Scripts:**
 
-**Script capabilities:**
-- Converts `.mmd` files to interactive HTML
-- Applies themes and custom backgrounds
-- Validates Mermaid syntax
-- Handles code block wrapped diagrams
+**`scripts/generate_carousel.py`** - Split diagrams into LinkedIn carousel slides
+```bash
+python scripts/generate_carousel.py <mermaid_file> --slides <number>
+# Outputs: carousel_slide_1.png, carousel_slide_2.png, etc.
+```
 
-### 3. Assets
+**`scripts/generate_animated.py`** - Create animated GIF or MP4
+```bash
+python scripts/generate_animated.py <mermaid_file> --format gif --duration 10
+# Creates: animated_diagram.gif with 10-second animation
+```
 
-**`assets/interactive-diagram-template.html`** - Professional HTML template with:
+**`scripts/apply_style.py`** - Apply eye-catching styles to existing diagrams
+```bash
+python scripts/apply_style.py <diagram> --style neon --glow --gradient
+# Transforms any diagram into attention-grabbing visual
+```
+
+### 3. Assets (Templates)
+
+**STUNNING VISUAL TEMPLATES:**
+
+**`assets/glassmorphism-template.html`** - Modern premium style with:
+- Animated gradient backgrounds
+- Frosted glass effects with blur
+- Floating particle animations
+- High-end professional aesthetic
+- Perfect for tech/SaaS content
+
+**`assets/neon-template.html`** - Bold cyberpunk style with:
+- Electric neon glow effects
+- Animated grid background
+- Scanline effects
+- Maximum attention-grabbing power
+- Perfect for dev tools, blockchain, AI
+
+**`assets/hand-drawn-template.html`** - Friendly sketch style with:
+- Excalidraw-inspired hand-drawn look
+- Paper texture background
+- Playful doodle decorations
+- Authentic, approachable feel
+- Perfect for education, tutorials
+
+**`assets/interactive-diagram-template.html`** - Classic professional style with:
 - Pan and zoom functionality (mouse wheel, click-drag)
 - Keyboard navigation (arrow keys, +/-, 0 to reset)
 - Export buttons (PNG, SVG)
@@ -100,6 +189,74 @@ Options:
 - Multiple theme support
 
 The script automatically uses this template. Can also be manually customized for specific needs.
+
+## Quick Start: Create Your First Eye-Catching Diagram
+
+### For LinkedIn Content (Highest Engagement!)
+
+```bash
+# 1. Create your Mermaid diagram (save as my-diagram.mmd)
+# 2. Generate stunning visual
+python scripts/generate_diagram.py my-diagram.mmd --style glassmorphism --title "My System"
+
+# 3. Or create a carousel (45.85% engagement rate!)
+python scripts/generate_carousel.py my-diagram.mmd --slides 8 --style neon --title "How It Works"
+```
+
+### Choose Your Style
+
+- **Maximum attention?** → Use `--style neon`
+- **Professional tech?** → Use `--style glassmorphism`
+- **Friendly/educational?** → Use `--style hand-drawn`
+- **Traditional?** → Use `--style classic`
+
+## Workflow: Creating Viral LinkedIn Content
+
+### Step 1: Start with Your Message
+
+Before coding, answer:
+1. **What's the hook?** First slide must grab attention
+2. **What's the value?** Why should someone care?
+3. **What's the action?** What do you want viewers to do?
+
+### Step 2: Create Your Diagram
+
+Write Mermaid code that tells a story:
+- Keep it simple (5-10 main nodes)
+- Use emojis for visual interest
+- Add color coding for clarity
+- Group related items
+
+### Step 3: Generate Stunning Visual
+
+**Option A: Single Attention-Grabbing Image**
+```bash
+python scripts/generate_diagram.py diagram.mmd --style neon --title "Your Hook"
+```
+
+**Option B: LinkedIn Carousel (RECOMMENDED - 45.85% engagement!)**
+```bash
+python scripts/generate_carousel.py diagram.mmd \
+    --slides 8 \
+    --style glassmorphism \
+    --title "Your Compelling Title"
+```
+
+### Step 4: Optimize for LinkedIn
+
+**Carousel Best Practices:**
+- 6-10 slides is optimal
+- First slide: Bold title + hook
+- Middle slides: Progressive story
+- Last slide: Call-to-action
+- Post during business hours (9am-5pm)
+- Use engaging caption with question
+
+**Single Image Best Practices:**
+- Use neon or glassmorphism for maximum impact
+- Export at high resolution (3x)
+- Add context in your post caption
+- Tag relevant people/companies
 
 ## Workflow: Creating Professional Flow Diagrams
 
