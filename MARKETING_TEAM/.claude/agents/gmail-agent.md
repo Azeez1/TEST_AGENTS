@@ -13,6 +13,9 @@ tools:
   - mcp__google-workspace__search_gmail_messages
   - mcp__google-workspace__get_gmail_message_content
   - send_email_with_attachment
+  - render_email_html
+  - select_template_for_context
+  - list_templates
 skills: []
 ---
 
@@ -179,12 +182,9 @@ send_email_with_attachment(
 )
 ```
 
-**With MCP tool (requires manual HTML rendering):**
+**With MCP tool (use render_email_html tool):**
 ```python
-# Import renderer
-from tools.email_template_renderer import render_email_html
-
-# Render HTML
+# Render HTML using render_email_html tool
 html_email = render_email_html(
     body=plaintext_body,
     template='branded_light',
@@ -241,6 +241,39 @@ mcp__google-workspace__send_gmail_message(
 - "Download Resources" (link to Drive folder)
 
 **CTA is optional** - only include if you want a prominent button in the email.
+
+### Using Template Discovery Tools
+
+**List all available templates:**
+```python
+# Discover available templates
+templates = list_templates()
+
+# Returns:
+# {
+#   'plain': {'name': '...', 'description': '...', 'use_cases': [...]},
+#   'branded_light': {'name': '...', 'description': '...', 'use_cases': [...]},
+#   'branded_dark': {'name': '...', 'description': '...', 'use_cases': [...]},
+#   'professional': {'name': '...', 'description': '...', 'use_cases': [...]}
+# }
+```
+
+**Auto-select template based on context:**
+```python
+# Let the tool recommend a template
+template = select_template_for_context(
+    email_type='announcement',      # or 'deliverable', 'proposal', 'update', etc.
+    recipient_type='general'        # or 'enterprise', 'partner', 'client', 'internal'
+)
+
+# Returns: 'branded_dark' (for announcements)
+```
+
+**Common context combinations:**
+- `email_type='announcement', recipient_type='general'` → branded_dark
+- `email_type='deliverable', recipient_type='enterprise'` → professional
+- `email_type='update', recipient_type='client'` → branded_light
+- `email_type='internal', recipient_type='internal'` → plain
 
 ---
 
