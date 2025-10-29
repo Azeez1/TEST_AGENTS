@@ -2,7 +2,9 @@
 
 ## The Simple Truth
 
-**You have 37 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 38 perfectly defined AI agents ready to use RIGHT NOW.**
+
+This includes a **root-level Supervisor Agent** for quality assurance across all teams.
 
 No Python code required. No orchestrators. No complex setup.
 
@@ -66,6 +68,21 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 **USER_STORY_AGENT (1 system):**
 - Streamlit application for converting meeting notes to user stories with Excel export
+
+**ROOT SUPERVISOR (1 agent):** ⭐ QUALITY ASSURANCE
+- **supervisor** - Root-level quality assurance agent that verifies task completion across ALL teams
+  - **Location**: `/home/user/TEST_AGENTS/.claude/agents/supervisor.md`
+  - **Purpose**: Independent verification that tasks agents claim to have completed are actually done
+  - **Capabilities**:
+    - Task completion verification across all teams
+    - Code quality checks (syntax, security, docstrings)
+    - Test execution and validation
+    - Documentation completeness checks
+    - Git commit verification
+    - Deliverable inspection
+    - Comprehensive verification reporting
+  - **When to use**: After any significant work to verify it's truly complete
+  - **Example**: "Use supervisor to verify the authentication feature is complete and ready for deployment"
 
 ---
 
@@ -223,6 +240,44 @@ All files saved to:
 Ready to review or deploy?
 ```
 
+### Example 4: Quality Verification with Supervisor
+
+```
+You: "Use the supervisor subagent to verify that the authentication feature is complete and ready for production"
+
+Me: [Reading /.claude/agents/supervisor.md...]
+
+I'll perform comprehensive verification of the authentication feature.
+
+[Using validate_deliverables tool to check files exist...]
+[Using check_code_quality tool for security and syntax...]
+[Using run_verification_tests tool to execute tests...]
+[Using verify_documentation tool to check docs...]
+[Using check_git_changes tool to verify commits...]
+
+VERIFICATION PASSED ✓
+
+Task: Implement user authentication feature
+Team: ENGINEERING_TEAM
+Agents: backend-architect, frontend-developer, test-engineer
+
+Verified:
+✓ Code: Auth endpoints implemented in src/auth/routes.py:45-120
+✓ Tests: 12 tests in tests/test_auth.py, all passing (coverage 94%)
+✓ Security: JWT implementation secure, passwords hashed with bcrypt
+✓ Docs: API documentation updated in docs/api.md:89-145
+✓ Git: 3 clean commits on branch claude/add-auth-xyz
+✓ Quality: No syntax errors, docstrings present, no security issues
+
+Quality Score: 9/10
+Deployment Ready: YES ✅
+
+Minor Recommendation:
+- Consider adding rate limiting to login endpoint
+
+The authentication feature is production-ready!
+```
+
 ---
 
 ## Agent Capabilities Quick Reference
@@ -296,6 +351,31 @@ Ready to review or deploy?
 ```
 "Use fixture-agent to create pytest fixtures for database tests"
 ```
+
+### ROOT SUPERVISOR Agent
+
+**supervisor** - Use when: Verifying task completion and quality assurance
+```
+"Use supervisor to verify that the user authentication feature is complete"
+"Use supervisor to check if the Q4 marketing campaign is ready to launch"
+"Use supervisor to validate that all bug fixes were properly implemented"
+```
+
+**What it verifies:**
+- ✅ Code implementation (syntax, quality, security)
+- ✅ Tests exist and pass
+- ✅ Documentation complete
+- ✅ Git commits clean and descriptive
+- ✅ Deliverables exist and are correct
+- ✅ No regressions introduced
+
+**Returns:**
+- Status: PASSED ✅ / PARTIAL ⚠️ / FAILED ❌
+- Quality score (0-10)
+- Detailed findings
+- Issues found
+- Recommendations
+- Deployment readiness
 
 ---
 
@@ -434,6 +514,7 @@ Read the `.md` files to understand:
 
 ✅ **Verify agents exist:**
 ```bash
+ls .claude/agents/                   # Should show 1 .md file (supervisor)
 ls MARKETING_TEAM/.claude/agents/    # Should show 17 .md files
 ls QA_TEAM/.claude/agents/           # Should show 5 .md files
 ls ENGINEERING_TEAM/.claude/agents/  # Should show 14 .md files
@@ -460,11 +541,12 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 37 agents perfectly defined (17 marketing + 5 testing + 14 engineering + 1 user story system)
+- ✅ 38 agents perfectly defined (17 marketing + 5 testing + 14 engineering + 1 user story system + 1 root supervisor)
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run
 - ✅ Just talk to Claude Code
+- ✨ NEW: **Supervisor Agent** - Root-level quality assurance for verifying task completion
 - ✨ NEW: System architect with professional flow diagrams
 - ✨ NEW: Flow-diagram skill for Mermaid visualizations
 - ✨ NEW: Lead generation with Bright Data (5,000 free requests/month)
