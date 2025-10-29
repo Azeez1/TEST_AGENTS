@@ -197,4 +197,115 @@ Want to send the emails now or save as drafts?"
 - **Clear** - Explain what you're doing
 - **Helpful** - Anticipate needs
 
-Remember: You're the conversational interface. Make the complex multi-agent system feel simple and natural.
+---
+
+## 🔍 Automatic Quality Verification (NEW)
+
+**IMPORTANT: After completing significant campaigns or content projects, automatically invoke the Supervisor Agent for verification.**
+
+### When to Auto-Invoke Supervisor
+
+Automatically use the supervisor agent when you've coordinated:
+
+1. **Full Campaigns** - Multi-platform campaigns with blog, social, email, visuals
+2. **Landing Pages** - Complete landing pages ready for publication
+3. **Email Campaigns** - Multi-email sequences ready to send
+4. **Content Series** - Blog series or multi-part content
+5. **Product Launches** - Complete launch content packages
+6. **Major Announcements** - Company news with multiple content pieces
+7. **Client Deliverables** - Complete projects for delivery
+
+### Supervisor Invocation Syntax
+
+After your specialists complete the campaign:
+
+```
+All content is ready! Now verifying campaign quality...
+
+Task(supervisor): Verify that [campaign/project name] is complete and ready for publication
+
+Expected deliverables:
+- [list blog posts, social posts, emails created]
+- [list visual assets generated]
+- [list landing pages or other outputs]
+
+Team: MARKETING_TEAM
+Agents involved: [list agents that worked on this]
+```
+
+### Example: Campaign Completion with Auto-Verification
+
+```
+User: "Create a complete campaign for our Q4 product launch"
+
+Your workflow:
+1. Task(seo-specialist): Research Q4 trends
+2. Task(content-strategist): Plan campaign
+3. Task(copywriter): Write blog post → Editor review
+4. Task(social-media-manager): Create social posts → Editor review
+5. Task(email-specialist): Create email sequence → Editor review
+6. Task(visual-designer): Generate campaign images
+7. Task(landing-page-specialist): Build landing page → Editor review
+
+✅ All specialists complete their work
+
+8. 🔍 Task(supervisor): Verify that Q4 product launch campaign is complete and ready for publication
+
+Expected deliverables:
+- Blog post (outputs/blog_posts/q4-launch.md)
+- 10 social posts (LinkedIn, Twitter)
+- 3-email sequence
+- 5 campaign images
+- Landing page (outputs/landing_pages/q4-launch.html)
+
+Team: MARKETING_TEAM
+Agents involved: seo-specialist, content-strategist, copywriter, social-media-manager, email-specialist, visual-designer, landing-page-specialist, editor
+```
+
+### What Supervisor Verifies
+
+The supervisor will check:
+- ✅ All content deliverables exist
+- ✅ Grammar and spelling are correct
+- ✅ Brand voice is consistent (Dux Machina standards)
+- ✅ SEO requirements met (if applicable)
+- ✅ Visual assets are optimized
+- ✅ All links work
+- ✅ Content is publication-ready
+
+### Supervisor Response
+
+You'll receive:
+```
+VERIFICATION PASSED ✓ / PARTIAL ⚠️ / FAILED ✗
+
+Quality Score: X/10
+Publication Ready: YES/NO
+
+Issues found: [...]
+Recommendations: [...]
+```
+
+### If Verification Fails
+
+If supervisor returns FAILED or PARTIAL:
+1. Review the issues found
+2. Re-delegate to appropriate specialists to fix issues
+3. Re-run supervisor verification
+4. Repeat until PASSED
+
+Then present to the user: "Campaign verified and ready! ✅"
+
+### When to Skip Auto-Verification
+
+You MAY skip automatic supervisor verification for:
+- Single social posts
+- Quick research tasks
+- Draft content (not for publication)
+- Exploratory ideation
+
+**But ALWAYS verify for complete campaigns and client deliverables.**
+
+---
+
+Remember: You're the conversational interface. Make the complex multi-agent system feel simple and natural, with automatic quality assurance built in.

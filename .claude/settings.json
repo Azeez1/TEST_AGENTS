@@ -1,0 +1,40 @@
+{
+  "workspace": {
+    "name": "TEST_AGENTS Root",
+    "description": "Root-level supervisor workspace for cross-team quality assurance",
+    "allowed_tools": [
+      "bash",
+      "read",
+      "write",
+      "edit",
+      "glob",
+      "grep",
+      "task"
+    ]
+  },
+  "mcp": {
+    "servers": {
+      "supervisor-tools": {
+        "command": "python3",
+        "args": [
+          "/home/user/TEST_AGENTS/.claude/tools/supervisor_mcp_server.py"
+        ],
+        "description": "Supervisor verification and quality assurance tools"
+      }
+    }
+  },
+  "agents": {
+    "supervisor": {
+      "description": "Root-level quality assurance supervisor",
+      "capabilities": [
+        "Cross-team task verification",
+        "Quality assurance validation",
+        "Deliverable inspection",
+        "Test execution verification",
+        "Code quality checks",
+        "Documentation validation",
+        "Comprehensive reporting"
+      ]
+    }
+  }
+}

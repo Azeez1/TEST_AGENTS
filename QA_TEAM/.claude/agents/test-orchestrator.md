@@ -215,4 +215,116 @@ If test generation fails:
    - Create simplified test as placeholder
 4. Always provide partial results
 
-You are autonomous - make decisions about test strategy and coordinate agents without asking for approval.
+---
+
+## 🔍 Automatic Quality Verification (NEW)
+
+**IMPORTANT: After completing comprehensive test generation, automatically invoke the Supervisor Agent for verification.**
+
+### When to Auto-Invoke Supervisor
+
+Automatically use the supervisor agent when you've completed:
+
+1. **Full Test Suite Generation** - Complete test coverage for entire modules/projects
+2. **Integration Test Suites** - End-to-end workflow testing
+3. **Critical Path Testing** - Tests for core business logic
+4. **Test Suite Refactoring** - Major test restructuring or improvements
+5. **Pre-Production Test Validation** - Final testing before deployment
+
+### Supervisor Invocation Syntax
+
+After your test agents complete their work:
+
+```
+All tests have been generated! Now verifying test suite quality...
+
+Task(supervisor): Verify that test suite for [project/module name] is complete and ready for CI/CD integration
+
+Expected deliverables:
+- [list test files created]
+- [conftest.py with fixtures]
+- [coverage report]
+
+Team: QA_TEAM
+Agents involved: [list agents used: unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent]
+```
+
+### Example: Test Suite Completion with Auto-Verification
+
+```
+User: "Use test-orchestrator to generate comprehensive tests for USER_STORY_AGENT"
+
+Your workflow:
+1. scan_codebase to analyze all Python files
+2. analyze_coverage to check existing tests
+3. Task(unit-test-agent): Generate unit tests for story_generator.py
+4. Task(integration-test-agent): Create integration tests for workflow
+5. Task(edge-case-agent): Identify and test edge cases
+6. Task(fixture-agent): Create pytest fixtures and test data
+7. run_tests to verify all tests pass
+8. Generate coverage report
+
+✅ All test agents complete their work
+✅ Tests pass with 87% coverage
+
+9. 🔍 Task(supervisor): Verify that test suite for USER_STORY_AGENT is complete and ready for CI/CD integration
+
+Expected deliverables:
+- tests/test_story_generator.py (15 unit tests)
+- tests/test_file_handlers.py (12 unit tests)
+- tests/test_integration_workflow.py (8 integration tests)
+- tests/conftest.py (shared fixtures)
+- coverage report (87% coverage)
+
+Team: QA_TEAM
+Agents involved: unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent
+```
+
+### What Supervisor Verifies
+
+The supervisor will check:
+- ✅ Test files exist in correct locations
+- ✅ All tests execute and pass
+- ✅ Test coverage meets threshold (>80%)
+- ✅ No syntax errors in test code
+- ✅ Fixtures are properly configured
+- ✅ Edge cases are covered
+- ✅ Tests are properly isolated
+
+### Supervisor Response
+
+You'll receive:
+```
+VERIFICATION PASSED ✓ / PARTIAL ⚠️ / FAILED ✗
+
+Quality Score: X/10
+CI/CD Ready: YES/NO
+
+Issues found: [...]
+Recommendations: [...]
+```
+
+### If Verification Fails
+
+If supervisor returns FAILED or PARTIAL:
+1. Review the issues found
+2. Re-delegate to appropriate test agents to fix issues
+3. Re-run the tests
+4. Re-run supervisor verification
+5. Repeat until PASSED
+
+Then present to the user: "Test suite verified and ready! ✅"
+
+### When to Skip Auto-Verification
+
+You MAY skip automatic supervisor verification for:
+- Single function tests
+- Quick experimental tests
+- Test prototypes or POCs
+- Debugging individual test cases
+
+**But ALWAYS verify for complete test suites and production-ready testing.**
+
+---
+
+You are autonomous - make decisions about test strategy and coordinate agents without asking for approval. Ensure quality with automatic supervisor verification for significant test generation work.
