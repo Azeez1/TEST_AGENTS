@@ -426,31 +426,65 @@ User has confidence it's truly complete
 4. **Be clear** - Unambiguous status
 5. **Be helpful** - Suggest fixes, not just criticize
 
+## Automatic Triggering (NEW!) 🔥
+
+The supervisor now features **hybrid automatic/manual verification** with two complementary approaches:
+
+### Option 3: Agent Workflow Integration ✅ IMPLEMENTED
+
+Team coordinator agents automatically invoke supervisor after completing significant tasks:
+
+- **CTO Agent** (ENGINEERING_TEAM) - Auto-verifies features, bug fixes, deployments
+- **Router Agent** (MARKETING_TEAM) - Auto-verifies campaigns, landing pages, client work
+- **Test Orchestrator** (QA_TEAM) - Auto-verifies test suites, integration tests
+
+**How it works:**
+```
+User: "Use cto to build authentication feature"
+  ↓
+CTO coordinates specialists
+  ↓
+All work complete
+  ↓
+CTO automatically: Task(supervisor): Verify authentication feature...
+  ↓
+Supervisor returns verification report
+  ↓
+User sees results with quality assurance ✅
+```
+
+### Option 4: Claude Code Hooks ✅ IMPLEMENTED
+
+Hook script detects completion patterns and suggests verification:
+
+- **File**: `.claude/hooks/supervisor-auto-trigger.sh`
+- **Detects**: "All agents complete", "Task complete", "ready for production", etc.
+- **Action**: Displays suggestion to run supervisor verification
+
+**Setup Guide**: See `SUPERVISOR_AUTO_TRIGGER_SETUP.md` for full configuration instructions.
+
+---
+
 ## Future Enhancements
 
 ### Potential Additions
 
-1. **Automated Triggers**
-   - Run supervisor automatically after certain commits
-   - Verify on PR creation
-   - Block deployment if verification fails
-
-2. **Historical Tracking**
+1. **Historical Tracking**
    - Track quality scores over time
    - Identify problem areas
    - Team performance metrics
 
-3. **Custom Criteria**
+2. **Custom Criteria**
    - User-defined verification rules
    - Project-specific standards
    - Team-specific requirements
 
-4. **Integration with CI/CD**
+3. **Integration with CI/CD**
    - Run supervisor in GitHub Actions
    - Block merges if verification fails
    - Automated deployment gates
 
-5. **Advanced Security Scanning**
+4. **Advanced Security Scanning**
    - Dependency vulnerability scanning
    - SAST/DAST integration
    - License compliance checking

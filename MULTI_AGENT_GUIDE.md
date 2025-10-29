@@ -6,6 +6,8 @@
 
 This includes a **root-level Supervisor Agent** for quality assurance across all teams.
 
+🔥 **NEW: Automatic Quality Verification!** Team coordinators now automatically verify significant work is complete before delivery.
+
 No Python code required. No orchestrators. No complex setup.
 
 Just **talk to Claude Code (me)** and I'll become those agents.
@@ -82,7 +84,9 @@ Just **talk to Claude Code (me)** and I'll become those agents.
     - Deliverable inspection
     - Comprehensive verification reporting
   - **When to use**: After any significant work to verify it's truly complete
+  - **Auto-triggers**: CTO, router-agent, and test-orchestrator automatically invoke supervisor for significant work
   - **Example**: "Use supervisor to verify the authentication feature is complete and ready for deployment"
+  - **Setup**: See `SUPERVISOR_AUTO_TRIGGER_SETUP.md` for automatic verification configuration
 
 ---
 
