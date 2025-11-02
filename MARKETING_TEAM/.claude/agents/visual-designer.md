@@ -15,6 +15,7 @@ capabilities:
 tools:
   - mcp__marketing-tools__generate_gpt4o_image
   - mcp__google-workspace__create_drive_file
+  - upload_to_drive
 skills:
   - algorithmic-art
   - canvas-design

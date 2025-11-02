@@ -5,12 +5,39 @@
 This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **37 specialized agents** for user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
 
 **Systems:**
-- **USER_STORY_AGENT** - Transform meeting notes into backlog-ready user stories with Excel export
-- **MARKETING_TEAM** - **17 marketing agents** for content creation, social media, images, videos, emails, lead generation, landing pages, and workflow automation
-- **QA_TEAM** - 5 testing agents for automated pytest test suite generation
-- **ENGINEERING_TEAM** - **14 engineering agents** ⭐ **SUPER TEAM** (1 CTO coordinator + 13 specialists) for DevOps, security, frontend, backend, AI/ML, UX design, system architecture, quality assurance, testing, optimization, database design, and troubleshooting
+- **USER_STORY_AGENT** (1) - Transform meeting notes into backlog-ready user stories with Excel export
+- **MARKETING_TEAM** (17) - Content creation, social media, images, videos, emails, lead generation, landing pages, workflow automation
+- **QA_TEAM** (5) - Automated pytest test suite generation
+- **ENGINEERING_TEAM** (14) ⭐ **SUPER TEAM** - CTO coordinator + 13 specialists (DevOps, security, frontend, backend, AI/ML, UX, architecture, QA, testing, optimization, database, troubleshooting)
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
+
+**⚡ Key Facts:**
+- 37 autonomous agents across 4 systems
+- 18 powerful skills (visual, development, documents, integration)
+- 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
+- Memory system with automatic configuration loading
+- No Python orchestrators - pure Claude Code conversation
+
+### 🔍 Quick Navigation
+
+**🚀 Getting Started:**
+- [Use Existing Tools First](#️-critical-use-existing-tools-first) - Priority order for AI assistants
+- [Agent Invocation Guidelines](#-agent-invocation-guidelines-for-ai-assistants) - How to invoke agents properly
+- [Complete Agent Directory](#-complete-agent-directory) - All 37 agents at a glance
+- [Quick Start Examples](#-quick-start-examples) - Common workflows
+
+**📚 Key Resources:**
+- [Project Structure](#-project-structure) - Repository layout
+- [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 18 skills + 7 MCP servers
+- [Configuration & Setup](#️-configuration--setup) - API keys, MCP servers
+- [Memory System](#-memory-system---how-it-works) - Automatic configuration loading
+- [Documentation Map](#-documentation-map) - All guides and references
+
+**🛠️ For Developers:**
+- [Development Guidelines](#️-development-guidelines) - Multi-agent system, coding standards
+- [Tools vs Scripts](#tools-vs-scripts-organization) - Organization patterns
+- [Git Workflow](#git-workflow) - What's tracked, what's ignored
 
 ---
 
@@ -54,206 +81,146 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 ## 🤖 Agent Invocation Guidelines (For AI Assistants)
 
-### Trust Agent Definitions - Minimal Invocation
+### 🎯 The Core Principle: Minimal Invocation
 
-**Agents already know:**
-- ✅ Which tools to use (defined in YAML frontmatter under `tools:`)
-- ✅ Which memory files to read (defined in "⚙️ Configuration Files" section)
-- ✅ How to execute their responsibilities (defined in agent persona/instructions)
-- ✅ When to use skills and MCP servers (defined in agent capabilities)
+**Agents are autonomous.** They already know which tools to use, which memory files to read, and how to execute tasks. Your job is to specify **WHAT** you want, not **HOW** to do it.
 
-### ✅ Correct Invocation Pattern: High-Level Goals Only
+### ✅ Correct Pattern: High-Level Goals Only
 
-**Format:** "Use [agent-name] to [high-level goal with key context]"
+**Format:** `"Use [agent-name] to [goal] with [key context]"`
 
-**Examples:**
-- ✅ "Use copywriter to create Engineering Team partner summary as Word document"
-- ✅ "Use gmail-agent to send the document with professional email about the Engineering Super Team"
-- ✅ "Use visual-designer to create LinkedIn header image with brand colors"
-- ✅ "Use router-agent to coordinate a product launch campaign"
+**Good Examples:**
+- ✅ `"Use copywriter to create 2000-word blog about AI automation with case studies"`
+- ✅ `"Use gmail-agent to send Engineering_Team_Partner_Summary.docx with professional message"`
+- ✅ `"Use visual-designer to create LinkedIn header image with brand colors"`
+- ✅ `"Use router-agent to coordinate product launch campaign"`
 
-**What to include:**
-- Agent name
-- High-level goal (what you want accomplished)
-- Key context (subject matter, deliverables, constraints)
+**Include:** Goal + context (subject, deliverables, constraints, audience)
+**Exclude:** Implementation steps, tool names, file paths, function calls
 
-**What NOT to include:**
-- Implementation steps (reading files, importing tools, calling functions)
-- Tool names or function calls
-- Memory file paths
-- Code-level instructions
+### ❌ Incorrect Pattern: Over-Specification
 
-### ❌ Incorrect Invocation Pattern: Over-Specification
+**Anti-Pattern:** `"Use [agent]. Read X file. Import Y tool. Call Z function..."`
 
-**Anti-Pattern:** "Use [agent]. First read X file. Then import Y tool. Then call Z function with parameters..."
+**Why this breaks autonomy:**
+- Agent thinks it must CREATE new workflow → generates temp scripts
+- Ignores pre-configured tools, memory files, skills
+- Creates duplicate code instead of using existing battle-tested tools
 
-**Why This Breaks Autonomy:**
-- Agent thinks it needs to CREATE the workflow instead of using existing tools
-- Causes duplicate code generation (temp scripts, new implementations)
-- Defeats the purpose of having agent definitions
-- Ignores pre-configured tools, memory files, and skills
-
-**Real Example of What Went Wrong:**
+**Real Example:**
 ```
-❌ BAD: "Use gmail-agent. Read memory/email_config.json for addresses.
-         Import tools/send_email_with_attachment.py. Call it with these params..."
+❌ BAD: "Use gmail-agent. Read memory/email_config.json. Import send_email_with_attachment.py..."
+   → Created temp_send_email.py (duplicate code)
 
-Result: Agent created temp_send_email.py instead of using existing tool
-
-✅ GOOD: "Use gmail-agent to send Engineering_Team_Partner_Summary.docx
-          with professional message about the 12-agent Engineering Super Team"
-
-Result: Agent reads its definition, imports existing tool, sends email
+✅ GOOD: "Use gmail-agent to send Engineering_Team_Partner_Summary.docx"
+   → Read definition → imported existing tool → sent email
 ```
 
-### 🎯 The Golden Rule: Let Agents Be Autonomous
+### 🔍 What Agents Already Know
 
-**If the agent definition says:**
-- "Always read memory/email_config.json" → DON'T tell it to read that file
-- "Tools: send_email_with_attachment" → DON'T tell it to import that tool
-- "Use docx skill for documents" → DON'T tell it to use the docx skill
+**From agent definitions (`.claude/agents/*.md`):**
+- Which tools to use (`tools:` in YAML frontmatter)
+- Which memory files to read ("⚙️ Configuration Files" section)
+- How to execute tasks (persona & instructions)
+- When to use skills & MCPs (defined capabilities)
 
+**If the definition says "Always read memory/email_config.json" → DON'T tell it to read that file**
 **The agent already knows. Trust the definition.**
 
-### 🔍 How Agents Process Instructions
+### 📊 Context Guidelines
 
-**Minimal Invocation (Autonomous):**
-1. Agent receives: "Use gmail-agent to send document X"
-2. Agent reads: `.claude/agents/gmail-agent.md`
-3. Agent sees: `tools: [send_email_with_attachment]`
-4. Agent sees: "Read memory/email_config.json for addresses"
-5. Agent executes autonomously: imports tool → reads config → sends email
+| **DO Include** | **DON'T Include** |
+|----------------|-------------------|
+| Subject matter, audience | Which files to read |
+| Deliverable specs (format, length) | Which tools to import |
+| Constraints (tone, deadline) | Which functions to call |
+| Content requirements | Step-by-step implementation |
 
-**Over-Specified Invocation (Breaks Autonomy):**
-1. Agent receives: "Read config. Import tool. Call function..."
-2. Agent thinks: "I'm being told HOW to do this, must be a new workflow"
-3. Agent creates: `temp_send_email.py` with new implementation
-4. Result: Duplicate code, ignored existing tools
+### 📚 Skills Require Documentation Reading
 
-### 📊 When to Add More Context
-
-**DO add context for:**
-- Subject matter: "about AI marketing trends"
-- Deliverable specifics: "as 10-slide PowerPoint with professional theme"
-- Constraints: "under 500 words" or "for executive audience"
-- Content requirements: "include ROI analysis and case studies"
-
-**DON'T add context for:**
-- Which files to read
-- Which tools to import
-- Which functions to call
-- Step-by-step implementation
-
-### ✅ More Good Examples
-
-**Copywriter:**
-```
-✅ "Use copywriter to write 2000-word blog post about AI automation trends,
-    including case studies and ROI data"
-
-❌ "Use copywriter. Import brand_voice.json. Use docx skill. Write blog.
-    Save to outputs/blog_posts/"
-```
-
-**Visual Designer:**
-```
-✅ "Use visual-designer to create LinkedIn header image for product launch,
-    using brand colors from visual guidelines"
-
-❌ "Use visual-designer. Read memory/visual_guidelines.json. Import
-    openai_gpt4o_image.py. Generate image. Save to outputs/images/"
-```
-
-**Router Agent:**
-```
-✅ "Use router-agent to coordinate complete product launch campaign
-    with blog, social posts, email sequence, and landing page"
-
-❌ "Use router-agent. Invoke copywriter for blog. Then invoke social-media-manager.
-    Then invoke email-specialist. Then invoke landing-page-specialist."
-```
-
-### 🚫 What This Prevents
-
-**Duplicate Code Creation:**
-- ❌ temp_send_email.py (when send_email_with_attachment.py exists)
-- ❌ temp_image_gen.py (when openai_gpt4o_image.py exists)
-- ❌ temp_pdf_create.py (when pdf_generator.py exists)
-
-**Ignored Existing Tools:**
-- ❌ Creating new Gmail scripts when tools/gmail_api.py exists
-- ❌ Installing new libraries when dependencies already exist
-- ❌ Writing new MCP clients when servers are configured
-
-**Wasted Time:**
-- ❌ Debugging new code instead of using battle-tested tools
-- ❌ Recreating functionality that works perfectly
-- ❌ Creating files that need to be deleted
-
-### 💡 Remember
-
-**Your agents are autonomous experts.** Give them goals, not instructions.
-
-**Trust the system:**
-- 35 agent definitions with pre-configured tools
-- 17 skills providing advanced capabilities
-- 7 MCP servers for external integrations
-- 50+ production-ready tools in tools/ folders
-- Memory system with centralized configuration
-
-### 📚 Skills Have Their Own Workflows - Agents Must Read Documentation
-
-**Many skills (docx, pptx, pdf, xlsx) require agents to read documentation files before use.**
-
-**✅ Correct Agent Pattern (see presentation-designer.md):**
-
-Agent definitions should include explicit "Required Reading" sections:
+Many skills (docx, pptx, pdf, xlsx) have specific workflows. Agent definitions must include:
 
 ```markdown
 ## 🧠 Required Reading (ALWAYS READ FIRST)
-
 1. Read `.claude/skills/document-skills/pptx/SKILL.md` completely
-2. Read `.claude/skills/document-skills/pptx/html2pptx.md` completely
-3. Never set range limits when reading these files - read them completely
 ```
 
-**Why this matters:**
-- Skills have specific workflows (e.g., docx uses JavaScript for NEW docs, Python for EDITING docs)
-- Without reading SKILL.md, agents may use wrong libraries (python-docx instead of docx-js)
-- Leads to incorrect implementations that violate "Use existing tools first" principle
+**Why:** Skills have different workflows (e.g., docx uses JavaScript for NEW docs, Python for EDITING). Without reading SKILL.md, agents may use wrong libraries.
 
-**❌ Common Mistake:**
-- Agent definition just says "Use docx skill"
-- Agent doesn't read SKILL.md
-- Agent uses wrong library or creates duplicate implementation
-- Results in 800+ line Python script when JavaScript was required
+**Reference:** [MARKETING_TEAM/.claude/agents/presentation-designer.md](MARKETING_TEAM/.claude/agents/presentation-designer.md) (lines 351-355)
 
-**✅ How to Fix:**
-1. Add "Required Reading" section to agent definition
-2. List specific SKILL.md files to read
-3. Clarify workflow selection (create vs edit, which library to use)
-4. Agent will automatically follow documented workflows
+### 🚨 Common Mistake: Creating Duplicate Scripts
 
-**Reference Implementation:** See [MARKETING_TEAM/.claude/agents/presentation-designer.md](MARKETING_TEAM/.claude/agents/presentation-designer.md) (lines 351-355) for correct pattern.
+**Problem:** Claude Code (orchestrator) creates standalone Python scripts instead of invoking agents.
 
-**Your job as invoker:** Define WHAT you want
-**Agent's job:** Figure out HOW to do it
+**Why This Happens:**
+```
+Over-Specification → Script Creation Mode
+
+❌ "Use gmail-agent. Read memory/email_config.json. Import send_email_with_attachment..."
+→ Claude interprets: "Create a script with these steps"
+→ Result: create_email_script.py (duplicate code)
+
+✅ "Use gmail-agent to send whitepaper.pdf"
+→ Claude interprets: "Invoke autonomous agent"
+→ Result: Agent uses its declared tools properly
+```
+
+**Real Examples from Repository:**
+- `send_content_suite_emails.py` - Should have been gmail-agent invocation
+- `create_whitepaper_pdf.py` - Should have been pdf-specialist invocation
+
+**How to Avoid:**
+1. ✅ **Trust agent autonomy** - Agents already know their workflows
+2. ✅ **Specify WHAT, not HOW** - High-level goals only
+3. ✅ **Never mention implementation** - No file paths, imports, function calls
+4. ✅ **Check agent definition first** - See what tools/skills it has
+
+**Decision Tree:**
+```
+Task requires specialized capability?
+├─ YES: Check if agent exists (.claude/agents/)
+│   ├─ Agent exists?
+│   │   ├─ YES: Invoke agent with minimal spec ✅
+│   │   └─ NO: Create new agent or script
+│   └─ Use Task tool to invoke agent
+└─ NO: Use direct tools/commands
+```
+
+### 🔧 Troubleshooting Agent Invocations
+
+**Symptom 1: Agent claims success but file doesn't exist**
+- **Cause:** Skill invocation may be failing silently
+- **Fix:** Check if file actually exists at specified path
+- **Prevention:** Agents should verify file creation before claiming success
+
+**Symptom 2: Duplicate scripts keep getting created**
+- **Cause:** Over-specified invocation triggers script creation mode
+- **Fix:** Use minimal invocation pattern (WHAT not HOW)
+- **Prevention:** Review invocation messages for implementation details
+
+**Symptom 3: Agent doesn't use its declared tools**
+- **Cause:** Agent not properly invoked or definition unclear
+- **Fix:** Check YAML frontmatter has tools declared
+- **Prevention:** Trust agent definitions - they know which tools to use
+
+**Symptom 4: "Tool not found" errors**
+- **Cause:** Tool exists but not declared in agent's YAML frontmatter
+- **Fix:** Add tool to agent definition's `tools:` list
+- **Prevention:** Review agent definition before invocation
 
 ---
 
-## 🚀 Quick Navigation
+## 🚀 System Quick Start
 
-| System | Purpose | Quick Start | Docs |
-|--------|---------|-------------|------|
-| **USER_STORY_AGENT** | Meeting notes → User stories | `cd USER_STORY_AGENT && streamlit run app_ui.py` | [README](USER_STORY_AGENT/README.md) |
-| **MARKETING_TEAM** | Marketing content automation | Talk to Claude Code agents | [README](MARKETING_TEAM/README.md) |
-| **QA_TEAM** | Automated test generation | Talk to Claude Code agents | [README](QA_TEAM/README.md) |
-| **ENGINEERING_TEAM** | Software engineering & infrastructure | Talk to Claude Code agents | [README](ENGINEERING_TEAM/README.md) |
+| System | Launch | Documentation |
+|--------|--------|---------------|
+| **USER_STORY_AGENT** | `streamlit run app_ui.py` | [README](USER_STORY_AGENT/README.md) |
+| **MARKETING_TEAM** | Talk to agents via Claude Code | [README](MARKETING_TEAM/README.md) |
+| **QA_TEAM** | Talk to agents via Claude Code | [README](QA_TEAM/README.md) |
+| **ENGINEERING_TEAM** | Talk to agents via Claude Code | [README](ENGINEERING_TEAM/README.md) |
 
-**Key Documentation:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Complete guide to using all 28 agents
-- [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
-- [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation details
+**📚 Master Guides:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) • [MCP_SETUP.md](MCP_SETUP.md) • [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
 
 ---
 
@@ -714,267 +681,66 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 🎨 Skills & Advanced Capabilities
 
-### Overview
+All **17 MARKETING_TEAM agents** have access to **18 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations.
 
-All **17 MARKETING_TEAM agents** now have access to **18 powerful skills** (14 user-installed + 4 document-skills) and **7 MCP servers**, dramatically expanding their capabilities for visual creation, interactive development, document processing, and external integrations.
+### Quick Reference
 
-**Skills Configuration:** Enabled in `MARKETING_TEAM/.claude/settings.json`
-**MCPs:** Inherited from root `.claude.json` via `"mcpServers": "inherit"`
+**📦 18 Skills Available:**
 
----
+| Category | Skills | Primary Use |
+|----------|--------|-------------|
+| **Visual** (5) | algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram | Social media art, presentations, diagrams |
+| **Development** (3) | artifacts-builder, mcp-builder, skill-creator | React apps, custom integrations |
+| **Content** (3) | internal-comms, brand-guidelines, pdf-filler | Reports, branded docs, forms |
+| **Documents** (4) | pptx, pdf, xlsx, docx | Office documents (built-in) |
+| **Integration** (3) | filesystem, figma, context7 | File ops, design extraction |
 
-### Available Skills (18 total)
+**🔌 7 MCP Servers Available:**
 
-#### Visual Creation Skills (5)
+| Server | Purpose | Key Capabilities |
+|--------|---------|------------------|
+| **marketing-tools** | OpenAI APIs | GPT-4o images, Sora videos |
+| **google-workspace** | G Suite automation | Gmail, Drive, Docs, Sheets, Calendar |
+| **perplexity** | Web research | Search with citations, reasoning |
+| **bright-data** | Web scraping | SERP, leads (5K free/month) |
+| **playwright** | Browser automation | Navigate, screenshot, extract |
+| **n8n-mcp** | Workflow automation | 400+ integrations |
+| **sequential-thinking** | Structured reasoning | Step-by-step problem solving |
 
-| Skill | Description | Best For | Example |
-|-------|-------------|----------|---------|
-| **algorithmic-art** | Generative art with p5.js (flow fields, particle systems, geometric patterns) | Unique social media visuals, abstract art, distinctive brand art | `"Use visual-designer with algorithmic-art to create flow field art"` |
-| **canvas-design** | Beautiful PNG/PDF visual art (posters, banners, designs) | Conference posters, print materials, professional designs | `"Use visual-designer with canvas-design to create a conference poster"` |
-| **slack-gif-creator** | Animated GIFs optimized for Slack with size validators | Product launches, animated content, eye-catching posts | `"Use social-media-manager with slack-gif-creator to make launch GIF"` |
-| **theme-factory** | 11 preset themes for consistent branding (vibrant, modern-minimalist, midnight-galaxy, golden-hour, tech-innovation, botanical-garden, arctic-frost, forest-canopy, ocean-depths, desert-rose, sunset-boulevard) | Themed presentations, branded landing pages, consistent artifacts | `"Use presentation-designer with theme-factory 'vibrant' theme"` |
-| **flow-diagram** ⭐ **NEW** | Professional Mermaid diagrams (flowcharts, sequence, ER, state, CI/CD) with interactive HTML pan/zoom | System architecture, data flows, technical documentation, process visualization | `"Use system-architect with flow-diagram to create microservices diagram"` |
+### Usage Examples
 
-#### Development & Artifacts Skills (3)
+**Visual Content:**
+- `"Use visual-designer with algorithmic-art to create flow field Instagram post"`
+- `"Use social-media-manager with slack-gif-creator for product launch GIF"`
 
-| Skill | Description | Best For | Example |
-|-------|-------------|----------|---------|
-| **artifacts-builder** | Complex React/Tailwind/shadcn/ui multi-component apps | Interactive landing pages, state-managed interfaces, modern web apps | `"Use landing-page-specialist with artifacts-builder to build landing page"` |
-| **mcp-builder** | Create MCP servers (Python FastMCP or Node/TypeScript SDK) | Custom API integrations, tool creation, service connectors | `"Use mcp-builder to create MCP server for our CRM API"` |
-| **skill-creator** | Create custom skills to extend Claude's capabilities | Domain-specific skills, specialized workflows, knowledge integration | `"Use skill-creator to design a legal marketing compliance skill"` |
+**Development:**
+- `"Use landing-page-specialist with artifacts-builder for React landing page"`
+- `"Use presentation-designer with theme-factory 'vibrant' theme"`
 
-#### Content & Document Skills (3)
+**Research & Analysis:**
+- `"Use research-agent to conduct comprehensive research on AI marketing trends"` (uses custom Perplexity tools)
+- `"Use lead-gen-agent with bright-data to find 50 B2B SaaS companies in SF"`
+- `"Use seo-specialist with playwright to analyze competitor sites"`
 
-| Skill | Description | Best For | Example |
-|-------|-------------|----------|---------|
-| **internal-comms** | Company-standard formats (status reports, newsletters, FAQs, incident reports) | Internal communications, structured reports, team updates | `"Use copywriter with internal-comms to write Q1 status report"` |
-| **brand-guidelines** | Anthropic's official brand colors & typography | Anthropic-branded materials, official documents | `"Use presentation-designer with brand-guidelines for Anthropic deck"` |
-| **pdf-filler** | Fill PDF forms, create fillable PDFs with form fields | Registration forms, surveys, applications, contracts | `"Use pdf-specialist with pdf-filler to create registration form PDF"` |
+**Documents:**
+- `"Use copywriter with internal-comms for Q1 status report"`
+- `"Use pdf-specialist with pdf-filler to create registration form"`
 
-#### Document Creation Skills (4) - Claude Code Built-in
+### Agent-Skill Mapping
 
-| Skill | Description | Best For | Example |
-|-------|-------------|----------|---------|
-| **pptx** | PowerPoint creation with html2pptx & PptxGenJS workflows | Professional presentations, pitch decks, marketing slides | `"Use presentation-designer with pptx skill for PowerPoint"` |
-| **pdf** | PDF generation with forms, layouts, and styling | Whitepapers, reports, fillable forms | `"Use pdf-specialist with pdf skill to create report"` |
-| **xlsx** | Excel spreadsheet creation with formulas & formatting | Data reports, financial models, dashboards | `"Create Excel report with xlsx skill"` |
-| **docx** | Word document creation with styles & formatting | Documentation, contracts, proposals | `"Create Word document with docx skill"` |
+**By Agent Type:**
+- **Visual/Creative:** visual-designer, social-media-manager, presentation-designer, video-producer
+- **Content/Strategy:** copywriter, landing-page-specialist, pdf-specialist, email-specialist, editor, gmail-agent
+- **Research/Analysis:** research-agent, seo-specialist, lead-gen-agent, analyst
+- **Orchestration:** router-agent, content-strategist, automation-agent
 
-**Note:** These are built-in Claude Code skills (always available). The pdf-filler skill listed above is a separate user-installed skill for form filling.
-
-#### Integration Skills (3)
-
-| Skill | Description | Best For | Example |
-|-------|-------------|----------|---------|
-| **filesystem** | File operations with C:\ and C:\Users access | Local file management, reading assets, batch processing | `"Use research-agent with filesystem to read competitor PDFs"` |
-| **figma** | Extract designs, components, assets from Figma files | Design handoff, brand asset extraction, Figma-to-code | `"Use visual-designer with figma to extract brand assets from [URL]"` |
-| **context7** | Enhanced context management (automatic) | Long conversations, complex tasks, context preservation | Automatic - works in background |
-
----
-
-### Available MCP Servers (7 total)
-
-| MCP Server | Purpose | Key Tools | Best For |
-|------------|---------|-----------|----------|
-| **playwright** | Browser automation | navigate, screenshot, click, fill, evaluate, get_visible_text | Competitive research, website analysis, web scraping |
-| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar, Forms, Tasks | send_gmail_message, create_drive_file, upload_to_drive, create_doc, create_event, search_drive_files | Email automation, Drive uploads, document management, calendar scheduling |
-| **perplexity** | Web search & research with citations | perplexity_ask, perplexity_reason, perplexity_search, perplexity_research | Market research, competitive intelligence, citation-backed insights |
-| **bright-data** | Web scraping & lead generation (5,000 free requests/month) | search_engine, scrape_as_markdown, search_engine_batch, scrape_batch | B2B lead gen, SERP scraping, competitor analysis |
-| **n8n-mcp** | Workflow automation (400+ integrations) | list_workflows, trigger_workflow, get_execution | Campaign orchestration, automated workflows |
-| **sequential-thinking** | Structured step-by-step reasoning | sequentialthinking | Complex problem-solving, strategic planning |
-| **marketing-tools** | Custom MCP for OpenAI APIs | generate_gpt4o_image, generate_sora_video | GPT-4o image generation, Sora video creation |
-
----
-
-### Skills by Agent
-
-**Which agents use which skills:**
-
-#### Visual & Creative Agents
-- **visual-designer:** algorithmic-art, canvas-design, theme-factory, figma
-- **social-media-manager:** algorithmic-art, slack-gif-creator, canvas-design
-- **presentation-designer:** pptx, theme-factory, artifacts-builder, canvas-design
-- **video-producer:** *(No skills - uses marketing-tools MCP directly)*
-
-#### Content & Strategy Agents
-- **copywriter:** internal-comms, docx
-- **landing-page-specialist:** artifacts-builder, theme-factory
-- **pdf-specialist:** pdf-filler, canvas-design, pdf
-- **email-specialist:** *(No skills)*
-- **editor:** *(No skills)*
-- **gmail-agent:** *(No skills)*
-
-#### Research & Analysis Agents
-- **research-agent:** filesystem
-- **seo-specialist:** filesystem, xlsx
-- **lead-gen-agent:** filesystem, xlsx
-- **analyst:** filesystem, xlsx
-
-#### Orchestration Agents
-- **router-agent:** context7
-- **content-strategist:** context7
-- **automation-agent:** context7
-
-**Note:** All agents inherit access to all 18 skills via MARKETING_TEAM/.claude/settings.json, but the above lists show which skills each agent is designed to use based on their agent definitions. The **flow-diagram** skill is also enabled in ENGINEERING_TEAM/.claude/settings.json for the **system-architect** agent.
-
----
-
-### Agent MCP Tools Reference
-
-**Which agents use which MCP servers:**
-
-#### marketing-tools MCP (OpenAI APIs)
-- **visual-designer** - generate_gpt4o_image
-- **social-media-manager** - generate_gpt4o_image
-- **video-producer** - generate_sora_video
-- **presentation-designer** - generate_gpt4o_image
-
-#### google-workspace MCP (Gmail, Drive, Docs, Sheets, Calendar)
-- **All agents** can use google-workspace tools when needed
-- **Primary users:**
-  - **gmail-agent** - send_gmail_message, search_gmail_messages, get_gmail_message_content
-  - **email-specialist** - send_gmail_message, create_doc
-  - **copywriter** - create_doc, update_doc
-  - **visual-designer** - create_drive_file (file uploads)
-  - **presentation-designer** - create_drive_file (file uploads)
-  - **pdf-specialist** - create_doc, create_drive_file
-  - **landing-page-specialist** - create_doc, upload_to_drive
-  - **seo-specialist** - Spreadsheet operations
-  - **research-agent** - create_doc
-  - **lead-gen-agent** - Spreadsheet operations, create_drive_file
-  - **analyst** - Spreadsheet operations, create_doc
-  - **editor** - get_doc_content, modify_doc_text, create_doc
-  - **content-strategist** - create_event, create_spreadsheet, create_doc
-
-#### perplexity MCP (Web Search & Research) + Custom Research Tools
-
-**🔥 HYBRID APPROACH:** research-agent uses BOTH custom Python tools AND MCP tools
-
-**Custom Perplexity Tools (Primary):**
-- **research-agent** - `conduct_research()`, `quick_research()`, `strategic_analysis()` (marketing-optimized)
-- **seo-specialist** - Can use custom tools via import
-- **copywriter** - Can use custom tools for research
-- **content-strategist** - Can use custom tools for strategic planning
-
-**Working MCP Tools (Backup & Specialized):**
-- ✅ **mcp__perplexity__perplexity_ask** - Conversational search (all agents)
-- ✅ **mcp__perplexity__perplexity_reason** - Reasoning analysis (all agents)
-- ✅ **mcp__perplexity__perplexity_search** - Web search/SERP results (all agents)
-- ❌ **mcp__perplexity__perplexity_research** - BROKEN (replaced by `conduct_research`)
-
-**Strategy:** Use custom tools for comprehensive research, MCP tools for lightweight queries and backup
-
-#### bright-data MCP (Web Scraping & Lead Generation)
-- **research-agent** - search_engine, scrape_as_markdown
-- **seo-specialist** - search_engine, scrape_as_markdown
-- **lead-gen-agent** - All bright-data tools (60+ scrapers)
-- **landing-page-specialist** - All bright-data tools
-- **analyst** - search_engine, scrape_as_markdown
-
-#### playwright MCP (Browser Automation)
-- **seo-specialist** - navigate, screenshot, click, fill, get_visible_text
-- **research-agent** - navigate, screenshot, evaluate, get_visible_html
-
-#### sequential-thinking MCP (Structured Reasoning)
-- **router-agent** - sequentialthinking
-- **content-strategist** - sequentialthinking
-- **automation-agent** - sequentialthinking
-
-#### n8n-mcp (Workflow Automation)
-- **automation-agent** - All n8n-mcp tools (list_workflows, create_workflow, update_workflow, trigger_workflow, get_execution, list_credentials)
-- Available to all agents but primarily used by automation-agent for marketing workflow orchestration
-
----
-
-### Quick Examples
-
-#### Generate Unique Social Media Art
-```
-"Use visual-designer with algorithmic-art to create a flow field design
-with brand colors (#FF5733, #3498DB) for Instagram. 1080x1080px."
-```
-
-#### Build Interactive React Landing Page
-```
-"Use landing-page-specialist with artifacts-builder to build a responsive
-landing page with hero section, features, testimonials, and contact form.
-Apply theme-factory 'modern' theme."
-```
-
-#### Create Themed Presentation
-```
-"Use presentation-designer with theme-factory to create a 15-slide sales
-deck with the 'professional' theme."
-```
-
-#### Generate Animated GIF
-```
-"Use social-media-manager with slack-gif-creator to make a 3-second
-'NEW FEATURE' announcement GIF with our brand colors."
-```
-
-#### Extract Figma Designs
-```
-"Use visual-designer with figma to extract designs from [Figma URL] and
-implement the landing page with artifacts-builder."
-```
-
-#### Create Fillable PDF Form
-```
-"Use pdf-specialist with pdf-filler to create a fillable registration form
-PDF with fields for name, email, company, title, and signature."
-```
-
-#### Write Internal Status Report
-```
-"Use copywriter with internal-comms to write a Q1 marketing status report
-including metrics, wins, challenges, and Q2 preview."
-```
-
-#### Find B2B Leads
-```
-"Use lead-gen-agent with bright-data to find 50 B2B SaaS companies in
-San Francisco with 50-200 employees."
-```
-
-#### Comprehensive Research (Custom Tool)
-```
-"Use research-agent to conduct comprehensive research on AI marketing automation
-trends in 2025. Include adoption rates, ROI data, and top tools."
-
-# Uses conduct_research() - returns 2000-4000 word formatted report with citations
-```
-
-#### Quick Stat Lookup (MCP Tool)
-```
-"Use research-agent to get the average email open rate for B2B SaaS"
-
-# Uses mcp__perplexity__perplexity_ask - fast, lightweight
-```
-
-#### Strategic Analysis (Custom Tool)
-```
-"Use research-agent to analyze whether we should invest in multi-agent AI
-vs traditional marketing automation. Include strategic comparison."
-
-# Uses strategic_analysis() - deep reasoning with visible thinking
-```
-
-#### Automate Browser Tasks
-```
-"Use research-agent with playwright to navigate to competitor-site.com,
-screenshot the homepage, and extract their headline and CTA copy."
-```
-
----
+**All agents inherit all 18 skills** via `MARKETING_TEAM/.claude/settings.json`
 
 ### Complete Documentation
 
-For comprehensive guides, examples, and workflows:
-
-- **[MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - 50+ page complete reference with detailed examples
-- **[MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Quick lookup tables and cheat sheets
-- **[MARKETING_TEAM/README.md](MARKETING_TEAM/README.md)** - Marketing team overview with skills
+For detailed guides with 50+ examples:
+- **[skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - Complete reference
+- **[SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Cheat sheets
 
 ---
 
@@ -1002,44 +768,25 @@ OPENAI_API_KEY=your_openai_key_here          # For GPT-4o images and Sora videos
 ### MCP Server Configuration
 
 **Configuration Files:**
-- **Template:** `.claude.json.example` or `.mcp.json.example` (tracked in git)
-- **Your Config:** `.claude.json` or `.mcp.json` (gitignored - contains your real API keys)
+- **Template:** `.mcp.json.example` (tracked in git)
+- **Your Config:** `.mcp.json` (gitignored - contains real API keys)
 
 **Setup Steps:**
-1. Copy the template: `cp .mcp.json.example .mcp.json`
-2. Edit `.mcp.json` and add your real API keys
-3. The config file stays local (never committed to git)
+1. Copy: `cp .mcp.json.example .mcp.json`
+2. Edit `.mcp.json` and add your API keys
+3. File stays local (never committed)
 
-**Available MCP Servers:**
+**7 MCP Servers Available** (see [Skills & MCP Capabilities](#-skills--advanced-capabilities) for details):
+- marketing-tools, google-workspace, perplexity, bright-data, playwright, n8n-mcp, sequential-thinking
 
-| Server | Purpose | Tools Provided |
-|--------|---------|----------------|
-| **playwright** | Browser automation for research | Navigate, screenshot, click, fill forms, evaluate JS |
-| **perplexity** | Web search and research | `perplexity_ask`, `perplexity_reason`, `perplexity_search`, `perplexity_research` |
-| **google-workspace** | Gmail, Drive, Docs, Sheets, Calendar | Send emails, upload files, create docs/sheets, schedule events, manage Drive |
-| **bright-data** | ✨ **NEW** Web scraping & lead generation | 60+ scrapers (LinkedIn, Google Maps, directories, SERP) |
-| **n8n-mcp** | Workflow automation | Trigger n8n workflows, connect to 400+ integrations |
-| **sequential-thinking** | ✨ **NEW** Structured reasoning | Step-by-step problem decomposition, logical reasoning |
-| **fetch** | ✨ **NEW** HTTP requests | Web content retrieval, API calls, file downloads |
-
-**Configuration Example (`.mcp.json`):**
-See `.mcp.json.example` for the full template with placeholder values.
-
-**Install MCP Servers:**
+**Installation:**
 ```bash
-# Playwright (browser automation)
-npx playwright install chromium
-
-# Google Workspace (Gmail, Drive, Calendar, Docs, Sheets, etc.)
-pip install workspace-mcp
-
-# Perplexity, Bright Data, n8n, Sequential Thinking, and Fetch are auto-installed via npx when first used
+npx playwright install chromium          # Playwright
+pip install workspace-mcp                # Google Workspace
+# Others auto-install via npx on first use
 ```
 
-**Security Note:**
-- `.mcp.json` and `.claude.json` contain real API keys and are gitignored
-- Never commit these files to version control
-- Use `.example` templates to share configuration structure without exposing secrets
+**Security:** `.mcp.json` and `.claude.json` contain real API keys → gitignored → never commit
 
 ---
 
@@ -1070,18 +817,7 @@ pip install workspace-mcp
 4. **Rotate the exposed API keys immediately**
 5. Verify `.gitignore` includes the file
 
-### Perplexity MCP Capabilities
-The Perplexity MCP server provides four tools for web research:
-- **`perplexity_ask`** ✅ - Conversational search with citations (working)
-- **`perplexity_reason`** ✅ - Deep reasoning and comparative analysis (working)
-- **`perplexity_search`** - Ranked web search results (requires newer API key)
-- **`perplexity_research`** - Comprehensive research reports (may require specific plan)
-
-**Usage:**
-```
-"Use Perplexity to search for the latest AI trends"
-"Use Perplexity reasoning to compare multi-agent vs monolithic systems"
-```
+---
 
 ## 🧠 Memory System - How It Works
 
@@ -1417,74 +1153,22 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ---
 
+---
+
+## 📝 Recent Updates
+
 **Last Updated:** 2025-10-26
-**Recent Changes:**
-- ✨ **SYSTEM ARCHITECT AGENT ADDED** - Engineering team grows to 14 specialists (36 → **37 agents total**)
-  - **system-architect** - Professional flow diagram creation with Mermaid.js
-  - System architecture design (microservices, cloud infrastructure, APIs, distributed systems)
-  - 9+ diagram types: flowcharts, sequence diagrams, ER diagrams, state diagrams, CI/CD pipelines, class diagrams, user journeys
-  - Interactive HTML visualizations with pan/zoom capabilities
-  - Uses new **flow-diagram skill** for professional technical documentation
-  - See [ENGINEERING_TEAM/.claude/agents/system-architect.md](ENGINEERING_TEAM/.claude/agents/system-architect.md) (~582 lines)
-- ✨ **FLOW-DIAGRAM SKILL ADDED** - 18th skill for professional Mermaid diagram generation
-  - Complete Mermaid.js syntax support (671-line comprehensive SKILL.md)
-  - Interactive HTML template with pan/zoom navigation
-  - Best practices guide and syntax reference included
-  - Python generation script for automation
-  - Enabled in both MARKETING_TEAM and ENGINEERING_TEAM settings
-  - See [MARKETING_TEAM/.claude/skills/flow-diagram/](MARKETING_TEAM/.claude/skills/flow-diagram/)
-- 🎬 **ENHANCED VIDEO PRODUCER** - Multi-clip video stitching with improved FFmpeg path resolution
-  - New [sora_video.py](MARKETING_TEAM/tools/sora_video.py) tool (222 lines)
-  - Fixed FFmpeg path resolution bugs for Windows
-  - Multi-clip stitching capabilities for complex video compositions
-- ✨ **CTO COORDINATOR ADDED** - Engineering team now has strategic coordinator (35 → 36 agents, now **37 with system-architect**)
-  - **cto agent** - Intelligent routing, multi-agent orchestration, workflow planning
-  - 4 coordination tools: `classify_engineering_request`, `get_engineer_capabilities`, `list_engineering_agents`, `create_execution_plan`
-  - 7 workflow patterns: End-to-end feature, infrastructure deployment, AI optimization, security audit, troubleshooting, database design, UI/UX implementation
-  - Single-command coordination: `"Use cto to build analytics dashboard"` → CTO delegates to all 13 specialists automatically
-  - See [ENGINEERING_TEAM/.claude/agents/cto.md](ENGINEERING_TEAM/.claude/agents/cto.md) (~850 lines) and [ENGINEERING_TEAM/tools/engineering_coordinator_tools.py](ENGINEERING_TEAM/tools/engineering_coordinator_tools.py) (~400 lines)
-- ✨ **ENGINEERING SUPER TEAM CREATED** - 13 engineering agents (30 → 35 agents, now 37 with CTO + system-architect)
-  - **Core 7 Agents (Custom Built):**
-    - ⭐ **devops-engineer:** UPGRADED with official production-ready template - 886 lines of battle-tested CI/CD (GitHub Actions), Terraform (AWS EKS, RDS, Redis, ALB), Kubernetes (Helm charts), monitoring (Prometheus/Grafana), security scanning (Trivy, kube-bench, gitleaks)
-    - ⭐ **frontend-developer:** REPLACED with official template - React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG)
-    - ⭐ **backend-architect:** NEW official template - RESTful API design, microservices architecture, database schema, caching strategies, scalability planning
-    - ⭐ **ai-engineer:** NEW - LLM integration (OpenAI/Anthropic), RAG systems (vector DBs), prompt optimization, agent frameworks (LangChain/LangGraph), token management - **PERFECT for optimizing all 35 AI agents!**
-    - ⭐ **ui-ux-designer:** NEW - User research, wireframes, design systems, accessibility, user flows, usability testing - **Complements frontend-developer for complete Design → Develop workflow**
-    - ✅ **security-auditor:** KEPT custom version - Comprehensive code security analysis, vulnerability scanning (OWASP Top 10), compliance audits (GDPR/HIPAA)
-    - ✅ **technical-writer:** KEPT custom version - PRDs, technical specs, API docs (OpenAPI), architecture diagrams, user guides
-  - **Specialist 5 Agents (From aitmpl.com - Community Validated):**
-    - ⭐ **code-reviewer:** Quality, security, maintainability reviews - automatic git diff analysis (3.2K community downloads)
-    - ⭐ **test-engineer:** Test automation (Jest, Playwright, pytest), QA strategy, CI/CD testing (1.3K downloads)
-    - ⭐ **prompt-engineer:** LLM prompt optimization, techniques (few-shot, chain-of-thought), benchmarking (2.4K downloads) - **Can optimize all 35 agents!**
-    - ⭐ **database-architect:** Database design, data modeling, scalability (sharding, replication), polyglot persistence (1.2K downloads)
-    - ⭐ **debugger:** Root cause analysis, troubleshooting, error investigation, hypothesis testing (1.7K downloads)
-  - **Full workspace access:** All 12 engineering agents can work with MARKETING_TEAM, QA_TEAM, USER_STORY_AGENT
-  - **Cross-team collaboration:** DevOps deploys all systems, AI Engineer + Prompt Engineer optimize all 35 agents, Security + Code Reviewer audit everything, Database Architect designs unified analytics
-  - **End-to-end workflows:** PRD (technical-writer) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Tests (test-engineer) → Review (code-reviewer) → Deploy (devops-engineer) → Audit (security-auditor) → AI Features (ai-engineer) → Prompt Optimization (prompt-engineer) → Debug (debugger)
-  - See [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) for complete guide with production-ready code examples
-- ✨ **NEW automation-agent** - 17th marketing agent for n8n workflow automation & orchestration
-  - Process discovery, workflow architecture, n8n node mapping
-  - Automation QA, testing, and iteration
-  - Cross-tool orchestration with marketing platforms (CRM, email, ads, analytics)
-  - Uses n8n-mcp tools + sequential-thinking for complex workflow planning
-  - Memory system integration (reads email_config, google_drive_config, brand_voice)
-  - Outputs to `MARKETING_TEAM/outputs/automation/` folder
-- 🧠 **MEMORY SYSTEM STANDARDIZATION** - All 17 marketing agents now have standardized memory configuration
-  - Added "⚙️ Configuration Files (READ FIRST)" section to ALL agent definitions
-  - Ensures automatic reading of email_config.json, google_drive_config.json, brand_voice.json, visual_guidelines.json
-  - Eliminates hardcoded email addresses and folder IDs across all agents
-  - Single source of truth for configuration - update memory files, all agents benefit
-  - See "🧠 Memory System - How It Works" section in CLAUDE.md for complete explanation
-- 🔥 **HYBRID Perplexity Research** - Custom Python tools + MCP tools for research-agent (maximum reliability)
-  - 3 custom tools: `conduct_research()`, `quick_research()`, `strategic_analysis()`
-  - Kept 3 working MCP tools: `perplexity_ask`, `perplexity_reason`, `perplexity_search`
-  - Redundancy strategy: if custom fails → fallback to MCP
-  - See [PERPLEXITY_RESEARCH_TOOLS.md](MARKETING_TEAM/docs/guides/PERPLEXITY_RESEARCH_TOOLS.md)
-- ✨ **lead-gen-agent** - B2B/local lead generation with Bright Data MCP (5,000 free requests/month)
-- ✨ **MCP servers** - sequential-thinking and fetch for enhanced capabilities
-- **Enhanced agents** - research-agent (hybrid research), seo-specialist, analyst, landing-page-specialist
-- **NEW tool** - send_marketing_team_doc.py for documentation email automation
-- Updated all documentation to reflect 37 agents (4 systems: MARKETING_TEAM (17), QA_TEAM (5), USER_STORY_AGENT (1), ENGINEERING_TEAM (14))
+
+**Latest Major Changes:**
+- ✨ **system-architect agent** - 14th Engineering agent for professional Mermaid diagrams with interactive HTML (37 agents total)
+- ✨ **flow-diagram skill** - 18th skill for system architecture, flowcharts, sequence diagrams, ER diagrams
+- ✨ **CTO coordinator** - Strategic orchestration for all 13 Engineering specialists with intelligent routing
+- ✨ **Engineering Super Team** - 14 agents (CTO + 13 specialists: 8 custom built + 5 community validated from aitmpl.com)
+- ✨ **automation-agent** - 17th Marketing agent for n8n workflow automation (400+ integrations)
+- 🧠 **Memory system standardization** - All agents auto-read config files (email, Drive, brand voice)
+- 🔥 **Hybrid Perplexity research** - Custom tools + MCP fallback for maximum reliability
+
+**See [CHANGELOG.md](CHANGELOG.md) for complete version history**
 
 **Repository:** https://github.com/Azeez1/TEST_AGENTS
 **License:** Uses Anthropic Claude API - see Anthropic's terms of service

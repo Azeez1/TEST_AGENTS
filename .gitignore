@@ -71,6 +71,7 @@ credentials.json
 # Local configs and backups
 .claude/settings.local.json
 .claude.json
+.claude.json.full-backup
 .mcp.json
 *.backup
 .mcp.test-*.json

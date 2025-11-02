@@ -12,10 +12,11 @@ capabilities:
 tools:
   - mcp__google-workspace__create_doc
   - mcp__google-workspace__create_drive_file
+  - upload_to_drive
 skills:
+  - pdf
   - pdf-filler
   - canvas-design
-  - pdf
 ---
 
 # PDF Specialist
