@@ -79,135 +79,11 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 ---
 
-## 🤖 Agent Invocation Guidelines (For AI Assistants)
+## 🤖 Agent Invocation Guidelines
 
-### 🎯 The Core Principle: Minimal Invocation
+**Pattern:** `"Use [agent-name] to [goal] with [context]"` - Agents are autonomous and know which tools to use.
 
-**Agents are autonomous.** They already know which tools to use, which memory files to read, and how to execute tasks. Your job is to specify **WHAT** you want, not **HOW** to do it.
-
-### ✅ Correct Pattern: High-Level Goals Only
-
-**Format:** `"Use [agent-name] to [goal] with [key context]"`
-
-**Good Examples:**
-- ✅ `"Use copywriter to create 2000-word blog about AI automation with case studies"`
-- ✅ `"Use gmail-agent to send Engineering_Team_Partner_Summary.docx with professional message"`
-- ✅ `"Use visual-designer to create LinkedIn header image with brand colors"`
-- ✅ `"Use router-agent to coordinate product launch campaign"`
-
-**Include:** Goal + context (subject, deliverables, constraints, audience)
-**Exclude:** Implementation steps, tool names, file paths, function calls
-
-### ❌ Incorrect Pattern: Over-Specification
-
-**Anti-Pattern:** `"Use [agent]. Read X file. Import Y tool. Call Z function..."`
-
-**Why this breaks autonomy:**
-- Agent thinks it must CREATE new workflow → generates temp scripts
-- Ignores pre-configured tools, memory files, skills
-- Creates duplicate code instead of using existing battle-tested tools
-
-**Real Example:**
-```
-❌ BAD: "Use gmail-agent. Read memory/email_config.json. Import send_email_with_attachment.py..."
-   → Created temp_send_email.py (duplicate code)
-
-✅ GOOD: "Use gmail-agent to send Engineering_Team_Partner_Summary.docx"
-   → Read definition → imported existing tool → sent email
-```
-
-### 🔍 What Agents Already Know
-
-**From agent definitions (`.claude/agents/*.md`):**
-- Which tools to use (`tools:` in YAML frontmatter)
-- Which memory files to read ("⚙️ Configuration Files" section)
-- How to execute tasks (persona & instructions)
-- When to use skills & MCPs (defined capabilities)
-
-**If the definition says "Always read memory/email_config.json" → DON'T tell it to read that file**
-**The agent already knows. Trust the definition.**
-
-### 📊 Context Guidelines
-
-| **DO Include** | **DON'T Include** |
-|----------------|-------------------|
-| Subject matter, audience | Which files to read |
-| Deliverable specs (format, length) | Which tools to import |
-| Constraints (tone, deadline) | Which functions to call |
-| Content requirements | Step-by-step implementation |
-
-### 📚 Skills Require Documentation Reading
-
-Many skills (docx, pptx, pdf, xlsx) have specific workflows. Agent definitions must include:
-
-```markdown
-## 🧠 Required Reading (ALWAYS READ FIRST)
-1. Read `.claude/skills/document-skills/pptx/SKILL.md` completely
-```
-
-**Why:** Skills have different workflows (e.g., docx uses JavaScript for NEW docs, Python for EDITING). Without reading SKILL.md, agents may use wrong libraries.
-
-**Reference:** [MARKETING_TEAM/.claude/agents/presentation-designer.md](MARKETING_TEAM/.claude/agents/presentation-designer.md) (lines 351-355)
-
-### 🚨 Common Mistake: Creating Duplicate Scripts
-
-**Problem:** Claude Code (orchestrator) creates standalone Python scripts instead of invoking agents.
-
-**Why This Happens:**
-```
-Over-Specification → Script Creation Mode
-
-❌ "Use gmail-agent. Read memory/email_config.json. Import send_email_with_attachment..."
-→ Claude interprets: "Create a script with these steps"
-→ Result: create_email_script.py (duplicate code)
-
-✅ "Use gmail-agent to send whitepaper.pdf"
-→ Claude interprets: "Invoke autonomous agent"
-→ Result: Agent uses its declared tools properly
-```
-
-**Real Examples from Repository:**
-- `send_content_suite_emails.py` - Should have been gmail-agent invocation
-- `create_whitepaper_pdf.py` - Should have been pdf-specialist invocation
-
-**How to Avoid:**
-1. ✅ **Trust agent autonomy** - Agents already know their workflows
-2. ✅ **Specify WHAT, not HOW** - High-level goals only
-3. ✅ **Never mention implementation** - No file paths, imports, function calls
-4. ✅ **Check agent definition first** - See what tools/skills it has
-
-**Decision Tree:**
-```
-Task requires specialized capability?
-├─ YES: Check if agent exists (.claude/agents/)
-│   ├─ Agent exists?
-│   │   ├─ YES: Invoke agent with minimal spec ✅
-│   │   └─ NO: Create new agent or script
-│   └─ Use Task tool to invoke agent
-└─ NO: Use direct tools/commands
-```
-
-### 🔧 Troubleshooting Agent Invocations
-
-**Symptom 1: Agent claims success but file doesn't exist**
-- **Cause:** Skill invocation may be failing silently
-- **Fix:** Check if file actually exists at specified path
-- **Prevention:** Agents should verify file creation before claiming success
-
-**Symptom 2: Duplicate scripts keep getting created**
-- **Cause:** Over-specified invocation triggers script creation mode
-- **Fix:** Use minimal invocation pattern (WHAT not HOW)
-- **Prevention:** Review invocation messages for implementation details
-
-**Symptom 3: Agent doesn't use its declared tools**
-- **Cause:** Agent not properly invoked or definition unclear
-- **Fix:** Check YAML frontmatter has tools declared
-- **Prevention:** Trust agent definitions - they know which tools to use
-
-**Symptom 4: "Tool not found" errors**
-- **Cause:** Tool exists but not declared in agent's YAML frontmatter
-- **Fix:** Add tool to agent definition's `tools:` list
-- **Prevention:** Review agent definition before invocation
+📖 **Complete Guide:** [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - Proper invocation patterns, troubleshooting, and anti-patterns
 
 ---
 
@@ -228,137 +104,27 @@ Task requires specialized capability?
 
 ```
 TEST_AGENTS/
-├── claude.md                        ← YOU ARE HERE - Repository navigation guide
-├── .claude.json                     ← Claude Code MCP configuration
-├── .gitignore                       ← Excludes outputs, configs, artifacts
-├── MULTI_AGENT_GUIDE.md             ← Complete guide for all 20 agents
-├── MCP_SETUP.md                     ← MCP server setup instructions
-├── IMPLEMENTATION_SUMMARY.md        ← Technical implementation overview
+├── claude.md                        ← YOU ARE HERE
+├── MULTI_AGENT_GUIDE.md             ← Master guide for all 37 agents
+├── AGENT_INVOCATION_BEST_PRACTICES.md  ← Agent invocation patterns
+├── MEMORY_SYSTEM.md                 ← Memory/Drive/Email strategies
+├── MCP_SETUP.md, IMPLEMENTATION_SUMMARY.md
 │
-├── USER_STORY_AGENT/                ← Streamlit app for user story generation
-│   ├── README.md                    ← Quick start guide
-│   ├── app_ui.py                    ← Main Streamlit UI (6 tabs)
-│   ├── autonomous_mode.py           ← Browser automation with MCP
-│   ├── story_generator.py           ← Story generation prompts
-│   ├── formatters.py                ← JSON parsing with fallback strategies
-│   ├── excel_handler.py             ← Excel read/write operations
-│   ├── note_parser.py               ← Multi-format file parsing (PDF, DOCX, etc.)
-│   ├── file_handlers.py             ← Extended file format support
-│   ├── multi_file_processor.py      ← Multi-file processing
-│   ├── ocr_handler.py               ← OCR for images with pytesseract
-│   ├── mcp_client.py                ← MCP stdio client with tool execution
-│   ├── research_prompts.py          ← Autonomous research prompts
-│   ├── feedback_handler.py          ← Feedback learning system
-│   ├── conversation_memory.py       ← Persistent preferences storage
-│   ├── ui_helpers.py                ← UI utilities
-│   ├── mcp_config.json              ← MCP configuration
-│   ├── requirements.txt             ← Python dependencies
-│   ├── start_ui.bat                 ← Windows launcher
-│   └── [Documentation]              ← CLEAN_CODEBASE.md, EXCEL_FIGMA_WORKFLOW.md, etc.
 │
-├── MARKETING_TEAM/                  ← 17 marketing automation agents
-│   ├── README.md                    ← Quick start guide
-│   ├── examples/                    ← Curated examples (tracked in git)
-│   │   └── skills/                  ← Examples by skill
-│   │       ├── algorithmic-art/     ← Generative art examples
-│   │       ├── blog-posts/
-│   │       ├── landing-pages/
-│   │       └── [other skills]/
-│   ├── templates/                   ← Reusable templates (tracked in git)
-│   │   └── reusable/
-│   │       ├── blog_post_template.md
-│   │       ├── social_media_template.md
-│   │       ├── landing_page_template.html
-│   │       └── email_template.md
-│   ├── outputs/                     ← Real deliverables (GITIGNORED)
-│   │   ├── blog_posts/
-│   │   ├── social_media/
-│   │   ├── images/
-│   │   ├── videos/
-│   │   ├── automation/              ← n8n workflow specs and artifacts
-│   │   └── [other content]/
-│   ├── voice_interface/             ← ✨ NEW: Voice interface modules
-│   │   ├── config.py                ← Voice configuration loader
-│   │   ├── websocket_client.py      ← ElevenLabs WebSocket connection
-│   │   ├── audio_handler.py         ← Microphone & speaker I/O
-│   │   ├── voice_agent_router.py    ← Natural language agent routing
-│   │   ├── context_manager.py       ← Multi-context lifecycle
-│   │   └── conversation_memory.py   ← Session persistence
-│   ├── voice_cli_simple.py          ← ✅ WORKING: Text-based conversation with audio
-│   ├── voice_cli.py                 ← ⚠️ Has threading issues (real-time audio)
-│   ├── voice_app.py                 ← Streamlit UI (session viewer only)
-│   ├── start_voice_cli.bat          ← Launcher for working voice CLI
-│   ├── requirements_voice.txt       ← Voice dependencies
-│   ├── .claude/
-│   │   └── agents/                  ← 17 agent definitions
-│   │       ├── router-agent.md      ← Campaign coordinator
-│   │       ├── copywriter.md        ← Blog posts & articles
-│   │       ├── social-media-manager.md  ← X/Twitter, LinkedIn posts
-│   │       ├── visual-designer.md   ← GPT-4o image generation
-│   │       ├── video-producer.md    ← Sora video creation
-│   │       ├── seo-specialist.md    ← SEO research, SERP scraping, rank tracking
-│   │       ├── email-specialist.md  ← Email copywriting
-│   │       ├── gmail-agent.md       ← Email sending via Gmail API
-│   │       ├── pdf-specialist.md    ← PDF whitepaper creation
-│   │       ├── presentation-designer.md  ← PowerPoint decks
-│   │       ├── landing-page-specialist.md  ← Landing page UX, code, competitor analysis
-│   │       ├── analyst.md           ← Performance analysis & competitive benchmarking
-│   │       ├── content-strategist.md     ← Campaign orchestration
-│   │       ├── editor.md            ← Content review
-│   │       ├── research-agent.md    ← Web research, competitive intelligence
-│   │       ├── lead-gen-agent.md    ← B2B/local lead generation via web scraping
-│   │       └── automation-agent.md  ← ✨ NEW: n8n workflow automation & orchestration
-│   ├── tools/                       ← Marketing tools
-│   │   ├── openai_gpt4o_image.py    ← GPT-4o image generation
-│   │   ├── gmail_api.py             ← Gmail integration
-│   │   ├── upload_to_drive.py       ← Google Drive binary file uploads (fills MCP gap)
-│   │   ├── pdf_generator.py         ← PDF generation
-│   │   ├── sora_video.py            ← Sora video API
-│   │   ├── platform_formatters.py   ← Social media formatters
-│   │   ├── router_tools.py          ← Agent coordination tools
-│   │   ├── send_email_with_attachment.py  ← Email attachments via Gmail API
-│   │   ├── send_deliverables_email.py     ← Automated deliverables sender
-│   │   └── send_marketing_team_doc.py     ← Email marketing team documentation
-│   ├── scripts/                     ← Utility scripts
-│   │   ├── create_word_documents.py     ← Convert markdown to Word docs
-│   │   ├── generate_linkedin_image.py   ← Generate LinkedIn images
-│   │   ├── test_openai_connection.py    ← Test OpenAI API setup
-│   │   ├── create_ai_video.py           ← Sora video generation testing
-│   │   └── upload_video_to_drive.py     ← Manual Drive upload utility
-│   ├── docs/                        ← Comprehensive documentation
-│   │   ├── getting-started/
-│   │   │   ├── api-setup.md         ← API configuration guide
-│   │   │   └── voice-setup.md       ← ✨ NEW: Voice interface setup (60-second guide)
-│   │   ├── guides/
-│   │   │   ├── usage-guide.md       ← Complete usage examples
-│   │   │   ├── campaign-examples.md ← Real campaign examples
-│   │   │   └── voice/               ← ✨ NEW: Voice interface documentation
-│   │   │       ├── user-guide.md    ← What works and why
-│   │   │       └── technical.md     ← Technical documentation
-│   │   └── architecture/
-│   │       ├── system-architecture.md   ← Technical architecture
-│   │       ├── mcp-config.md        ← MCP configuration details
-│   │       └── build-notes.md       ← Build process notes
-│   ├── requirements.txt             ← Python dependencies
-│   └── .env.example                 ← Environment variables template
+├── MARKETING_TEAM/                  ← 17 agents + tools + docs (see README.md)
+│   ├── .claude/agents/              ← 17 marketing agent definitions
+│   ├── tools/                       ← GPT-4o images, Sora videos, Gmail, Drive
+│   ├── outputs/                     ← Generated content (gitignored)
+│   ├── examples/, templates/        ← Reference materials (git-tracked)
+│   └── docs/                        ← Complete documentation
 │
-└── QA_TEAM/                         ← 5 automated testing agents
-    ├── README.md                    ← Quick start guide
-    ├── HOW_TO_USE.md                ← Detailed usage guide
-    ├── BUILD_SUMMARY.md             ← Build and architecture summary
-    ├── .claude/
-    │   └── agents/                  ← 5 agent definitions
-    │       ├── test-orchestrator.md ← Testing coordinator
-    │       ├── unit-test-agent.md   ← Unit test generation
-    │       ├── integration-test-agent.md  ← Integration tests
-    │       ├── edge-case-agent.md   ← Edge case identification
-    │       └── fixture-agent.md     ← Pytest fixtures & mocks
-    ├── tools/                       ← Testing tools
-    │   ├── code_scanner.py          ← Code analysis & scanning
-    │   ├── test_generator.py        ← Test case generation
-    │   ├── coverage_analyzer.py     ← Coverage analysis
-    │   └── router_tools.py          ← Agent coordination
-    └── requirements.txt             ← Python dependencies (pytest, pytest-cov, etc.)
+├── QA_TEAM/                         ← 5 testing agents (see README.md)
+│   ├── .claude/agents/              ← test-orchestrator + 4 specialists
+│   └── tools/                       ← Test generation, coverage analysis
+│
+└── ENGINEERING_TEAM/                ← 14 agents: CTO + 13 specialists (see README.md)
+    ├── .claude/agents/              ← DevOps, security, frontend, backend, AI, etc.
+    └── docs/                        ← PRDs, technical specs, deployment guides
 ```
 
 ---
@@ -513,6 +279,8 @@ TEST_AGENTS/
 
 ### Usage Guides
 - [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 37 agents
+- [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - **CRITICAL** - Proper agent invocation patterns
+- [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration, Drive/email strategies, formatting rules
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
 - [MARKETING_TEAM/docs/guides/campaign-examples.md](MARKETING_TEAM/docs/guides/campaign-examples.md) - Real campaign examples
 - [QA_TEAM/HOW_TO_USE.md](QA_TEAM/HOW_TO_USE.md) - Testing agent usage with examples
@@ -819,216 +587,20 @@ pip install workspace-mcp                # Google Workspace
 
 ---
 
-## 🧠 Memory System - How It Works
+## 🧠 Memory System
 
-**Automatic Configuration Loading:**
+**Agents auto-read memory configuration files** at task start:
+- `email_config.json` - Email addresses for Gmail operations
+- `google_drive_config.json` - Drive folder IDs for uploads
+- `brand_voice.json` - Dux Machina tone and messaging
+- `visual_guidelines.json` - Brand colors and design standards
 
-All 17 MARKETING_TEAM agents are instructed in their agent definitions to read memory configuration files at the start of each task. This ensures:
-- ✅ Consistent email addresses across all email operations (no hardcoding)
-- ✅ Consistent Drive folder structure for uploads (no hardcoded folder IDs)
-- ✅ Consistent brand voice and visual guidelines (no style drift)
-- ✅ Single source of truth for configuration (update once, affects all agents)
+**Key Rules:**
+- ✅ Use `tools/upload_to_drive.py` for Drive uploads (MCP broken for binary files)
+- ✅ Use `tools/send_email_with_attachment.py` for emails with attachments
+- ✅ All agents read configs automatically (no hardcoding)
 
-**How Agents Access Memory:**
-
-1. **Agent Definition Includes Configuration Section** - Each agent's `.claude/agents/*.md` file contains a "⚙️ Configuration Files (READ FIRST)" section
-2. **Explicit Instructions to Read Files** - Section lists which memory files to read and when to use them
-3. **Agent Reads Files at Task Start** - Agent uses Read tool or filesystem skill to load configuration
-4. **Agent Uses Configuration Throughout Task** - Configuration values used instead of hardcoded defaults
-
-**Example from gmail-agent.md:**
-```markdown
-## ⚙️ Configuration Files (READ FIRST)
-
-**ALWAYS read these memory files before starting work:**
-
-1. **memory/email_config.json** - Email defaults (CRITICAL for ALL email operations)
-   - Contains: `user_google_email`, `default_to`, `default_cc`
-   - Used when: Sending emails, creating drafts, searching messages
-   - Required for: ALL Google Workspace MCP email tools
-```
-
----
-
-### Configuration Files in memory/
-
-**Memory files provide centralized configuration for all agents:**
-
-**Email Configuration (MARKETING_TEAM/memory/email_config.json):**
-```json
-{
-  "user_google_email": "sabaazeez12@gmail.com",
-  "default_to": "sabaazeez12@gmail.com",
-  "default_cc": "aoseni@duxvitaecapital.com"
-}
-```
-
-**Google Drive Configuration (MARKETING_TEAM/memory/google_drive_config.json):**
-```json
-{
-  "user_google_email": "sabaazeez12@gmail.com",
-  "folders": {
-    "ai_marketing_team": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
-    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
-    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
-    "social_media": "1mFHE1aKOIzhxL3BmIC593WfNt5G1GBxi",
-    "lead_gen": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
-  },
-  "upload_defaults": {
-    "presentations": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
-    "documents": "1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv",
-    "images": "12DaX0JJ5K6_os1ANj6FgovF72ymdson1",
-    "videos": "1EMk6waLu87DmLaI4LrxoBvpYSdFzy42q",
-    "leads": "1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_"
-  }
-}
-```
-
-**Brand Voice (MARKETING_TEAM/memory/brand_voice.json):**
-- Tone, style, keywords, avoid-words, writing guidelines
-- Read by: copywriter, social-media-manager, email-specialist
-- Ensures consistent brand voice across all content
-
-**Visual Guidelines (MARKETING_TEAM/memory/visual_guidelines.json):**
-- Brand colors, fonts, image styles, design preferences
-- Read by: visual-designer, presentation-designer, pdf-specialist
-- Ensures consistent visual identity
-
-**Docs Folder Structure (MARKETING_TEAM/memory/docs_folder_structure.json):**
-- Documentation organization rules for AI assistants
-- Read by: AI assistants (Claude Code, Cursor, etc.) creating documentation
-- NOT for marketing agents - for codebase maintenance only
-
-**IMPORTANT - How Agents Use Memory:**
-- ✅ All agents sending emails → Read `email_config.json` for user_google_email, default_to, default_cc
-- ✅ All agents uploading to Drive → Read `google_drive_config.json` for folder IDs
-- ✅ Content agents → Read `brand_voice.json` for tone and style
-- ✅ Visual agents → Read `visual_guidelines.json` for brand colors and fonts
-- ✅ AI assistants → Read `docs_folder_structure.json` when creating docs
-
----
-
-### Google Drive Upload Strategy
-
-**⚠️ CRITICAL: MCP is BROKEN for Binary File Uploads**
-
-Google Workspace MCP's `create_drive_file` has a critical bug: it creates 116-byte placeholder files instead of uploading actual binary content. Test confirmed PPTX file (26 KB) uploaded as only 116 bytes.
-
-**PRIMARY METHOD: Use Python Tool (Reliable)**
-
-✅ **ALL File Types (Recommended):**
-- Use `tools/upload_to_drive.py` (Python Drive API) - **PRIMARY METHOD**
-- Uses `token_drive.pickle` (separate authentication from Gmail)
-- Handles all file uploads: PPTX, PDF, XLSX, PNG, MP4, HTML, DOCX, etc.
-- Auto-detects MIME types from file extensions
-- **Always read folder IDs from memory/google_drive_config.json**
-- Verified working with full file content
-
-**Usage Example:**
-```python
-from tools.upload_to_drive import upload_to_drive
-
-result = upload_to_drive(
-    file_path="outputs/presentations/deck.pptx",
-    file_name="My Presentation.pptx",
-    folder_id="1QkAUOP9v4u3DugZjVcYUnaiT7pitN3sv"  # From google_drive_config.json
-)
-# Returns: {'file_id': '...', 'file_name': '...', 'web_view_link': '...'}
-```
-
-**❌ AVOID: MCP for Binary Files**
-- `mcp__google-workspace__create_drive_file` - **DO NOT USE for binary files**
-- Creates placeholder files (116 bytes) instead of uploading actual content
-- Fails silently - returns "success" but file is unusable
-- Only safe for Google Workspace text documents (Docs, Sheets, Forms created from text)
-
----
-
-### Email Sending Strategy
-
-**Two approaches based on attachment needs:**
-
-**Without Attachments:**
-- Use `mcp__google-workspace__send_gmail_message` (Google Workspace MCP tool)
-- Fast and simple, already authenticated through MCP
-- Perfect for text-only emails
-- No file size limitations for body content
-- **Always use user_google_email from email_config.json**
-- **Set `body_format='html'`** for proper line break rendering
-- Convert plaintext to HTML before sending (see gmail-agent.md Workflow 1)
-
-**With Attachments:**
-- Use `tools/send_email_with_attachment.py` (Python Gmail API)
-- Supports file attachments via MIME multipart messages
-- Handles base64 encoding automatically
-- Requires full Gmail API scope authentication
-- Recommended for files under 25 MB
-- **Automatically converts plaintext to HTML** for proper formatting
-
-**Email Formatting Rules (always apply):**
-- Clean plaintext body - No markdown symbols (no ##, **, ---, etc.)
-- Professional formatting with proper spacing and clear hierarchy
-- Use bullet points with • character instead of markdown lists
-- Section headers in UPPERCASE for emphasis
-- Concise, organized structure with greeting and closing
-- Business-appropriate tone
-
-**HTML Email Rendering (ALL EMAILS):**
-- Both MCP and Python tools now send HTML emails
-- **UPPERCASE headers automatically bolded** (e.g., "DOCUMENT OVERVIEW" → **DOCUMENT OVERVIEW**)
-- Line breaks (`\n`) rendered as `<br>` tags
-- Double line breaks (`\n\n`) rendered as paragraph breaks (`<br><br>`)
-- Professional styling: Arial/Calibri, 11pt, line-height 1.5
-- No more "wall of text" formatting issues
-
-**Example Clean Email Body:**
-```
-Hi,
-
-Here's the landing page we created today.
-
-LANDING PAGE OVERVIEW
-
-Platform: AI InvestIQ
-Purpose: Investment intelligence platform
-
-KEY FEATURES
-
-The page includes:
-
-• Hero section with compelling stats
-• 6 feature cards explaining benefits
-• Social proof with testimonials
-
-File is attached and ready to deploy.
-
-Best regards
-```
-
----
-
-### Dependencies Overview
-
-**USER_STORY_AGENT:**
-```bash
-cd USER_STORY_AGENT
-pip install -r requirements.txt
-# streamlit, anthropic, pandas, openpyxl, python-docx, PyPDF2, pytesseract
-```
-
-**MARKETING_TEAM:**
-```bash
-cd MARKETING_TEAM
-pip install -r requirements.txt
-# anthropic, openai, google-auth, google-api-python-client, python-pptx, fpdf
-```
-
-**QA_TEAM:**
-```bash
-cd QA_TEAM
-pip install -r requirements.txt
-# pytest, pytest-cov, pytest-asyncio, pytest-mock, anthropic
-```
+📖 **Complete Guide:** [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - JSON examples, Drive/email strategies, formatting rules
 
 ---
 

@@ -12,6 +12,10 @@
       "task"
     ]
   },
+  "skills": {
+    "path": ".claude/skills",
+    "description": "Shared skills available workspace-wide. Agents must explicitly declare skills in their definitions to use them."
+  },
   "mcp": {
     "servers": {
       "supervisor-tools": {

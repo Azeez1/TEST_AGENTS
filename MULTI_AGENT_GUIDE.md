@@ -514,6 +514,222 @@ Read the `.md` files to understand:
 
 ---
 
+## Common Pitfalls & Anti-Patterns
+
+### 🚨 Pitfall 1: Over-Specifying Agent Invocations
+
+**Problem:** Telling agents HOW to do tasks instead of WHAT to accomplish.
+
+**Symptoms:**
+- Duplicate scripts created (`temp_*.py`, `upload_*.py`, etc.)
+- Existing tools in `tools/` folder ignored
+- Agent creates new implementation instead of using declared tools
+
+**Why This Happens:**
+```
+Over-specification → Script creation mode
+
+❌ BAD: "Use gmail-agent. Read memory/email_config.json. Import send_email_with_attachment.py. Call send_email()..."
+→ Claude interprets: "Create a script with these steps"
+→ Result: Creates temp_send_email.py (duplicate code)
+
+✅ GOOD: "Use gmail-agent to send whitepaper.pdf"
+→ Claude interprets: "Invoke autonomous agent"
+→ Result: Agent reads definition → uses declared tools → sends email
+```
+
+**How to Avoid:**
+- ✅ Specify WHAT you want (goal + context)
+- ✅ Trust agent autonomy (they know which tools to use)
+- ❌ Don't mention file paths, imports, or function calls
+- ❌ Don't specify implementation steps
+
+**Real Example from Repository:**
+```
+Task: Create ebook and upload to Google Drive
+
+❌ What happened:
+- pdf-specialist created PDF
+- Orchestrator created upload_final_ebook.py script (duplicate code)
+
+✅ What should happen:
+- "Use pdf-specialist to create ebook and upload to Drive"
+- pdf-specialist: Creates PDF → Uses tools.upload_to_drive (declared tool) → Returns Drive link
+```
+
+---
+
+### 🚨 Pitfall 2: Orchestrator Taking Over Mid-Workflow
+
+**Problem:** Claude Code (orchestrator) completes agent tasks instead of letting agents finish their workflows.
+
+**Symptoms:**
+- Agent completes part of task (e.g., creates file)
+- Orchestrator creates script for remaining steps (e.g., upload)
+- Tools declared in agent's YAML frontmatter are ignored
+
+**Example:**
+```
+User: "Create PDF and upload to Drive"
+
+❌ WRONG:
+Orchestrator → pdf-specialist
+pdf-specialist: Creates PDF ✅
+Orchestrator: Creates upload script ❌ (ignores agent's upload_to_drive tool)
+
+✅ RIGHT:
+Orchestrator: "Use pdf-specialist to create PDF and upload to Drive"
+pdf-specialist:
+  1. Creates PDF (pdf skill)
+  2. Uploads (upload_to_drive tool - declared in YAML)
+  3. Returns Drive link
+```
+
+**How to Avoid:**
+- ✅ Include full workflow in agent invocation
+- ✅ Let agents own entire workflow (create + upload + deliver)
+- ✅ Check agent's YAML frontmatter for declared tools
+- ❌ Don't split tasks between orchestrator and agent
+
+---
+
+### 🚨 Pitfall 3: Not Checking Agent's Declared Tools
+
+**Problem:** Creating new implementations when agent already has the tool declared.
+
+**Example:**
+```yaml
+# pdf-specialist.md YAML frontmatter
+---
+name: PDF Specialist
+tools:
+  - upload_to_drive  ✅ ALREADY DECLARED
+  - generate_pdf
+---
+```
+
+**What This Means:**
+- Agent will use `tools.upload_to_drive` automatically
+- Orchestrator should NEVER create upload scripts
+- Agent definition shows exact usage (lines 206-215 in pdf-specialist.md)
+
+**How to Avoid:**
+1. Before invoking agent, read its YAML frontmatter
+2. Check what tools are declared
+3. Trust agent will use those tools
+4. Don't create duplicate implementations
+
+---
+
+### 🚨 Pitfall 4: Ignoring Agent's Configuration Instructions
+
+**Problem:** Agent definitions specify which memory files to read, but orchestrator tells agent to read them anyway.
+
+**Example:**
+```markdown
+# gmail-agent.md
+## ⚙️ Configuration Files (READ FIRST)
+1. **memory/email_config.json** - Email defaults
+```
+
+**What This Means:**
+- Agent ALREADY KNOWS to read email_config.json
+- Orchestrator shouldn't mention it in invocation
+- Agent reads config automatically at task start
+
+**Wrong Invocation:**
+```
+❌ "Use gmail-agent. Read memory/email_config.json. Send email..."
+   → Triggers script creation mode
+```
+
+**Correct Invocation:**
+```
+✅ "Use gmail-agent to send whitepaper.pdf"
+   → Agent reads config automatically
+```
+
+---
+
+### 🚨 Pitfall 5: Not Trusting Skills
+
+**Problem:** Creating Python scripts when agents have skills that already handle the task.
+
+**Example - PDF Skill:**
+```yaml
+# pdf-specialist.md
+skills:
+  - pdf        # Includes pypdf, pdfplumber, AND reportlab
+  - pdf-filler
+  - canvas-design
+```
+
+**What the pdf skill includes:**
+- pypdf - Read, merge, split PDFs
+- pdfplumber - Extract text and tables
+- **reportlab** - Create styled PDFs from scratch ✅
+
+**Wrong Assumption:**
+```
+❌ "pdf skill only reads PDFs, need to create script for PDF generation"
+   → Creates standalone reportlab script
+```
+
+**Correct Understanding:**
+```
+✅ "pdf skill includes reportlab for PDF creation"
+   → Agent uses skill's reportlab capabilities
+   → Read SKILL.md to verify: .claude/skills/document-skills/pdf/SKILL.md
+```
+
+**How to Avoid:**
+1. Read skill documentation (`.claude/skills/*/SKILL.md`)
+2. Understand skill capabilities before creating scripts
+3. Trust agents to use skills properly
+
+---
+
+### 🔧 How to Fix These Pitfalls
+
+**Step 1: Update Your Invocation Pattern**
+```
+From: "Use [agent]. Read X. Import Y. Call Z..."
+To:   "Use [agent] to [goal] with [context]"
+```
+
+**Step 2: Check Agent Definitions**
+```bash
+# Before invoking, check what agent has:
+cat .claude/agents/pdf-specialist.md | head -20
+
+# Look for:
+# - tools: [...] in YAML frontmatter
+# - skills: [...] in YAML frontmatter
+# - Configuration Files section
+```
+
+**Step 3: Trust Agent Autonomy**
+- Agent knows which tools to use
+- Agent knows which files to read
+- Agent knows how to complete workflow
+- Your job: Specify WHAT, not HOW
+
+**Step 4: Let Agents Own Workflows**
+- If agent creates file → agent uploads file
+- If agent has upload_to_drive tool → agent will use it
+- Orchestrator routes, agents execute
+
+---
+
+### 📚 Learn More
+
+For comprehensive guide on proper agent invocation:
+- **[AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md)** - Complete guide with examples, decision trees, and troubleshooting
+- **[claude.md](claude.md)** - Repository navigation with agent invocation guidelines
+- **Agent Definitions:** `.claude/agents/*.md` files show declared tools and workflows
+
+---
+
 ## Quick Start Checklist
 
 ✅ **Verify agents exist:**
