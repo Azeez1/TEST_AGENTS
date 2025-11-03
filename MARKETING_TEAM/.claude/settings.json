@@ -45,6 +45,22 @@
     "pdf-filler": {
       "enabled": true
     },
+    "pdf": {
+      "enabled": true,
+      "comment": "pypdf-based PDF creation - comprehensive features, offline capable"
+    },
+    "pptx": {
+      "enabled": true,
+      "comment": "html2pptx PowerPoint generation - no MCP alternative"
+    },
+    "docx": {
+      "enabled": true,
+      "comment": "Local Word document creation - use when offline or advanced features needed. Google Docs MCP is primary for cloud collaboration."
+    },
+    "xlsx": {
+      "enabled": true,
+      "comment": "Local Excel spreadsheet creation - use when offline or advanced features needed. Google Sheets MCP is primary for cloud collaboration."
+    },
     "context7": {
       "enabled": true
     }

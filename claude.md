@@ -447,6 +447,62 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ---
 
+## 📋 Tool Governance
+
+**Comprehensive governance framework** to ensure consistent tool/MCP/skill usage across all 37 agents and prevent redundant tool creation.
+
+### Governance Files
+
+**Core Documentation:**
+- **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete inventory: 19 custom tools + 7 MCP servers + 18 skills (with priority order for every capability)
+- **[TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)** - Hierarchy of authority: MCP → Skill → Custom Tool → Create New
+- **[PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)** - Mandatory workflow before creating/declaring/using tools or skills
+- **[AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md)** - Skill declaration rules, priority documentation requirements, deprecation markers
+
+**Auditing & Cleanup:**
+- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow (security-auditor responsibility)
+- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - 5-step deprecation process (30-day archive timeline)
+- **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking (16 metrics for tool health, skill health, governance processes, conflict resolution)
+
+### Quick Reference: Priority Hierarchy
+
+When executing tasks, agents follow this priority:
+
+1. **MCP Servers** (FIRST) - Use google-workspace for Gmail/Drive, perplexity for research, bright-data for scraping, playwright for browser automation
+2. **Skills** (SECOND) - Use when MCP unavailable OR skill is purpose-built (pptx, pdf, canvas-design, flow-diagram)
+3. **Custom Tools** (THIRD) - Use only for MCP gap-fillers (binary uploads, attachments, GPT-4o images, Sora videos, multi-clip stitching)
+4. **Create New Tool** (LAST RESORT) - Must complete pre-flight checklist
+
+### Critical Rules
+
+⚠️ **Skill Declaration Rule:** Agents MUST verify skill is enabled in `.claude/settings.json` before declaring in YAML frontmatter
+
+⚠️ **Document Skills Status:**
+- ✅ **ENABLED:** pdf (pypdf - comprehensive), pptx (html2pptx - no MCP alternative)
+- ❌ **DISABLED:** docx (use Google Docs MCP), xlsx (use Google Sheets MCP)
+
+⚠️ **Priority Documentation:** Agents with dual capabilities (skill + MCP) MUST document which to use first in their instructions
+
+⚠️ **No Orphaned Tools:** Tools with zero agent declarations are deprecated and archived within 30 days
+
+### For AI Assistants
+
+**Before creating ANY tool:**
+1. Read [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Complete inventory of 19 tools + 7 MCPs + 18 skills
+2. Check [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Mandatory 4-step verification workflow
+3. Follow [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md) - Priority hierarchy (MCP → Skill → Custom → New)
+4. Document in registry after creation
+
+**Before declaring a skill:**
+1. Verify skill exists in `.claude/skills/` folder
+2. Verify skill is enabled in team `.claude/settings.json`
+3. Check [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) Section 1.2 for enablement status
+4. Test skill works before adding to agent YAML
+
+**Quarterly governance audits:** Security-auditor runs [TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md) every 3 months to detect configuration mismatches, orphaned tools, and priority documentation gaps
+
+---
+
 ## 🎨 Skills & Advanced Capabilities
 
 All **17 MARKETING_TEAM agents** have access to **18 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations.

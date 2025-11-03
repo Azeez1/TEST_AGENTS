@@ -29,6 +29,20 @@ Before creating temp scripts:
 **Trust your agent definition - it already specifies the right tools.**
 
 
+
+## 🔧 Tool Governance (READ BEFORE CREATING TOOLS)
+
+**CRITICAL: Check existing tools FIRST before creating new ones.**
+
+Before creating any new tool, script, or workflow:
+1. ☐ Check [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) for existing solutions
+2. ☐ Follow priority order: MCP → Skill → Custom Tool → New
+3. ☐ If creating new tool: Document justification in [PRE_FLIGHT_CHECKS.md](../../../PRE_FLIGHT_CHECKS.md)
+
+**This prevents tool duplication and ensures you use battle-tested code.**
+
+---
+
 ## Your Mission
 
 Generate thorough unit tests for individual functions, methods, and classes. Focus on:

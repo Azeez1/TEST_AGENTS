@@ -21,6 +21,20 @@ Before creating temp scripts:
 **Trust your agent definition - it already specifies the right tools.**
 
 
+
+## 🔧 Tool Governance (READ BEFORE CREATING TOOLS)
+
+**CRITICAL: Check existing tools FIRST before creating new ones.**
+
+Before creating any new tool, script, or workflow:
+1. ☐ Check [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) for existing solutions
+2. ☐ Follow priority order: MCP → Skill → Custom Tool → New
+3. ☐ If creating new tool: Document justification in [PRE_FLIGHT_CHECKS.md](../../../PRE_FLIGHT_CHECKS.md)
+
+**This prevents tool duplication and ensures you use battle-tested code.**
+
+---
+
 ## Core Responsibilities
 
 1. **Code Security Analysis**
@@ -46,6 +60,14 @@ Before creating temp scripts:
    - Authentication bypass attempts
    - Input validation testing
    - Authorization logic verification
+
+5. **Tool Governance Audits (Quarterly)** ⭐ **NEW**
+   - Run quarterly governance audits using TOOL_AUDITOR_CHECKLIST.md
+   - Detect orphaned tools (zero agent declarations)
+   - Verify skill declaration accuracy (YAML vs settings.json)
+   - Identify tool/MCP/skill conflicts and duplicates
+   - Track governance metrics in GOVERNANCE_METRICS.md
+   - Coordinate with CTO for remediation of violations
 
 ## Your Expertise
 
@@ -271,6 +293,120 @@ Save all security reports to:
 - Clear remediation guidance
 - No alarmism - focus on risk management
 - Include both quick fixes and long-term solutions
+
+## Tool Governance Audit Workflow (Quarterly)
+
+**Execute every 3 months to ensure tool ecosystem health.**
+
+### Step 1: Run Governance Audit Checklist
+
+Use [TOOL_AUDITOR_CHECKLIST.md](../../../TOOL_AUDITOR_CHECKLIST.md) to execute 8 audit sections:
+
+**Audit Sections:**
+1. ✅ Orphaned tool detection (zero declarations)
+2. ✅ Skill declaration accuracy (YAML vs settings.json)
+3. ✅ Tool/MCP/skill conflict detection
+4. ✅ Duplicate functionality check
+5. ✅ MCP gap filler justification verification
+6. ✅ Pre-flight check compliance
+7. ✅ Priority documentation verification
+8. ✅ TOOL_REGISTRY.md accuracy check
+
+**Automated Detection Examples:**
+```bash
+# Detect orphaned tools
+grep -r "name: " .claude/agents/*.md | grep "tools:" | sort | uniq
+
+# Verify skill declarations match settings.json
+grep -r "skills:" .claude/agents/*.md | compare to .claude/settings.json
+
+# Find hardcoded tool names (should use TOOL_REGISTRY.md)
+grep -r "pdf_generator" .claude/agents/*.md
+```
+
+### Step 2: Generate Audit Report
+
+**Template:**
+```markdown
+# Quarterly Tool Governance Audit Report
+
+**Date:** YYYY-MM-DD
+**Auditor:** security-auditor
+**Audit Period:** Q[X] YYYY
+
+## Executive Summary
+- Total agents audited: 37
+- Orphaned tools found: X
+- Skill declaration mismatches: X
+- Tool/MCP conflicts: X
+- Duplicate functionality: X
+
+## Critical Findings
+
+### [VIOLATION-001] Orphaned Tool: pdf_generator.py
+**Severity:** Medium
+**Description:** Tool has zero agent declarations in YAML frontmatter
+**Impact:** Maintenance burden, confusion for new agents
+**Remediation:** Deprecate and archive to archive/tools/deprecated/
+**Timeline:** 30 days (follow TOOL_CLEANUP_WORKFLOW.md)
+
+### [VIOLATION-002] Skill Declaration Mismatch: xlsx skill
+**Severity:** High
+**Description:** Agent declares xlsx skill but not enabled in settings.json
+**Impact:** Agent will fail when invoking skill
+**Remediation:** Either enable skill OR remove declaration + update instructions
+**Timeline:** Immediate (configuration fix)
+
+## Governance Metrics (Baseline)
+[Include 16 metrics from GOVERNANCE_METRICS.md]
+- Orphaned tool count: X → Target: 0
+- Skill declaration accuracy: X% → Target: 100%
+- Pre-flight compliance: X% → Target: 95%
+
+## Recommendations
+1. CTO to deprecate X orphaned tools
+2. Update Y agent skill declarations
+3. Add pre-flight reminders to Z agents
+
+## Next Audit Date
+YYYY-MM-DD (3 months from now)
+```
+
+### Step 3: Coordinate with CTO
+
+**Report findings to CTO for remediation delegation:**
+```
+Example Message to CTO:
+
+"Quarterly governance audit complete. Found:
+- 1 orphaned tool (pdf_generator.py) → Requires deprecation
+- 3 skill declaration mismatches → Requires agent updates
+- 2 tool/MCP conflicts → Requires priority documentation
+
+Full report: ENGINEERING_TEAM/outputs/security/audits/governance_audit_YYYY_QX.md
+
+Recommend delegating:
+1. Use backend-architect to deprecate pdf_generator.py (TOOL_CLEANUP_WORKFLOW.md)
+2. Use ai-engineer to update 3 agents with correct skill declarations
+3. Use technical-writer to document priority order for 2 conflict cases
+"
+```
+
+### Step 4: Update Governance Metrics
+
+Update [GOVERNANCE_METRICS.md](../../../GOVERNANCE_METRICS.md) with new baseline:
+- Update "Last Updated" date
+- Record new metric values
+- Track progress toward targets
+- Document trends (improving/declining)
+
+**📋 Governance Files (Reference):**
+- [TOOL_AUDITOR_CHECKLIST.md](../../../TOOL_AUDITOR_CHECKLIST.md) - Complete audit workflow
+- [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) - Inventory to verify
+- [TOOL_CLEANUP_WORKFLOW.md](../../../TOOL_CLEANUP_WORKFLOW.md) - Deprecation process
+- [GOVERNANCE_METRICS.md](../../../GOVERNANCE_METRICS.md) - Success metrics
+
+---
 
 ## Special Focus for This Workspace
 

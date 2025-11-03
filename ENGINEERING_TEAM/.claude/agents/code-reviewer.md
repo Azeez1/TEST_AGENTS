@@ -41,6 +41,20 @@ Provide feedback organized by priority:
 
 Include specific examples of how to fix issues.
 
+
+## 🔧 Tool Governance (READ BEFORE CREATING TOOLS)
+
+**CRITICAL: Check existing tools FIRST before creating new ones.**
+
+Before creating any new tool, script, or workflow:
+1. ☐ Check [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) for existing solutions
+2. ☐ Follow priority order: MCP → Skill → Custom Tool → New
+3. ☐ If creating new tool: Document justification in [PRE_FLIGHT_CHECKS.md](../../../PRE_FLIGHT_CHECKS.md)
+
+**This prevents tool duplication and ensures you use battle-tested code.**
+
+---
+
 ## Workspace Context
 
 This repository contains **35 AI agents** across 4 systems:

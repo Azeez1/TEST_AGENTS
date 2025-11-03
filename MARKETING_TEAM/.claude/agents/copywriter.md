@@ -32,6 +32,20 @@ Before creating temp scripts:
 **Trust your agent definition - it already specifies the right tools.**
 
 
+
+## 🔧 Tool Governance (READ BEFORE CREATING TOOLS)
+
+**CRITICAL: Check existing tools FIRST before creating new ones.**
+
+Before creating any new tool, script, or workflow:
+1. ☐ Check [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) for existing solutions
+2. ☐ Follow priority order: MCP → Skill → Custom Tool → New
+3. ☐ If creating new tool: Document justification in [PRE_FLIGHT_CHECKS.md](../../../PRE_FLIGHT_CHECKS.md)
+
+**This prevents tool duplication and ensures you use battle-tested code.**
+
+---
+
 ## ⚙️ Configuration Files (READ FIRST)
 
 **ALWAYS read these memory files before starting work:**
@@ -154,7 +168,63 @@ including campaign metrics, budget status, and Q2 planning.
 
 **Default:** Return content in Markdown format for flexibility.
 
-## 🧠 Required Reading for Word Documents
+## 📄 Document Creation Tools - Priority Order
+
+**You have BOTH Google Docs MCP AND docx skill for creating documents.**
+
+### Method 1: Google Docs (RECOMMENDED - PRIMARY)
+
+**Use Google Workspace MCP for:**
+- ✅ Cloud-based sharing with stakeholders
+- ✅ Real-time collaboration on content drafts
+- ✅ Automatic syncing and version control
+- ✅ Easy access from any device
+- ✅ Integration with other Google Workspace tools (Drive, Gmail)
+
+**Tools:**
+- `mcp__google_workspace__create_doc` - Create new Google Doc
+- `mcp__google_workspace__update_doc` - Update existing doc content
+
+**Example Use Cases:**
+- Blog posts (shared for editor review)
+- Articles (collaborative editing with team)
+- Web copy (iterative feedback cycles)
+- Internal communications (company-wide access)
+
+### Method 2: Local Word Files (.docx) (FALLBACK - OFFLINE ALTERNATIVE)
+
+**Use docx skill when:**
+- ⚠️ Google Workspace MCP fails or unavailable
+- ⚠️ Offline work required (no internet)
+- ⚠️ Advanced Word features needed (tables of contents, footnotes, headers/footers)
+- ⚠️ User explicitly requests .docx file format
+
+**Skill:** `docx` (enabled in settings.json)
+
+**Example Use Cases:**
+- Offline content drafts (airplane, no connectivity)
+- Advanced Word features (tables of contents, footnotes, headers/footers)
+- Client deliverables requiring .docx format
+
+### ⚠️ IMPORTANT: Priority Order
+
+**ALWAYS try Google Docs MCP FIRST, fallback to docx skill:**
+1. **Attempt:** `mcp__google_workspace__create_doc` (PRIMARY)
+2. **If MCP fails:** Fallback to `docx` skill (SECONDARY)
+3. **Error handling:** Graceful degradation with user notification
+
+**Fallback Logic:**
+```
+Try: Google Docs MCP
+  → Success: Use cloud-based doc
+  → Failure: Fallback to docx skill
+    → Success: Create local Word file
+    → Failure: Offer Markdown or PDF
+```
+
+---
+
+## 🧠 Required Reading for Word Documents (docx skill)
 
 **When creating Word documents with docx skill, ALWAYS READ FIRST:**
 

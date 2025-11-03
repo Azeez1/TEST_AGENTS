@@ -36,6 +36,20 @@ Before creating temp scripts:
 **Trust your agent definition - it already specifies the right tools.**
 
 
+
+## 🔧 Tool Governance (READ BEFORE CREATING TOOLS)
+
+**CRITICAL: Check existing tools FIRST before creating new ones.**
+
+Before creating any new tool, script, or workflow:
+1. ☐ Check [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) for existing solutions
+2. ☐ Follow priority order: MCP → Skill → Custom Tool → New
+3. ☐ If creating new tool: Document justification in [PRE_FLIGHT_CHECKS.md](../../../PRE_FLIGHT_CHECKS.md)
+
+**This prevents tool duplication and ensures you use battle-tested code.**
+
+---
+
 ## ⚙️ Configuration
 
 **ALWAYS read memory/google_drive_config.json first** to get upload folder location.
@@ -205,6 +219,61 @@ FitGear Pro, Shopify, fitgearpro.com, Fitness Equipment, contact@fitgearpro.com,
 - Tier 2 (Warm Lead): 5-7 points - Most criteria met
 - Tier 3 (Cold Lead): 3-4 points - Basic info only
 - Tier 4 (Disqualified): <3 points - Missing key criteria
+
+---
+
+## 📊 Lead Export Tools - Priority Order
+
+**You have BOTH Google Sheets MCP AND xlsx skill for exporting leads.**
+
+### Method 1: Google Sheets (RECOMMENDED - PRIMARY)
+
+**Use Google Workspace MCP for:**
+- ✅ Cloud-based sharing with sales teams
+- ✅ Real-time lead list updates
+- ✅ Automatic syncing with CRM integrations
+- ✅ Easy access from any device
+- ✅ Collaboration on lead qualification
+
+**Tools:**
+- `mcp__google-workspace__create_spreadsheet` - Create new lead list
+- `mcp__google-workspace__modify_sheet_values` - Add discovered leads
+
+**Example Use Cases:**
+- B2B lead lists (shared with sales team)
+- Local business directories (real-time updates)
+- Competitive intelligence reports (collaborative qualification)
+
+### Method 2: Local Excel Files (FALLBACK - OFFLINE ALTERNATIVE)
+
+**Use xlsx skill when:**
+- ⚠️ Google Workspace MCP fails or unavailable
+- ⚠️ Offline work required (no internet)
+- ⚠️ Advanced Excel features needed (lead scoring formulas, conditional formatting, pivot tables)
+- ⚠️ User explicitly requests .xlsx file format for CRM import
+
+**Skill:** `xlsx` (enabled in settings.json)
+
+**Example Use Cases:**
+- Offline lead databases (airplane, no connectivity)
+- Advanced Excel features (lead scoring formulas, conditional formatting, pivot tables)
+- CRM import files requiring .xlsx format
+
+### ⚠️ IMPORTANT: Priority Order
+
+**ALWAYS try Google Sheets MCP FIRST, fallback to xlsx skill:**
+1. **Attempt:** `mcp__google-workspace__create_spreadsheet` (PRIMARY)
+2. **If MCP fails:** Fallback to `xlsx` skill (SECONDARY)
+3. **Error handling:** Graceful degradation with user notification
+
+**Fallback Logic:**
+```
+Try: Google Sheets MCP
+  → Success: Use cloud-based sheet
+  → Failure: Fallback to xlsx skill
+    → Success: Create local Excel file
+    → Failure: Offer CSV export
+```
 
 ---
 

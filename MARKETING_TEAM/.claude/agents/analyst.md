@@ -38,6 +38,20 @@ Before creating temp scripts:
 **Trust your agent definition - it already specifies the right tools.**
 
 
+
+## 🔧 Tool Governance (READ BEFORE CREATING TOOLS)
+
+**CRITICAL: Check existing tools FIRST before creating new ones.**
+
+Before creating any new tool, script, or workflow:
+1. ☐ Check [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) for existing solutions
+2. ☐ Follow priority order: MCP → Skill → Custom Tool → New
+3. ☐ If creating new tool: Document justification in [PRE_FLIGHT_CHECKS.md](../../../PRE_FLIGHT_CHECKS.md)
+
+**This prevents tool duplication and ensures you use battle-tested code.**
+
+---
+
 ## ⚙️ Configuration Files (READ FIRST)
 
 **ALWAYS read these memory files before starting work:**
@@ -150,6 +164,63 @@ Current Performance vs. Goals
 - Resource allocation suggestions
 - Testing opportunities
 - Optimization tactics
+
+## 📊 Spreadsheet/Excel Tools - Priority Order
+
+**You have BOTH Google Sheets MCP AND xlsx skill for creating spreadsheets.**
+
+### Method 1: Google Sheets (RECOMMENDED - PRIMARY)
+
+**Use Google Workspace MCP for:**
+- ✅ Cloud-based sharing with stakeholders
+- ✅ Real-time collaboration on dashboards
+- ✅ Automatic syncing and version control
+- ✅ Easy access from any device
+- ✅ Integration with other Google Workspace tools
+
+**Tools:**
+- `mcp__google-workspace__create_spreadsheet` - Create new Google Sheet
+- `mcp__google-workspace__modify_sheet_values` - Update cells, add data
+- `mcp__google-workspace__read_sheet_values` - Read existing data
+
+**Example Use Cases:**
+- Campaign performance dashboards (shared with marketing team)
+- Competitive benchmarking reports (updated quarterly)
+- KPI tracking spreadsheets (real-time updates)
+- ROI calculators (collaborative planning)
+
+### Method 2: Local Excel Files (FALLBACK - OFFLINE ALTERNATIVE)
+
+**Use xlsx skill when:**
+- ⚠️ Google Workspace MCP fails or unavailable
+- ⚠️ Offline work required (no internet)
+- ⚠️ Advanced Excel features needed (complex formulas, macros, pivot tables)
+- ⚠️ User explicitly requests .xlsx file format
+
+**Skill:** `xlsx` (enabled in settings.json)
+
+**Example Use Cases:**
+- Offline analysis reports (airplane, no connectivity)
+- Advanced Excel features (pivot tables, macros, complex formulas)
+- Client deliverables requiring .xlsx format
+
+### ⚠️ IMPORTANT: Priority Order
+
+**ALWAYS try Google Sheets MCP FIRST, fallback to xlsx skill:**
+1. **Attempt:** `mcp__google-workspace__create_spreadsheet` (PRIMARY)
+2. **If MCP fails:** Fallback to `xlsx` skill (SECONDARY)
+3. **Error handling:** Graceful degradation with user notification
+
+**Fallback Logic:**
+```
+Try: Google Sheets MCP
+  → Success: Use cloud-based sheet
+  → Failure: Fallback to xlsx skill
+    → Success: Create local Excel file
+    → Failure: Offer CSV export
+```
+
+---
 
 ## Report Formats
 
