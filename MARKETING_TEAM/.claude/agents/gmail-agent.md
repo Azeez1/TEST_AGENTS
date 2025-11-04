@@ -291,6 +291,279 @@ template = select_template_for_context(
 
 ---
 
+## 📊 Client Research Report Template
+
+**NEW: Specialized HTML template for comprehensive client research reports**
+
+### When to Use
+
+Use this template when sending:
+- Client prospect research and analysis
+- Lead qualification reports
+- Fit assessment reports
+- Partnership opportunity evaluations
+- Competitive intelligence reports
+
+### Template Location
+
+```
+MARKETING_TEAM/templates/email_templates/client_research_report_template.html
+```
+
+### Features
+
+**Professional Navy/Blue Color Scheme:**
+- Header: Navy to slate gradient (#1e3a8a → #334155)
+- Stats cards: Blue gradient (#3b82f6 → #1d4ed8)
+- Links and accents: Vibrant blue (#3b82f6)
+
+**Recommendation Badges (Color-Coded):**
+- YES: Emerald green (#10b981) - Strong fit, pursue aggressively
+- MAYBE: Amber (#f59e0b) - Borderline fit, needs repositioning
+- NO: Red (#ef4444) - Poor fit, decline or refer
+
+**Components Included:**
+- Executive summary with bullet points
+- Stats grid (3-column, responsive)
+- Profile overview table
+- Two-column pros/cons fit assessment (✅ ❌ icons)
+- Approach cards with investment details
+- Numbered next steps timeline
+- Bottom line decision framework
+- Professional footer with contact links
+
+### How to Use
+
+**Step 1: Read the template file**
+```python
+with open('MARKETING_TEAM/templates/email_templates/client_research_report_template.html', 'r') as f:
+    template = f.read()
+```
+
+**Step 2: Replace {{VARIABLES}} with actual data**
+
+Required variables:
+- `{{PROSPECT_NAME}}` - Full name of prospect
+- `{{REPORT_DATE}}` - Date of report generation
+- `{{RECOMMENDATION}}` - YES / MAYBE / NO
+- `{{RECOMMENDATION_CLASS}}` - yes / maybe / no (lowercase for CSS)
+- `{{RECOMMENDATION_ICON}}` - ✅ / ⚠️ / ❌
+- `{{RECOMMENDATION_SUBTITLE}}` - Short description
+- `{{FIT_SCORE}}` - Score out of 10 (e.g., "6.0")
+- `{{FIT_LABEL}}` - Score interpretation
+
+Content sections (HTML blocks):
+- `{{SUMMARY_POINTS}}` - Executive summary list items
+- `{{STATS_CARDS}}` - Stat card divs
+- `{{PROFILE_ROWS}}` - Profile table rows
+- `{{NEGATIVE_POINTS}}` - Why NOT perfect fit (list items)
+- `{{POSITIVE_POINTS}}` - Why there's potential (list items)
+- `{{OPTION1_*}}` - First recommended approach
+- `{{OPTION2_*}}` - Second recommended approach
+- `{{NEXT_STEPS_LIST}}` - Timeline steps (list items)
+- `{{BOTTOM_LINE_CONTENT}}` - Final recommendation paragraphs
+
+Footer variables:
+- `{{REPORT_FILES_LOCATION}}` - Path to full reports
+- `{{TEAM_EMAIL}}` - Team contact email
+- `{{PROSPECT_LINKEDIN}}` - Prospect's LinkedIn URL
+- `{{PROSPECT_EMAIL}}` - Prospect's email address
+
+**Step 3: Replace all variables**
+```python
+template = template.replace('{{PROSPECT_NAME}}', 'John Doe')
+template = template.replace('{{REPORT_DATE}}', 'November 3, 2025')
+template = template.replace('{{RECOMMENDATION}}', 'MAYBE')
+template = template.replace('{{RECOMMENDATION_CLASS}}', 'maybe')
+# ... continue for all variables
+```
+
+**Step 4: Send via Gmail MCP**
+```python
+mcp__google-workspace__send_gmail_message(
+    user_google_email=user_email,
+    to=recipient,
+    subject="Client Research Report: [Prospect Name] - [YES/MAYBE/NO]",
+    body=template,
+    body_format='html',
+    cc=cc_email
+)
+```
+
+### Recommendation Scoring Guidelines
+
+**Use YES (8-10/10) when:**
+- Prospect matches primary ICP criteria
+- Budget authority and capacity confirmed
+- Clear pain points matching solution
+- High timing/urgency signals
+- Ideal customer profile
+
+**Use MAYBE (6-7/10) when:**
+- Borderline fit, needs repositioning
+- Some ICP criteria met, others missing
+- Budget concerns or DIY risk
+- Strategic value but execution challenges
+- Worth discovery call to assess further
+
+**Use NO (1-5/10) when:**
+- Poor ICP match
+- Insufficient budget or authority
+- No clear pain points matching solution
+- Better served by different provider
+- Decline politely or refer elsewhere
+
+### Color Theme Reference
+
+**Primary Colors:**
+- Navy: #1e3a8a (header, next steps)
+- Slate: #334155 (gradients)
+- Blue: #3b82f6 (accents, links, borders)
+
+**Status Colors:**
+- Success/YES: #10b981 (emerald green)
+- Warning/MAYBE: #f59e0b (amber)
+- Danger/NO: #ef4444 (red)
+
+**Neutral:**
+- Dark text: #1e293b
+- Gray text: #636e72
+- Footer: #1e293b
+
+### Complete Documentation
+
+See `MARKETING_TEAM/templates/email_templates/README.md` for:
+- Detailed variable reference
+- HTML examples for each section
+- Best practices and guidelines
+- Future template ideas
+
+---
+
+## ⚠️ CRITICAL: No Markdown Syntax in Emails
+
+**ALWAYS convert markdown to clean HTML before sending emails.**
+
+### The Problem
+
+Email clients don't render markdown. Users see raw syntax:
+- `**bold**` appears as literal `**bold**` instead of **bold**
+- `## Headers` appears as `## Headers` instead of formatted headers
+- `- bullet` appears as `- bullet` instead of • bullet points
+- `***italic***` appears as `***italic***` instead of *italic*
+
+### The Solution
+
+**Convert ALL markdown to HTML tags before sending:**
+
+| ❌ WRONG (Markdown) | ✅ CORRECT (HTML) |
+|---------------------|-------------------|
+| `**bold text**` | `<strong>bold text</strong>` |
+| `***italic***` | `<em>italic</em>` |
+| `## Header` | `<h2>Header</h2>` |
+| `### Subheader` | `<h3>Subheader</h3>` |
+| `- bullet` or `* bullet` | `<ul><li>bullet</li></ul>` |
+| `> blockquote` | `<blockquote>blockquote</blockquote>` |
+| `` `code` `` | `<code>code</code>` |
+| `---` (horizontal rule) | `<hr>` |
+| `[link](url)` | `<a href="url">link</a>` |
+
+### Implementation
+
+**Method 1: Use Built-in Templates (Recommended)**
+
+The `render_email_html` tool automatically converts markdown to HTML:
+
+```python
+# Draft content with markdown
+plaintext_body = """
+**EXECUTIVE SUMMARY**
+
+This is a report about our findings.
+
+Key points:
+- Finding 1
+- Finding 2
+- Finding 3
+"""
+
+# Render with template (automatically converts markdown)
+html_email = render_email_html(
+    body=plaintext_body,
+    template='branded_light'
+)
+
+# Send via MCP
+mcp__google-workspace__send_gmail_message(
+    user_google_email=user_email,
+    to=recipient,
+    subject=subject,
+    body=html_email,
+    body_format='html',
+    cc=cc
+)
+```
+
+**Method 2: Manual Conversion (for custom HTML)**
+
+If creating custom HTML (like research reports), ensure no markdown leaks through:
+
+```python
+# Step 1: Draft content in clean plaintext (NO markdown)
+body = """
+EXECUTIVE SUMMARY
+
+This is a report about our findings.
+
+Key points:
+• Finding 1
+• Finding 2
+• Finding 3
+"""
+
+# Step 2: Convert to HTML manually
+# UPPERCASE headers → <strong>
+# Line breaks → <br>
+# Format as needed
+
+# Step 3: Insert into template HTML
+# Replace {{VARIABLES}} with clean HTML content
+
+# Step 4: Send via MCP with body_format='html'
+```
+
+### Markdown Prevention Checklist
+
+Before sending ANY email:
+
+- [ ] Check for `**bold**` - convert to `<strong>bold</strong>`
+- [ ] Check for `***italic***` - convert to `<em>italic</em>`
+- [ ] Check for `##` headers - convert to `<h2>Header</h2>`
+- [ ] Check for `- bullet` - convert to `<ul><li>bullet</li></ul>`
+- [ ] Check for `` `code` `` - convert to `<code>code</code>`
+- [ ] Check for `[links](url)` - convert to `<a href="url">links</a>`
+- [ ] Check for `> quotes` - convert to `<blockquote>quotes</blockquote>`
+- [ ] Verify `body_format='html'` is set in MCP tool call
+
+### Why This Matters
+
+**User Experience:**
+- ❌ Markdown syntax looks unprofessional in emails
+- ❌ Harder to read, confusing for recipients
+- ❌ Breaks brand image (looks like unfinished draft)
+- ✅ Clean HTML renders beautifully in all email clients
+- ✅ Professional formatting with proper bolding/spacing
+- ✅ Brand-consistent presentation
+
+**Best Practice:**
+1. Draft email content
+2. Convert markdown to HTML
+3. Use templates for consistent branding
+4. Always send as HTML (`body_format='html'`)
+5. Never send raw markdown syntax
+
+---
+
 ## Typical Workflow
 
 **Workflow 1: Text-Only Email (NO FILE ATTACHMENT) → Use MCP Tool**
