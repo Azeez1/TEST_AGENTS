@@ -14,6 +14,8 @@ import sys
 import os
 import asyncio
 import json
+import mimetypes
+import traceback
 from pathlib import Path
 
 # CRITICAL: Load environment variables FIRST (before any OpenAI/Google imports)
@@ -26,6 +28,14 @@ from openai import AsyncOpenAI
 import httpx
 import base64
 
+# Google Gen AI imports for Veo 3.1 and Nano Banana
+try:
+    from google import genai
+    from google.genai import types
+    GOOGLE_GENAI_AVAILABLE = True
+except ImportError:
+    GOOGLE_GENAI_AVAILABLE = False
+
 # Google Drive imports (optional - graceful degradation if not configured)
 try:
     from google.oauth2.credentials import Credentials
@@ -37,6 +47,9 @@ try:
     GOOGLE_DRIVE_AVAILABLE = True
 except ImportError:
     GOOGLE_DRIVE_AVAILABLE = False
+
+# Global variable to cache the last Nano Banana image for Veo 3.1
+_last_generated_image = None
 
 # MCP Server imports
 from mcp.server import Server
@@ -114,7 +127,7 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
                 image_data = image_response.content
 
         # Save locally
-        output_dir = Path("MARKETING_TEAM/outputs/images")
+        output_dir = Path("outputs/images")
         output_dir.mkdir(parents=True, exist_ok=True)
         output_path = output_dir / f"{filename}.png"
 
@@ -246,7 +259,7 @@ async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, f
             await _poll_for_video_completion(http_client, headers, video_id)
 
             # Step 3: Download video
-            output_dir = Path("MARKETING_TEAM/outputs/videos")
+            output_dir = Path("outputs/videos")
             output_dir.mkdir(parents=True, exist_ok=True)
 
             if not filename.endswith('.mp4'):
@@ -289,6 +302,580 @@ async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, f
 
 # Removed upload_file_to_drive_mcp - Use google-workspace MCP instead:
 # mcp__google-workspace__create_drive_file
+
+
+async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filename: str) -> list[TextContent]:
+    """
+    Generate image using Nano Banana (Gemini 2.5 Flash Image)
+
+    Model: gemini-2.5-flash-image
+    Pricing: $0.039 per image ($30/1M tokens, 1290 tokens/image)
+
+    Optimized for creating product images for Veo 3.1 image-to-video conversion.
+    Excellent character consistency across multiple images.
+    """
+
+    if not GOOGLE_GENAI_AVAILABLE:
+        return [TextContent(
+            type="text",
+            text="❌ Error: google-genai package not installed.\n\nRun: pip install google-genai"
+        )]
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="❌ Error: GEMINI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file."
+        )]
+
+    try:
+        # Initialize Gemini client
+        client = genai.Client(api_key=api_key)
+
+        # Generate image
+        print(f"🎨 Generating Nano Banana image ({aspect_ratio})...", file=sys.stderr)
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-image",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_modalities=["IMAGE"],
+                image_config=types.ImageConfig(aspect_ratio=aspect_ratio)
+            )
+        )
+
+        # Extract the Image object from the response (THIS is what Veo 3.1 needs!)
+        image_part = response.candidates[0].content.parts[0]
+
+        # Also save to disk for user reference
+        image_data = image_part.inline_data.data
+        output_dir = Path("outputs/images")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not filename.endswith('.png'):
+            filename = f"{filename}.png"
+        output_path = output_dir / filename
+
+        # Decode base64 if needed
+        if isinstance(image_data, str):
+            image_bytes = base64.b64decode(image_data)
+        else:
+            image_bytes = image_data
+
+        with open(output_path, "wb") as f:
+            f.write(image_bytes)
+
+        # Store the Image Part globally so Veo can use it
+        # For Nano Banana (Gemini Flash Image), the Part is at response.candidates[0].content.parts[0]
+        global _last_generated_image
+        _last_generated_image = image_part
+
+        result_text = (
+            f"✅ Product Image Generated!\n\n"
+            f"**Model:** gemini-2.5-flash-image (Nano Banana)\n"
+            f"**Aspect ratio:** {aspect_ratio}\n"
+            f"**Cost:** $0.039\n\n"
+            f"**Saved to:** {str(output_path)}\n\n"
+            f"✨ This image is optimized for Veo 3.1 image-to-video conversion.\n"
+            f"✨ Image object cached in memory for immediate Veo 3.1 use.\n\n"
+            f"**Next step:** Use generate_veo_ugc_from_nano_banana to create UGC ad video"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error generating Nano Banana image: {str(e)}"
+        )]
+
+
+async def generate_veo_text_to_video_mcp(prompt: str, seconds: str, orientation: str, resolution: str, filename: str, negative_prompt: str = None) -> list[TextContent]:
+    """
+    Generate video from text using Veo 3.1
+
+    Model: veo-3.1-generate-preview
+    Pricing: $0.75 per second
+    Supports dialogue cues, sound effects, ambient audio in prompts
+    """
+
+    if not GOOGLE_GENAI_AVAILABLE:
+        return [TextContent(
+            type="text",
+            text="❌ Error: google-genai package not installed.\n\nRun: pip install google-genai"
+        )]
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="❌ Error: GEMINI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file."
+        )]
+
+    # Validate seconds
+    valid_seconds = ["4", "6", "8"]
+    if seconds not in valid_seconds:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: seconds must be one of {valid_seconds}. Got: {seconds}"
+        )]
+
+    # Map orientation to aspect ratio
+    aspect_ratio = "9:16" if orientation == "portrait" else "16:9"
+
+    # Calculate cost
+    cost = float(seconds) * 0.75
+
+    try:
+        # Initialize Gemini client
+        client = genai.Client(api_key=api_key)
+
+        print(f"🎬 Starting Veo 3.1 text-to-video generation...", file=sys.stderr)
+        print(f"   Duration: {seconds}s | Resolution: {resolution} | Aspect: {aspect_ratio}", file=sys.stderr)
+
+        # Build config
+        config = types.GenerateVideosConfig(
+            aspect_ratio=aspect_ratio,
+            resolution=resolution,
+            duration_seconds=int(seconds),
+            person_generation="allow_all"  # For text-to-video
+        )
+
+        if negative_prompt:
+            config.negative_prompt = negative_prompt
+
+        # Start generation
+        operation = client.models.generate_videos(
+            model="veo-3.1-generate-preview",
+            prompt=prompt,
+            config=config
+        )
+
+        # Poll for completion
+        print("⏳ Video generating (this takes 11s - 6 minutes)...", file=sys.stderr)
+        poll_count = 0
+
+        while not operation.done:
+            await asyncio.sleep(10)
+            operation = client.operations.get(operation)
+            poll_count += 1
+            if poll_count % 6 == 0:
+                print(f"   Still generating... ({poll_count * 10}s elapsed)", file=sys.stderr)
+
+        # Check if blocked by safety
+        if not hasattr(operation.response, 'generated_videos') or not operation.response.generated_videos:
+            return [TextContent(
+                type="text",
+                text="❌ Video generation blocked by safety filters (no charge)"
+            )]
+
+        # Get video
+        video = operation.response.generated_videos[0]
+
+        # Download video
+        client.files.download(file=video.video)
+
+        # Save to outputs
+        output_dir = Path("outputs/videos")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not filename.endswith('.mp4'):
+            filename = f"{filename}.mp4"
+        output_path = output_dir / filename
+
+        video.video.save(str(output_path))
+
+        result_text = (
+            f"✅ Veo 3.1 Video Generated!\n\n"
+            f"**Model:** veo-3.1-generate-preview\n"
+            f"**Duration:** {seconds} seconds\n"
+            f"**Cost:** ${cost:.2f}\n"
+            f"**Resolution:** {resolution} {aspect_ratio}\n"
+            f"**Audio:** Native audio included\n"
+            f"**Generation time:** {poll_count * 10}s\n\n"
+            f"**Saved to:** {output_path}\n\n"
+            f"Next: Upload to Google Drive or review video"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: {str(e)}\n\nNote: You are not charged if video blocked by safety filters"
+        )]
+
+
+async def generate_veo_ugc_from_image_mcp(image_path: str, ugc_style: str, platform: str, seconds: str, product_name: str, filename: str, custom_prompt: str = None) -> list[TextContent]:
+    """
+    Generate UGC-style ad video from product image using Veo 3.1 image-to-video
+
+    PRIMARY TOOL for UGC ad creation.
+    Veo 3.1 required because: image-to-video, native audio, superior UGC styling
+
+    UGC Styles: testimonial, demo, unboxing, lifestyle
+    Platforms: tiktok, instagram, facebook
+    """
+
+    if not GOOGLE_GENAI_AVAILABLE:
+        return [TextContent(
+            type="text",
+            text="❌ Error: google-genai package not installed.\n\nRun: pip install google-genai"
+        )]
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="❌ Error: GEMINI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file."
+        )]
+
+    # UGC prompt templates with audio cues
+    UGC_TEMPLATES = {
+        "testimonial": {
+            "tiktok": f"""Authentic selfie video, person excitedly talking to camera about {product_name},
+holding product naturally with genuine enthusiasm. 'This changed my morning routine!'
+Casual clothes, natural home lighting, slight handheld camera shake.
+Native audio: person speaking naturally with enthusiasm, ambient home sounds.""",
+
+            "instagram": f"""Person holding {product_name} in golden hour natural lighting,
+talking to camera casually with genuine excitement. 'I've been using this every day.'
+Authentic testimonial style, real emotions, handheld phone aesthetic.
+Native audio: clear dialogue, warm tone, ambient sounds.""",
+
+            "facebook": f"""Authentic customer testimonial, person with {product_name} in natural home setting,
+conversational tone sharing real experience. 'It actually works, here's why...'
+Genuine reactions, casual environment. Native audio: friendly conversational dialogue."""
+        },
+        "demo": {
+            "tiktok": f"""Quick hands-on demo, person using {product_name}, showing key feature with enthusiasm.
+Fast-paced, natural environment, handheld phone camera. Sound effects: product use sounds,
+quick verbal callouts 'Watch this!' Authentic interaction.""",
+
+            "instagram": f"""Casual demonstration of {product_name}, hands showing product use in natural lighting,
+real-time application. Authentic interaction, phone-filmed aesthetic.
+Native audio: ambient sounds, brief verbal cues, product interaction sounds.""",
+
+            "facebook": f"""Real user demonstrating {product_name} benefits, natural home setting,
+hands showing product with genuine reactions. 'Let me show you how this works.'
+Native audio: clear explanation, ambient home sounds."""
+        },
+        "unboxing": {
+            "tiktok": f"""Excited unboxing of {product_name}, hands opening package with genuine surprise.
+'Oh wow!' Fast-paced reveal, natural lighting, phone camera.
+Sound effects: package rustling, tape pulling, excited verbal reactions.""",
+
+            "instagram": f"""Unboxing {product_name} with authentic first reactions, natural lighting,
+handheld camera following hands. 'This looks amazing!' Genuine excitement.
+Native audio: package sounds, spontaneous reactions, ambient room noise.""",
+
+            "facebook": f"""Unboxing experience with {product_name}, casual home setting, genuine first impressions.
+'Let's see what's inside!' Natural reactions. Native audio: package opening sounds,
+authentic commentary."""
+        },
+        "lifestyle": {
+            "tiktok": f"""Person casually using {product_name} in morning routine, natural home environment,
+authentic lifestyle integration. Handheld camera, natural movement.
+Native audio: ambient morning sounds, brief casual comments.""",
+
+            "instagram": f"""Everyday moment with {product_name}, natural setting showing real-life usage,
+casual authentic vibe, gentle camera movement. Native audio: ambient sounds,
+natural environment audio.""",
+
+            "facebook": f"""{product_name} integrated into daily life, natural home environment,
+real everyday use showing product naturally. Native audio: ambient home sounds,
+brief natural commentary."""
+        }
+    }
+
+    # Platform settings
+    platform_config = {
+        "tiktok": {"aspect_ratio": "9:16", "resolution": "720p"},
+        "instagram": {"aspect_ratio": "9:16", "resolution": "720p"},
+        "facebook": {"aspect_ratio": "16:9", "resolution": "1080p" if seconds == "8" else "720p"}
+    }
+
+    config_settings = platform_config.get(platform, {"aspect_ratio": "9:16", "resolution": "720p"})
+    cost = float(seconds) * 0.75
+
+    try:
+        # Load image file
+        if not Path(image_path).exists():
+            return [TextContent(
+                type="text",
+                text=f"❌ Error: Image not found at {image_path}"
+            )]
+
+        # Initialize client
+        client = genai.Client(api_key=api_key)
+
+        # Upload image file to get File object (required for reference images from disk)
+        print(f"🖼️  Uploading reference image: {image_path}", file=sys.stderr)
+
+        # Determine mime type
+        mime_type, _ = mimetypes.guess_type(image_path)
+        if not mime_type:
+            mime_type = "image/png"
+
+        # Read image bytes
+        with open(image_path, "rb") as f:
+            image_bytes = f.read()
+
+        print(f"✅ Image loaded ({len(image_bytes)} bytes)", file=sys.stderr)
+
+        # Get prompt
+        final_prompt = custom_prompt if custom_prompt else UGC_TEMPLATES[ugc_style][platform]
+
+        print(f"🎬 Starting Veo 3.1 image-to-video UGC generation...", file=sys.stderr)
+        print(f"   Style: {ugc_style} | Platform: {platform} | Duration: {seconds}s", file=sys.stderr)
+
+        # Create image parameter using correct Google GenAI format (imageBytes in camelCase)
+        image_param = types.Image(
+            imageBytes=image_bytes,
+            mimeType=mime_type
+        )
+
+        # Generate video with image as first frame (image-to-video animation)
+        operation = client.models.generate_videos(
+            model="veo-3.1-generate-preview",
+            prompt=final_prompt,
+            image=image_param,  # types.Image with imageBytes field
+            config=types.GenerateVideosConfig(
+                aspect_ratio=config_settings["aspect_ratio"],
+                resolution=config_settings["resolution"],
+                duration_seconds=int(seconds),
+                person_generation="allow_adult"  # For image-to-video
+            )
+        )
+
+        # Poll for completion
+        print("⏳ Video generating (1-6 minutes for image-to-video)...", file=sys.stderr)
+        poll_count = 0
+
+        while not operation.done:
+            await asyncio.sleep(10)
+            operation = client.operations.get(operation)
+            poll_count += 1
+            if poll_count % 6 == 0:
+                print(f"   Still generating... ({poll_count * 10}s elapsed)", file=sys.stderr)
+
+        # Check result
+        if not hasattr(operation.response, 'generated_videos') or not operation.response.generated_videos:
+            return [TextContent(
+                type="text",
+                text="❌ Video generation blocked by safety filters (no charge)"
+            )]
+
+        # Download and save
+        video = operation.response.generated_videos[0]
+        client.files.download(file=video.video)
+
+        # Use absolute path from the script location
+        script_dir = Path(__file__).parent.parent  # MARKETING_TEAM folder
+        output_dir = script_dir / "outputs" / "videos"
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not filename.endswith('.mp4'):
+            filename = f"{filename}.mp4"
+        output_path = output_dir / filename
+
+        video.video.save(str(output_path))
+
+        result_text = (
+            f"✅ UGC Video Generated Successfully!\n\n"
+            f"**Model:** veo-3.1-generate-preview\n"
+            f"**Style:** {ugc_style} ({platform} optimized)\n"
+            f"**Duration:** {seconds} seconds\n"
+            f"**Cost:** ${cost:.2f} (Veo 3.1)\n"
+            f"**Resolution:** {config_settings['resolution']} {config_settings['aspect_ratio']}\n"
+            f"**Audio:** Native dialogue + sound effects + ambient\n"
+            f"**Generation time:** {poll_count * 10}s\n\n"
+            f"**Saved to:** {output_path}\n\n"
+            f"✨ UGC Characteristics:\n"
+            f"- Handheld camera aesthetic\n"
+            f"- Natural lighting and setting\n"
+            f"- Authentic reactions and dialogue\n"
+            f"- Native audio (not added post)\n\n"
+            f"Next: Review video, upload to Google Drive, test on {platform}"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: {str(e)}"
+        )]
+
+
+@app.call_tool()
+async def generate_veo_ugc_from_nano_banana(
+    ugc_style: str,
+    platform: str,
+    seconds: str,
+    product_name: str,
+    filename: str
+) -> list[TextContent]:
+    """
+    Generate UGC video ad using cached Nano Banana image + Veo 3.1
+
+    THIS IS THE CORRECT WORKFLOW:
+    1. First call generate_nano_banana_image_mcp to create product image
+    2. Then immediately call this function to convert to UGC video
+    3. The image Part object is passed directly from Nano Banana to Veo
+
+    Args:
+        ugc_style: testimonial, demo, unboxing, lifestyle
+        platform: tiktok, instagram, facebook
+        seconds: "4", "6", or "8"
+        product_name: Name of product for context
+        filename: Output filename (without .mp4)
+    """
+    try:
+        from google.genai import types
+        import base64
+        from pathlib import Path
+        import tempfile
+
+        global _last_generated_image
+
+        if _last_generated_image is None:
+            return [TextContent(
+                type="text",
+                text=(
+                    "❌ No cached image found!\n\n"
+                    "**Required workflow:**\n"
+                    "1. First call generate_nano_banana_image_mcp to create a product image\n"
+                    "2. Then immediately call this function to convert it to UGC video\n\n"
+                    "The image must be freshly generated from Nano Banana - cannot load from disk."
+                )
+            )]
+
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            return [TextContent(type="text", text="❌ GEMINI_API_KEY not found")]
+
+        client = genai.Client(api_key=api_key)
+
+        # Platform-specific configurations
+        platform_configs = {
+            "tiktok": {"aspect_ratio": "9:16", "resolution": "720p", "optimal_seconds": "6"},
+            "instagram": {"aspect_ratio": "9:16", "resolution": "720p", "optimal_seconds": "8"},
+            "facebook": {"aspect_ratio": "16:9", "resolution": "720p", "optimal_seconds": "8"}
+        }
+
+        config = platform_configs.get(platform.lower(), platform_configs["tiktok"])
+
+        # UGC-style prompts
+        ugc_prompts = {
+            "testimonial": f"Authentic testimonial-style video of someone showing {product_name} to camera with excited, genuine reactions. Handheld camera feel, natural lighting, person speaking directly to camera.",
+            "demo": f"Natural product demonstration of {product_name} in everyday setting. Person casually showing features, handheld camera, authentic reactions.",
+            "unboxing": f"Excited unboxing experience of {product_name}. Genuine reactions, handheld camera, natural home lighting.",
+            "lifestyle": f"Lifestyle shot showing {product_name} in authentic daily use. Natural setting, handheld camera movement, real-world context."
+        }
+
+        prompt = ugc_prompts.get(ugc_style.lower(), ugc_prompts["testimonial"])
+
+        # Calculate cost
+        seconds_int = int(seconds)
+        cost = seconds_int * 0.75
+
+        # Build config for video generation
+        veo_config = types.GenerateVideosConfig(
+            aspect_ratio=config["aspect_ratio"],
+            resolution=config["resolution"],
+            duration_seconds=seconds_int,
+            person_generation="allow_adult"  # For UGC videos with people
+        )
+
+        # Start generation - Veo 3.1 requires uploading the image as a File first
+        # The Part object from Nano Banana needs to be uploaded to Google's servers
+        print("📤 Uploading image to Google's servers for Veo 3.1...", file=sys.stderr)
+
+        # Extract image data from the cached Part object
+        image_data = _last_generated_image.inline_data.data
+        mime_type = _last_generated_image.inline_data.mime_type
+
+        # Decode base64 if needed
+        if isinstance(image_data, str):
+            image_bytes = base64.b64decode(image_data)
+        else:
+            image_bytes = image_data
+
+        print(f"✅ Using cached image from Nano Banana ({len(image_bytes)} bytes)", file=sys.stderr)
+
+        # Use the cached Part object directly from Nano Banana
+        # The SDK should accept Part objects for image-to-video
+        operation = client.models.generate_videos(
+            model="veo-3.1-generate-preview",
+            prompt=prompt,
+            image=_last_generated_image,  # Use the Part object from Nano Banana cache
+            config=veo_config
+        )
+
+        # Poll for completion (same pattern as text-to-video)
+        print("⏳ UGC video generating (this takes 11s - 6 minutes)...", file=sys.stderr)
+        poll_count = 0
+
+        while not operation.done:
+            await asyncio.sleep(10)
+            operation = client.operations.get(operation)
+            poll_count += 1
+            if poll_count % 6 == 0:
+                print(f"   Still generating... ({poll_count * 10}s elapsed)", file=sys.stderr)
+
+        # Check if blocked by safety
+        if not hasattr(operation.response, 'generated_videos') or not operation.response.generated_videos:
+            return [TextContent(
+                type="text",
+                text="❌ Video generation blocked by safety filters (no charge)"
+            )]
+
+        # Get video
+        video = operation.response.generated_videos[0]
+
+        # Download video
+        client.files.download(file=video.video)
+
+        # Save to outputs
+        output_dir = Path("outputs/videos")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not filename.endswith('.mp4'):
+            filename = f"{filename}.mp4"
+        output_path = output_dir / filename
+
+        video.video.save(str(output_path))
+
+        # Clear the cached image after successful use
+        _last_generated_image = None
+
+        result_text = (
+            f"✅ UGC Video Generated Successfully!\n\n"
+            f"**Model:** veo-3.1-generate-preview\n"
+            f"**Style:** {ugc_style} ({platform} optimized)\n"
+            f"**Duration:** {seconds} seconds\n"
+            f"**Cost:** ${cost:.2f} (Veo 3.1)\n"
+            f"**Resolution:** {config['resolution']} {config['aspect_ratio']}\n"
+            f"**Audio:** Native dialogue + sound effects + ambient\n"
+            f"**Generation time:** {poll_count * 10}s\n\n"
+            f"**Saved to:** {output_path}\n\n"
+            f"✨ UGC Characteristics:\n"
+            f"- Handheld camera aesthetic\n"
+            f"- Natural lighting and setting\n"
+            f"- Authentic reactions and dialogue\n"
+            f"- Native audio (not added post)\n"
+            f"- Reference image from Nano Banana integrated seamlessly\n\n"
+            f"Next: Review video, upload to Google Drive, test on {platform}"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: {str(e)}\n\nTraceback: {traceback.format_exc()}"
+        )]
 
 
 async def _poll_for_video_completion(http_client, headers, video_id, max_wait=300):
@@ -389,6 +976,114 @@ async def list_tools() -> list[Tool]:
                 "required": ["prompt", "filename"]
             }
         ),
+        Tool(
+            name="generate_nano_banana_image",
+            description="Generate image using Nano Banana (Gemini 2.5 Flash Image) - $0.039/image, excellent character consistency, optimized for Veo 3.1 image-to-video",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Image generation prompt with natural language description"
+                    },
+                    "aspect_ratio": {
+                        "type": "string",
+                        "description": "Aspect ratio: 1:1, 16:9, 9:16, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 21:9",
+                        "enum": ["1:1", "16:9", "9:16", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "21:9"],
+                        "default": "9:16"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .png will be added)"
+                    }
+                },
+                "required": ["prompt", "filename"]
+            }
+        ),
+        Tool(
+            name="generate_veo_text_to_video",
+            description="Generate video from text using Veo 3.1 ($0.75/second, 720p/1080p, native audio with dialogue and sound effects)",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Video prompt with dialogue cues (quotes), sound effects, ambient audio descriptions"
+                    },
+                    "seconds": {
+                        "type": "string",
+                        "description": "Video duration: '4', '6', or '8' (MUST be string)",
+                        "enum": ["4", "6", "8"],
+                        "default": "8"
+                    },
+                    "orientation": {
+                        "type": "string",
+                        "description": "Video orientation",
+                        "enum": ["portrait", "landscape"],
+                        "default": "portrait"
+                    },
+                    "resolution": {
+                        "type": "string",
+                        "description": "Video resolution (1080p only available for 8s videos)",
+                        "enum": ["720p", "1080p"],
+                        "default": "720p"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .mp4 will be added)"
+                    },
+                    "negative_prompt": {
+                        "type": "string",
+                        "description": "Optional: Elements to exclude from generation"
+                    }
+                },
+                "required": ["prompt", "filename"]
+            }
+        ),
+        Tool(
+            name="generate_veo_ugc_from_image",
+            description="PRIMARY UGC TOOL: Generate authentic UGC-style ad video from product image using Veo 3.1 image-to-video ($0.75/second, native audio, 4 styles, 3 platforms)",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "image_path": {
+                        "type": "string",
+                        "description": "Path to product image (e.g., MARKETING_TEAM/outputs/images/product.png)"
+                    },
+                    "ugc_style": {
+                        "type": "string",
+                        "description": "UGC style",
+                        "enum": ["testimonial", "demo", "unboxing", "lifestyle"],
+                        "default": "testimonial"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "Target platform (auto-optimizes aspect ratio and duration)",
+                        "enum": ["tiktok", "instagram", "facebook"],
+                        "default": "tiktok"
+                    },
+                    "seconds": {
+                        "type": "string",
+                        "description": "Video duration: '6' or '8' (MUST be string, 8 recommended)",
+                        "enum": ["6", "8"],
+                        "default": "8"
+                    },
+                    "product_name": {
+                        "type": "string",
+                        "description": "Product name for UGC prompt generation"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .mp4 will be added)"
+                    },
+                    "custom_prompt": {
+                        "type": "string",
+                        "description": "Optional: Override default UGC template with custom prompt"
+                    }
+                },
+                "required": ["image_path", "ugc_style", "platform", "product_name", "filename"]
+            }
+        ),
     ]
 
 
@@ -411,6 +1106,34 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
                 seconds=arguments.get("seconds", "4"),
                 orientation=arguments.get("orientation", "landscape"),
                 filename=arguments["filename"]
+            )
+
+        elif name == "generate_nano_banana_image":
+            return await generate_nano_banana_image_mcp(
+                prompt=arguments["prompt"],
+                aspect_ratio=arguments.get("aspect_ratio", "9:16"),
+                filename=arguments["filename"]
+            )
+
+        elif name == "generate_veo_text_to_video":
+            return await generate_veo_text_to_video_mcp(
+                prompt=arguments["prompt"],
+                seconds=arguments.get("seconds", "8"),
+                orientation=arguments.get("orientation", "portrait"),
+                resolution=arguments.get("resolution", "720p"),
+                filename=arguments["filename"],
+                negative_prompt=arguments.get("negative_prompt")
+            )
+
+        elif name == "generate_veo_ugc_from_image":
+            return await generate_veo_ugc_from_image_mcp(
+                image_path=arguments["image_path"],
+                ugc_style=arguments.get("ugc_style", "testimonial"),
+                platform=arguments.get("platform", "tiktok"),
+                seconds=arguments.get("seconds", "8"),
+                product_name=arguments["product_name"],
+                filename=arguments["filename"],
+                custom_prompt=arguments.get("custom_prompt")
             )
 
         else:
@@ -440,6 +1163,8 @@ if __name__ == "__main__":
     print("🚀 Marketing Tools MCP Server starting...", file=sys.stderr)
     print(f"   Environment loaded from: {env_path}", file=sys.stderr)
     print(f"   OpenAI API Key: {'✓ Found' if os.getenv('OPENAI_API_KEY') else '✗ Missing'}", file=sys.stderr)
+    print(f"   Gemini API Key: {'✓ Found' if os.getenv('GEMINI_API_KEY') else '✗ Missing'}", file=sys.stderr)
+    print(f"   Google GenAI: {'✓ Available' if GOOGLE_GENAI_AVAILABLE else '✗ Not installed'}", file=sys.stderr)
     print(f"   Google Drive: {'✓ Available' if GOOGLE_DRIVE_AVAILABLE else '✗ Not installed'}", file=sys.stderr)
     print("", file=sys.stderr)
     asyncio.run(main())
