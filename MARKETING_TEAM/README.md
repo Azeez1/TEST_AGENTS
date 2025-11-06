@@ -76,8 +76,8 @@ These guides explain:
 | **copywriter** | Blog posts, articles (2000+ words) | `"Use copywriter to write a blog"` |
 | **editor** | Content review & improvement | `"Use editor to review this content"` |
 | **social-media-manager** | X/Twitter, LinkedIn posts | `"Use social-media-manager for LinkedIn post"` |
-| **visual-designer** | GPT-4o image generation | `"Use visual-designer to create an image"` |
-| **video-producer** | Sora-2 video creation ✅ TESTED | `"Use video-producer for video ad"` |
+| **visual-designer** | GPT-4o images + Nano Banana (UGC) ⭐ **NEW** | `"Use visual-designer to create an image"` |
+| **video-producer** | Sora-2 + Veo 3.1 (UGC) ⭐ **NEW** | `"Use video-producer for video ad"` |
 | **seo-specialist** | SEO research, SERP scraping & rank tracking | `"Use seo-specialist to research keywords"` |
 | **email-specialist** | Email copywriting | `"Use email-specialist for email sequence"` |
 | **gmail-agent** | Email sending via Gmail | `"Use gmail-agent to send newsletter"` |
@@ -381,6 +381,11 @@ pip install -r requirements.txt
 - Video generation with Sora - Ready!
 - See [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md) for testing
 
+**Google Gemini API (CONFIGURED):** ⭐ **NEW**
+- UGC image generation with Nano Banana (Gemini 2.5 Flash Image) - Ready!
+- UGC video generation with Veo 3.1 (text-to-video + image-to-video) - Ready!
+- See [🎬 UGC Video Ad Workflow](#-ugc-video-ad-workflow-new) section below for details
+
 **Gmail API (Optional):**
 - Required for: email-specialist, gmail-agent
 - See [docs/getting-started/api-setup.md](docs/getting-started/api-setup.md) for setup
@@ -424,8 +429,8 @@ See [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for more memory con
 - **social-media-manager** - X/Twitter, LinkedIn posts
 
 ### Visual Content
-- **visual-designer** - GPT-4o image generation
-- **video-producer** - Sora video creation
+- **visual-designer** - GPT-4o image generation + Nano Banana (UGC)
+- **video-producer** - Sora video creation + Veo 3.1 (UGC)
 - **presentation-designer** - PowerPoint decks
 - **pdf-specialist** - PDF documents
 
@@ -450,6 +455,124 @@ See [docs/guides/usage-guide.md](docs/guides/usage-guide.md) for more memory con
 
 ### Coordination
 - **router-agent** - Multi-agent coordination
+- **automation-agent** - n8n workflow automation (400+ integrations)
+
+---
+
+## 🎬 UGC Video Ad Workflow (NEW)
+
+**AI-generated User Generated Content (UGC) video ads for 93-98% cost savings**
+
+### The Complete Pipeline
+
+```
+visual-designer (Nano Banana) → video-producer (Veo 3.1)
+   Product Image                  UGC Video Ad
+```
+
+### What is UGC?
+
+**User Generated Content (UGC)** = Authentic-looking video ads that mimic real customer testimonials. UGC ads outperform traditional ads because they feel genuine, not like advertising.
+
+**Traditional UGC:** Hire human creators for $100-$500 per video
+**AI UGC:** Generate for $4.54-$6.04 per video (93-98% savings)
+
+### How It Works
+
+**Step 1: Create Product Image** (visual-designer + Nano Banana)
+```
+"Use visual-designer to create product image for TikTok UGC ad"
+```
+- **Model:** Gemini 2.5 Flash Image (Nano Banana)
+- **Cost:** $0.039 per image
+- **Output:** Lifestyle product shot optimized for video conversion
+- **Best for:** Natural settings, authentic vibe, character consistency
+
+**Step 2: Convert to UGC Video** (video-producer + Veo 3.1)
+```
+"Use video-producer to create testimonial UGC video from this image"
+```
+- **Model:** Veo 3.1 (image-to-video)
+- **Cost:** $4.50-$6.00 (6-8 seconds)
+- **Output:** Authentic UGC video ad with native audio
+- **Styles:** Testimonial, Demo, Unboxing, Lifestyle
+
+### 4 UGC Styles
+
+1. **Testimonial** - Person excitedly talking about product benefits
+2. **Demo** - Showing product features and how it works
+3. **Unboxing** - First impression and packaging reveal
+4. **Lifestyle** - Product integrated into daily routine
+
+### Platform Optimization
+
+| Platform | Aspect Ratio | Duration | Focus |
+|----------|-------------|----------|-------|
+| **TikTok** | 9:16 (portrait) | 6-8 seconds | Fast-paced, energetic |
+| **Instagram** | 9:16 (portrait) | 8 seconds | Aesthetic, polished |
+| **Facebook** | 16:9 (landscape) | 8 seconds | Testimonial-focused |
+
+### Cost Breakdown
+
+**AI-Generated UGC:**
+- Image: $0.039
+- Video: $4.50-$6.00
+- **Total: $4.54-$6.04 per ad**
+
+**Human UGC Creators:**
+- Typical cost: $100-$500 per video
+- **Savings: 93-98%**
+
+### Why Veo 3.1 is Required
+
+- ✅ **Only model** supporting image-to-video UGC (Sora doesn't support reference images)
+- ✅ Native audio generation (no separate text-to-speech needed)
+- ✅ Character consistency via reference images
+- ✅ 4-8 second duration (perfect for social media)
+- ✅ Platform-specific aspect ratios (9:16, 16:9)
+
+### Example Usage
+
+```
+You: "Create a TikTok UGC ad for our new energy drink"
+
+visual-designer:
+- Generates 9:16 lifestyle product shot (person holding drink in gym)
+- Natural lighting, authentic vibe
+- Saves to outputs/images/energy_drink_tiktok.png
+
+video-producer:
+- Converts image to 6-second testimonial video
+- Person talks excitedly about energy boost
+- Native audio: "This drink literally changed my workouts!"
+- Saves to outputs/videos/energy_drink_ugc_tiktok.mp4
+
+Total cost: $4.54
+Traditional UGC creator cost: $200-400
+Savings: $195-395 (98% reduction)
+```
+
+### Technical Details
+
+**Nano Banana (Gemini 2.5 Flash Image):**
+- Aspect ratios: 1:1, 3:4, 4:3, 9:16, 16:9
+- Character consistency across multiple images
+- Optimized for Veo 3.1 video conversion
+- Natural settings, lifestyle photography
+
+**Veo 3.1 (Google Video Generation):**
+- Text-to-video AND image-to-video
+- 4-8 second duration
+- Native audio generation
+- Reference image support (asset mode)
+- Person generation allowed
+- Resolution: 720p (preview mode)
+
+### Documentation
+
+- **[video-producer.md](.claude/agents/video-producer.md)** - Complete UGC workflow guide
+- **[visual-designer.md](.claude/agents/visual-designer.md)** - UGC image best practices
+- **[TOOL_REGISTRY.md](../TOOL_REGISTRY.md)** - Tool inventory with UGC section
 
 ---
 

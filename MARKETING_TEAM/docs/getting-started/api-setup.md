@@ -7,6 +7,7 @@ This guide walks you through setting up all API connections for your marketing a
 ## ✅ Already Configured
 
 - **OpenAI API** - For GPT-4o image generation and Sora video generation
+- **Google Gemini API** ⭐ **NEW** - For Veo 3.1 video generation and Nano Banana image generation (UGC workflow)
 - **Perplexity API** - For advanced web research with real-time data and citations
 - **Microsoft Office MCP** - For Word, Excel, and PowerPoint automation
 
@@ -16,7 +17,8 @@ This guide walks you through setting up all API connections for your marketing a
 
 | API | Status | Required For | Setup Time |
 |-----|--------|--------------|------------|
-| OpenAI | ✅ Configured | visual-designer, video-producer | Done |
+| OpenAI | ✅ Configured | visual-designer, video-producer (Sora) | Done |
+| Google Gemini ⭐ | ✅ Configured | visual-designer (Nano Banana), video-producer (Veo 3.1 UGC) | Done |
 | Perplexity | ✅ Configured | research-agent, advanced web research | Done |
 | Office MCP | ✅ Configured | Word, Excel, PowerPoint automation | Done |
 | Gmail | ⚠️ Needs Setup | gmail-agent, email campaigns | 10 min |
@@ -62,7 +64,87 @@ Your OpenAI API key is configured in [.env](.env)
 
 ---
 
-### 2. Perplexity API (✅ Already Done!)
+### 2. Google Gemini API (✅ Already Done!) ⭐ **NEW**
+
+Your Google Gemini API key is configured in [.env](.env) and [.mcp.json](.mcp.json)
+
+**What this enables:**
+- **Nano Banana (Gemini 2.5 Flash Image)** - UGC product image generation
+- **Veo 3.1** - Text-to-video AND image-to-video for UGC ads
+- Complete UGC workflow: Product image → Video ad
+- visual-designer agent (UGC images)
+- video-producer agent (UGC videos)
+
+**Nano Banana (Gemini 2.5 Flash Image):**
+- Model: `gemini-2.5-flash-image`
+- Pricing: **$0.039 per image** (very competitive)
+- Aspect ratios: 1:1, 3:4, 4:3, 9:16, 16:9
+- Character consistency across multiple images
+- Optimized for Veo 3.1 video conversion
+
+**Veo 3.1 (Google Video Generation):**
+- Pricing: **$0.75 per second** ($4.50-$6.00 for 6-8 second UGC ads)
+- Duration: 4-8 seconds (perfect for social media)
+- Resolution: 720p (preview mode)
+- Native audio generation (no separate TTS needed)
+- Text-to-video AND image-to-video capabilities
+- Reference image support for character consistency
+
+**UGC Workflow (Complete Pipeline):**
+```
+visual-designer (Nano Banana) → video-producer (Veo 3.1)
+   Product Image ($0.039)         UGC Video Ad ($4.50-6.00)
+
+Total cost: $4.54-$6.04 per UGC ad
+Traditional UGC creators: $100-$500 per ad
+Savings: 93-98%
+```
+
+**Test Nano Banana image generation:**
+```
+"Use the visual-designer subagent to create a product image for TikTok UGC ad"
+```
+
+**Test Veo 3.1 text-to-video:**
+```
+"Use the video-producer subagent to create an 8-second testimonial video"
+```
+
+**Test Veo 3.1 image-to-video UGC (full pipeline):**
+```
+"Use the visual-designer to create a product image, then use video-producer to convert it to a TikTok UGC ad"
+```
+
+**4 UGC Styles:**
+1. **Testimonial** - Person talking about product benefits
+2. **Demo** - Showing product features in action
+3. **Unboxing** - First impression and packaging reveal
+4. **Lifestyle** - Product integrated into daily routine
+
+**Platform Optimization:**
+- **TikTok:** 9:16 portrait, 6-8 seconds, fast-paced
+- **Instagram:** 9:16 portrait, 8 seconds, aesthetic focus
+- **Facebook:** 16:9 landscape, 8 seconds, testimonial-heavy
+
+**Cost examples (complete UGC ads):**
+- 6-second TikTok UGC ad = $4.54 (image + video)
+- 8-second Instagram UGC ad = $6.04 (image + video)
+- 8-second Facebook UGC ad = $6.04 (image + video)
+
+**Why Veo 3.1 is Required for UGC:**
+- ✅ Only model supporting image-to-video (Sora doesn't support reference images)
+- ✅ Character consistency via reference images
+- ✅ Native audio (no separate TTS workflow)
+- ✅ Platform-specific aspect ratios
+
+**Documentation:**
+- [video-producer.md](../../.claude/agents/video-producer.md) - Complete UGC workflow guide
+- [visual-designer.md](../../.claude/agents/visual-designer.md) - UGC image best practices
+- [TOOL_REGISTRY.md](../../../TOOL_REGISTRY.md) - Complete tool inventory
+
+---
+
+### 3. Perplexity API (✅ Already Done!)
 
 Your Perplexity API key is configured in [.env](.env)
 

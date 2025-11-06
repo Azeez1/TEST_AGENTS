@@ -52,9 +52,16 @@ Before creating any new tool, script, or workflow:
 
 ## ⚙️ Configuration
 
-**ALWAYS read memory/google_drive_config.json first** to get upload folder location.
-- **Lead list uploads:** LEAD_GEN folder (ID: 1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_)
-- **user_google_email:** sabaazeez12@gmail.com (from config)
+**ALWAYS read these memory files at task start:**
+
+1. **memory/linkedin_config.json** - LinkedIn login credentials
+   - Username: aoseni@duxvitaecapital.com
+   - Password available with fallback option
+   - Use for Playwright browser automation
+
+2. **memory/google_drive_config.json** - Google Drive upload location
+   - **Lead list uploads:** LEAD_GEN folder (ID: 1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_)
+   - **user_google_email:** sabaazeez12@gmail.com (from config)
 
 ## Core Responsibilities
 

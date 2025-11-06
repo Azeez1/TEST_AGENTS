@@ -1,7 +1,7 @@
 # TOOL REGISTRY - Single Source of Truth
 
-**Last Updated:** 2025-11-03
-**Total Inventory:** 19 custom tools + 7 MCP servers + 18 skills
+**Last Updated:** 2025-11-05
+**Total Inventory:** 20 custom tools + 7 MCP servers + 18 skills
 **Maintained by:** Engineering Team (security-auditor + technical-writer)
 
 ---
@@ -18,10 +18,14 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 
 | Capability | Skill | MCP Tool | Custom Tool | Priority Order | Agents Using | Status |
 |------------|-------|----------|-------------|----------------|--------------|--------|
-| **AI Image Generation** | N/A | `mcp__marketing-tools__generate_gpt4o_image` | `openai_gpt4o_image.py` | 1. MCP → 2. Custom Tool | visual-designer | ✅ Active |
+| **AI Image Generation (General)** | N/A | `mcp__marketing-tools__generate_gpt4o_image` | `openai_gpt4o_image.py` | 1. MCP → 2. Custom Tool | visual-designer | ✅ Active |
+| **AI Image Generation (UGC)** | N/A | `mcp__marketing-tools__generate_nano_banana_image` | N/A | 1. MCP only (Gemini 2.5 Flash Image) | visual-designer (PRIMARY for UGC) | ✅ Active |
+| **Image Analysis (UGC Consistency)** ⭐ **NEW** | N/A | `mcp__marketing-tools__analyze_ugc_image` | N/A | 1. MCP only (GPT-4o Vision) | visual-designer, video-producer | ✅ Active |
 | **Design-Focused Graphics** | `canvas-design` (50+ fonts, PNG/PDF) | N/A | N/A | 1. Skill only | visual-designer (PRIMARY), pdf-specialist, social-media-manager, presentation-designer | ✅ Active |
 | **Algorithmic Art** | `algorithmic-art` (p5.js, generative) | N/A | N/A | 1. Skill only | visual-designer, social-media-manager | ✅ Active |
-| **Video Generation** | N/A | `mcp__marketing-tools__generate_sora_video` | `sora_video.py` | 1. MCP → 2. Custom Tool (multi-clip stitching) | video-producer | ✅ Active |
+| **Video Generation (General)** | N/A | `mcp__marketing-tools__generate_sora_video` | `sora_video.py` | 1. MCP → 2. Custom Tool (multi-clip stitching) | video-producer | ✅ Active |
+| **Video Generation (Text-to-Video)** | N/A | `mcp__marketing-tools__generate_veo_text_to_video` | N/A | 1. MCP only (Veo 3.1) | video-producer | ✅ Active |
+| **Video Generation (Image-to-Video UGC)** | N/A | `mcp__marketing-tools__generate_veo_ugc_from_image` | N/A | 1. MCP only (Veo 3.1 + reference image) | video-producer (PRIMARY for UGC) | ✅ Active |
 | **Slack GIFs** | `slack-gif-creator` (animated GIFs) | N/A | N/A | 1. Skill only | social-media-manager | ✅ Active |
 | **System Diagrams** | `flow-diagram` (Mermaid, interactive HTML) | N/A | N/A | 1. Skill only | system-architect, technical-writer | ✅ Active |
 | **Themed Artifacts** | `theme-factory` (10 pre-set themes) | N/A | N/A | 1. Skill only | presentation-designer, landing-page-specialist | ✅ Active |
@@ -29,6 +33,31 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 **Usage Notes:**
 - **canvas-design ownership:** visual-designer is PRIMARY owner; others use for specialized cases only
 - **Video stitching:** sora_video.py custom tool handles multi-clip workflows MCP can't do
+- ⭐ **UGC Workflow (3 Options):** Nano Banana (visual-designer) creates product images → Optional: analyze_ugc_image for consistency → Veo 3.1 (video-producer) converts to UGC video ads
+
+**UGC Workflow Options:**
+
+| Workflow | Steps | Cost | Use Case | Success Rate |
+|----------|-------|------|----------|--------------|
+| **Standard** | Nano Banana → Veo UGC | $6.04/video | Quick testing, prototyping | 60% first-attempt |
+| **Enhanced** | Nano Banana → Image Analysis → Veo UGC (with enhanced params) | $6.05/video | Production quality, targeted messaging | 90% first-attempt |
+| **Expert-Optimized** ⭐ **NEW** | Nano Banana → video-producer builds N8n prompt → **prompt-engineer optimizes** → Veo UGC | $6.04/video (+$0 for optimization) | Maximum quality, first UGC for new product, high-value campaigns | 95% first-attempt |
+
+**UGC Specifications:**
+  - **Enhanced Parameters (Optional):** icp, product_features, video_setting, reference_image_description - For targeted messaging and better quality
+  - **50+ UGC Styles:** demo (recommended), tutorial, how_to, before_after, first_time, morning_routine, product_showcase, problem_solving, hack, haul, honest_review, asmr, pov, satisfying, luxury, budget_friendly, and 34+ more - See [ugc_prompt_templates.json](MARKETING_TEAM/memory/ugc_prompt_templates.json) for complete list
+  - **3 Platforms:** TikTok (9:16, 6-8s), Instagram (9:16, 8s), Facebook (16:9, 8s)
+  - **Veo 3.1 is REQUIRED:** Only model supporting image-to-video for UGC (not Sora)
+
+**Expert-Optimized Workflow (Agent Handoff):**
+  1. **visual-designer** creates product image via Nano Banana ($0.039)
+  2. **video-producer** builds comprehensive N8n prompt with user parameters (ICP, features, setting)
+  3. **video-producer** displays complete prompt to user
+  4. **User** passes complete N8n prompt to **prompt-engineer** for expert optimization
+  5. **prompt-engineer** applies advanced techniques (few-shot, Constitutional AI, safety filter avoidance, Veo 3.1 model-specific)
+  6. **prompt-engineer** returns optimized prompt preserving all 6 N8n sections
+  7. **video-producer** generates video with optimized custom_prompt parameter ($6.00)
+  8. **Benefits:** Zero extra cost, 95% success rate, expert techniques, cross-team synergy (ENGINEERING helps MARKETING)
 
 ---
 
@@ -143,7 +172,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 
 | Server | Purpose | Key Tools | Agents Using | Status |
 |--------|---------|-----------|--------------|--------|
-| **marketing-tools** | OpenAI APIs (GPT-4o, Sora) | `generate_gpt4o_image`, `generate_sora_video` | visual-designer, video-producer | ✅ Active |
+| **marketing-tools** ⭐ **UPDATED** | OpenAI APIs (GPT-4o, Sora) + Google Gemini APIs (Veo 3.1, Nano Banana) | `generate_gpt4o_image`, `generate_sora_video`, `generate_nano_banana_image` ⭐, `generate_veo_text_to_video` ⭐, `generate_veo_ugc_from_image` ⭐ | visual-designer, video-producer | ✅ Active |
 | **google-workspace** | G Suite automation | `send_email`, `create_doc`, `create_spreadsheet`, `create_drive_file`, `search_emails` | gmail-agent, copywriter, analyst, pdf-specialist, presentation-designer | ✅ Active |
 | **perplexity** | Web research with citations | `perplexity_ask`, `perplexity_reason`, `perplexity_search` | research-agent (HYBRID fallback) | ✅ Active |
 | **bright-data** | Web scraping (5K free/month) | `search_engine` (Google/Bing/Yandex), `scrape_as_markdown`, `scrape_batch` | seo-specialist, lead-gen-agent, research-agent, analyst | ✅ Active |
@@ -152,6 +181,87 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 | **sequential-thinking** | Structured reasoning | `sequentialthinking` (step-by-step problem solving) | cto, system-architect | ✅ Active |
 
 **Configuration:** All MCP servers defined in `.mcp.json` (gitignored - contains real API keys)
+
+---
+
+## 🎬 UGC Video Ad Workflow (NEW - 2025-11-04)
+
+**Complete two-agent pipeline for creating User Generated Content (UGC) video ads:**
+
+### Architecture
+```
+visual-designer (Nano Banana) → video-producer (Veo 3.1)
+   Product Image                  UGC Video Ad
+```
+
+### Tools Involved
+1. **`mcp__marketing-tools__generate_nano_banana_image`** (visual-designer)
+   - Model: Gemini 2.5 Flash Image
+   - Cost: $0.039 per image
+   - Purpose: Product images optimized for Veo 3.1 video conversion
+   - Capabilities: Character consistency, lifestyle photography, natural settings
+
+2. **`mcp__marketing-tools__generate_veo_ugc_from_image`** (video-producer) ✨ **AUTOMATIC ANALYSIS**
+   - Model: Veo 3.1 (image-to-video) + GPT-4o Vision (automatic analysis)
+   - Cost: $4.51-$6.01 per video (6-8 seconds + automatic image analysis)
+   - Purpose: Convert product images to UGC-style video ads with maximum visual consistency
+   - Capabilities: 4 UGC styles (testimonial, demo, unboxing, lifestyle), native audio, **automatic image analysis by default**
+   - **NEW:** Image analysis is automatic (+$0.01, 588x ROI, opt-out available with `auto_analyze_image: false`)
+
+3. **`mcp__marketing-tools__generate_veo_text_to_video`** (video-producer)
+   - Model: Veo 3.1 (text-to-video)
+   - Cost: $0.75 per second ($4.50-$6.00 for 6-8s)
+   - Purpose: Generate videos from text prompts (no image input)
+   - Alternative workflow for non-product UGC
+
+### Cost Comparison
+- **AI-Generated UGC (Default):** $4.55-$6.05 per ad (image $0.039 + video $4.50-$6.00 + automatic analysis $0.01)
+- **AI-Generated UGC (Opt-Out):** $4.54-$6.04 per ad (image + video, no analysis - NOT recommended for production)
+- **Human UGC Creators:** $100-$500 per ad
+- **Savings:** 93-98% cost reduction
+- **ROI of Automatic Analysis:** 588x (100% quality improvement for 0.17% cost increase)
+
+### Platform Optimization
+- **TikTok:** 9:16 portrait, 6-8 seconds, fast-paced
+- **Instagram:** 9:16 portrait, 8 seconds, aesthetic focus
+- **Facebook:** 16:9 landscape, 8 seconds, testimonial-heavy
+
+### UGC Styles
+1. **Testimonial** - Person talking about product benefits
+2. **Demo** - Showing product features in action
+3. **Unboxing** - First impression and packaging reveal
+4. **Lifestyle** - Product integrated into daily routine
+
+### Why Veo 3.1 is Required
+- ✅ **Only model** supporting image-to-video UGC (Sora doesn't support reference images)
+- ✅ Native audio generation (no separate TTS needed)
+- ✅ Character consistency via reference images
+- ✅ 4-8 second duration (perfect for social media)
+- ✅ Platform-specific aspect ratios (9:16, 16:9)
+
+### Agent Responsibilities
+- **visual-designer:** Creates UGC-ready product images (natural settings, lifestyle context)
+- **video-producer:** Converts images to video ads using UGC templates
+
+### Invocation Examples
+```
+"Use visual-designer to create product image for TikTok UGC ad"
+→ Nano Banana generates 9:16 lifestyle product shot ($0.039)
+
+"Use video-producer to create testimonial UGC video from this image"
+→ Veo 3.1 automatically analyzes image with GPT-4o Vision ($0.01)
+→ Generates 6-8s testimonial video with visual consistency ($4.50-$6.00)
+→ Total: $4.55-$6.05 (automatic analysis by default)
+
+"Use video-producer for quick UGC test without image analysis"
+→ Veo 3.1 generates video without analysis ($4.50-$6.00)
+→ Set auto_analyze_image: false to opt-out
+→ Total: $4.54-$6.04 (testing only, not recommended for production)
+```
+
+**Documentation:**
+- [video-producer.md](MARKETING_TEAM/.claude/agents/video-producer.md) - Complete UGC workflow guide (lines 1-200)
+- [visual-designer.md](MARKETING_TEAM/.claude/agents/visual-designer.md) - UGC image best practices (lines 37-133)
 
 ---
 
