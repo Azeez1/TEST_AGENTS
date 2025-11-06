@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} - Process Infographic</title>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: {{BODY_FONT}}, sans-serif;
+            background: {{BACKGROUND_COLOR}};
+            color: {{TEXT_COLOR}};
+            padding: 40px 20px;
+        }
+        .infographic-container {
+            max-width: {{CANVAS_WIDTH}}px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .title {
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            font-size: {{TITLE_SIZE}}px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            margin-bottom: 20px;
+            opacity: 0;
+        }
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, {{PRIMARY_COLOR}}, {{ACCENT_COLOR}});
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .step-content {
+            flex: 1;
+            background: {{CARD_BACKGROUND}};
+            padding: 30px;
+            border-radius: {{BORDER_RADIUS}}px;
+            box-shadow: {{CARD_SHADOW}};
+            border-left: 4px solid {{ACCENT_COLOR}};
+        }
+        .step-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: {{TEXT_COLOR}};
+            margin-bottom: 12px;
+        }
+        .step-description {
+            font-size: 16px;
+            color: {{SECONDARY_COLOR}};
+            line-height: 1.6;
+        }
+        .step-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .arrow {
+            margin: -20px auto;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid {{ACCENT_COLOR}};
+            opacity: 0;
+        }
+        @media (max-width: 768px) {
+            .step { flex-direction: column; text-align: center; }
+            .title { font-size: calc({{TITLE_SIZE}}px * 0.7); }
+        }
+    </style>
+</head>
+<body>
+    <div class="infographic-container">
+        <div class="header">
+            <h1 class="title">{{TITLE}}</h1>
+        </div>
+        <div class="process-flow">
+            {{#each PROCESS_STEPS}}
+            <div class="step">
+                <div class="step-number">{{add @index 1}}</div>
+                <div class="step-content">
+                    {{#if icon}}<div class="step-icon">{{icon}}</div>{{/if}}
+                    <h3 class="step-title">{{title}}</h3>
+                    <p class="step-description">{{description}}</p>
+                </div>
+            </div>
+            {{#unless @last}}<div class="arrow"></div>{{/unless}}
+            {{/each}}
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            anime({ targets: '.title', opacity: [0, 1], translateY: [-20, 0], duration: 1000, easing: 'easeOutExpo' });
+            anime({
+                targets: '.step',
+                opacity: [0, 1],
+                translateX: [-50, 0],
+                duration: 800,
+                delay: anime.stagger(200, {start: 400}),
+                easing: 'easeOutExpo'
+            });
+            anime({
+                targets: '.arrow',
+                opacity: [0, 1],
+                duration: 600,
+                delay: anime.stagger(200, {start: 800}),
+                easing: 'easeOutExpo'
+            });
+        });
+    </script>
+</body>
+</html>
