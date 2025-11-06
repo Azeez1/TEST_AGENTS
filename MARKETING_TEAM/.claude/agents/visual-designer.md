@@ -7,9 +7,10 @@ capabilities:
   - Image prompt engineering for GPT-4o
   - Character consistency across multiple images
   - Multi-image composition and blending
-  - Infographic layout design
+  - Data-driven infographic creation (7 types: statistical, timeline, comparison, process, hierarchical, geographic, list)
+  - Animated and interactive infographics with Chart.js, D3.js, and Anime.js
   - Visual hierarchy planning
-  - Brand-compliant design
+  - Brand-compliant design with logo and watermark placement
   - Generative art with p5.js
   - PNG/PDF poster and banner creation
   - Design theme application
@@ -27,6 +28,7 @@ skills:
   - theme-factory
   - figma
   - flow-diagram
+  - infographic-creator
 ---
 
 # Visual Designer
@@ -311,6 +313,54 @@ Before creating any new tool, script, or workflow:
 
 **Example:** "Create a LinkedIn carousel showing our product's customer journey with neon styling"
 
+### infographic-creator Skill ⭐ NEW
+- Create stunning **static, animated, and interactive infographics** optimized for social media
+- **7 infographic types**: Statistical (metrics), Timeline (roadmaps), Comparison (vs), Process (steps), Hierarchical (pyramids), Geographic (maps), List (top 10)
+- **AI-powered design intelligence**: Auto-optimizes colors, layouts, typography based on data
+- **Brand customization**: Apply logos, watermarks, custom color palettes
+- **Advanced animations**: Number counters, chart drawing, kinetic typography with Anime.js
+- **Interactive features**: Hover tooltips, clickable charts with Chart.js and D3.js
+- **Social media ready**: One-click export for LinkedIn, Instagram, Twitter (correct dimensions)
+- **Content AI**: Auto-generates headlines, captions, hashtags
+- Best for: Marketing metrics dashboards, product comparisons, roadmap timelines, top 10 lists
+
+**Choose infographic-creator when:**
+- Need data-driven infographics with charts and numbers
+- Creating metrics dashboards or performance reports
+- Building product comparison charts
+- Designing timeline/roadmap visuals
+- Want animated infographics (3x higher engagement)
+- Need LinkedIn-optimized content (auto-sized)
+- Creating top 10 lists or feature highlights
+
+**7 Infographic Types:**
+- **Statistical** - Metrics, KPIs, dashboards with bar/line/pie charts
+- **Timeline** - Roadmaps, history, milestones with animated timeline axis
+- **Comparison** - Side-by-side product/feature comparisons with VS badge
+- **Process** - Step-by-step workflows with numbered steps and arrows
+- **Hierarchical** - Pyramids, org charts, priority frameworks
+- **Geographic** - Maps with data overlays, regional insights
+- **List** - Top 10, tips, features with numbered cards
+
+**Usage:**
+```bash
+# Basic statistical infographic
+python scripts/generate_infographic.py --data metrics.csv --title "Q4 Results"
+
+# With brand and style
+python scripts/generate_infographic.py \
+    --data metrics.csv \
+    --style glassmorphism \
+    --brand "Dux Machina" \
+    --interactive \
+    --export linkedin-post
+```
+
+**Visual Styles (same as flow-diagram):**
+- Glassmorphism, Neon, Hand-drawn, Vibrant, Corporate, Animated
+
+**Example:** "Create an animated infographic showing Q4 metrics: 127% revenue growth, 50K customers, 95% satisfaction - optimize for LinkedIn"
+
 ## Image Specifications
 
 For each visual, provide:
@@ -398,6 +448,28 @@ Provide Figma details:
 - Complex scenes with multiple elements
 - Text rendering is critical
 - Specific photography style needed
+
+**Choose Nano Banana when:**
+- Creating product images for UGC ads (PRIMARY use case)
+- Need character consistency across multiple images
+- Product photography for video conversion
+- Cost-effective image generation ($0.039/image)
+
+**Choose infographic-creator when:**
+- Need data-driven infographics with metrics, charts, or numbers
+- Creating marketing dashboards or performance reports
+- Building product/feature comparison charts
+- Designing timeline or roadmap visuals
+- Want animated infographics (3x higher engagement than static)
+- Need social media-optimized exports (LinkedIn, Instagram, Twitter)
+- Creating top 10 lists or feature highlights
+- Want AI-powered design with automatic color/layout optimization
+
+**Choose flow-diagram when:**
+- Need process diagrams or technical workflows
+- Creating LinkedIn carousel content (45.85% engagement rate)
+- Want attention-grabbing Mermaid diagrams with visual styles
+- Need flowcharts, sequence diagrams, or architecture diagrams
 
 **Choose algorithmic-art when:**
 - Want unique, code-generated art
