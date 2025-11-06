@@ -47,6 +47,10 @@ Thumbs.db
 temp/
 output/
 outputs/
+
+# Test data files
+test_*.csv
+test_*.json
 **/outputs/
 !MARKETING_TEAM/outputs/
 MARKETING_TEAM/outputs/*

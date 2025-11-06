@@ -131,139 +131,35 @@ TEST_AGENTS/
 
 ## 🤖 Complete Agent Directory
 
-### USER_STORY_AGENT (1 System)
+**Quick Overview:**
 
-**Streamlit Application:**
-- Converts meeting notes, PDFs, images to backlog-ready user stories
-- Supports Gherkin and Explicit/Detailed acceptance criteria formats
-- Optional browser research mode with Playwright MCP
-- Automatic Figma prototype navigation and design extraction
-- Excel export with formatting
+| System | Agents | Primary Use |
+|--------|--------|-------------|
+| **USER_STORY_AGENT** | 1 | Meeting notes → Excel user stories (Streamlit app) |
+| **MARKETING_TEAM** | 17 | Content creation, campaigns, social media, images, videos, emails, lead gen |
+| **QA_TEAM** | 5 | Automated pytest test suite generation |
+| **ENGINEERING_TEAM** | 14 | CTO coordinator + 13 specialists (DevOps, security, frontend, backend, AI, UX, etc.) |
 
-**Invoke:** Launch Streamlit app via `streamlit run app_ui.py`
+**Key Agents by Function:**
 
----
+**Orchestrators:** router-agent, content-strategist (MARKETING), test-orchestrator (QA), cto (ENGINEERING)
 
-### MARKETING_TEAM (17 Agents)
+**Content & Creative:** copywriter, editor, social-media-manager, visual-designer, video-producer (MARKETING)
 
-| Agent | Capability | Invoke With |
-|-------|-----------|-------------|
-| **router-agent** | Coordinates complex multi-agent campaigns | `"Use router-agent to plan a product launch campaign"` |
-| **content-strategist** | Full campaign orchestration | `"Use content-strategist to plan Q1 content"` |
-| **research-agent** | 🔥 **HYBRID:** Custom Perplexity research tools + MCP for comprehensive market research, competitive intelligence, web scraping | `"Use research-agent to research AI marketing trends"` |
-| **lead-gen-agent** | B2B/local lead generation via Bright Data web scraping | `"Use lead-gen-agent to find 50 SaaS leads in SF"` |
-| **automation-agent** | ✨ **NEW** n8n workflow automation & orchestration for marketing processes | `"Use automation-agent to create a lead nurture workflow"` |
-| **copywriter** | Blog posts, articles, web copy (2000+ words) | `"Use copywriter to write a blog about AI trends"` |
-| **editor** | **Dux Machina brand voice enforcement** - Automatically reviews ALL content (blogs, posts, emails, landing pages, presentations, PDFs) for tone score 7+, checks 5 voice principles, flags anti-patterns | **Automatic** - content agents invoke editor themselves (or manual: `"Use editor to review this content"`) |
-| **social-media-manager** | X/Twitter, LinkedIn posts with hashtags | `"Use social-media-manager to create a LinkedIn post"` |
-| **visual-designer** | GPT-4o image generation | `"Use visual-designer to create a header image"` |
-| **video-producer** | Sora video creation | `"Use video-producer to create a 15s product video"` |
-| **seo-specialist** | Keyword research, SERP scraping, rank tracking, Playwright web research | `"Use seo-specialist to research AI marketing keywords"` |
-| **email-specialist** | Email sequences, newsletters, campaigns | `"Use email-specialist to write a welcome email"` |
-| **gmail-agent** | Email sending via Gmail API | `"Use gmail-agent to send this newsletter"` |
-| **landing-page-specialist** | Conversion-focused landing pages with UX, code, competitor analysis | `"Use landing-page-specialist to build a landing page"` |
-| **pdf-specialist** | PDF whitepaper/report creation | `"Use pdf-specialist to create a PDF guide"` |
-| **presentation-designer** | PowerPoint deck creation | `"Use presentation-designer to create a pitch deck"` |
-| **analyst** | Campaign performance analysis & competitive benchmarking | `"Use analyst to analyze campaign metrics"` |
+**Technical/Engineering:** devops-engineer, frontend-developer, backend-architect, security-auditor, system-architect (ENGINEERING)
 
-**APIs Required:**
-- OpenAI API (images via GPT-4o, videos via Sora)
-- Gmail API (email sending)
-- Google Drive API (file uploads, optional)
-- Bright Data MCP (lead generation - 5,000 free requests/month)
-- ElevenLabs API (voice interface - text-to-speech)
+**AI/Optimization:** ai-engineer, prompt-engineer (ENGINEERING)
 
-**Voice Interface (COMING SOON):**
+**Research & Analysis:** research-agent, lead-gen-agent, seo-specialist, analyst (MARKETING)
 
-**Status:** Custom voice implementation archived, switching to ElevenLabs Conversational AI for true real-time voice.
+**Testing:** unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent (QA)
 
-**What's changing:**
-- Custom voice infrastructure archived to `MARKETING_TEAM/archive/voice_custom_implementation/`
-- Switching to ElevenLabs platform for real-time microphone → speaker conversation
-- Implementation coming soon
-
-**Current Options:**
-1. Wait for ElevenLabs integration (recommended - full real-time voice)
-2. Use archived text-based CLI (see `archive/voice_custom_implementation/` - type messages, get audio files)
-
-📖 **Documentation:**
-- [MARKETING_TEAM/docs/guides/voice/REALTIME_VOICE_OPTIONS.md](MARKETING_TEAM/docs/guides/voice/REALTIME_VOICE_OPTIONS.md) - Why switching to ElevenLabs
-- [MARKETING_TEAM/archive/voice_custom_implementation/VOICE_IMPLEMENTATION_SUMMARY.md](MARKETING_TEAM/archive/voice_custom_implementation/VOICE_IMPLEMENTATION_SUMMARY.md) - Previous custom implementation
-
----
-
-### QA_TEAM (5 Agents)
-
-| Agent | Capability | Invoke With |
-|-------|-----------|-------------|
-| **test-orchestrator** | Coordinates test generation across modules | `"Use test-orchestrator to scan my codebase"` |
-| **unit-test-agent** | Unit tests with AAA pattern, mocking, parametrization | `"Use unit-test-agent to test story_generator.py"` |
-| **integration-test-agent** | End-to-end workflow and module interaction tests | `"Use integration-test-agent to test the workflow"` |
-| **edge-case-agent** | Identifies boundary values, empty inputs, security cases | `"Use edge-case-agent to find edge cases"` |
-| **fixture-agent** | Pytest fixtures, mock objects, factory fixtures | `"Use fixture-agent to create test fixtures"` |
-
-**Testing Stack:**
-- pytest, pytest-cov, pytest-asyncio, pytest-mock
-- 80%+ coverage goals
-- AAA pattern (Arrange-Act-Assert)
-
----
-
-### ENGINEERING_TEAM (14 Agents) ⭐ **SUPER TEAM**
-
-**CTO Coordinator (1 Agent):**
-
-| Agent | Capability | Invoke With |
-|-------|-----------|-------------|
-| **cto** ⭐ | **Strategic coordinator** for all 13 specialists - Intelligent routing, multi-agent orchestration, workflow planning with sequential-thinking, quality gates, dependency tracking | `"Use cto to build an AI-powered analytics dashboard"` `"Use cto to deploy all systems to AWS"` `"Use cto to optimize all 37 agents"` |
-
-**Core 8 Specialists (Custom Built):**
-
-| Agent | Capability | Invoke With |
-|-------|-----------|-------------|
-| **devops-engineer** ⭐ | **Production-ready** CI/CD (GitHub Actions), Terraform (AWS/GCP), Kubernetes (Helm), monitoring (Prometheus/Grafana), security scanning (886 lines of code) | `"Use devops-engineer to create complete deployment pipeline"` |
-| **frontend-developer** | React components, responsive design (Tailwind), state management, performance optimization, accessibility (WCAG) | `"Use frontend-developer to build agent dashboard in Next.js"` |
-| **backend-architect** | RESTful API design, microservices architecture, database schema, caching strategies, scalability planning | `"Use backend-architect to design API for 37 agents"` |
-| **security-auditor** ⭐ | **Unique comprehensive security** - Code security analysis, vulnerability scanning (OWASP Top 10), compliance (GDPR/HIPAA) | `"Use security-auditor to scan for hardcoded API keys"` |
-| **technical-writer** ⭐ | **Broader scope** - PRDs, technical specs, API docs (OpenAPI), architecture diagrams, user guides | `"Use technical-writer to write PRD for agent scheduling"` |
-| **system-architect** ⭐ **NEW** | **Professional flow diagrams** - System architecture design, Mermaid diagrams (flowcharts, sequence, ER, state, CI/CD), interactive HTML visualizations with pan/zoom | `"Use system-architect to create microservices architecture diagram"` `"Use system-architect to visualize CI/CD pipeline"` |
-| **ai-engineer** ⭐ | **Perfect for 37 agents** - LLM integration, RAG systems, prompt optimization, agent frameworks (LangChain/LangGraph) | `"Use ai-engineer to optimize prompts for all 37 agents"` |
-| **ui-ux-designer** | User research, wireframes, design systems, accessibility, user flows, usability testing | `"Use ui-ux-designer to create wireframes for dashboard"` |
-
-**Specialist 5 Agents (From aitmpl.com - Community Validated):**
-
-| Agent | Capability | Downloads | Invoke With |
-|-------|-----------|-----------|-------------|
-| **code-reviewer** | Quality, security, maintainability reviews - automatic git diff analysis | 3.2K | `"Use code-reviewer to review MARKETING_TEAM email tool"` |
-| **test-engineer** | Test automation (Jest, Playwright, pytest), QA strategy, CI/CD testing | 1.3K | `"Use test-engineer to create test strategy for 37 agents"` |
-| **prompt-engineer** | LLM prompt optimization, techniques (few-shot, chain-of-thought), benchmarking | 2.4K | `"Use prompt-engineer to optimize copywriter prompt"` |
-| **database-architect** | Database design, data modeling, scalability (sharding, replication), polyglot persistence | 1.2K | `"Use database-architect to design analytics DB for 37 agents"` |
-| **debugger** | Root cause analysis, troubleshooting, error investigation, hypothesis testing | 1.7K | `"Use debugger to fix MARKETING_TEAM timeout issues"` |
-
-**Engineering Stack:**
-- **DevOps:** Docker, Kubernetes, Terraform, Helm, GitHub Actions, Prometheus, Grafana
-- **Backend:** Python, FastAPI, SQLAlchemy, Celery, Redis, PostgreSQL
-- **Frontend:** React, Next.js, TypeScript, Tailwind CSS, shadcn/ui
-- **AI/ML:** LangChain, LangGraph, OpenAI, Anthropic Claude, vector databases
-- **Design:** Wireframes, design systems, Figma integration, accessibility (WCAG)
-- **Security:** Trivy, kube-bench, gitleaks, Bandit, Safety, pip-audit
-- **Quality:** Code review, test automation, performance testing
-- **Database:** PostgreSQL, MongoDB, Redis, Elasticsearch, InfluxDB
-- **Docs:** Markdown, Mermaid diagrams, OpenAPI/Swagger, PlantUML
-
-**Special Features:**
-- ✅ **CTO Coordinator** - Single command orchestration for complex multi-agent workflows
-- ✅ **Intelligent routing** - CTO classifies requests and delegates to the right specialists
-- ✅ **Full workspace access** - All 14 agents can work with all 37 agents across 4 systems
-- ✅ **Production-ready code** - devops-engineer provides 886 lines of battle-tested CI/CD, Terraform, Helm
-- ✅ **Professional diagrams** - system-architect creates interactive Mermaid flow diagrams with pan/zoom
-- ✅ **Community validated** - 5 specialist agents with thousands of downloads (proven in production)
-- ✅ **AI optimization powerhouse** - ai-engineer + prompt-engineer can optimize all 37 agent prompts
-- ✅ **Quality layer** - code-reviewer + security-auditor ensure comprehensive code quality
-- ✅ **Complete testing** - test-engineer builds strategies, QA_TEAM generates tests
-- ✅ **Design → Develop → Test → Deploy** - Complete SDLC from UX to production
-- ✅ **Cross-team collaboration** - DevOps deploys all systems, AI/Prompt engineers optimize all agents, Security/Code reviewers audit everything
-- ✅ **End-to-end workflows** - CTO coordinates: PRD (technical-writer) → Architecture Diagrams (system-architect) → Database (database-architect) → Wireframes (ui-ux-designer) → API (backend-architect) → UI (frontend-developer) → Review (code-reviewer) → Test (test-engineer) → Deploy (devops-engineer) → Audit (security-auditor) → Optimize (ai-engineer + prompt-engineer) → Debug (debugger)
+📖 **Complete Agent Details:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)
+- Detailed capabilities for all 37 agents
+- Invocation examples and patterns
+- API requirements and technology stacks
+- Workflow orchestration strategies
+- Special features and cross-team collaboration
 
 ---
 
@@ -304,37 +200,18 @@ TEST_AGENTS/
 ### How the Multi-Agent System Works
 
 **Core Concept:**
-1. Agent definitions live in `.claude/agents/*.md` files
-2. Each agent has YAML frontmatter defining its tools and capabilities
-3. **NEW:** Each agent has workspace context header specifying team folder
-4. **NEW:** Agents use workspace_enforcer tool to validate location before tasks
-5. When you invoke an agent, Claude Code reads that definition and adopts the persona
-6. **NEW:** Agent automatically operates in correct workspace with absolute paths
-7. No Python orchestrator needed - Claude Code IS the orchestrator
+1. Agent definitions live in `.claude/agents/*.md` files with YAML frontmatter
+2. Each agent has workspace context (team folder, memory, outputs)
+3. Claude Code reads definition → adopts persona → validates workspace → executes
+4. Agents automatically use absolute paths (no manual path specification needed)
+5. No Python orchestrator - Claude Code IS the orchestrator
 
-**Example:**
-```
-You: "Use the copywriter subagent to write a blog post"
+**Example Flow:**
+`"Use copywriter to write a blog"` → Claude reads copywriter.md → validates MARKETING_TEAM workspace → reads brand_voice.json → generates content → saves to outputs/blog_posts/
 
-What happens:
-1. Claude reads MARKETING_TEAM/.claude/agents/copywriter.md
-2. Claude adopts the copywriter persona and instructions
-3. **NEW:** Claude validates workspace (confirms MARKETING_TEAM context)
-4. **NEW:** Claude gets absolute paths (MARKETING_TEAM/memory/, MARKETING_TEAM/outputs/)
-5. Claude uses the tools specified (workspace_enforcer, get_brand_voice, etc.)
-6. Claude reads from MARKETING_TEAM/memory/brand_voice.json automatically
-7. Claude generates the blog post in the copywriter's style
-8. **NEW:** Claude saves to MARKETING_TEAM/outputs/blog_posts/ automatically
-9. Claude returns results to you
-```
+**Key Benefits:** Agents never get lost, files end up in correct folders, cross-team boundaries enforced, absolute paths eliminate ambiguity
 
-**Workspace Enforcement Benefits:**
-- ✅ Agents never get lost or confused about their location
-- ✅ Files always end up in correct team folders
-- ✅ Cross-team boundaries automatically enforced
-- ✅ Users don't need to specify paths manually
-- ✅ Absolute paths eliminate ambiguity
-- ✅ Automated tests verify workspace correctness
+📖 **Complete Multi-Agent Documentation:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Detailed workflows, orchestration patterns, examples
 
 ### Adding New Agents
 
@@ -464,57 +341,23 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 📋 Tool Governance
 
-**Comprehensive governance framework** to ensure consistent tool/MCP/skill usage across all 37 agents and prevent redundant tool creation.
+**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 37 agents and prevents redundant tool creation.
 
-### Governance Files
+**Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New
 
-**Core Documentation:**
-- **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete inventory: 19 custom tools + 7 MCP servers + 18 skills (with priority order for every capability)
-- **[TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)** - Hierarchy of authority: MCP → Skill → Custom Tool → Create New
-- **[PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)** - Mandatory workflow before creating/declaring/using tools or skills
-- **[AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md)** - Skill declaration rules, priority documentation requirements, deprecation markers
+**Quick Reference:**
+- 19 custom tools (GPT-4o images, Sora videos, Drive uploads, email attachments)
+- 7 MCP servers (google-workspace, perplexity, bright-data, playwright, n8n, marketing-tools, sequential-thinking)
+- 18 skills (visual, development, content, documents, integration)
 
-**Auditing & Cleanup:**
-- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow (security-auditor responsibility)
-- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - 5-step deprecation process (30-day archive timeline)
-- **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking (16 metrics for tool health, skill health, governance processes, conflict resolution)
-
-### Quick Reference: Priority Hierarchy
-
-When executing tasks, agents follow this priority:
-
-1. **MCP Servers** (FIRST) - Use google-workspace for Gmail/Drive, perplexity for research, bright-data for scraping, playwright for browser automation
-2. **Skills** (SECOND) - Use when MCP unavailable OR skill is purpose-built (pptx, pdf, canvas-design, flow-diagram)
-3. **Custom Tools** (THIRD) - Use only for MCP gap-fillers (binary uploads, attachments, GPT-4o images, Sora videos, multi-clip stitching)
-4. **Create New Tool** (LAST RESORT) - Must complete pre-flight checklist
-
-### Critical Rules
-
-⚠️ **Skill Declaration Rule:** Agents MUST verify skill is enabled in `.claude/settings.json` before declaring in YAML frontmatter
-
-⚠️ **Document Skills Status:**
-- ✅ **ENABLED:** pdf (pypdf - comprehensive), pptx (html2pptx - no MCP alternative)
-- ❌ **DISABLED:** docx (use Google Docs MCP), xlsx (use Google Sheets MCP)
-
-⚠️ **Priority Documentation:** Agents with dual capabilities (skill + MCP) MUST document which to use first in their instructions
-
-⚠️ **No Orphaned Tools:** Tools with zero agent declarations are deprecated and archived within 30 days
-
-### For AI Assistants
-
-**Before creating ANY tool:**
-1. Read [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Complete inventory of 19 tools + 7 MCPs + 18 skills
-2. Check [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Mandatory 4-step verification workflow
-3. Follow [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md) - Priority hierarchy (MCP → Skill → Custom → New)
-4. Document in registry after creation
-
-**Before declaring a skill:**
-1. Verify skill exists in `.claude/skills/` folder
-2. Verify skill is enabled in team `.claude/settings.json`
-3. Check [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) Section 1.2 for enablement status
-4. Test skill works before adding to agent YAML
-
-**Quarterly governance audits:** Security-auditor runs [TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md) every 3 months to detect configuration mismatches, orphaned tools, and priority documentation gaps
+📖 **Complete Governance Documentation:**
+- **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete inventory with priority order for every capability
+- **[TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)** - Hierarchy of authority (MCP → Skill → Custom → New)
+- **[PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)** - Mandatory workflow before creating tools/skills
+- **[AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md)** - Skill declaration rules, priority documentation
+- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow
+- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - Deprecation process
+- **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking (16 metrics)
 
 ---
 
@@ -522,64 +365,15 @@ When executing tasks, agents follow this priority:
 
 All **17 MARKETING_TEAM agents** have access to **18 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations.
 
-### Quick Reference
+**Quick Reference:**
 
-**📦 18 Skills Available:**
+**18 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines, pdf-filler (content) • pptx, pdf, xlsx, docx (documents) • filesystem, figma, context7 (integration)
 
-| Category | Skills | Primary Use |
-|----------|--------|-------------|
-| **Visual** (5) | algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram | Social media art, presentations, diagrams |
-| **Development** (3) | artifacts-builder, mcp-builder, skill-creator | React apps, custom integrations |
-| **Content** (3) | internal-comms, brand-guidelines, pdf-filler | Reports, branded docs, forms |
-| **Documents** (4) | pptx, pdf, xlsx, docx | Office documents (built-in) |
-| **Integration** (3) | filesystem, figma, context7 | File ops, design extraction |
+**7 MCP Servers:** marketing-tools (GPT-4o images, Sora videos) • google-workspace (Gmail, Drive, Docs, Sheets) • perplexity (web research with citations) • bright-data (web scraping, leads) • playwright (browser automation) • n8n-mcp (workflow automation) • sequential-thinking (structured reasoning)
 
-**🔌 7 MCP Servers Available:**
-
-| Server | Purpose | Key Capabilities |
-|--------|---------|------------------|
-| **marketing-tools** | OpenAI APIs | GPT-4o images, Sora videos |
-| **google-workspace** | G Suite automation | Gmail, Drive, Docs, Sheets, Calendar |
-| **perplexity** | Web research | Search with citations, reasoning |
-| **bright-data** | Web scraping | SERP, leads (5K free/month) |
-| **playwright** | Browser automation | Navigate, screenshot, extract |
-| **n8n-mcp** | Workflow automation | 400+ integrations |
-| **sequential-thinking** | Structured reasoning | Step-by-step problem solving |
-
-### Usage Examples
-
-**Visual Content:**
-- `"Use visual-designer with algorithmic-art to create flow field Instagram post"`
-- `"Use social-media-manager with slack-gif-creator for product launch GIF"`
-
-**Development:**
-- `"Use landing-page-specialist with artifacts-builder for React landing page"`
-- `"Use presentation-designer with theme-factory 'vibrant' theme"`
-
-**Research & Analysis:**
-- `"Use research-agent to conduct comprehensive research on AI marketing trends"` (uses custom Perplexity tools)
-- `"Use lead-gen-agent with bright-data to find 50 B2B SaaS companies in SF"`
-- `"Use seo-specialist with playwright to analyze competitor sites"`
-
-**Documents:**
-- `"Use copywriter with internal-comms for Q1 status report"`
-- `"Use pdf-specialist with pdf-filler to create registration form"`
-
-### Agent-Skill Mapping
-
-**By Agent Type:**
-- **Visual/Creative:** visual-designer, social-media-manager, presentation-designer, video-producer
-- **Content/Strategy:** copywriter, landing-page-specialist, pdf-specialist, email-specialist, editor, gmail-agent
-- **Research/Analysis:** research-agent, seo-specialist, lead-gen-agent, analyst
-- **Orchestration:** router-agent, content-strategist, automation-agent
-
-**All agents inherit all 18 skills** via `MARKETING_TEAM/.claude/settings.json`
-
-### Complete Documentation
-
-For detailed guides with 50+ examples:
-- **[skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - Complete reference
-- **[SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Cheat sheets
+📖 **Complete Skills & MCP Documentation:**
+- **[skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - 50+ usage examples, agent-skill mapping, complete reference
+- **[SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Cheat sheets and quick lookups
 
 ---
 
@@ -796,28 +590,18 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ### About Workspace Awareness
 
-**Agents Know Their Workspace Automatically**
+**All 37 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
 
-**Q:** Do I need to tell agents which folder they're in?
-**A:** No! All 37 agents now have workspace context headers and use workspace_enforcer tool. They automatically know:
-- Which team they belong to (MARKETING_TEAM, QA_TEAM, etc.)
-- Where their memory folder is
-- Where to save outputs
-- Their cross-team collaboration boundaries
+**Quick Troubleshooting:**
+- If "Workspace validation failed" → Check `pwd` (should be TEST_AGENTS or team folder) → Navigate to correct directory
+- Marketing agents cannot access QA_TEAM memory (by design - each team has isolated memory)
+- Verify: `pytest tests/test_workspace_enforcement.py -v`
 
-**Q:** What if an agent says "Workspace validation failed"?
-**A:** This means the OS working directory doesn't match the agent's expected workspace. Solution:
-1. Check: `pwd` (should show TEST_AGENTS or TEST_AGENTS/{TEAM}/)
-2. Navigate: `cd TEST_AGENTS/` or `cd TEST_AGENTS/MARKETING_TEAM/`
-3. Re-invoke the agent
-
-**Q:** Can Marketing agents access QA_TEAM memory?
-**A:** No - workspace enforcer blocks cross-team memory access (by design). Each team has its own memory folder.
-
-**Q:** How do I verify workspace enforcement is working?
-**A:** Run: `pytest tests/test_workspace_enforcement.py -v`
-
-**See:** `WORKSPACE_CONTEXT_STANDARD.md`, `tools/workspace_enforcer.py`, `tools/path_validator.py`
+📖 **Complete Workspace Documentation:** [WORKSPACE_ENFORCEMENT_SUMMARY.md](WORKSPACE_ENFORCEMENT_SUMMARY.md)
+- 665-line comprehensive guide
+- Implementation details, troubleshooting, test results
+- Tools: workspace_enforcer.py, path_validator.py
+- Standards: WORKSPACE_CONTEXT_STANDARD.md
 
 ---
 
