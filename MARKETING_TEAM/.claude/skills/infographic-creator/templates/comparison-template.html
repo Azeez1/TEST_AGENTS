@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} - Comparison Infographic</title>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: {{BODY_FONT}}, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: {{BACKGROUND_COLOR}};
+            color: {{TEXT_COLOR}};
+            padding: 40px 20px;
+        }
+
+        .infographic-container {
+            max-width: {{CANVAS_WIDTH}}px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: {{LOGO_TOP}}px;
+            {{LOGO_POSITION}}: {{LOGO_OFFSET}}px;
+            width: {{LOGO_SIZE}}px;
+            opacity: {{LOGO_OPACITY}};
+            z-index: 100;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            font-size: {{TITLE_SIZE}}px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            margin-bottom: 20px;
+            opacity: 0;
+        }
+
+        .subtitle {
+            font-size: {{SUBTITLE_SIZE}}px;
+            color: {{SECONDARY_COLOR}};
+            opacity: 0;
+        }
+
+        /* Comparison grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat({{NUM_ITEMS}}, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .comparison-column {
+            background: {{CARD_BACKGROUND}};
+            border-radius: {{BORDER_RADIUS}}px;
+            overflow: hidden;
+            box-shadow: {{CARD_SHADOW}};
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .comparison-column:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Column header */
+        .column-header {
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .comparison-column:nth-child(1) .column-header {
+            background: linear-gradient(135deg, {{COLOR_1_START}}, {{COLOR_1_END}});
+        }
+
+        .comparison-column:nth-child(2) .column-header {
+            background: linear-gradient(135deg, {{COLOR_2_START}}, {{COLOR_2_END}});
+        }
+
+        .comparison-column:nth-child(3) .column-header {
+            background: linear-gradient(135deg, {{COLOR_3_START}}, {{COLOR_3_END}});
+        }
+
+        .column-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .column-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+        }
+
+        .column-tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+        }
+
+        /* Recommended badge */
+        .recommended-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Features list */
+        .features-list {
+            padding: 30px 25px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.yes {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .feature-icon.no {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            color: {{TEXT_COLOR}};
+        }
+
+        .feature-text.disabled {
+            color: #9ca3af;
+            text-decoration: line-through;
+        }
+
+        /* Price section */
+        .price-section {
+            padding: 25px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .price {
+            font-size: 42px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+        }
+
+        .price-period {
+            font-size: 16px;
+            color: {{SECONDARY_COLOR}};
+            margin-top: 5px;
+        }
+
+        /* CTA button */
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            margin-top: 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .comparison-column:nth-child(1) .cta-button {
+            background: linear-gradient(135deg, {{COLOR_1_START}}, {{COLOR_1_END}});
+            color: white;
+        }
+
+        .comparison-column:nth-child(2) .cta-button {
+            background: linear-gradient(135deg, {{COLOR_2_START}}, {{COLOR_2_END}});
+            color: white;
+        }
+
+        .comparison-column:nth-child(3) .cta-button {
+            background: linear-gradient(135deg, {{COLOR_3_START}}, {{COLOR_3_END}});
+            color: white;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Divider with "VS" */
+        .vs-divider {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: {{ACCENT_COLOR}};
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            opacity: 0;
+        }
+
+        .watermark {
+            text-align: center;
+            margin-top: 40px;
+            font-size: {{WATERMARK_SIZE}}px;
+            color: {{TEXT_COLOR}};
+            opacity: {{WATERMARK_OPACITY}};
+        }
+
+        @media (max-width: 968px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .vs-divider {
+                position: static;
+                transform: none;
+                margin: -20px auto;
+            }
+
+            .title {
+                font-size: calc({{TITLE_SIZE}}px * 0.7);
+            }
+        }
+
+        @media print {
+            body { background: white; }
+            .comparison-column { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="infographic-container">
+        {{#if LOGO_PATH}}
+        <img src="{{LOGO_PATH}}" alt="Logo" class="logo">
+        {{/if}}
+
+        <div class="header">
+            <h1 class="title">{{TITLE}}</h1>
+            {{#if SUBTITLE}}
+            <p class="subtitle">{{SUBTITLE}}</p>
+            {{/if}}
+        </div>
+
+        <div class="comparison-grid" style="position: relative;">
+            {{#each COMPARISON_ITEMS}}
+            <div class="comparison-column">
+                <div class="column-header">
+                    {{#if recommended}}
+                    <div class="recommended-badge">{{recommendedText}}</div>
+                    {{/if}}
+                    {{#if icon}}
+                    <div class="column-icon">{{icon}}</div>
+                    {{/if}}
+                    <div class="column-name">{{name}}</div>
+                    {{#if tagline}}
+                    <div class="column-tagline">{{tagline}}</div>
+                    {{/if}}
+                </div>
+
+                <div class="features-list">
+                    {{#each features}}
+                    <div class="feature-item">
+                        <span class="feature-icon {{#if included}}yes{{else}}no{{/if}}">
+                            {{#if included}}✓{{else}}✗{{/if}}
+                        </span>
+                        <span class="feature-text {{#unless included}}disabled{{/unless}}">
+                            {{text}}
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+
+                {{#if price}}
+                <div class="price-section">
+                    <div class="price">{{price}}</div>
+                    {{#if pricePeriod}}
+                    <div class="price-period">{{pricePeriod}}</div>
+                    {{/if}}
+                    {{#if ctaText}}
+                    <a href="{{ctaLink}}" class="cta-button">{{ctaText}}</a>
+                    {{/if}}
+                </div>
+                {{/if}}
+            </div>
+
+            {{#if @last}}{{else}}
+            {{#if ../showVS}}
+            <div class="vs-divider">VS</div>
+            {{/if}}
+            {{/if}}
+            {{/each}}
+        </div>
+
+        {{#if WATERMARK_TEXT}}
+        <div class="watermark">{{WATERMARK_TEXT}}</div>
+        {{/if}}
+    </div>
+
+    <script>
+        const config = {
+            enableAnimations: {{ENABLE_ANIMATIONS}} !== false,
+            staggerDelay: 200
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (config.enableAnimations) initAnimations();
+        });
+
+        function initAnimations() {
+            anime({
+                targets: '.title',
+                opacity: [0, 1],
+                translateY: [-20, 0],
+                duration: 1000,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.subtitle',
+                opacity: [0, 1],
+                translateY: [-20, 0],
+                duration: 1000,
+                delay: 200,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.comparison-column',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                delay: anime.stagger(config.staggerDelay, {start: 400}),
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.vs-divider',
+                opacity: [0, 1],
+                scale: [0, 1],
+                duration: 600,
+                delay: 800,
+                easing: 'easeOutElastic(1, .8)'
+            });
+
+            // Stagger feature items within each column
+            document.querySelectorAll('.features-list').forEach((list, index) => {
+                anime({
+                    targets: list.querySelectorAll('.feature-item'),
+                    opacity: [0, 1],
+                    translateX: [-20, 0],
+                    duration: 500,
+                    delay: anime.stagger(50, {start: 600 + (index * config.staggerDelay)}),
+                    easing: 'easeOutExpo'
+                });
+            });
+        }
+    </script>
+</body>
+</html>

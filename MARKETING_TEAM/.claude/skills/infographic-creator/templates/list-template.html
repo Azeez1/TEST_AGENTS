@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} - List Infographic</title>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: {{BODY_FONT}}, sans-serif;
+            background: {{BACKGROUND_COLOR}};
+            color: {{TEXT_COLOR}};
+            padding: 40px 20px;
+        }
+        .infographic-container {
+            max-width: {{CANVAS_WIDTH}}px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, {{PRIMARY_COLOR}}, {{ACCENT_COLOR}});
+            color: white;
+            padding: 60px 40px;
+            border-radius: {{BORDER_RADIUS}}px;
+            opacity: 0;
+        }
+        .title {
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            font-size: {{TITLE_SIZE}}px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .subtitle {
+            font-size: {{SUBTITLE_SIZE}}px;
+            opacity: 0.95;
+        }
+        .list-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .list-item {
+            background: {{CARD_BACKGROUND}};
+            padding: 30px;
+            border-radius: {{BORDER_RADIUS}}px;
+            box-shadow: {{CARD_SHADOW}};
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid {{ACCENT_COLOR}};
+        }
+        .list-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        .item-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, {{PRIMARY_COLOR}}, {{ACCENT_COLOR}});
+            color: white;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 50px;
+            margin-bottom: 20px;
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+        }
+        .item-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .item-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: {{TEXT_COLOR}};
+            margin-bottom: 12px;
+        }
+        .item-description {
+            font-size: 16px;
+            color: {{SECONDARY_COLOR}};
+            line-height: 1.6;
+        }
+        .item-highlight {
+            font-size: 14px;
+            color: {{PRIMARY_COLOR}};
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        .cta-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: {{CARD_BACKGROUND}};
+            border-radius: {{BORDER_RADIUS}}px;
+            box-shadow: {{CARD_SHADOW}};
+            opacity: 0;
+        }
+        .cta-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            margin-bottom: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, {{PRIMARY_COLOR}}, {{ACCENT_COLOR}});
+            color: white;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 768px) {
+            .list-items { grid-template-columns: 1fr; }
+            .title { font-size: calc({{TITLE_SIZE}}px * 0.7); }
+        }
+    </style>
+</head>
+<body>
+    <div class="infographic-container">
+        <div class="header">
+            <h1 class="title">{{TITLE}}</h1>
+            {{#if SUBTITLE}}
+            <p class="subtitle">{{SUBTITLE}}</p>
+            {{/if}}
+        </div>
+
+        <div class="list-items">
+            {{#each LIST_ITEMS}}
+            <div class="list-item">
+                {{#if ../SHOW_NUMBERS}}
+                <span class="item-number">{{add @index 1}}</span>
+                {{/if}}
+                {{#if icon}}
+                <span class="item-icon">{{icon}}</span>
+                {{/if}}
+                <h3 class="item-title">{{title}}</h3>
+                <p class="item-description">{{description}}</p>
+                {{#if highlight}}
+                <p class="item-highlight">{{highlight}}</p>
+                {{/if}}
+            </div>
+            {{/each}}
+        </div>
+
+        {{#if CTA}}
+        <div class="cta-section">
+            <h2 class="cta-title">{{CTA.title}}</h2>
+            {{#if CTA.buttonText}}
+            <a href="{{CTA.buttonLink}}" class="cta-button">{{CTA.buttonText}}</a>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            anime({
+                targets: '.header',
+                opacity: [0, 1],
+                translateY: [-30, 0],
+                duration: 1000,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.list-item',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                delay: anime.stagger(100, {start: 400}),
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.cta-section',
+                opacity: [0, 1],
+                scale: [0.95, 1],
+                duration: 800,
+                delay: 1200,
+                easing: 'easeOutExpo'
+            });
+
+            // Hover effects for item numbers
+            document.querySelectorAll('.item-number').forEach(num => {
+                num.addEventListener('mouseenter', function() {
+                    anime({
+                        targets: this,
+                        scale: [1, 1.2],
+                        rotate: [0, 360],
+                        duration: 600,
+                        easing: 'easeOutElastic(1, .6)'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

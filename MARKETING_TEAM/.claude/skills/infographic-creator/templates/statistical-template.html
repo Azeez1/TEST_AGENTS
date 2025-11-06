@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} - Statistical Infographic</title>
+
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Anime.js for animations -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: {{BODY_FONT}}, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: {{BACKGROUND_COLOR}};
+            color: {{TEXT_COLOR}};
+            overflow-x: hidden;
+        }
+
+        .infographic-container {
+            max-width: {{CANVAS_WIDTH}}px;
+            margin: 0 auto;
+            padding: {{PADDING}}px;
+            position: relative;
+            background: {{CANVAS_BACKGROUND}};
+        }
+
+        /* Logo placement */
+        .logo {
+            position: absolute;
+            top: {{LOGO_TOP}}px;
+            {{LOGO_POSITION}}: {{LOGO_OFFSET}}px;
+            width: {{LOGO_SIZE}}px;
+            height: auto;
+            opacity: {{LOGO_OPACITY}};
+            z-index: 100;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .title {
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            font-size: {{TITLE_SIZE}}px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            margin-bottom: 20px;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .subtitle {
+            font-size: {{SUBTITLE_SIZE}}px;
+            color: {{SECONDARY_COLOR}};
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* Metrics grid - Big numbers section */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .metric-card {
+            background: {{CARD_BACKGROUND}};
+            border-radius: {{BORDER_RADIUS}}px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: {{CARD_SHADOW}};
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: {{ACCENT_COLOR}};
+        }
+
+        .metric-value {
+            font-size: {{METRIC_VALUE_SIZE}}px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            margin-bottom: 10px;
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+        }
+
+        .metric-label {
+            font-size: {{METRIC_LABEL_SIZE}}px;
+            color: {{TEXT_COLOR}};
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .metric-change {
+            font-size: {{METRIC_CHANGE_SIZE}}px;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .metric-change.positive {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .metric-change.negative {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .metric-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        /* Charts section */
+        .charts-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            font-size: 32px;
+            color: {{PRIMARY_COLOR}};
+            margin-bottom: 40px;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .chart-container {
+            background: {{CARD_BACKGROUND}};
+            border-radius: {{BORDER_RADIUS}}px;
+            padding: 30px;
+            box-shadow: {{CARD_SHADOW}};
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: {{TEXT_COLOR}};
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-canvas {
+            width: 100% !important;
+            height: 300px !important;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            bottom: {{WATERMARK_BOTTOM}}px;
+            {{WATERMARK_POSITION}}: {{WATERMARK_OFFSET}}px;
+            font-size: {{WATERMARK_SIZE}}px;
+            color: {{TEXT_COLOR}};
+            opacity: {{WATERMARK_OPACITY}};
+            z-index: 100;
+        }
+
+        /* Interactive tooltip */
+        .tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .infographic-container {
+                padding: 20px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .title {
+                font-size: calc({{TITLE_SIZE}}px * 0.7);
+            }
+
+            .metric-value {
+                font-size: calc({{METRIC_VALUE_SIZE}}px * 0.8);
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .infographic-container {
+                max-width: 100%;
+                box-shadow: none;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="infographic-container">
+        <!-- Logo -->
+        {{#if LOGO_PATH}}
+        <img src="{{LOGO_PATH}}" alt="Logo" class="logo">
+        {{/if}}
+
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">{{TITLE}}</h1>
+            {{#if SUBTITLE}}
+            <p class="subtitle">{{SUBTITLE}}</p>
+            {{/if}}
+        </div>
+
+        <!-- Metrics Grid (Big Numbers) -->
+        <div class="metrics-grid">
+            {{#each METRICS}}
+            <div class="metric-card" data-metric-index="{{@index}}">
+                {{#if icon}}
+                <div class="metric-icon">{{icon}}</div>
+                {{/if}}
+                <div class="metric-value" data-target="{{value}}">0</div>
+                <div class="metric-label">{{label}}</div>
+                {{#if change}}
+                <div class="metric-change {{#if (gt change 0)}}positive{{else}}negative{{/if}}">
+                    {{#if (gt change 0)}}↑{{else}}↓{{/if}} {{change}}%
+                </div>
+                {{/if}}
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Charts Section -->
+        {{#if CHARTS}}
+        <div class="charts-section">
+            <h2 class="section-title">{{CHARTS_SECTION_TITLE}}</h2>
+            <div class="charts-grid">
+                {{#each CHARTS}}
+                <div class="chart-container" data-chart-index="{{@index}}">
+                    <h3 class="chart-title">{{title}}</h3>
+                    <canvas class="chart-canvas" id="chart-{{@index}}"></canvas>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
+
+        <!-- Watermark -->
+        {{#if WATERMARK_TEXT}}
+        <div class="watermark">{{WATERMARK_TEXT}}</div>
+        {{/if}}
+    </div>
+
+    <!-- Tooltip for interactivity -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Configuration
+        const config = {
+            primaryColor: '{{PRIMARY_COLOR}}',
+            secondaryColor: '{{SECONDARY_COLOR}}',
+            accentColor: '{{ACCENT_COLOR}}',
+            animationDuration: {{ANIMATION_DURATION}} || 2000,
+            animationDelay: {{ANIMATION_DELAY}} || 100,
+            animationEasing: '{{ANIMATION_EASING}}' || 'easeOutExpo',
+            enableAnimations: {{ENABLE_ANIMATIONS}} !== false,
+            enableInteractive: {{ENABLE_INTERACTIVE}} !== false
+        };
+
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (config.enableAnimations) {
+                initAnimations();
+            }
+            initCharts();
+            if (config.enableInteractive) {
+                initInteractivity();
+            }
+        });
+
+        // Initialize animations
+        function initAnimations() {
+            // Animate title
+            anime({
+                targets: '.title',
+                opacity: [0, 1],
+                translateY: [-20, 0],
+                duration: 1000,
+                easing: 'easeOutExpo'
+            });
+
+            // Animate subtitle
+            anime({
+                targets: '.subtitle',
+                opacity: [0, 1],
+                translateY: [-20, 0],
+                duration: 1000,
+                delay: 200,
+                easing: 'easeOutExpo'
+            });
+
+            // Animate metric cards
+            anime({
+                targets: '.metric-card',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                delay: anime.stagger(config.animationDelay, {start: 400}),
+                easing: config.animationEasing
+            });
+
+            // Counter animation for metric values
+            const metricValues = document.querySelectorAll('.metric-value');
+            metricValues.forEach((element, index) => {
+                const target = parseFloat(element.dataset.target);
+                const isPercentage = element.dataset.target.includes('%');
+                const isCurrency = element.dataset.target.includes('$');
+
+                setTimeout(() => {
+                    animateCounter(element, target, isPercentage, isCurrency);
+                }, 600 + (index * config.animationDelay));
+            });
+
+            // Animate section titles
+            anime({
+                targets: '.section-title',
+                opacity: [0, 1],
+                translateY: [-20, 0],
+                duration: 800,
+                delay: 1200,
+                easing: 'easeOutExpo'
+            });
+
+            // Animate charts
+            anime({
+                targets: '.chart-container',
+                opacity: [0, 1],
+                scale: [0.95, 1],
+                duration: 800,
+                delay: anime.stagger(200, {start: 1400}),
+                easing: 'easeOutExpo'
+            });
+        }
+
+        // Counter animation for numbers
+        function animateCounter(element, target, isPercentage, isCurrency) {
+            const duration = config.animationDuration;
+            const startTime = Date.now();
+            const isDecimal = target % 1 !== 0;
+
+            function update() {
+                const currentTime = Date.now();
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Easing function (easeOutExpo)
+                const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const current = target * eased;
+
+                let formatted = isDecimal ? current.toFixed(1) : Math.floor(current).toLocaleString();
+
+                if (isCurrency) formatted = '$' + formatted;
+                if (isPercentage) formatted = formatted + '%';
+
+                element.textContent = formatted;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            update();
+        }
+
+        // Initialize Chart.js charts
+        function initCharts() {
+            const charts = {{CHARTS_DATA}};
+
+            if (!charts || charts.length === 0) return;
+
+            charts.forEach((chartData, index) => {
+                const canvas = document.getElementById('chart-' + index);
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+
+                new Chart(ctx, {
+                    type: chartData.type || 'bar',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: chartData.datasets.map(dataset => ({
+                            ...dataset,
+                            backgroundColor: dataset.backgroundColor || config.primaryColor,
+                            borderColor: dataset.borderColor || config.accentColor,
+                            borderWidth: dataset.borderWidth || 2
+                        }))
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: chartData.showLegend !== false,
+                                position: 'top'
+                            },
+                            tooltip: {
+                                enabled: true,
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleColor: '#fff',
+                                bodyColor: '#fff',
+                                borderColor: config.accentColor,
+                                borderWidth: 1
+                            }
+                        },
+                        scales: chartData.type !== 'pie' && chartData.type !== 'doughnut' ? {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        } : {},
+                        animation: {
+                            duration: config.enableAnimations ? config.animationDuration : 0,
+                            easing: 'easeInOutQuart',
+                            delay: 1600 + (index * 300)
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize interactivity
+        function initInteractivity() {
+            const tooltip = document.getElementById('tooltip');
+            const interactiveElements = document.querySelectorAll('.metric-card, .chart-container');
+
+            interactiveElements.forEach(element => {
+                element.style.cursor = 'pointer';
+                element.style.transition = 'transform 0.2s, box-shadow 0.2s';
+
+                element.addEventListener('mouseenter', function(e) {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+
+                element.addEventListener('mouseleave', function(e) {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '{{CARD_SHADOW}}';
+                });
+
+                // Add click event for potential modal or expanded view
+                element.addEventListener('click', function() {
+                    console.log('Clicked:', this.dataset);
+                    // Future: Open modal with detailed info
+                });
+            });
+        }
+
+        // Export function for PNG/PDF
+        function exportInfographic(format = 'png') {
+            // This would integrate with html2canvas or similar library
+            console.log('Exporting as:', format);
+        }
+
+        // Make functions available globally
+        window.exportInfographic = exportInfographic;
+    </script>
+</body>
+</html>
