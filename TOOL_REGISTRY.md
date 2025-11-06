@@ -165,6 +165,23 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 | **React Artifacts** | `artifacts-builder` (React + shadcn/ui) | N/A | N/A | 1. Skill only | landing-page-specialist | ✅ Active |
 | **MCP Server Creation** | `mcp-builder` (create MCP servers) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
 | **Skill Creation** | `skill-creator` (create new skills) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
+| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 37 agents | ✅ Active (critical) |
+| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 37 agents | ✅ Active (critical) |
+
+**Workspace Management Priority:**
+
+⚠️ **CRITICAL:** These tools have HIGHEST priority:
+
+1. **workspace_enforcer** - FIRST tool agents must use (before any task execution)
+2. **path_validator** - REQUIRED for all file operations (read/write)
+3. Then other tools (MCP servers, skills, custom tools)
+
+**Rationale:** Workspace context is foundational - agents must know WHERE they are before WHAT they do.
+
+**Usage Notes:**
+- **workspace_enforcer:** Validates agent is in correct team workspace (MARKETING_TEAM, QA_TEAM, ENGINEERING_TEAM)
+- **path_validator:** Converts relative paths to absolute paths, enforces cross-team boundaries
+- **Declaring agents:** ALL 37 agents MUST include in YAML frontmatter (automatically added to all agents)
 
 ---
 

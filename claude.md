@@ -306,8 +306,11 @@ TEST_AGENTS/
 **Core Concept:**
 1. Agent definitions live in `.claude/agents/*.md` files
 2. Each agent has YAML frontmatter defining its tools and capabilities
-3. When you invoke an agent, Claude Code reads that definition and adopts the persona
-4. No Python orchestrator needed - Claude Code IS the orchestrator
+3. **NEW:** Each agent has workspace context header specifying team folder
+4. **NEW:** Agents use workspace_enforcer tool to validate location before tasks
+5. When you invoke an agent, Claude Code reads that definition and adopts the persona
+6. **NEW:** Agent automatically operates in correct workspace with absolute paths
+7. No Python orchestrator needed - Claude Code IS the orchestrator
 
 **Example:**
 ```
@@ -316,10 +319,22 @@ You: "Use the copywriter subagent to write a blog post"
 What happens:
 1. Claude reads MARKETING_TEAM/.claude/agents/copywriter.md
 2. Claude adopts the copywriter persona and instructions
-3. Claude uses the tools specified (get_brand_voice, etc.)
-4. Claude generates the blog post in the copywriter's style
-5. Claude returns results to you
+3. **NEW:** Claude validates workspace (confirms MARKETING_TEAM context)
+4. **NEW:** Claude gets absolute paths (MARKETING_TEAM/memory/, MARKETING_TEAM/outputs/)
+5. Claude uses the tools specified (workspace_enforcer, get_brand_voice, etc.)
+6. Claude reads from MARKETING_TEAM/memory/brand_voice.json automatically
+7. Claude generates the blog post in the copywriter's style
+8. **NEW:** Claude saves to MARKETING_TEAM/outputs/blog_posts/ automatically
+9. Claude returns results to you
 ```
+
+**Workspace Enforcement Benefits:**
+- ✅ Agents never get lost or confused about their location
+- ✅ Files always end up in correct team folders
+- ✅ Cross-team boundaries automatically enforced
+- ✅ Users don't need to specify paths manually
+- ✅ Absolute paths eliminate ambiguity
+- ✅ Automated tests verify workspace correctness
 
 ### Adding New Agents
 
@@ -778,6 +793,31 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 **How it works:** Each agent's `.claude/agents/*.md` file includes a "⚙️ Configuration Files (READ FIRST)" section with explicit instructions to read relevant memory files at task start. This ensures consistency across all agents without hardcoding configuration.
 
 **These files are gitignored and local-only** (never committed to version control).
+
+### About Workspace Awareness
+
+**Agents Know Their Workspace Automatically**
+
+**Q:** Do I need to tell agents which folder they're in?
+**A:** No! All 37 agents now have workspace context headers and use workspace_enforcer tool. They automatically know:
+- Which team they belong to (MARKETING_TEAM, QA_TEAM, etc.)
+- Where their memory folder is
+- Where to save outputs
+- Their cross-team collaboration boundaries
+
+**Q:** What if an agent says "Workspace validation failed"?
+**A:** This means the OS working directory doesn't match the agent's expected workspace. Solution:
+1. Check: `pwd` (should show TEST_AGENTS or TEST_AGENTS/{TEAM}/)
+2. Navigate: `cd TEST_AGENTS/` or `cd TEST_AGENTS/MARKETING_TEAM/`
+3. Re-invoke the agent
+
+**Q:** Can Marketing agents access QA_TEAM memory?
+**A:** No - workspace enforcer blocks cross-team memory access (by design). Each team has its own memory folder.
+
+**Q:** How do I verify workspace enforcement is working?
+**A:** Run: `pytest tests/test_workspace_enforcement.py -v`
+
+**See:** `WORKSPACE_CONTEXT_STANDARD.md`, `tools/workspace_enforcer.py`, `tools/path_validator.py`
 
 ---
 

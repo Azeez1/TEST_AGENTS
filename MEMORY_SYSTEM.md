@@ -32,6 +32,72 @@ Configuration values used instead of hardcoded defaults.
 
 ---
 
+## Team-Specific Memory Folders
+
+Memory configuration is now **team-scoped** with workspace enforcement. Each team has its own memory folder with team-specific configurations:
+
+### MARKETING_TEAM Memory
+**Location:** `MARKETING_TEAM/memory/`
+
+**Files (12 total):**
+- `brand_voice.json` - Dux Machina tone and messaging
+- `email_config.json` - Gmail defaults
+- `google_drive_config.json` - Drive folder IDs
+- `visual_guidelines.json` - Brand colors and design
+- `output_paths.json` - Where to save content
+- `docs_folder_structure.json` - Documentation organization
+- `seo_config.json` - SEO keywords and settings
+- `campaign_templates.json` - Reusable campaign structures
+- `voice_interface_config.json` - Voice settings
+- `learned_preferences.json` - User preferences
+- `social_media_accounts.json` - Social accounts
+- `content_calendar.json` - Publishing schedule
+
+**Access:** All 17 MARKETING_TEAM agents read automatically
+
+### QA_TEAM Memory
+**Location:** `QA_TEAM/memory/`
+
+**Files (2 total):**
+- `learned_patterns.json` - Common edge cases and test patterns
+- `test_settings.json` - Testing preferences and configurations
+
+**Access:** All 5 QA_TEAM agents read automatically
+
+### ENGINEERING_TEAM Memory
+**Location:** `ENGINEERING_TEAM/memory/`
+
+**Files (2 total):**
+- `deployment_configs.json` - AWS/GCP deployment settings
+- `infrastructure_settings.json` - Infrastructure preferences
+
+**Access:** All 14 ENGINEERING_TEAM agents read automatically
+
+### USER_STORY_AGENT Memory
+**Location:** `USER_STORY_AGENT/memory/preferences_store.json`
+
+**Access:** Streamlit app reads on startup
+
+---
+
+## Workspace Validation
+
+All memory reads now use absolute paths with validation:
+
+```python
+from tools.path_validator import validate_read_path
+
+# Agent automatically uses correct team memory
+config = validate_read_path("brand_voice.json", "MARKETING_TEAM")
+# Returns: "MARKETING_TEAM/memory/brand_voice.json"
+
+data = read_json(config)
+```
+
+**Cross-team memory access is blocked** - agents can only read their own team's memory (unless explicitly using absolute paths with user permission).
+
+---
+
 ## Memory Files Reference
 
 ### MARKETING_TEAM/memory/

@@ -58,6 +58,74 @@ This guide explains how to properly invoke the 37 autonomous agents in this repo
 
 ---
 
+## 🏢 Workspace Context in Invocations
+
+All agents now have **automatic workspace awareness** - you no longer need to specify the team folder in every invocation.
+
+### Before Workspace Enforcement
+
+❌ **Old way (confusing):**
+```
+"Use the copywriter agent to write a blog and save it to MARKETING_TEAM/outputs/blog_posts/"
+"Make sure you're in MARKETING_TEAM folder"
+"Read from MARKETING_TEAM/memory/brand_voice.json"
+```
+
+### After Workspace Enforcement
+
+✅ **New way (automatic):**
+```
+"Use copywriter to write a blog about AI trends"
+```
+
+**What happens automatically:**
+1. Agent validates it's in MARKETING_TEAM workspace
+2. Agent reads from MARKETING_TEAM/memory/ automatically
+3. Agent saves to MARKETING_TEAM/outputs/blog_posts/ automatically
+4. Agent uses absolute paths internally
+5. User never needs to specify folders
+
+---
+
+## 🔄 Cross-Team Invocations
+
+**Scenario:** Marketing needs QA to test their tools
+
+✅ **Correct invocation:**
+```
+"Use test-orchestrator to scan MARKETING_TEAM/tools/ and generate tests"
+```
+
+**What happens:**
+1. test-orchestrator validates it's in QA_TEAM workspace ✅
+2. test-orchestrator READS from MARKETING_TEAM/tools/ ✅ (allowed)
+3. test-orchestrator WRITES tests to QA_TEAM/tests/marketing/ ✅ (correct location)
+4. Cross-team boundary respected ✅
+
+❌ **Incorrect (would fail):**
+```
+"Use test-orchestrator to save tests to MARKETING_TEAM/tests/"
+```
+→ Workspace enforcer blocks this (QA agents can't write to MARKETING_TEAM)
+
+---
+
+## 🛠️ Workspace Troubleshooting
+
+**If agent says "Workspace validation failed":**
+
+1. Check current directory: `pwd`
+2. Expected directory: `TEST_AGENTS` or `TEST_AGENTS/{TEAM_NAME}/`
+3. Navigate if needed: `cd TEST_AGENTS/`
+4. Re-invoke agent
+
+**If files end up in wrong location:**
+- Check agent used workspace_enforcer tool
+- Verify agent used absolute paths
+- Run: `pytest tests/test_workspace_enforcement.py`
+
+---
+
 ## ❌ Anti-Patterns (What NOT To Do)
 
 ### Anti-Pattern 1: Over-Specification

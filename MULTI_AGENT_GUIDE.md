@@ -90,6 +90,69 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ---
 
+## 🏢 Agent Workspace Assignments
+
+All 37 agents are organized into 4 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+
+### MARKETING_TEAM (17 agents)
+**Location:** `MARKETING_TEAM/.claude/agents/`
+**Memory:** `MARKETING_TEAM/memory/` (12 config files)
+**Outputs:** `MARKETING_TEAM/outputs/` (blog_posts, images, videos, etc.)
+**Agents:** router-agent, content-strategist, research-agent, lead-gen-agent, automation-agent, copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, email-specialist, gmail-agent, landing-page-specialist, pdf-specialist, presentation-designer, analyst
+
+**Workspace enforcement:** ✅ ENABLED (all agents use workspace_enforcer tool)
+
+### QA_TEAM (5 agents)
+**Location:** `QA_TEAM/.claude/agents/`
+**Memory:** `QA_TEAM/memory/` (learned patterns, test settings)
+**Outputs:** `QA_TEAM/tests/` (generated test files)
+**Agents:** test-orchestrator, unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent
+
+**Testing scope:** Can test ANY codebase in TEST_AGENTS (all 4 systems)
+**Workspace enforcement:** ✅ ENABLED
+
+### ENGINEERING_TEAM (14 agents)
+**Location:** `ENGINEERING_TEAM/.claude/agents/`
+**Memory:** `ENGINEERING_TEAM/memory/` (deployment configs, infrastructure settings)
+**Outputs:** `ENGINEERING_TEAM/outputs/` (PRDs, specs, diagrams, code reviews)
+**Docs:** `ENGINEERING_TEAM/docs/` (technical documentation)
+**Agents:** cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+
+**Full workspace access:** Can work with all 4 systems for optimization, deployment, review
+**Workspace enforcement:** ✅ ENABLED
+
+### USER_STORY_AGENT (1 system)
+**Location:** `USER_STORY_AGENT/`
+**Memory:** `USER_STORY_AGENT/memory/preferences_store.json`
+**Output:** `USER_STORY_AGENT/output/` (Excel files)
+**Type:** Streamlit application (not conversational agent)
+
+**Standalone system:** Operates independently
+**Workspace enforcement:** ✅ ENABLED (if conversational mode exists)
+
+---
+
+## 🔒 Workspace Enforcement System
+
+All agents use **mandatory workspace validation** before every task:
+
+1. **validate_workspace()** - Confirms agent is in correct team folder
+2. **get_absolute_paths()** - Returns all absolute paths for the team
+3. **validate_save_path()** - Ensures file saves go to correct location
+4. **validate_read_path()** - Ensures file reads use correct paths
+
+**Benefits:**
+- ✅ Agents never get lost or confused about location
+- ✅ Files always end up in correct team folders
+- ✅ Cross-team boundaries enforced automatically
+- ✅ Absolute paths eliminate ambiguity
+- ✅ Users don't need to specify paths manually
+- ✅ Automated testing verifies workspace correctness
+
+**See:** `tools/workspace_enforcer.py`, `tools/path_validator.py`, `tests/test_workspace_enforcement.py`
+
+---
+
 ## How to Invoke Agents
 
 ### Method 1: Explicit Invocation (Recommended for Learning)
