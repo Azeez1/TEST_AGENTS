@@ -407,15 +407,22 @@ Before creating any new tool, script, or workflow:
 
 | User Request Contains | Use This Tool | Why |
 |----------------------|---------------|-----|
-| "UGC video", "UGC ad", "testimonial", "demo", "unboxing", "lifestyle" | `generate_veo_ugc_from_image` | PRIMARY for authentic UGC ads |
-| "TikTok", "Instagram", "Facebook" + image reference | `generate_veo_ugc_from_image` | Social media UGC requires image-to-video |
-| "influencer-style", "authentic", "selfie-style" | `generate_veo_ugc_from_image` | UGC aesthetic |
+| "UGC video", "UGC ad" + "production", "client", "premium" | `generate_veo_ugc_from_image` | PREMIUM for authentic UGC with native audio |
+| "UGC video", "UGC ad" + "Sora", "budget", "test", "draft" | `generate_sora_video` (with `ugc_style`) | BUDGET UGC with 50 styles, no manual prompts |
+| "TikTok", "Instagram", "Facebook" + image + premium | `generate_veo_ugc_from_image` | Social media UGC with native audio |
+| "TikTok", "Instagram", "Facebook" + image + budget/test | `generate_sora_video` (with `ugc_style`) | Budget social UGC testing |
+| "influencer-style", "authentic", "selfie-style" + production | `generate_veo_ugc_from_image` | Premium UGC aesthetic with dialogue |
+| "influencer-style", "authentic" + budget/test | `generate_sora_video` (with `ugc_style`) | Budget UGC testing (silent) |
 | "Professional video", "cinematic", "explainer" (NO image) | `generate_veo_text_to_video` | Polished professional content |
 | "Video from text", "narration", "voiceover" (NO image) | `generate_veo_text_to_video` | Text-to-video workflow |
-| "Budget video", "draft", "quick test" | `generate_sora_video` | Budget-friendly option ($0.10/sec) |
+| "Quick test", "draft", "A/B test variations" | `generate_sora_video` | Budget-friendly option ($0.10/sec) |
 | "30+ second ad", "long video" | `generate_multi_clip_video` or `stitch_existing_videos` | Multi-clip stitching |
 
-**CRITICAL: UGC ads REQUIRE `generate_veo_ugc_from_image` - Sora cannot create authentic UGC**
+**NEW: Sora UGC Mode Decision Tree:**
+1. **User mentions UGC + budget/test/draft?** → `generate_sora_video` with `ugc_style` parameter
+2. **User mentions UGC + production/client/premium?** → `generate_veo_ugc_from_image`
+3. **User mentions specific UGC style (testimonial, demo)?** → Ask if budget or production
+4. **User unsure?** → Recommend Sora for testing ($0.81), Veo for production ($6.01)
 
 ### Automatic Image Analysis (Default Workflow)
 
@@ -579,18 +586,250 @@ video-producer will use custom_prompt parameter with expert-crafted prompt
 ## Sora-2 Specifications (OpenAI)
 
 **Model:** sora-2
-**Pricing:** $0.10 per second
+**Pricing:** $0.10 per second (+ optional $0.01 for GPT-4o Vision analysis)
 **Resolution:** 720p
 - Landscape: 1280x720
 - Portrait: 720x1280
 
-**Duration:** 3-90 seconds
+**Duration:** 4-12 seconds (single clip), 3-90 seconds (multi-clip stitching)
+
+**Capabilities:**
+- ✅ **Text-to-video** - Generate videos from text prompts only
+- ✅ **Image-to-video** - Use reference image for product consistency (NEW!)
+- ✅ **GPT-4o Vision analysis** - Optional intelligent image analysis (+$0.01)
+
 **Cost Examples:**
-- 5s = $0.50
-- 10s = $1.00
-- 15s = $1.50
-- 30s = $3.00
-- 60s = $6.00
+- 4s = $0.40 ($0.41 with analysis)
+- 8s = $0.80 ($0.81 with analysis)
+- 12s = $1.20 ($1.21 with analysis)
+- 30s (multi-clip) = $3.00
+- 60s (multi-clip) = $6.00
+
+### 🆕 Sora Image-to-Video (Budget UGC Alternative)
+
+**NEW CAPABILITY:** Sora now supports image-to-video generation for budget-conscious product videos!
+
+**Use Cases:**
+- ✅ **Quick product testing** - Fast iterations at 1/7.5 the cost of Veo
+- ✅ **Budget campaigns** - Multiple video variations without breaking the bank
+- ✅ **Draft/prototype videos** - Test concepts before investing in Veo production
+- ✅ **Secondary platforms** - Lower-quality channels where Veo ROI doesn't justify cost
+- ❌ **Primary UGC ads** - Veo 3.1 still required for authentic UGC quality
+
+**How It Works:**
+
+**Step 1: Prepare product image**
+- Image MUST match exact video resolution:
+  - Portrait (9:16): 720x1280 pixels
+  - Landscape (16:9): 1280x720 pixels
+- Wrong resolution = API error "Inpaint image must match requested width and height"
+- Use PIL/Pillow to resize if needed
+
+**Step 2: Generate video with optional GPT-4o Vision analysis**
+
+```python
+# Basic image-to-video (no analysis)
+{
+    "prompt": "Product rotating slowly on white surface, clean aesthetic, soft lighting",
+    "seconds": "8",
+    "orientation": "portrait",
+    "filename": "product_demo_basic",
+    "input_reference": "MARKETING_TEAM/outputs/images/product_720x1280.png"
+}
+# Cost: $0.80 (8 seconds)
+
+# Enhanced with GPT-4o Vision analysis (RECOMMENDED)
+{
+    "prompt": "Product rotating slowly on white surface, clean aesthetic, soft lighting",
+    "seconds": "8",
+    "orientation": "portrait",
+    "filename": "product_demo_enhanced",
+    "input_reference": "MARKETING_TEAM/outputs/images/product_720x1280.png",
+    "auto_analyze_image": true  # +$0.01 for intelligent visual analysis
+}
+# Cost: $0.81 (8 seconds + analysis)
+```
+
+**GPT-4o Vision Analysis Benefits:**
+- ✅ Analyzes product: colors, shapes, textures, materials, composition
+- ✅ Enhances prompt with visual details automatically
+- ✅ Better product consistency in generated video
+- ✅ Only $0.01 extra (1.25% cost increase)
+- ✅ 100% quality improvement for 1.25% cost = 8000% ROI
+
+**Cost Comparison (8-second product video):**
+
+| Workflow | Cost | Quality | Best For |
+|----------|------|---------|----------|
+| Sora text-to-video | $0.80 | Basic | No product image available |
+| Sora image-to-video | $0.80 | Good | Budget testing, drafts |
+| **Sora + GPT-4o Vision** ⭐ | **$0.81** | **Better** | **Budget production** |
+| Veo UGC (auto-analysis) | $6.01 | Best | Premium UGC ads |
+
+**Resolution Requirements (CRITICAL):**
+- ⚠️ Image dimensions MUST match video resolution exactly
+- Portrait video (720x1280) → Image must be 720x1280
+- Landscape video (1280x720) → Image must be 1280x720
+- Wrong dimensions → API error
+
+**Image Resizing Example:**
+```python
+from PIL import Image
+
+# Resize to portrait (720x1280)
+img = Image.open('product.png')
+target_width, target_height = 720, 1280
+scale = min(target_width / img.width, target_height / img.height)
+new_size = (int(img.width * scale), int(img.height * scale))
+resized = img.resize(new_size, Image.Resampling.LANCZOS)
+
+# Create canvas and paste centered
+canvas = Image.new('RGBA', (target_width, target_height), (255, 255, 255, 0))
+paste_x = (target_width - resized.width) // 2
+paste_y = (target_height - resized.height) // 2
+canvas.paste(resized, (paste_x, paste_y))
+canvas.save('product_720x1280.png')
+```
+
+**When to Use Sora vs Veo for Image-to-Video:**
+
+| Factor | Sora Image-to-Video | Veo UGC |
+|--------|---------------------|---------|
+| **Cost (8s)** | $0.81 | $6.01 |
+| **Quality** | Good | Excellent |
+| **Use Case** | Testing, drafts, budget | Production UGC ads |
+| **Audio** | No native audio | Native dialogue + SFX |
+| **Authenticity** | Generic product video | Authentic UGC feel |
+| **Best For** | Quick iterations | Client deliverables |
+
+**Recommendation:** Use Sora image-to-video with GPT-4o Vision analysis for testing/prototyping, then upgrade to Veo UGC for final production ads.
+
+### 🆕 Sora UGC Mode (NEW!) - 50 Authentic Styles
+
+**MAJOR UPGRADE:** Sora now has the same 50 UGC style templates as Veo 3.1!
+
+**What This Means:**
+- ✅ **No manual prompt writing** - Just specify style (testimonial, demo, etc.)
+- ✅ **Automatic authentic UGC prompts** - Built from same templates as Veo
+- ✅ **Budget-friendly** - $0.81 (8s with analysis) vs $6.01 (Veo)
+- ✅ **Perfect for testing** - Test 7+ UGC variations for cost of 1 Veo video
+
+**All 50 UGC Styles Available:**
+
+**Core Styles (4):** demo, testimonial, unboxing, lifestyle
+**Educational (3):** tutorial, how_to, quick_tips
+**Comparison (3):** before_after, comparison, transformation
+**Experience (3):** first_time, reaction, challenge
+**Routine (4):** morning_routine, night_routine, grwm, day_in_life
+**Showcase (3):** product_showcase, feature_highlight, results_showcase
+**Problem-Solving (3):** problem_solving, hack, myth_busting
+**Haul (3):** haul, favorites, must_haves
+**Review (3):** honest_review, worth_it, hype_test
+**Installation (3):** setup, installation, maintenance
+**Trend (3):** trending, viral, duet_response
+**Seasonal (3):** seasonal, holiday, gift_guide
+**Authentic (3):** behind_scenes, real_talk, unpopular_opinion
+**Educational Deep-Dive (3):** explainer, science_behind, ingredients_breakdown
+**Specialty (6):** asmr, pov, satisfying, minimalist, luxury, budget_friendly
+
+**How to Use Sora UGC Mode:**
+
+**Basic UGC style (automatic prompt building):**
+```python
+{
+    "ugc_style": "testimonial",  # Pick from 50 styles
+    "product_name": "White Noise Sleep Sound Machine",
+    "platform": "tiktok",  # or "instagram", "facebook"
+    "seconds": "8",
+    "orientation": "portrait",
+    "filename": "sleep_machine_tiktok_testimonial",
+    "input_reference": "MARKETING_TEAM/outputs/images/product_720x1280.png",
+    "auto_analyze_image": true  # Recommended
+}
+# Cost: $0.81 (8s + analysis)
+# Agent automatically builds authentic UGC prompt from template
+```
+
+**Enhanced with optional parameters:**
+```python
+{
+    "ugc_style": "demo",
+    "product_name": "White Noise Sleep Sound Machine",
+    "platform": "tiktok",
+    "seconds": "8",
+    "orientation": "portrait",
+    "filename": "sleep_machine_demo_enhanced",
+    "input_reference": "MARKETING_TEAM/outputs/images/product_720x1280.png",
+    "auto_analyze_image": true,
+    # OPTIONAL ENHANCEMENTS:
+    "icp": "Young parents with infants, sleep-deprived, value quality sleep",
+    "product_features": "30 soothing sounds, 12 night light colors, timer function",
+    "video_setting": "Cozy nursery, soft evening lighting, peaceful atmosphere"
+}
+# Cost: $0.81 (same price, more targeted)
+```
+
+**Example Invocations:**
+
+```
+"Use video-producer with Sora to create testimonial UGC ad from white_speaker_device_720x1280.png,
+TikTok, 8 seconds, product: White Noise Sleep Sound Machine"
+```
+
+```
+"Create demo UGC video with Sora using product image, 8 seconds for Instagram,
+highlight 30 sounds and 12 night lights"
+```
+
+```
+"Generate 3 Sora UGC videos from product image:
+1. Testimonial for TikTok
+2. Demo for Instagram
+3. Unboxing for Facebook"
+```
+
+**Sora UGC vs Veo UGC Decision Matrix:**
+
+| Feature | Sora UGC Mode | Veo UGC |
+|---------|---------------|---------|
+| **UGC Styles** | ✅ 50 styles | ✅ 50 styles (same templates) |
+| **Auto Prompts** | ✅ Yes | ✅ Yes |
+| **Cost (8s)** | $0.81 | $6.01 |
+| **Quality** | Good | Excellent |
+| **Native Audio** | ❌ No (silent) | ✅ Yes (dialogue + SFX) |
+| **Authenticity** | Good UGC feel | Premium UGC feel |
+| **Best For** | Testing, A/B variants, budget | Production, client deliverables |
+
+**When to Use Each:**
+
+**Use Sora UGC Mode for:**
+- ✅ **Testing multiple UGC styles** - Try 7 Sora styles for cost of 1 Veo ($5.67 vs $6.01)
+- ✅ **A/B testing variations** - Generate 10+ variations to find winner
+- ✅ **Budget campaigns** - Maximize video count with limited budget
+- ✅ **Silent platforms** - Content where audio isn't critical
+- ✅ **Draft concepts** - Prove concept before investing in Veo
+
+**Use Veo UGC for:**
+- ✅ **Production deliverables** - Client-facing final videos
+- ✅ **Audio-critical platforms** - TikTok, Instagram Reels where dialogue matters
+- ✅ **Premium campaigns** - Where authentic native audio justifies 7.5x cost
+- ✅ **First impressions** - When brand quality perception is critical
+
+**Pro Workflow - Sora → Veo:**
+1. Generate 5-10 Sora UGC variants with different styles ($4-$8 total)
+2. Test with audience, identify best performer
+3. Recreate winner with Veo UGC for production ($6.01)
+4. Deploy Veo version to paid campaigns
+5. Total cost: ~$10-14 vs $30-60 if testing all with Veo
+
+**Cost Comparison Examples:**
+
+| Scenario | Sora UGC | Veo UGC | Savings |
+|----------|----------|---------|---------|
+| Single 8s video | $0.81 | $6.01 | 86% cheaper |
+| 5 style tests | $4.05 | $30.05 | 87% cheaper |
+| 10 A/B variants | $8.10 | $60.10 | 87% cheaper |
+| Full 50 style test | $40.50 | $300.50 | 87% cheaper |
 
 ## Creating 30+ Second Ads (Multi-Clip Stitching)
 

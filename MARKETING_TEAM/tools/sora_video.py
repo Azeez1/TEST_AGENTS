@@ -12,6 +12,7 @@ import httpx
 import asyncio
 import json
 import os
+import base64
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -45,32 +46,112 @@ if os.name == 'nt':  # Windows
             break
 
 
+async def analyze_image_with_gpt4o_vision(image_path: str) -> str:
+    """
+    Analyze image with GPT-4o Vision to extract detailed description
+    for enhanced video generation prompts.
+
+    Cost: ~$0.01 per analysis
+    Returns: Detailed description of the image (product, colors, composition, etc.)
+    """
+    try:
+        # Read and encode image as base64
+        with open(image_path, 'rb') as f:
+            image_data = base64.b64encode(f.read()).decode('utf-8')
+
+        # Determine image format from extension
+        image_format = Path(image_path).suffix.lower().replace('.', '')
+        if image_format == 'jpg':
+            image_format = 'jpeg'
+
+        # Create data URL
+        image_url = f"data:image/{image_format};base64,{image_data}"
+
+        # Call GPT-4o Vision API
+        response = await client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Describe this product in detail for video generation: include colors, shapes, textures, materials, design elements, and overall composition. Focus on visual characteristics that would help maintain consistency in a video."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": image_url,
+                                "detail": "high"
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens=300
+        )
+
+        description = response.choices[0].message.content.strip()
+        return description
+
+    except Exception as e:
+        print(f"⚠️  Image analysis failed: {str(e)}")
+        return None
+
+
 @tool(
     "generate_sora_video",
-    "Generate video using Sora-2 (OpenAI video generation model)",
+    "Generate video using Sora-2 (OpenAI video generation model) - supports text-to-video AND image-to-video with optional GPT-4o Vision analysis AND 50 UGC styles",
     {
-        "prompt": str,
+        "prompt": str,  # Optional: Custom prompt (OR use ugc_style for automatic UGC prompt building)
         "seconds": str,  # Duration: "4", "8", or "12" (MUST be string)
         "orientation": str,  # "portrait" or "landscape"
         "filename": str,
-        "upload_to_drive": bool  # Optional: upload to Google Drive videos folder
+        "input_reference": str,  # Optional: path to reference image for image-to-video generation
+        "auto_analyze_image": bool,  # Optional: analyze image with GPT-4o Vision for better consistency (default: False, +$0.01)
+        "upload_to_drive": bool,  # Optional: upload to Google Drive videos folder
+        # NEW UGC PARAMETERS:
+        "ugc_style": str,  # Optional: testimonial, demo, unboxing, lifestyle, etc. (50 styles) - automatically builds UGC prompt
+        "product_name": str,  # Required if ugc_style used
+        "platform": str,  # Optional: tiktok, instagram, facebook (default: tiktok)
+        "icp": str,  # Optional: Ideal Customer Profile
+        "product_features": str,  # Optional: Features to highlight
+        "video_setting": str,  # Optional: Environment description
     }
 )
 async def generate_sora_video(args):
     """
-    Generate video using Sora-2 API
+    Generate video using Sora-2 API (supports text-to-video AND image-to-video)
 
     Model: sora-2
-    Pricing: $0.10 per second
+    Pricing: $0.10 per second + optional $0.01 for image analysis
 
     Duration OPTIONS (must be string):
     - "4" = 4 seconds = $0.40
-    - "8" = 8 seconds = $0.80
-    - "12" = 12 seconds = $1.20
+    - "8" = 8 seconds = $0.80 ($0.81 with analysis)
+    - "12" = 12 seconds = $1.20 ($1.21 with analysis)
 
     Resolutions:
     - Portrait: 720x1280
     - Landscape: 1280x720
+
+    Image-to-Video:
+    - Provide input_reference parameter with path to image file
+    - Image guides the video generation for product consistency
+    - Perfect for creating videos from product photos
+
+    GPT-4o Vision Analysis (OPTIONAL):
+    - Set auto_analyze_image=True to enable (+$0.01)
+    - Analyzes image with GPT-4o Vision API
+    - Extracts detailed description: colors, shapes, textures, composition
+    - Enhances your prompt with visual details for better consistency
+    - Default: False (opt-in feature)
+
+    UGC Styles (NEW - 50 styles available):
+    - Provide ugc_style parameter (testimonial, demo, unboxing, lifestyle, etc.)
+    - Automatically builds authentic UGC prompt from templates
+    - Requires product_name parameter
+    - Optional: platform, icp, product_features, video_setting
 
     Storage:
     - Saves locally to outputs/videos/
@@ -81,12 +162,104 @@ async def generate_sora_video(args):
     API Endpoint: POST https://api.openai.com/v1/videos
     """
 
-    prompt = args["prompt"]
+    # Extract parameters
+    prompt = args.get("prompt")  # Now optional
     seconds = args.get("seconds", "4")  # Default 4 seconds
     orientation = args.get("orientation", "landscape")  # Default landscape
     filename = args.get("filename", "video.mp4")
+    input_reference = args.get("input_reference")  # Optional image reference
+    auto_analyze_image = args.get("auto_analyze_image", False)  # Default: False (opt-in feature)
     upload_to_drive = args.get("upload_to_drive", True)  # Default: upload to Drive
     model = "sora-2"  # Only use sora-2
+
+    # NEW: UGC parameters
+    ugc_style = args.get("ugc_style")
+    product_name = args.get("product_name")
+    platform = args.get("platform", "tiktok")  # Default TikTok
+    icp = args.get("icp")
+    product_features = args.get("product_features")
+    video_setting = args.get("video_setting")
+
+    # Validation: If ugc_style provided, product_name is required
+    if ugc_style and not product_name:
+        return {
+            "content": [{
+                "type": "text",
+                "text": "❌ Error: 'product_name' is required when using 'ugc_style'."
+            }]
+        }
+
+    # NEW: Build UGC prompt from template if ugc_style provided
+    custom_prompt_addition = prompt  # Save custom prompt for later appending
+    if ugc_style:
+        try:
+            # Load UGC templates
+            template_path = Path(__file__).parent.parent / "memory" / "ugc_prompt_templates.json"
+            with open(template_path, 'r', encoding='utf-8') as f:
+                templates = json.load(f)
+
+            # Get base template
+            if ugc_style not in templates.get("base_templates", {}):
+                available_styles = ", ".join(templates.get("base_templates", {}).keys())
+                return {
+                    "content": [{
+                        "type": "text",
+                        "text": f"❌ Error: Unknown UGC style '{ugc_style}'. Available: {available_styles}"
+                    }]
+                }
+
+            template = templates["base_templates"][ugc_style]
+
+            # Build UGC prompt (Sora-optimized version - no native audio)
+            platform_desc = template["platform_optimized"].get(platform, template["platform_optimized"]["tiktok"])
+            execution = template["execution_approach"]
+
+            # Start building prompt
+            prompt = f"UGC-STYLE VIDEO ({ugc_style.upper()}):\n\n"
+            prompt += f"{platform_desc}\n\n"
+            prompt += f"PRODUCT: {product_name}\n\n"
+
+            if icp:
+                prompt += f"TARGET AUDIENCE: {icp}\n\n"
+
+            if product_features:
+                prompt += f"KEY FEATURES: {product_features}\n\n"
+
+            if video_setting:
+                prompt += f"SETTING: {video_setting}\n\n"
+
+            prompt += f"EXECUTION: {execution}\n\n"
+            prompt += "AUTHENTICITY REQUIREMENTS:\n"
+            prompt += "- Handheld camera feel (natural shake, not stabilized)\n"
+            prompt += "- Natural lighting (window light, outdoor, no studio)\n"
+            prompt += "- Casual settings (home, kitchen, outdoors, everyday)\n"
+            prompt += "- Real people vibe (casual clothes, relatable environment)\n"
+            prompt += "- NO professional production, NO perfect lighting\n"
+            prompt += "- NO corporate polish (authentic > perfect)\n"
+
+            # Append custom prompt if provided (combine UGC template + custom instructions)
+            if custom_prompt_addition:
+                prompt += f"\n\nADDITIONAL INSTRUCTIONS:\n{custom_prompt_addition}\n"
+                print(f"✅ Built UGC prompt from '{ugc_style}' template for {platform} + custom additions")
+            else:
+                print(f"✅ Built UGC prompt from '{ugc_style}' template for {platform}")
+
+        except Exception as e:
+            return {
+                "content": [{
+                    "type": "text",
+                    "text": f"❌ Error building UGC prompt: {str(e)}"
+                }]
+            }
+
+    # Validation: Must have prompt at this point
+    if not prompt:
+        return {
+            "content": [{
+                "type": "text",
+                "text": "❌ Error: Must provide either 'prompt' or 'ugc_style' parameter."
+            }]
+        }
 
     # Validate seconds (MUST be string!)
     valid_seconds = ["4", "8", "12"]
@@ -141,7 +314,7 @@ async def generate_sora_video(args):
             video_url = video_response.url if hasattr(video_response, 'url') else video_response.get('url')
 
             # Download video
-            output_dir = Path("outputs/videos")
+            output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
             output_dir.mkdir(parents=True, exist_ok=True)
             output_path = output_dir / filename
 
@@ -177,25 +350,81 @@ async def generate_sora_video(args):
         # Fall back to direct HTTP API call
         else:
             async with httpx.AsyncClient(timeout=300.0) as http_client:
-                # Step 1: Create video generation request
-                headers = {
-                    "Authorization": f"Bearer {API_KEY}",
-                    "Content-Type": "application/json"
-                }
+                # Step 1: Handle image reference if provided
+                image_file_data = None
+                image_description = None
+                analysis_cost = 0.0
 
-                payload = {
-                    "model": model,
-                    "prompt": prompt,
-                    "size": resolution,
-                    "seconds": seconds  # MUST be string: "4", "8", or "12"
-                }
+                if input_reference:
+                    image_path = Path(input_reference)
+                    if not image_path.exists():
+                        return {
+                            "content": [{
+                                "type": "text",
+                                "text": f"❌ Error: Image file not found: {input_reference}"
+                            }]
+                        }
 
-                # Make API request to CORRECT endpoint
-                response = await http_client.post(
-                    f"{OPENAI_BASE_URL}/videos",  # NOT /videos/generations!
-                    headers=headers,
-                    json=payload
-                )
+                    # Read image file
+                    with open(image_path, 'rb') as f:
+                        image_file_data = f.read()
+
+                    # Optional: Analyze image with GPT-4o Vision
+                    if auto_analyze_image:
+                        print(f"🔍 Analyzing image with GPT-4o Vision for better consistency...")
+                        image_description = await analyze_image_with_gpt4o_vision(str(image_path))
+                        if image_description:
+                            print(f"✅ Image analysis complete (+$0.01)")
+                            print(f"📝 Description: {image_description[:100]}...")
+                            # Enhance prompt with image description
+                            prompt = f"{prompt}\n\nVisual reference: {image_description}"
+                            analysis_cost = 0.01
+                        else:
+                            print(f"⚠️  Image analysis failed, continuing with original prompt")
+
+                # Step 2: Create video generation request
+                if image_file_data:
+                    # Use multipart/form-data for image upload
+                    files = {
+                        'input_reference': (image_path.name, image_file_data, 'image/png')
+                    }
+                    data = {
+                        "model": model,
+                        "prompt": prompt,
+                        "size": resolution,
+                        "seconds": seconds
+                    }
+
+                    headers = {
+                        "Authorization": f"Bearer {API_KEY}",
+                    }
+
+                    response = await http_client.post(
+                        f"{OPENAI_BASE_URL}/videos",
+                        headers=headers,
+                        data=data,
+                        files=files
+                    )
+                else:
+                    # Text-to-video (JSON payload)
+                    headers = {
+                        "Authorization": f"Bearer {API_KEY}",
+                        "Content-Type": "application/json"
+                    }
+
+                    payload = {
+                        "model": model,
+                        "prompt": prompt,
+                        "size": resolution,
+                        "seconds": seconds  # MUST be string: "4", "8", or "12"
+                    }
+
+                    # Make API request to CORRECT endpoint
+                    response = await http_client.post(
+                        f"{OPENAI_BASE_URL}/videos",  # NOT /videos/generations!
+                        headers=headers,
+                        json=payload
+                    )
 
                 if response.status_code == 404:
                     return {
@@ -249,7 +478,7 @@ async def generate_sora_video(args):
                 await _poll_for_video_completion(http_client, headers, video_id)
 
                 # Step 3: Download video using /videos/{id}/content endpoint
-                output_dir = Path("outputs/videos")
+                output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
                 output_dir.mkdir(parents=True, exist_ok=True)
                 output_path = output_dir / filename
 
@@ -281,14 +510,29 @@ async def generate_sora_video(args):
                     except Exception as e:
                         drive_url = f"Upload failed: {str(e)}"
 
+                generation_type = "Image-to-video" if input_reference else "Text-to-video"
+                total_cost = estimated_cost + analysis_cost
+                cost_breakdown = f"${estimated_cost:.2f}"
+                if analysis_cost > 0:
+                    cost_breakdown += f" + ${analysis_cost:.2f} (image analysis)"
+
                 result_text = (
                     f"✅ Video generated successfully!\n\n"
                     f"**Model:** {model}\n"
+                    f"**Type:** {generation_type}\n"
                     f"**Prompt:** {prompt}\n"
                     f"**Duration:** {seconds}s\n"
                     f"**Resolution:** {resolution} ({orientation})\n"
-                    f"**Cost:** ${estimated_cost:.2f} (@ $0.10/second)\n\n"
-                    f"**Saved to:** {output_path}\n"
+                    f"**Cost:** ${total_cost:.2f} ({cost_breakdown})\n\n"
+                )
+
+                if input_reference:
+                    result_text += f"**Reference Image:** {input_reference}\n"
+                    if image_description:
+                        result_text += f"**Visual Analysis:** GPT-4o Vision enabled ✓\n"
+
+                result_text += (
+                    f"\n**Saved to:** {output_path}\n"
                     f"**Video ID:** {video_id}\n"
                 )
 
@@ -296,6 +540,8 @@ async def generate_sora_video(args):
                     result_text += f"\n**📤 Google Drive:** {drive_url}\n"
 
                 result_text += "\n💡 For longer videos, cost scales linearly: 8s = $0.80, 12s = $1.20"
+                if input_reference and not auto_analyze_image:
+                    result_text += "\n💡 Tip: Enable auto_analyze_image=True for better product consistency (+$0.01)"
 
                 return {
                     "content": [{
@@ -493,7 +739,7 @@ async def generate_multi_clip_video(args):
         }
 
     try:
-        output_dir = Path("outputs/videos")
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Generate each clip

@@ -81,13 +81,51 @@
             margin-bottom: 10px;
         }
         .arrow {
+            position: relative;
             margin: -20px auto;
+            width: 4px;
+            height: 40px;
+            background: {{ACCENT_COLOR}};
+            opacity: 0;
+        }
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 20px solid {{ACCENT_COLOR}};
-            opacity: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 12px solid {{ACCENT_COLOR}};
+        }
+        /* Flowing particle animation */
+        .arrow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: {{PRIMARY_COLOR}};
+            border-radius: 50%;
+            box-shadow: 0 0 10px {{PRIMARY_COLOR}};
+            animation: flowDown 1.5s ease-in-out infinite;
+        }
+        @keyframes flowDown {
+            0% { top: -10px; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 50px; opacity: 0; }
+        }
+        /* Pulsing effect on step numbers */
+        .step-number {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+            50% { box-shadow: 0 4px 20px {{PRIMARY_COLOR}}, 0 0 30px {{PRIMARY_COLOR}}; }
         }
         @media (max-width: 768px) {
             .step { flex-direction: column; text-align: center; }

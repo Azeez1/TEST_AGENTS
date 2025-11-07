@@ -62,6 +62,67 @@ app = Server("marketing-tools")
 # Google Drive OAuth scopes
 DRIVE_SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
+# ============================================================================
+# LOAD UGC PROMPT TEMPLATES FROM MEMORY (DYNAMIC CONFIGURATION)
+# ============================================================================
+
+def load_ugc_templates_from_memory():
+    """
+    Load UGC prompt templates from memory/ugc_prompt_templates.json
+    Returns: (ugc_templates_dict, list_of_style_names)
+    """
+    try:
+        memory_path = Path(__file__).parent.parent / 'memory' / 'ugc_prompt_templates.json'
+
+        if not memory_path.exists():
+            print(f"⚠️  UGC templates not found at {memory_path}, using defaults", file=sys.stderr)
+            return None, ["testimonial", "demo", "unboxing", "lifestyle"]
+
+        with open(memory_path, 'r', encoding='utf-8') as f:
+            templates_data = json.load(f)
+
+        # Convert JSON format to UGC_TEMPLATES format
+        # Templates are nested under "base_templates" and "expert_optimized_templates"
+        ugc_templates = {}
+        style_names = []
+
+        # Combine both base and expert templates
+        all_templates = {}
+        if 'base_templates' in templates_data and isinstance(templates_data['base_templates'], dict):
+            all_templates.update(templates_data['base_templates'])
+
+        if 'expert_optimized_templates' in templates_data and isinstance(templates_data['expert_optimized_templates'], dict):
+            all_templates.update(templates_data['expert_optimized_templates'])
+
+        # Process all templates
+        for style_name, template_data in all_templates.items():
+            # Skip metadata fields (non-dictionary values)
+            if not isinstance(template_data, dict):
+                continue
+
+            # Check if template has platform_optimized field
+            if 'platform_optimized' in template_data and isinstance(template_data['platform_optimized'], dict):
+                style_names.append(style_name)
+                ugc_templates[style_name] = {
+                    'tiktok': template_data['platform_optimized'].get('tiktok', ''),
+                    'instagram': template_data['platform_optimized'].get('instagram', ''),
+                    'facebook': template_data['platform_optimized'].get('facebook', '')
+                }
+            else:
+                print(f"⚠️  Template '{style_name}' missing platform_optimized, skipping", file=sys.stderr)
+
+        print(f"✅ Loaded {len(style_names)} UGC styles from memory/ugc_prompt_templates.json", file=sys.stderr)
+        print(f"   Available styles: {', '.join(sorted(style_names)[:10])}{'...' if len(style_names) > 10 else ''}", file=sys.stderr)
+
+        return ugc_templates, sorted(style_names)
+
+    except Exception as e:
+        print(f"⚠️  Error loading UGC templates: {e}, using defaults", file=sys.stderr)
+        return None, ["testimonial", "demo", "unboxing", "lifestyle"]
+
+# Load templates at module startup
+LOADED_UGC_TEMPLATES, AVAILABLE_UGC_STYLES = load_ugc_templates_from_memory()
+
 
 # ============================================================================
 # MCP-NATIVE TOOL FUNCTIONS (Direct API calls, no @tool decorator)
@@ -127,7 +188,7 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
                 image_data = image_response.content
 
         # Save locally
-        output_dir = Path("outputs/images")
+        output_dir = Path("MARKETING_TEAM/outputs/images").resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
         output_path = output_dir / f"{filename}.png"
 
@@ -159,14 +220,102 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
         )]
 
 
-async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, filename: str) -> list[TextContent]:
+async def generate_sora_video_mcp(
+    prompt: str = None,
+    seconds: str = "4",
+    orientation: str = "landscape",
+    filename: str = "video.mp4",
+    input_reference: str = None,
+    auto_analyze_image: bool = False,
+    # NEW UGC parameters:
+    ugc_style: str = None,
+    product_name: str = None,
+    platform: str = "tiktok",
+    icp: str = None,
+    product_features: str = None,
+    video_setting: str = None
+) -> list[TextContent]:
     """
-    Generate video using Sora-2 - MCP native implementation
+    Generate video using Sora-2 - MCP native implementation with UGC support
 
     Model: sora-2
-    Pricing: $0.10 per second
+    Pricing: $0.10 per second + optional $0.01 for image analysis
     Resolutions: 1280x720 (landscape) or 720x1280 (portrait)
+
+    Optional image-to-video:
+    - Provide input_reference with path to image file
+    - Set auto_analyze_image=True to analyze image with GPT-4o Vision (+$0.01)
+
+    NEW UGC Styles (50 available):
+    - Provide ugc_style (testimonial, demo, unboxing, lifestyle, etc.)
+    - Automatically builds authentic UGC prompt from templates
+    - Requires product_name parameter
+    - Optional: platform, icp, product_features, video_setting
     """
+
+    # Validation: If ugc_style provided, product_name is required
+    if ugc_style and not product_name:
+        return [TextContent(type="text", text="❌ Error: 'product_name' is required when using 'ugc_style'.")]
+
+    # NEW: Build UGC prompt from template if ugc_style provided
+    custom_prompt_addition = prompt  # Save custom prompt for later appending
+    if ugc_style:
+        try:
+            # Load UGC templates
+            template_path = Path(__file__).parent.parent / "memory" / "ugc_prompt_templates.json"
+            with open(template_path, 'r', encoding='utf-8') as f:
+                templates = json.load(f)
+
+            # Get base template
+            if ugc_style not in templates.get("base_templates", {}):
+                available_styles = ", ".join(templates.get("base_templates", {}).keys())
+                return [TextContent(
+                    type="text",
+                    text=f"❌ Error: Unknown UGC style '{ugc_style}'. Available: {available_styles}"
+                )]
+
+            template = templates["base_templates"][ugc_style]
+
+            # Build UGC prompt (Sora-optimized version - no native audio)
+            platform_desc = template["platform_optimized"].get(platform, template["platform_optimized"]["tiktok"])
+            execution = template["execution_approach"]
+
+            # Start building prompt
+            prompt = f"UGC-STYLE VIDEO ({ugc_style.upper()}):\n\n"
+            prompt += f"{platform_desc}\n\n"
+            prompt += f"PRODUCT: {product_name}\n\n"
+
+            if icp:
+                prompt += f"TARGET AUDIENCE: {icp}\n\n"
+
+            if product_features:
+                prompt += f"KEY FEATURES: {product_features}\n\n"
+
+            if video_setting:
+                prompt += f"SETTING: {video_setting}\n\n"
+
+            prompt += f"EXECUTION: {execution}\n\n"
+            prompt += "AUTHENTICITY REQUIREMENTS:\n"
+            prompt += "- Handheld camera feel (natural shake, not stabilized)\n"
+            prompt += "- Natural lighting (window light, outdoor, no studio)\n"
+            prompt += "- Casual settings (home, kitchen, outdoors, everyday)\n"
+            prompt += "- Real people vibe (casual clothes, relatable environment)\n"
+            prompt += "- NO professional production, NO perfect lighting\n"
+            prompt += "- NO corporate polish (authentic > perfect)\n"
+
+            # Append custom prompt if provided (combine UGC template + custom instructions)
+            if custom_prompt_addition:
+                prompt += f"\n\nADDITIONAL INSTRUCTIONS:\n{custom_prompt_addition}\n"
+                print(f"✅ Built UGC prompt from '{ugc_style}' template for {platform} + custom additions", file=sys.stderr)
+            else:
+                print(f"✅ Built UGC prompt from '{ugc_style}' template for {platform}", file=sys.stderr)
+
+        except Exception as e:
+            return [TextContent(type="text", text=f"❌ Error building UGC prompt: {str(e)}")]
+
+    # Validation: Must have prompt at this point
+    if not prompt:
+        return [TextContent(type="text", text="❌ Error: Must provide either 'prompt' or 'ugc_style' parameter.")]
 
     # Validate seconds (must be string "4", "8", or "12")
     valid_seconds = ["4", "8", "12"]
@@ -194,6 +343,8 @@ async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, f
     # Calculate cost
     duration_int = int(seconds)
     estimated_cost = duration_int * 0.10
+    analysis_cost = 0.0
+    image_description = None
 
     try:
         # Initialize OpenAI client
@@ -204,26 +355,107 @@ async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, f
                 text="❌ Error: OPENAI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file."
             )]
 
+        # Optional: Analyze image with GPT-4o Vision
+        if input_reference and auto_analyze_image:
+            image_path = Path(input_reference)
+            if not image_path.exists():
+                return [TextContent(
+                    type="text",
+                    text=f"❌ Error: Image file not found: {input_reference}"
+                )]
+
+            print(f"🔍 Analyzing image with GPT-4o Vision for better consistency...", file=sys.stderr)
+            try:
+                # Read and encode image as base64
+                with open(image_path, 'rb') as f:
+                    image_data = base64.b64encode(f.read()).decode('utf-8')
+
+                # Determine image format
+                image_format = image_path.suffix.lower().replace('.', '')
+                if image_format == 'jpg':
+                    image_format = 'jpeg'
+
+                # Create data URL
+                image_url = f"data:image/{image_format};base64,{image_data}"
+
+                # Call GPT-4o Vision
+                vision_client = AsyncOpenAI(api_key=api_key)
+                vision_response = await vision_client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[{
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "Describe this product in detail for video generation: include colors, shapes, textures, materials, design elements, and overall composition. Focus on visual characteristics that would help maintain consistency in a video."
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {"url": image_url, "detail": "high"}
+                            }
+                        ]
+                    }],
+                    max_tokens=300
+                )
+
+                image_description = vision_response.choices[0].message.content.strip()
+                print(f"✅ Image analysis complete (+$0.01)", file=sys.stderr)
+                print(f"📝 Description: {image_description[:100]}...", file=sys.stderr)
+
+                # Enhance prompt with image description
+                prompt = f"{prompt}\n\nVisual reference: {image_description}"
+                analysis_cost = 0.01
+
+            except Exception as e:
+                print(f"⚠️  Image analysis failed: {str(e)}, continuing with original prompt", file=sys.stderr)
+
         # Make direct HTTP API call to Sora
         async with httpx.AsyncClient(timeout=300.0) as http_client:
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json"
-            }
-
-            payload = {
-                "model": "sora-2",
-                "prompt": prompt,
-                "size": resolution,
-                "seconds": seconds  # Must be string
-            }
-
             # Step 1: Create video generation request
-            response = await http_client.post(
-                "https://api.openai.com/v1/videos",
-                headers=headers,
-                json=payload
-            )
+            if input_reference:
+                # Image-to-video: Use multipart/form-data
+                image_path = Path(input_reference)
+                with open(image_path, 'rb') as f:
+                    image_file_data = f.read()
+
+                files = {
+                    'input_reference': (image_path.name, image_file_data, 'image/png')
+                }
+                data = {
+                    "model": "sora-2",
+                    "prompt": prompt,
+                    "size": resolution,
+                    "seconds": seconds
+                }
+                headers = {
+                    "Authorization": f"Bearer {api_key}",
+                }
+
+                response = await http_client.post(
+                    "https://api.openai.com/v1/videos",
+                    headers=headers,
+                    data=data,
+                    files=files
+                )
+            else:
+                # Text-to-video: Use JSON
+                headers = {
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                }
+
+                payload = {
+                    "model": "sora-2",
+                    "prompt": prompt,
+                    "size": resolution,
+                    "seconds": seconds  # Must be string
+                }
+
+                response = await http_client.post(
+                    "https://api.openai.com/v1/videos",
+                    headers=headers,
+                    json=payload
+                )
 
             if response.status_code == 404:
                 return [TextContent(
@@ -259,7 +491,7 @@ async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, f
             await _poll_for_video_completion(http_client, headers, video_id)
 
             # Step 3: Download video
-            output_dir = Path("outputs/videos")
+            output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
             output_dir.mkdir(parents=True, exist_ok=True)
 
             if not filename.endswith('.mp4'):
@@ -280,16 +512,34 @@ async def generate_sora_video_mcp(prompt: str, seconds: str, orientation: str, f
             output_path.write_bytes(video_content_response.content)
 
             # Success response
+            generation_type = "Image-to-video" if input_reference else "Text-to-video"
+            total_cost = estimated_cost + analysis_cost
+            cost_breakdown = f"${estimated_cost:.2f}"
+            if analysis_cost > 0:
+                cost_breakdown += f" + ${analysis_cost:.2f} (image analysis)"
+
             result_text = (
                 f"✅ Video generated successfully!\n\n"
                 f"**Model:** sora-2\n"
+                f"**Type:** {generation_type}\n"
                 f"**Prompt:** {prompt}\n"
                 f"**Duration:** {seconds}s\n"
                 f"**Resolution:** {resolution} ({orientation})\n"
-                f"**Cost:** ${estimated_cost:.2f}\n\n"
-                f"**Saved to:** {output_path}\n"
+                f"**Cost:** ${total_cost:.2f} ({cost_breakdown})\n\n"
+            )
+
+            if input_reference:
+                result_text += f"**Reference Image:** {input_reference}\n"
+                if image_description:
+                    result_text += f"**Visual Analysis:** GPT-4o Vision enabled ✓\n"
+
+            result_text += (
+                f"\n**Saved to:** {output_path}\n"
                 f"**Video ID:** {video_id}"
             )
+
+            if input_reference and not auto_analyze_image:
+                result_text += "\n\n💡 Tip: Enable auto_analyze_image=True for better product consistency (+$0.01)"
 
             return [TextContent(type="text", text=result_text)]
 
@@ -633,7 +883,7 @@ async def generate_veo_text_to_video_mcp(
         client.files.download(file=video.video)
 
         # Save to outputs
-        output_dir = Path("outputs/videos")
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
 
         if not filename.endswith('.mp4'):
@@ -731,8 +981,15 @@ async def generate_veo_ugc_from_image_mcp(
             text="❌ Error: GEMINI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file."
         )]
 
-    # UGC prompt templates with audio cues - 50+ STYLES FOR MAXIMUM FLEXIBILITY
-    UGC_TEMPLATES = {
+    # UGC prompt templates - Load from memory or use hardcoded fallback
+    # Priority: LOADED_UGC_TEMPLATES (from JSON) → Hardcoded UGC_TEMPLATES (fallback)
+    if LOADED_UGC_TEMPLATES:
+        UGC_TEMPLATES = LOADED_UGC_TEMPLATES
+        print(f"   Using {len(UGC_TEMPLATES)} UGC styles from memory/ugc_prompt_templates.json", file=sys.stderr)
+    else:
+        # FALLBACK: Hardcoded templates if JSON loading failed
+        print(f"   Using hardcoded UGC templates (JSON load failed)", file=sys.stderr)
+        UGC_TEMPLATES = {
         # ===== ORIGINAL 4 CORE STYLES =====
         "testimonial": {
             "tiktok": f"""Authentic selfie video, person excitedly talking to camera about {product_name},
@@ -1219,7 +1476,7 @@ savings celebration.""",
             "facebook": f"""Budget-friendly review using {product_name}, hands proving value.
 'Won't break the bank.' Native audio: value-focused narration, product sounds."""
         }
-    }
+        }  # End of hardcoded UGC_TEMPLATES fallback
 
     # Platform settings
     platform_config = {
@@ -1638,7 +1895,7 @@ async def generate_veo_ugc_from_nano_banana(
         client.files.download(file=video.video)
 
         # Save to outputs
-        output_dir = Path("outputs/videos")
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
 
         if not filename.endswith('.mp4'):
@@ -1748,13 +2005,13 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_sora_video",
-            description="Generate video using OpenAI's Sora-2 model ($0.10/second, 720p)",
+            description="Generate video using OpenAI's Sora-2 model ($0.10/second, 720p) - supports text-to-video, image-to-video with GPT-4o Vision analysis, AND 50 UGC styles",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "prompt": {
                         "type": "string",
-                        "description": "Detailed video prompt (scene, camera movement, lighting, pacing)"
+                        "description": "Optional: Custom video prompt. Can be used ALONE (manual prompt) OR WITH ugc_style (adds custom instructions to UGC template)."
                     },
                     "seconds": {
                         "type": "string",
@@ -1771,9 +2028,44 @@ async def list_tools() -> list[Tool]:
                     "filename": {
                         "type": "string",
                         "description": "Output filename (will add .mp4 extension)"
+                    },
+                    "input_reference": {
+                        "type": "string",
+                        "description": "Optional: path to reference image for image-to-video generation"
+                    },
+                    "auto_analyze_image": {
+                        "type": "boolean",
+                        "description": "Analyze image with GPT-4o Vision for better consistency (default: false, +$0.01)",
+                        "default": False
+                    },
+                    "ugc_style": {
+                        "type": "string",
+                        "description": "Optional: UGC style (testimonial, demo, unboxing, lifestyle, tutorial, how_to, quick_tips, before_after, comparison, transformation, first_time, reaction, challenge, morning_routine, night_routine, grwm, day_in_life, product_showcase, feature_highlight, results_showcase, problem_solving, hack, myth_busting, haul, favorites, must_haves, honest_review, worth_it, hype_test, setup, installation, maintenance, trending, viral, duet_response, seasonal, holiday, gift_guide, behind_scenes, real_talk, unpopular_opinion, explainer, science_behind, ingredients_breakdown, asmr, pov, satisfying, minimalist, luxury, budget_friendly). Automatically builds authentic UGC prompt. Can be combined with 'prompt' parameter to add custom instructions."
+                    },
+                    "product_name": {
+                        "type": "string",
+                        "description": "Required if ugc_style used: Product name for UGC video"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "Platform optimization: tiktok, instagram, facebook (default: tiktok)",
+                        "enum": ["tiktok", "instagram", "facebook"],
+                        "default": "tiktok"
+                    },
+                    "icp": {
+                        "type": "string",
+                        "description": "Optional: Ideal Customer Profile (e.g., 'Young women 25-35, health-conscious')"
+                    },
+                    "product_features": {
+                        "type": "string",
+                        "description": "Optional: Product features to highlight (e.g., 'Increases energy, natural ingredients')"
+                    },
+                    "video_setting": {
+                        "type": "string",
+                        "description": "Optional: Custom environment (e.g., 'Bright modern kitchen, morning light')"
                     }
                 },
-                "required": ["prompt", "filename"]
+                "required": ["filename"]
             }
         ),
         Tool(
@@ -1878,8 +2170,8 @@ async def list_tools() -> list[Tool]:
                     },
                     "ugc_style": {
                         "type": "string",
-                        "description": "UGC style",
-                        "enum": ["testimonial", "demo", "unboxing", "lifestyle"],
+                        "description": f"UGC style - {len(AVAILABLE_UGC_STYLES)} styles available from memory/ugc_prompt_templates.json",
+                        "enum": AVAILABLE_UGC_STYLES,  # Dynamically loaded from JSON!
                         "default": "testimonial"
                     },
                     "platform": {
@@ -1949,10 +2241,19 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
 
         elif name == "generate_sora_video":
             return await generate_sora_video_mcp(
-                prompt=arguments["prompt"],
+                prompt=arguments.get("prompt"),
                 seconds=arguments.get("seconds", "4"),
                 orientation=arguments.get("orientation", "landscape"),
-                filename=arguments["filename"]
+                filename=arguments["filename"],
+                input_reference=arguments.get("input_reference"),
+                auto_analyze_image=arguments.get("auto_analyze_image", False),
+                # NEW UGC parameters:
+                ugc_style=arguments.get("ugc_style"),
+                product_name=arguments.get("product_name"),
+                platform=arguments.get("platform", "tiktok"),
+                icp=arguments.get("icp"),
+                product_features=arguments.get("product_features"),
+                video_setting=arguments.get("video_setting")
             )
 
         elif name == "generate_nano_banana_image":

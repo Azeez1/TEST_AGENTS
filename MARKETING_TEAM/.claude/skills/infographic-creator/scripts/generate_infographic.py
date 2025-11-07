@@ -18,6 +18,12 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 import re
 
+# Fix Windows console encoding for emoji support
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 # Template configurations
 TEMPLATE_CONFIGS = {
     'statistical': {
@@ -60,12 +66,12 @@ TEMPLATE_CONFIGS = {
 # Visual styles (from flow-diagram)
 VISUAL_STYLES = {
     'glassmorphism': {
-        'primary_color': '#6366f1',
-        'secondary_color': '#8b5cf6',
-        'accent_color': '#ec4899',
-        'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'card_background': 'rgba(255, 255, 255, 0.1)',
-        'card_shadow': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+        'primary_color': '#1e293b',
+        'secondary_color': '#475569',
+        'accent_color': '#3b82f6',
+        'background': '#f1f5f9',
+        'card_background': '#ffffff',
+        'card_shadow': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
         'border_radius': 16,
         'description': 'Modern, premium frosted glass effects'
     },
@@ -90,10 +96,10 @@ VISUAL_STYLES = {
         'description': 'Friendly, sketch-style, approachable'
     },
     'vibrant': {
-        'primary_color': '#f56565',
-        'secondary_color': '#ed64a6',
+        'primary_color': '#1a202c',
+        'secondary_color': '#4a5568',
         'accent_color': '#9f7aea',
-        'background': 'linear-gradient(135deg, #ff6b6b, #ee5a6f, #c06c84)',
+        'background': '#f7fafc',
         'card_background': '#ffffff',
         'card_shadow': '0 10px 30px rgba(0, 0, 0, 0.15)',
         'border_radius': 12,
@@ -235,6 +241,349 @@ class InfographicGenerator:
             'watermark': None
         }
 
+    def generate_metrics_html(self) -> str:
+        """Generate HTML for metrics cards from data"""
+        if not self.data or self.infographic_type != 'statistical':
+            return ""
+
+        # Handle dict data (get the list)
+        data_list = self.data if isinstance(self.data, list) else []
+
+        metrics_html = []
+        for index, row in enumerate(data_list):
+            # Extract data from row
+            label = row.get('metric', 'Metric')
+            value = row.get('value', '0')
+            change = row.get('change', '')
+
+            # Determine if change is positive or negative
+            change_num = 0
+            try:
+                change_num = float(change.replace('%', '').replace('+', ''))
+            except:
+                pass
+
+            change_class = 'positive' if change_num >= 0 else 'negative'
+            change_arrow = '↑' if change_num >= 0 else '↓'
+
+            # Generate card HTML
+            card_html = f'''
+            <div class="metric-card" data-metric-index="{index}">
+                <div class="metric-value" data-target="{value}">{value}</div>
+                <div class="metric-label">{label}</div>'''
+
+            if change:
+                card_html += f'''
+                <div class="metric-change {change_class}">
+                    {change_arrow} {change}%
+                </div>'''
+
+            card_html += '''
+            </div>'''
+
+            metrics_html.append(card_html)
+
+        return '\n'.join(metrics_html)
+
+    def generate_charts_html(self) -> str:
+        """Generate HTML for charts section"""
+        # For Phase 1, return empty - charts will be added in Phase 2
+        return ""
+
+    def generate_timeline_html(self) -> str:
+        """Generate HTML for timeline events from data"""
+        if not self.data or self.infographic_type != 'timeline':
+            return ""
+
+        # Handle dict data (get the list)
+        data_list = self.data if isinstance(self.data, list) else []
+
+        timeline_html = []
+        for index, row in enumerate(data_list):
+            # Extract data from row
+            date = row.get('quarter', row.get('date', ''))
+            title = row.get('milestone', row.get('title', row.get('event', '')))
+            description = row.get('description', '')
+            status = row.get('status', '')
+
+            # Generate timeline item HTML
+            item_html = f'''
+            <div class="timeline-item" data-event-index="{index}">
+                <!-- Node (circle on axis) -->
+                <div class="timeline-node {status}"></div>
+
+                <!-- Content card -->
+                <div class="timeline-content">
+                    <div class="timeline-date">{date}</div>
+                    <h3 class="timeline-title">{title}</h3>'''
+
+            if description:
+                item_html += f'''
+                    <p class="timeline-description">{description}</p>'''
+
+            if status:
+                item_html += f'''
+                    <span class="timeline-status {status}">{status}</span>'''
+
+            item_html += '''
+                </div>
+            </div>'''
+
+            timeline_html.append(item_html)
+
+        return '\n'.join(timeline_html)
+
+    def generate_comparison_html(self) -> str:
+        """Generate HTML for comparison columns from data"""
+        if not self.data or self.infographic_type != 'comparison':
+            return ""
+
+        # Handle JSON data with 'comparisons' array
+        if isinstance(self.data, dict) and 'comparisons' in self.data:
+            comparisons = self.data['comparisons']
+        else:
+            comparisons = self.data if isinstance(self.data, list) else []
+
+        if not comparisons:
+            return ""
+
+        # Generate two columns: "Us" (Dux Machina) and "Them" (Competitors)
+        us_features = []
+        them_features = []
+
+        for comp in comparisons:
+            feature_name = comp.get('feature', '')
+            us_value = comp.get('us', '')
+            competitor_value = comp.get('competitor', '')
+            advantage = comp.get('advantage', '')
+
+            us_features.append({
+                'text': f"{feature_name}: {us_value}",
+                'included': True,
+                'highlight': advantage
+            })
+
+            them_features.append({
+                'text': f"{feature_name}: {competitor_value}",
+                'included': True,
+                'highlight': False
+            })
+
+        # Generate HTML for both columns
+        comparison_html = []
+
+        # Column 1: Dux Machina (Us)
+        us_html = '''
+            <div class="comparison-column">
+                <div class="column-header">
+                    <div class="recommended-badge">Recommended</div>
+                    <div class="column-name">Dux Machina</div>
+                    <div class="column-tagline">37 AI Agents, Maximum Power</div>
+                </div>
+                <div class="features-list">'''
+
+        for feature in us_features:
+            us_html += f'''
+                    <div class="feature-item">
+                        <span class="feature-icon yes">✓</span>
+                        <span class="feature-text">{feature['text']}</span>
+                    </div>'''
+
+        us_html += '''
+                </div>
+            </div>'''
+
+        # Column 2: Competitors (Them)
+        them_html = '''
+            <div class="comparison-column">
+                <div class="column-header">
+                    <div class="column-name">Competitors</div>
+                    <div class="column-tagline">Traditional Approach</div>
+                </div>
+                <div class="features-list">'''
+
+        for feature in them_features:
+            them_html += f'''
+                    <div class="feature-item">
+                        <span class="feature-icon no">✗</span>
+                        <span class="feature-text disabled">{feature['text']}</span>
+                    </div>'''
+
+        them_html += '''
+                </div>
+            </div>'''
+
+        # Add VS divider between columns
+        vs_divider = '''
+            <div class="vs-divider">VS</div>'''
+
+        comparison_html = [us_html, vs_divider, them_html]
+
+        return '\n'.join(comparison_html)
+
+    def generate_process_html(self) -> str:
+        """Generate HTML for process steps from data"""
+        if not self.data or self.infographic_type != 'process':
+            return ""
+
+        data_list = self.data if isinstance(self.data, list) else []
+
+        process_html = []
+        for index, row in enumerate(data_list):
+            step_num = row.get('step', index + 1)
+            title = row.get('title', f'Step {step_num}')
+            description = row.get('description', '')
+            icon = row.get('icon', '')
+            agent = row.get('agent', '')
+
+            # Add agent info to description if present
+            if agent and agent not in description:
+                description = f"{description} (Agent: {agent})"
+
+            step_html = f'''
+            <div class="step" data-step-index="{index}">
+                <div class="step-number">{step_num}</div>
+                <div class="step-content">'''
+
+            if icon:
+                step_html += f'''
+                    <div class="step-icon">{icon}</div>'''
+
+            step_html += f'''
+                    <h3 class="step-title">{title}</h3>
+                    <p class="step-description">{description}</p>
+                </div>
+            </div>'''
+
+            # Add arrow between steps (except after last step)
+            if index < len(data_list) - 1:
+                step_html += '''
+            <div class="arrow"></div>'''
+
+            process_html.append(step_html)
+
+        return '\n'.join(process_html)
+
+    def generate_list_html(self) -> str:
+        """Generate HTML for list items from data"""
+        if not self.data or self.infographic_type != 'list':
+            return ""
+
+        # Handle both direct list and nested structure
+        if isinstance(self.data, dict) and 'items' in self.data:
+            items_list = self.data['items']
+        else:
+            items_list = self.data if isinstance(self.data, list) else []
+
+        list_html = []
+        for index, item in enumerate(items_list):
+            rank = item.get('rank', index + 1)
+            title = item.get('title', f'Item {rank}')
+            description = item.get('description', '')
+            icon = item.get('icon', '')
+
+            item_html = f'''
+            <div class="list-item" data-item-index="{index}">
+                <div class="item-rank">{rank}</div>
+                <div class="item-content">'''
+
+            if icon:
+                item_html += f'''
+                    <div class="item-icon">{icon}</div>'''
+
+            item_html += f'''
+                    <h3 class="item-title">{title}</h3>
+                    <p class="item-description">{description}</p>
+                </div>
+            </div>'''
+
+            list_html.append(item_html)
+
+        return '\n'.join(list_html)
+
+    def generate_hierarchical_html(self) -> str:
+        """Generate HTML for hierarchical pyramid levels from data"""
+        if not self.data or self.infographic_type != 'hierarchical':
+            return ""
+
+        # Handle both direct list and nested structure
+        if isinstance(self.data, dict) and 'levels' in self.data:
+            levels_list = self.data['levels']
+        else:
+            levels_list = self.data if isinstance(self.data, list) else []
+
+        hierarchy_html = []
+        for index, level in enumerate(levels_list):
+            level_num = level.get('level', index + 1)
+            title = level.get('title', f'Level {level_num}')
+            description = level.get('description', '')
+            count = level.get('count', '')
+            color = level.get('color', '#6366f1')
+
+            level_html = f'''
+            <div class="pyramid-level level-{level_num}" data-level-index="{index}" style="background: {color};">
+                <div class="level-content">
+                    <h3 class="level-title">{title}</h3>'''
+
+            if count:
+                level_html += f'''
+                    <div class="level-count">{count} agent{"s" if count != 1 else ""}</div>'''
+
+            if description:
+                level_html += f'''
+                    <p class="level-description">{description}</p>'''
+
+            level_html += '''
+                </div>
+            </div>'''
+
+            hierarchy_html.append(level_html)
+
+        return '\n'.join(hierarchy_html)
+
+    def generate_geographic_html(self) -> str:
+        """Generate HTML for geographic regions as stat cards matching template structure"""
+        if not self.data or self.infographic_type != 'geographic':
+            return ""
+
+        # Handle both direct list and nested structure
+        if isinstance(self.data, dict) and 'regions' in self.data:
+            regions_list = self.data['regions']
+        else:
+            regions_list = self.data if isinstance(self.data, list) else []
+
+        geographic_html = []
+        for index, region in enumerate(regions_list):
+            name = region.get('name', f'Region {index + 1}')
+            metric = region.get('metric', '')
+            value = region.get('value', 0)
+            description = region.get('description', '')
+            color = region.get('color', '#6366f1')
+            icon = region.get('icon', '📍')
+
+            # Create stat-card structure matching geographic-template.html
+            # Force opacity: 1 to override template's opacity: 0 (since anime.js may not load properly)
+            region_html = f'''
+        <div class="stat-card" data-region-index="{index}" style="border-top: 4px solid {color}; opacity: 1 !important;">
+            <div style="font-size: 32px; margin-bottom: 10px;">{icon}</div>
+            <div class="stat-label" style="font-size: 18px; font-weight: bold; color: {color}; margin-bottom: 8px;">{name}</div>
+            <div class="stat-value">{metric}</div>'''
+
+            if value:
+                region_html += f'''
+            <div style="font-size: 14px; color: #64748b; margin-top: 8px;">{value:,} customers</div>'''
+
+            if description:
+                region_html += f'''
+            <p style="font-size: 13px; color: #64748b; margin-top: 12px; line-height: 1.5;">{description}</p>'''
+
+            region_html += '''
+        </div>'''
+
+            geographic_html.append(region_html)
+
+        return '\n'.join(geographic_html)
+
     def prepare_template_variables(self) -> Dict[str, Any]:
         """Prepare all template variables"""
         # Merge style colors with brand kit colors
@@ -264,6 +613,7 @@ class InfographicGenerator:
             'CANVAS_WIDTH': self.args.canvas_width or 1200,
             'PADDING': 40,
             'BORDER_RADIUS': self.style.get('border_radius', 12),
+            'NUM_ITEMS': 2,  # For comparison: 2 columns (us vs them)
 
             # Logo
             'LOGO_PATH': self.brand_kit.get('logo'),
@@ -291,10 +641,85 @@ class InfographicGenerator:
             'ENABLE_INTERACTIVE': self.args.interactive,
 
             # Data (will be populated based on type)
-            'DATA': self.data
+            'DATA': self.data,
+
+            # Metrics sizing (for statistical infographics)
+            'METRIC_VALUE_SIZE': 48,
+            'METRIC_LABEL_SIZE': 16,
+            'METRIC_CHANGE_SIZE': 14,
+
+            # Timeline sizing (for timeline infographics)
+            'DATE_SIZE': 20,
+            'EVENT_TITLE_SIZE': 24,
+            'EVENT_DESC_SIZE': 16,
+
+            # Canvas background (use style background)
+            'CANVAS_BACKGROUND': colors.get('background', self.style['background']),
+
+            # Charts section
+            'CHARTS_SECTION_TITLE': 'Performance Overview',
+            'CHARTS_DATA': json.dumps([]),  # Empty for Phase 1
+
+            # Comparison column colors (high contrast for visibility)
+            'COLOR_1_START': '#10b981',  # Emerald green (recommended column)
+            'COLOR_1_END': '#059669',    # Darker emerald
+            'COLOR_2_START': '#6b7280',  # Neutral gray (competitor column)
+            'COLOR_2_END': '#4b5563',    # Darker gray
+            'COLOR_3_START': colors.get('primary', self.style['primary_color']),
+            'COLOR_3_END': colors.get('secondary', self.style['secondary_color']),
+
+            # Geographic (prevent {{#if STATS}} block from being removed)
+            'STATS': 'true' if self.infographic_type == 'geographic' else '',
+            'MAP_DATA': '"https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"',  # TopoJSON world map
+            'MARKERS': self._generate_markers() if self.infographic_type == 'geographic' else '[]'
         }
 
         return variables
+
+    def _generate_markers(self) -> str:
+        """Generate map markers from geographic region data"""
+        if not self.data or self.infographic_type != 'geographic':
+            return '[]'
+
+        # Handle both direct list and nested structure
+        if isinstance(self.data, dict) and 'regions' in self.data:
+            regions_list = self.data['regions']
+        else:
+            regions_list = self.data if isinstance(self.data, list) else []
+
+        # Approximate coordinates for common regions
+        region_coords = {
+            'north america': [-100, 40],
+            'europe': [10, 50],
+            'asia-pacific': [130, 30],
+            'asia pacific': [130, 30],
+            'south america': [-60, -10],
+            'africa': [25, 0],
+            'middle east': [45, 25],
+            'africa & middle east': [30, 10]
+        }
+
+        markers = []
+        for region in regions_list:
+            name = region.get('name', '').lower()
+            metric = region.get('metric', '')
+
+            # Find matching coordinates
+            coords = None
+            for key, coord in region_coords.items():
+                if key in name:
+                    coords = coord
+                    break
+
+            if coords:
+                markers.append({
+                    'name': region.get('name', ''),
+                    'coords': coords,
+                    'value': metric,
+                    'color': region.get('color', '#6366f1')
+                })
+
+        return json.dumps(markers)
 
     def generate_html(self) -> str:
         """Generate the complete HTML infographic"""
@@ -310,18 +735,123 @@ class InfographicGenerator:
         with open(template_path, 'r', encoding='utf-8') as f:
             template_html = f.read()
 
-        # Get template variables
+        # Generate dynamic HTML sections based on infographic type
+        metrics_html = self.generate_metrics_html()
+        charts_html = self.generate_charts_html()
+        timeline_html = self.generate_timeline_html()
+        comparison_html = self.generate_comparison_html()
+        process_html = self.generate_process_html()
+        list_html = self.generate_list_html()
+        hierarchical_html = self.generate_hierarchical_html()
+        geographic_html = self.generate_geographic_html()
+
+        # Replace Handlebars-style blocks with generated HTML
+        import re
+
+        # Replace {{#each METRICS}}...{{/each}} with actual metrics HTML
+        metrics_pattern = r'\{\{#each METRICS\}\}.*?\{\{/each\}\}'
+        html = re.sub(metrics_pattern, metrics_html, template_html, flags=re.DOTALL)
+
+        # Replace {{#each TIMELINE_EVENTS}}...{{/each}} with actual timeline HTML
+        timeline_pattern = r'\{\{#each TIMELINE_EVENTS\}\}.*?\{\{/each\}\}'
+        html = re.sub(timeline_pattern, timeline_html, html, flags=re.DOTALL)
+
+        # Replace {{#each COMPARISON_ITEMS}}...{{/each}} with actual comparison HTML
+        comparison_pattern = r'\{\{#each COMPARISON_ITEMS\}\}.*?\{\{/each\}\}'
+        html = re.sub(comparison_pattern, comparison_html, html, flags=re.DOTALL)
+
+        # Replace {{#each PROCESS_STEPS}}...{{/each}} with actual process HTML
+        process_pattern = r'\{\{#each PROCESS_STEPS\}\}.*?\{\{/each\}\}'
+        html = re.sub(process_pattern, process_html, html, flags=re.DOTALL)
+
+        # Replace {{#each LIST_ITEMS}}...{{/each}} with actual list HTML
+        list_pattern = r'\{\{#each LIST_ITEMS\}\}.*?\{\{/each\}\}'
+        html = re.sub(list_pattern, list_html, html, flags=re.DOTALL)
+
+        # Replace {{#each HIERARCHY_LEVELS}}...{{/each}} with actual hierarchical HTML
+        hierarchy_pattern = r'\{\{#each HIERARCHY_LEVELS\}\}.*?\{\{/each\}\}'
+        html = re.sub(hierarchy_pattern, hierarchical_html, html, flags=re.DOTALL)
+
+        # Replace entire {{#if STATS}}...{{/if}} block with stats-grid for geographic
+        if self.infographic_type == 'geographic' and geographic_html:
+            stats_block_html = f'''
+        <div class="stats-grid">
+{geographic_html}
+        </div>'''
+            stats_block_pattern = r'\{\{#if STATS\}\}.*?\{\{/if\}\}'
+            html = re.sub(stats_block_pattern, stats_block_html, html, flags=re.DOTALL)
+
+        # Replace {{#if CHARTS}}...{{/if}} with charts HTML (empty for Phase 1)
+        charts_pattern = r'\{\{#if CHARTS\}\}.*?\{\{/if\}\}'
+        html = re.sub(charts_pattern, charts_html, html, flags=re.DOTALL)
+
+        # Replace {{#if LOGO_PATH}}...{{/if}} blocks
+        logo_path = self.brand_kit.get('logo')
+        if logo_path:
+            logo_html = f'<img src="{logo_path}" alt="Logo" class="logo">'
+            logo_pattern = r'\{\{#if LOGO_PATH\}\}.*?\{\{/if\}\}'
+            html = re.sub(logo_pattern, logo_html, html, flags=re.DOTALL)
+        else:
+            # Remove logo block entirely if no logo
+            logo_pattern = r'\{\{#if LOGO_PATH\}\}.*?\{\{/if\}\}'
+            html = re.sub(logo_pattern, '', html, flags=re.DOTALL)
+
+        # Replace {{#if SUBTITLE}}...{{/if}} blocks
+        subtitle = self.args.subtitle or ''
+        if subtitle:
+            subtitle_html = f'<p class="subtitle">{subtitle}</p>'
+            subtitle_pattern = r'\{\{#if SUBTITLE\}\}.*?\{\{/if\}\}'
+            html = re.sub(subtitle_pattern, subtitle_html, html, flags=re.DOTALL)
+        else:
+            subtitle_pattern = r'\{\{#if SUBTITLE\}\}.*?\{\{/if\}\}'
+            html = re.sub(subtitle_pattern, '', html, flags=re.DOTALL)
+
+        # Replace {{#if WATERMARK_TEXT}}...{{/if}} blocks
+        watermark = self.brand_kit.get('watermark')
+        if watermark:
+            watermark_html = f'<div class="watermark">{watermark}</div>'
+            watermark_pattern = r'\{\{#if WATERMARK_TEXT\}\}.*?\{\{/if\}\}'
+            html = re.sub(watermark_pattern, watermark_html, html, flags=re.DOTALL)
+        else:
+            watermark_pattern = r'\{\{#if WATERMARK_TEXT\}\}.*?\{\{/if\}\}'
+            html = re.sub(watermark_pattern, '', html, flags=re.DOTALL)
+
+        # Get template variables for simple replacements
         variables = self.prepare_template_variables()
 
-        # Simple template variable replacement (for production, use Jinja2)
-        html = template_html
+        # Simple template variable replacement
         for key, value in variables.items():
             placeholder = '{{' + key + '}}'
             if isinstance(value, (dict, list)):
                 value = json.dumps(value)
+            elif isinstance(value, bool):
+                # Convert Python boolean to JavaScript boolean (lowercase)
+                value = 'true' if value else 'false'
             elif value is None:
                 value = ''
-            html = html.replace(placeholder, str(value))
+            else:
+                value = str(value)
+            html = html.replace(placeholder, value)
+
+        # Final cleanup: Remove any remaining Handlebars blocks we haven't explicitly handled
+        # This catches unused sections like pricing, CTAs, icons, etc.
+        # Multiple passes to handle nested blocks
+        for _ in range(3):  # Run multiple times to catch nested structures
+            # Remove {{#if ...}}...{{/if}} blocks (including nested ones like @last, ../showVS)
+            html = re.sub(r'\{\{#if\s+[@\.\w/]+\}\}.*?\{\{/if\}\}', '', html, flags=re.DOTALL)
+            # Remove {{#unless ...}}...{{/unless}} blocks
+            html = re.sub(r'\{\{#unless\s+[@\.\w/]+\}\}.*?\{\{/unless\}\}', '', html, flags=re.DOTALL)
+            # Remove {{#each ...}}...{{/each}} blocks (nested loops not handled)
+            html = re.sub(r'\{\{#each\s+[@\.\w/]+\}\}.*?\{\{/each\}\}', '', html, flags=re.DOTALL)
+
+        # Remove {{else}} statements
+        html = re.sub(r'\{\{else\}\}', '', html)
+        # Remove any remaining {{variable}} placeholders
+        html = re.sub(r'\{\{[\w\./@]+\}\}', '', html)
+        # Remove closing tags that might be orphaned
+        html = re.sub(r'\{\{/if\}\}', '', html)
+        html = re.sub(r'\{\{/each\}\}', '', html)
+        html = re.sub(r'\{\{/unless\}\}', '', html)
 
         return html
 
@@ -357,7 +887,7 @@ class InfographicGenerator:
         headlines_file = content_dir / 'headlines.txt'
         captions_file = content_dir / 'captions.txt'
 
-        with open(headlines_file, 'w') as f:
+        with open(headlines_file, 'w', encoding='utf-8') as f:
             f.write(f"# Generated Headlines for: {self.args.title}\n\n")
             f.write("1. Record-Breaking Results: [Your Data Here]\n")
             f.write("2. The Numbers Are In: [Key Metric] Achievement\n")
@@ -365,7 +895,7 @@ class InfographicGenerator:
             f.write("4. Unprecedented Growth: [Percentage] Increase\n")
             f.write("5. By the Numbers: [Your Company] Performance\n")
 
-        with open(captions_file, 'w') as f:
+        with open(captions_file, 'w', encoding='utf-8') as f:
             f.write(f"# Generated Social Media Captions\n\n")
             f.write("## LinkedIn (1300-1900 chars):\n")
             f.write(f"We're excited to share our latest results! 🚀\n\n")
