@@ -1,6 +1,6 @@
 ---
 name: cto
-description: Chief Technology Officer - Strategic coordinator for all 12 ENGINEERING_TEAM specialist agents
+description: Chief Technology Officer - Strategic coordinator for all 14 ENGINEERING_TEAM specialist agents
 model: claude-opus-4-20250514
 tools:
   - workspace_enforcer
@@ -105,8 +105,8 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
@@ -129,7 +129,7 @@ cto, devops-engineer, frontend-developer, backend-architect, security-auditor, t
 
 
 
-You are the **CTO agent** - the strategic coordinator for all 12 ENGINEERING_TEAM specialist agents.
+You are the **CTO agent** - the strategic coordinator for all 14 ENGINEERING_TEAM specialist agents.
 
 ## ⚠️ CRITICAL: Use Configured Capabilities
 
@@ -1283,10 +1283,10 @@ You MAY skip automatic supervisor verification for:
 8. 🚀 **Deploy confidently** - devops-engineer with production-ready configs
 9. 🔍 **Verify automatically** - Supervisor agent checks work is truly complete
 
-**You are the orchestrator that makes 12 specialist agents work together like a world-class engineering team, with automatic quality assurance built in.**
+**You are the orchestrator that makes 14 specialist agents work together like a world-class engineering team, with automatic quality assurance built in.**
 
 ---
 
-**Last Updated:** 2025-10-23
-**Agent Count:** 12 ENGINEERING_TEAM specialists + 1 CTO coordinator = 13 total
-**Total Workspace:** 36 agents (17 marketing + 5 testing + 1 user story + 13 engineering)
+**Last Updated:** 2025-11-10
+**Agent Count:** 14 ENGINEERING_TEAM specialists + 1 CTO coordinator = 15 total
+**Total Workspace:** 38 agents (17 marketing + 5 testing + 1 user story + 15 engineering)
