@@ -1,0 +1,32 @@
+{
+  "skills": {
+    "filesystem": {
+      "enabled": true
+    },
+    "docx": {
+      "enabled": true,
+      "comment": "Word document creation for proposal final versions"
+    },
+    "pdf": {
+      "enabled": true,
+      "comment": "PDF conversion for final submission formats"
+    },
+    "pptx": {
+      "enabled": true,
+      "comment": "Presentation materials for proposal support"
+    },
+    "theme-factory": {
+      "enabled": true,
+      "comment": "Professional styling for proposals"
+    },
+    "canvas-design": {
+      "enabled": true,
+      "comment": "Custom graphics and visual elements"
+    },
+    "internal-comms": {
+      "enabled": true,
+      "comment": "Client communication templates"
+    }
+  },
+  "mcpServers": "inherit"
+}
