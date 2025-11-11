@@ -1,0 +1,8 @@
+req_id,verbatim,must_or_should,eval_factor,proposal_section,owner,status,page_or_para
+REQ-0001,"Offerors shall submit one (1) PDF not exceeding 25 pages, 11-pt font, 1-inch margins.",must,Instructions,0 Submission Checklist,Writer,unanswered,L-1
+REQ-0002,All proposals must include a table of contents...,must,Instructions,0 Submission Checklist,Writer,unanswered,L-1
+REQ-0003,Offerors shall provide a 30/60/90 transition plan...,must,M-1 Technical,6 Transition,PM,unanswered,L-2
+REQ-0004,Offerors shall identify key personnel with resumes.,must,M-2 Management,5 Staffing,HR Lead,unanswered,L-2
+REQ-0005,All certifications and representations must be current...,must,Instructions,9 Annexes,Compliance,unanswered,L-2
+REQ-0006,Offerors must demonstrate 24/7 operations capability...,must,M-1 Technical,2 Technical,Tech Lead,unanswered,M-4
+REQ-0007,Offerors must achieve 99.9% uptime SLA.,must,M-1 Technical,2 Technical,Tech Lead,unanswered,M-4

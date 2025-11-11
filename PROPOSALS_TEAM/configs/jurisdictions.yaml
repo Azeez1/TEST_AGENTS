@@ -1,0 +1,30 @@
+US_FED:
+  law_refs:
+    - FAR_15.102
+    - FAR_15.304
+    - FAR_15.305
+    - FAR_15.506
+    - FAR_19.7
+    - FAR_52.219-14
+  deliverables:
+    - Compliance Matrix
+    - Executive Summary
+    - Technical
+    - Management
+    - Staffing & Key Personnel
+    - Past Performance
+    - Transition (30/60/90)
+    - Risk Register (RAID)
+    - Security/Privacy Annex
+    - Orals Script & Q&A
+ENTERPRISE:
+  due_diligence:
+    - SOC2
+    - ISO27001
+    - CAIQ
+    - SIG
+    - DPA/SLA
+  focus:
+    - ROI/TCO outcomes
+    - Pilot/POC plan
+    - Integration & security answers

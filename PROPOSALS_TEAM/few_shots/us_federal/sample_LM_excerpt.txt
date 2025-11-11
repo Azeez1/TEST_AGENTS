@@ -1,0 +1,22 @@
+SECTION L – INSTRUCTIONS TO OFFERORS:
+Offerors shall submit one (1) PDF not exceeding 25 pages, 11-pt font, 1-inch margins.
+All proposals must include a table of contents and be submitted via SAM.gov no later than
+January 30, 2025, 2:00 PM EST.
+
+Offerors shall provide a 30/60/90 transition plan and identify key personnel with resumes.
+All certifications and representations must be current as of the proposal due date.
+
+SECTION M – EVALUATION:
+Factor 1: Technical Approach (Most Important)
+Factor 2: Management Approach (Equally Important to Factor 3)
+Factor 3: Past Performance (Equally Important to Factor 2)
+Factor 4: Price (Least Important)
+
+The Government shall make a best-value tradeoff determination. Past Performance shall
+be evaluated per FAR 15.305. Proposals with no relevant past performance will be
+evaluated neither favorably nor unfavorably per FAR 15.305(a)(2)(iv).
+
+Technical Approach will be evaluated for understanding of requirements, feasibility
+of proposed solution, innovation, and risk mitigation strategies.
+
+Offerors must demonstrate 24/7 operations capability and achieve 99.9% uptime SLA.

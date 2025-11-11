@@ -1,0 +1,69 @@
+STATEMENT OF WORK - Cloud Migration and Security Modernization
+
+CLIENT: Fortune 500 Healthcare Company
+ESTIMATED VALUE: $2M-$5M
+TIMELINE: 12-month implementation
+
+EVALUATION CRITERIA:
+
+We will award to the vendor with the best combined score across:
+
+1. Business Value (40 points)
+   - ROI demonstration and TCO analysis (10 pts)
+   - Pilot/POC plan with measurable KPIs (10 pts)
+   - Scalability approach for 10x growth (10 pts)
+   - Innovation and competitive differentiation (10 pts)
+
+2. Security & Compliance (30 points)
+   - SOC 2 Type II certification or clear roadmap (10 pts)
+   - ISO 27001 certification (5 pts)
+   - CAIQ/SIG completion (5 pts)
+   - HIPAA compliance approach (10 pts)
+
+3. References & Past Performance (30 points)
+   - 3+ similar healthcare/enterprise migrations (15 pts)
+   - Client satisfaction scores (10 pts)
+   - Verifiable references with contact info (5 pts)
+
+REQUIRED DELIVERABLES:
+
+1. Executive Summary (2 pages max)
+   - Understanding of our challenges
+   - Proposed solution overview
+   - Expected outcomes with metrics
+
+2. Technical Approach (10 pages max)
+   - 4-week pilot plan with specific KPIs
+   - Migration strategy (estimated 500 workloads)
+   - Security architecture
+   - Integration with existing EPIC EMR system
+   - Disaster recovery and business continuity
+
+3. Security & Compliance Documentation
+   - Complete CAIQ or SIG questionnaire
+   - Current SOC 2 report or roadmap to certification
+   - HIPAA compliance statement
+   - DPA and SLA templates
+
+4. Past Performance
+   - 3 case studies from healthcare or similar regulated industries
+   - Quantified results (cost savings, performance improvements)
+   - Reference contacts
+
+5. Commercials
+   - Pricing model (fixed, T&M, hybrid)
+   - Pilot pricing separate from full implementation
+   - Payment terms and milestones
+
+SPECIAL REQUIREMENTS:
+
+- Must demonstrate HIPAA-aligned approach (note: no "HIPAA certification" exists)
+- Pilot must complete in 4 weeks with measurable success criteria
+- All cloud infrastructure must be in US regions
+- Must integrate with existing Identity Provider (Okta)
+- Change management plan required for 5,000+ end users
+
+SUBMISSION:
+- Email proposals to procurement@company.com by February 15, 2025
+- Subject line: "Cloud Migration Proposal - [Vendor Name]"
+- Single PDF + separate security questionnaire

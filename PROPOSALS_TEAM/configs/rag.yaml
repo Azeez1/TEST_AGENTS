@@ -1,0 +1,17 @@
+index: proposal_kb
+embed_model: gte-large
+chunk_tokens: 900
+overlap: 0.15
+filters:
+  jurisdiction: [US, ENTERPRISE]
+  year_min: 2020
+metadata_fields:
+  - title
+  - jurisdiction
+  - sector
+  - source_url
+  - source_date
+  - standard
+  - rfp_section
+  - tags
+  - page
