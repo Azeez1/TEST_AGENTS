@@ -161,7 +161,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 | **Agent Validation** | N/A | N/A | `validate_agents.py` (YAML schema validation) | 1. Custom Tool only | security-auditor, technical-writer | ✅ Active |
 | **MCP Server Bridge** | N/A | N/A | `mcp_server.py` (bridges Python tools to MCP) | 1. Custom Tool only | Infrastructure | ✅ Active |
 | **Agent Config Update** | N/A | N/A | `update_agent_tools.py` (bulk YAML updates) | 1. Custom Tool only | technical-writer | ✅ Active |
-| **Workflow Automation** | N/A | `mcp__n8n-mcp__*` (400+ integrations) | N/A | 1. MCP only | automation-agent | ✅ Active |
+| **Workflow Automation** | `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-workflow-patterns`, `n8n-validation-expert`, `n8n-node-configuration`, `n8n-code-javascript`, `n8n-code-python` (7 auto-activating skills) | `mcp__n8n-mcp__*` (400+ integrations) | N/A | 1. Skills auto-activate with MCP tools | automation-agent | ✅ Active |
 | **React Artifacts** | `artifacts-builder` (React + shadcn/ui) | N/A | N/A | 1. Skill only | landing-page-specialist | ✅ Active |
 | **MCP Server Creation** | `mcp-builder` (create MCP servers) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
 | **Skill Creation** | `skill-creator` (create new skills) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |

@@ -78,6 +78,34 @@
     },
     "context7": {
       "enabled": true
+    },
+    "n8n-expression-syntax": {
+      "enabled": true,
+      "comment": "Auto-activates when writing {{}} expressions in n8n workflows"
+    },
+    "n8n-mcp-tools-expert": {
+      "enabled": true,
+      "comment": "Auto-activates for n8n-mcp tool usage - primary n8n skill"
+    },
+    "n8n-node-configuration": {
+      "enabled": true,
+      "comment": "Auto-activates for n8n node setup and property dependencies"
+    },
+    "n8n-validation-expert": {
+      "enabled": true,
+      "comment": "Auto-activates on n8n validation errors"
+    },
+    "n8n-workflow-patterns": {
+      "enabled": true,
+      "comment": "Provides 5 proven architectures from 2,653+ n8n templates"
+    },
+    "n8n-code-javascript": {
+      "enabled": true,
+      "comment": "Auto-activates for n8n Code node JavaScript"
+    },
+    "n8n-code-python": {
+      "enabled": true,
+      "comment": "Auto-activates for n8n Code node Python (rare)"
     }
   },
   "mcp": {

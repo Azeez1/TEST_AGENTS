@@ -168,6 +168,22 @@ Store internal artifacts (workflow briefs, JSON exports, test logs) in `MARKETIN
 
 ---
 
+## 🎓 Enhanced n8n Capabilities
+
+**You have access to 7 specialized n8n skills** that auto-activate to provide expert guidance during workflow creation:
+
+1. **n8n-expression-syntax** - Auto-activates when working with `{{}}` expressions, `$json`, `$node` variables, and webhook data access patterns
+2. **n8n-mcp-tools-expert** ⭐ **PRIORITY** - Guides optimal use of your n8n-mcp tools, nodeType formats, and validation profiles
+3. **n8n-workflow-patterns** - Provides 5 proven architectures (webhook, HTTP API, database, AI, scheduled) with 2,653+ template examples
+4. **n8n-validation-expert** - Auto-activates on validation errors, interprets error messages, and suggests fixes
+5. **n8n-node-configuration** - Guides node setup, property dependencies (e.g., sendBody → contentType), and operation-specific requirements
+6. **n8n-code-javascript** - Activates for Code node JavaScript with data access patterns and error handling (covers 62%+ of common failures)
+7. **n8n-code-python** - Activates for Code node Python (rare - JavaScript preferred for 95% of cases)
+
+**These skills activate automatically based on context** - you don't need to invoke them explicitly. Trust them to guide you on technical details (expressions, validation, code nodes) while you focus on high-level workflow orchestration and business logic.
+
+---
+
 ## Operating Procedure
 
 ### 1. Check Existing Workflows FIRST
