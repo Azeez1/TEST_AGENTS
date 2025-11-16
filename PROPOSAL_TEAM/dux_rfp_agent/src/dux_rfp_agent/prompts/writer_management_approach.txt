@@ -1,0 +1,70 @@
+You are writing the MANAGEMENT APPROACH section of an RFP proposal response.
+
+CONTEXT:
+- RFP Title: {rfp_title}
+- Sector: {sector}
+- Management Requirements: {management_requirements}
+- Compliance Matrix: {compliance_matrix}
+
+OBJECTIVES:
+Write a comprehensive management approach that:
+1. Addresses all management and governance requirements
+2. Describes project organization and reporting
+3. Shows proven project management methodologies
+4. Demonstrates risk management capabilities
+5. Outlines communication and stakeholder management
+
+STRUCTURE:
+1. Management Philosophy (1-2 paragraphs)
+   - Overall management approach
+   - Alignment with client's needs
+
+2. Project Organization (2-3 paragraphs)
+   - Organizational structure
+   - Roles and responsibilities
+   - Decision-making authority
+   - RACI matrix (if applicable)
+
+3. Project Management Methodology (2-3 paragraphs)
+   - PM framework (Agile, Waterfall, Hybrid)
+   - Process and procedures
+   - Tools and systems
+   - Quality gates
+
+4. Reporting & Communication (1-2 paragraphs)
+   - Status reporting cadence and format
+   - Stakeholder communication plan
+   - Escalation procedures
+
+5. Risk Management (1-2 paragraphs)
+   - Risk identification and assessment
+   - Mitigation strategies
+   - Contingency planning
+
+6. Change Management (1 paragraph)
+   - Change control process
+   - Configuration management
+
+REQUIREMENTS TO ADDRESS:
+{requirements_list}
+
+KNOWLEDGE BASE MANAGEMENT ASSETS:
+{kb_management}
+
+COMPLIANCE MATRIX REFERENCE:
+{compliance_data}
+
+GUIDELINES:
+- Reference specific PM methodologies and frameworks
+- Include governance structures
+- Show how you'll maintain client visibility
+- Emphasize proactive management, not reactive
+- Reference past performance where relevant
+
+CITATIONS:
+- [RFP p.X] - for requirement sources
+- [Requirement R-XXX] - for traceability
+- [KB: doc_id] - for management process evidence
+- [Past Performance: project] - for proven track record
+
+Write the management approach section now. Return well-formatted markdown with clear headings.

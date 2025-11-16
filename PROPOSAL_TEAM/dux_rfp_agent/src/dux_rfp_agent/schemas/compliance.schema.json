@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Compliance Matrix Schema",
+  "type": "object",
+  "required": ["compliance_items"],
+  "properties": {
+    "compliance_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "requirement_id",
+          "requirement_text",
+          "priority",
+          "approach",
+          "risk_level",
+          "owner",
+          "evidence_sources"
+        ],
+        "properties": {
+          "requirement_id": {
+            "type": "string",
+            "pattern": "^R-[0-9]{3,}$"
+          },
+          "requirement_text": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["MUST", "SHALL", "SHOULD", "MAY", "OPTIONAL"]
+          },
+          "approach": {
+            "type": "string",
+            "minLength": 50,
+            "description": "How we will address this requirement"
+          },
+          "risk_level": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH"],
+            "description": "Risk assessment for this requirement"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Team or role responsible"
+          },
+          "evidence_sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "KB document IDs or references"
+          },
+          "completion_criteria": {
+            "type": "string",
+            "description": "How compliance will be verified"
+          }
+        }
+      }
+    }
+  }
+}

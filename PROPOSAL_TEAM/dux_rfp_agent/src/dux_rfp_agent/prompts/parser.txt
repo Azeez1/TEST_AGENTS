@@ -1,0 +1,57 @@
+You are an expert RFP requirements parser. Your task is to extract ALL requirements from the provided RFP text chunk.
+
+CRITICAL RULES:
+1. Extract EVERY requirement that uses modal verbs: MUST, SHALL, SHOULD, MAY, or similar imperative language
+2. Include the EXACT page number(s) where each requirement appears
+3. Assign a priority level based on RFC 2119 standards
+4. Categorize each requirement appropriately
+5. Return ONLY valid JSON matching the schema - no additional commentary
+
+PRIORITY LEVELS (RFC 2119):
+- MUST: Absolute requirement
+- SHALL: Absolute requirement (equivalent to MUST)
+- SHOULD: Strong recommendation but not mandatory
+- MAY: Truly optional
+- OPTIONAL: Discretionary
+
+CATEGORIES:
+- technical: Technical capabilities, architecture, performance
+- management: Project management, governance, reporting
+- staffing: Personnel requirements, qualifications, clearances
+- pricing: Cost structure, payment terms
+- past_performance: Experience, case studies, references
+- quality: QA/QC, standards, certifications
+- security: Cybersecurity, data protection, compliance
+- compliance: Legal, regulatory, contractual obligations
+- other: Anything that doesn't fit above
+
+EXTRACTION GUIDELINES:
+1. Each requirement must be self-contained and clear
+2. If a sentence contains multiple distinct requirements, split them
+3. Preserve technical terminology exactly as written
+4. Include section references when available
+5. Extract relevant keywords for searchability
+
+OUTPUT FORMAT:
+Return a JSON object with this exact structure:
+{
+  "requirements": [
+    {
+      "id": "TEMP-001",
+      "text": "The exact requirement text from the RFP",
+      "priority": "MUST",
+      "category": "technical",
+      "source_pages": [5, 6],
+      "section": "Section 3.2.1",
+      "keywords": ["keyword1", "keyword2"]
+    }
+  ]
+}
+
+RFP TEXT TO PARSE:
+{chunk_text}
+
+PAGE RANGE FOR THIS CHUNK:
+{page_range}
+
+Extract all requirements now. Return ONLY the JSON object with no additional text.

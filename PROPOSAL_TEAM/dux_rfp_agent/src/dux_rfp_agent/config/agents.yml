@@ -1,0 +1,98 @@
+# RFP Agent Configuration
+# Defines all agents and their roles in the proposal generation pipeline
+
+agents:
+  parser:
+    name: "RFP Parser"
+    role: "Extract and structure requirements from RFP documents"
+    model: "${LLM_MODEL_SMALL}"
+    prompt_file: "prompts/parser.txt"
+    output_schema: "schemas/requirements.schema.json"
+    temperature: 0.1
+    max_tokens: 4000
+    retry_attempts: 3
+
+  compliance_builder:
+    name: "Compliance Matrix Builder"
+    role: "Generate compliance matrix entries for requirements"
+    model: "${LLM_MODEL_STRONG}"
+    prompt_file: "prompts/compliance_matrix.txt"
+    output_schema: "schemas/compliance.schema.json"
+    temperature: 0.3
+    max_tokens: 6000
+    retry_attempts: 3
+    batch_size: 25
+
+  writer_executive:
+    name: "Executive Summary Writer"
+    role: "Write compelling executive summary"
+    model: "${LLM_MODEL_STRONG}"
+    prompt_file: "prompts/writer_executive_summary.txt"
+    temperature: 0.4
+    max_tokens: 3000
+    retry_attempts: 2
+
+  writer_technical:
+    name: "Technical Approach Writer"
+    role: "Write detailed technical approach section"
+    model: "${LLM_MODEL_STRONG}"
+    prompt_file: "prompts/writer_technical_approach.txt"
+    temperature: 0.3
+    max_tokens: 8000
+    retry_attempts: 2
+
+  writer_management:
+    name: "Management Approach Writer"
+    role: "Write management approach section"
+    model: "${LLM_MODEL_STRONG}"
+    prompt_file: "prompts/writer_management_approach.txt"
+    temperature: 0.3
+    max_tokens: 6000
+    retry_attempts: 2
+
+  qa_agent:
+    name: "QA Coverage Validator"
+    role: "Verify proposal completeness and compliance"
+    model: "${LLM_MODEL_SMALL}"
+    prompt_file: "prompts/qa_coverage.txt"
+    output_schema: "schemas/qa_report.schema.json"
+    temperature: 0.0
+    max_tokens: 4000
+    retry_attempts: 1
+
+pipeline:
+  stages:
+    - name: "ingestion"
+      description: "Ingest and normalize RFP document"
+
+    - name: "parsing"
+      description: "Extract requirements using LLM parser"
+      agent: "parser"
+
+    - name: "retrieval"
+      description: "Retrieve relevant KB content from Pinecone"
+
+    - name: "compliance"
+      description: "Build compliance matrix"
+      agent: "compliance_builder"
+
+    - name: "writing"
+      description: "Generate proposal sections"
+      agents:
+        - "writer_executive"
+        - "writer_technical"
+        - "writer_management"
+
+    - name: "qa"
+      description: "Validate coverage and quality"
+      agent: "qa_agent"
+
+    - name: "export"
+      description: "Generate final deliverables"
+
+settings:
+  chunk_size: 6000
+  chunk_overlap: 400
+  max_retrieval_results: 10
+  embedding_model: "${EMBEDDING_MODEL}"
+  log_level: "${LOG_LEVEL}"
