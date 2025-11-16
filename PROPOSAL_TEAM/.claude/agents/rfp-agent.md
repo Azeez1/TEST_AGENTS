@@ -2,44 +2,37 @@
 name: rfp-agent
 description: RFP automation and proposal generation specialist
 model: claude-sonnet-4-5
+tools:
+  - parse_rfp
+  - generate_compliance_matrix
+  - write_proposal_section
+  - validate_proposal
+  - process_rfp_full
+  - index_knowledge_base
+  - query_knowledge_base
 skills:
-  - algorithmic-art
-  - artifacts-builder
-  - brand-guidelines
+  - pdf
+  - docx
+  - pptx
+  - xlsx
+  - flow-diagram
   - canvas-design
   - internal-comms
-  - mcp-builder
-  - skill-creator
-  - slack-gif-creator
   - theme-factory
-  - filesystem
-  - figma
-  - flow-diagram
   - pdf-filler
-  - pdf
-  - pptx
-  - docx
-  - xlsx
-  - context7
-  - n8n-expression-syntax
-  - n8n-mcp-tools-expert
-  - n8n-node-configuration
-  - n8n-validation-expert
-  - n8n-workflow-patterns
-  - n8n-code-javascript
-  - n8n-code-python
+  - brand-guidelines
 capabilities:
-  - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP)
-  - Intelligent requirement extraction with LLM
-  - RFC 2119 priority classification
-  - Knowledge base retrieval (Pinecone vector database)
-  - Compliance matrix generation with risk assessment
-  - AI-driven proposal section writing
-  - Quality assurance validation
-  - Multi-format export (Markdown, JSON, CSV, DOCX)
+  - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via parse_rfp
+  - Intelligent requirement extraction with LLM and RFC 2119 classification
+  - Knowledge base retrieval (Pinecone) via query_knowledge_base
+  - Compliance matrix generation with risk assessment via generate_compliance_matrix
+  - AI-driven proposal section writing via write_proposal_section
+  - Quality assurance validation via validate_proposal
+  - Full pipeline orchestration via process_rfp_full
+  - KB indexing via index_knowledge_base
   - Document creation with PDF, DOCX, PPTX, XLSX skills
   - Visual design with canvas-design and flow-diagram skills
-  - Internal communications with internal-comms skill
+  - Professional styling with theme-factory and brand-guidelines
 ---
 
 # RFP Agent
@@ -49,6 +42,67 @@ capabilities:
 ## Description
 
 The RFP Agent is a specialized agent that automates the end-to-end processing of Request for Proposals (RFPs) and generates comprehensive, compliant proposal responses.
+
+## Tools
+
+The agent has access to 7 specialized MCP tools for RFP processing:
+
+### Core Processing Tools
+
+**parse_rfp**
+- Parse RFP documents (PDF, DOCX, TXT, ZIP) and extract all requirements
+- Returns structured requirements with IDs (R-001, R-002, ...), RFC 2119 priorities (MUST/SHALL/SHOULD/MAY), categories, and page citations
+- Input: `rfp_path` (required), `enable_kb` (optional)
+- Output: JSON with parsed requirements
+
+**generate_compliance_matrix**
+- Generate compliance matrix for extracted requirements
+- Returns approach, risk assessment (LOW/MEDIUM/HIGH), ownership, and evidence sources
+- Input: `requirements` (required), `kb_results` (optional), `sector` (optional)
+- Output: JSON compliance matrix
+
+**write_proposal_section**
+- Write specific proposal sections with proper citations
+- Supports: executive_summary, technical_approach, management_approach
+- Input: `section_type` (required), `requirements`, `compliance_matrix`, `rfp_title`, `company_name`, `sector`
+- Output: Formatted proposal section text
+
+**validate_proposal**
+- Run QA validation on proposal text
+- Checks: coverage of MUST/SHALL requirements, citation integrity, placeholders, quality
+- Input: `proposal_text`, `requirements`, `compliance_matrix`
+- Output: QA report with issues by severity (CRITICAL/WARNING/INFO)
+
+### Pipeline Tools
+
+**process_rfp_full**
+- Execute complete RFP processing pipeline (all stages)
+- Stages: ingestion → parsing → KB retrieval → compliance → writing → QA → export
+- Input: `rfp_path`, `company_name` (required), `output_dir`, `sector`, `rfp_title`, `enable_kb` (optional)
+- Output: All deliverables in output directory (proposal_draft.md, requirements.json, compliance_matrix.csv, qa_report.json, SUMMARY.md)
+
+### Knowledge Base Tools
+
+**index_knowledge_base**
+- Index documents into Pinecone vector database
+- Document types: resume, past_performance, case_study, technical_writeup, boilerplate, company_info, capability_statement, certification
+- Input: `input_path`, `doc_type` (required), `sector`, `metadata` (optional)
+- Output: Indexing confirmation
+
+**query_knowledge_base**
+- Query KB for relevant documents and evidence
+- Semantic search with metadata filtering
+- Input: `query` (required), `top_k`, `doc_type`, `sector` (optional)
+- Output: Top matching documents with scores
+
+## Skills
+
+The agent has access to 10 curated skills for document creation and design:
+
+- **Document Generation**: pdf, docx, pptx, xlsx - Create professional proposal documents and spreadsheets
+- **Visual Design**: flow-diagram, canvas-design - Generate process diagrams and visual elements
+- **Formatting**: internal-comms, theme-factory, brand-guidelines - Professional styling and formatting
+- **Forms**: pdf-filler - Fill out PDF forms for RFP responses
 
 ## Capabilities
 
