@@ -11,16 +11,15 @@ tools:
   - index_knowledge_base
   - query_knowledge_base
 skills:
-  - pdf
-  - docx
-  - pptx
-  - xlsx
+  - document-skills/pdf
+  - document-skills/docx
+  - document-skills/pptx
+  - document-skills/xlsx
   - flow-diagram
-  - canvas-design
   - internal-comms
   - theme-factory
-  - pdf-filler
   - brand-guidelines
+  - artifacts-builder
 capabilities:
   - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via parse_rfp
   - Intelligent requirement extraction with LLM and RFC 2119 classification
@@ -97,12 +96,12 @@ The agent has access to 7 specialized MCP tools for RFP processing:
 
 ## Skills
 
-The agent has access to 10 curated skills for document creation and design:
+The agent has access to 9 curated skills for document creation and design:
 
-- **Document Generation**: pdf, docx, pptx, xlsx - Create professional proposal documents and spreadsheets
-- **Visual Design**: flow-diagram, canvas-design - Generate process diagrams and visual elements
-- **Formatting**: internal-comms, theme-factory, brand-guidelines - Professional styling and formatting
-- **Forms**: pdf-filler - Fill out PDF forms for RFP responses
+- **Document Generation**: pdf, docx, pptx, xlsx - Create professional proposal documents, presentations, and compliance matrices
+- **Visual Design**: flow-diagram - Generate technical diagrams, flowcharts, and process maps for proposals
+- **Content & Formatting**: internal-comms, theme-factory, brand-guidelines - Professional document templates, theming, and brand consistency
+- **Advanced Artifacts**: artifacts-builder - Create elaborate multi-component HTML artifacts for interactive proposals
 
 ## Capabilities
 

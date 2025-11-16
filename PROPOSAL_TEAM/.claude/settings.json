@@ -13,47 +13,63 @@
     ]
   },
   "skills": {
-    "path": "../.claude/skills",
+    "path": ".claude/skills",
     "description": "RFP-relevant skills for proposal creation and document generation",
+    "available": [
+      "document-skills/pdf",
+      "document-skills/docx",
+      "document-skills/pptx",
+      "document-skills/xlsx",
+      "flow-diagram",
+      "internal-comms",
+      "theme-factory",
+      "brand-guidelines",
+      "artifacts-builder"
+    ],
     "pdf": {
       "enabled": true,
+      "path": "document-skills/pdf",
       "comment": "PDF creation for proposal documents"
     },
     "docx": {
       "enabled": true,
+      "path": "document-skills/docx",
       "comment": "Word document generation for proposals"
     },
     "pptx": {
       "enabled": true,
+      "path": "document-skills/pptx",
       "comment": "PowerPoint presentation generation for proposals"
     },
     "xlsx": {
       "enabled": true,
+      "path": "document-skills/xlsx",
       "comment": "Excel spreadsheets for compliance matrices"
     },
     "flow-diagram": {
       "enabled": true,
+      "path": "flow-diagram",
       "comment": "Flow diagrams and visual process maps for proposals"
-    },
-    "canvas-design": {
-      "enabled": true,
-      "comment": "Visual design for proposal graphics and diagrams"
     },
     "internal-comms": {
       "enabled": true,
+      "path": "internal-comms",
       "comment": "Internal communications formatting and templates"
     },
     "theme-factory": {
       "enabled": true,
+      "path": "theme-factory",
       "comment": "Styling artifacts and proposals with themes"
-    },
-    "pdf-filler": {
-      "enabled": true,
-      "comment": "PDF form filling for RFP responses"
     },
     "brand-guidelines": {
       "enabled": true,
+      "path": "brand-guidelines",
       "comment": "Brand colors and typography for professional proposals"
+    },
+    "artifacts-builder": {
+      "enabled": true,
+      "path": "artifacts-builder",
+      "comment": "Suite of tools for creating elaborate, multi-component HTML artifacts"
     }
   },
   "mcp": {
