@@ -1,3 +1,47 @@
+---
+name: rfp-agent
+description: RFP automation and proposal generation specialist
+model: claude-sonnet-4-5
+skills:
+  - algorithmic-art
+  - artifacts-builder
+  - brand-guidelines
+  - canvas-design
+  - internal-comms
+  - mcp-builder
+  - skill-creator
+  - slack-gif-creator
+  - theme-factory
+  - filesystem
+  - figma
+  - flow-diagram
+  - pdf-filler
+  - pdf
+  - pptx
+  - docx
+  - xlsx
+  - context7
+  - n8n-expression-syntax
+  - n8n-mcp-tools-expert
+  - n8n-node-configuration
+  - n8n-validation-expert
+  - n8n-workflow-patterns
+  - n8n-code-javascript
+  - n8n-code-python
+capabilities:
+  - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP)
+  - Intelligent requirement extraction with LLM
+  - RFC 2119 priority classification
+  - Knowledge base retrieval (Pinecone vector database)
+  - Compliance matrix generation with risk assessment
+  - AI-driven proposal section writing
+  - Quality assurance validation
+  - Multi-format export (Markdown, JSON, CSV, DOCX)
+  - Document creation with PDF, DOCX, PPTX, XLSX skills
+  - Visual design with canvas-design and flow-diagram skills
+  - Internal communications with internal-comms skill
+---
+
 # RFP Agent
 
 **Role**: RFP Automation and Proposal Generation Specialist

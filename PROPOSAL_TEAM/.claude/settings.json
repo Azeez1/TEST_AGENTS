@@ -14,10 +14,66 @@
   },
   "skills": {
     "path": "../.claude/skills",
-    "description": "Shared skills inherited from root workspace",
+    "description": "Shared skills inherited from root workspace - all skills enabled for rfp-agent",
+    "algorithmic-art": {
+      "enabled": true,
+      "comment": "Algorithmic art generation for visual elements"
+    },
+    "artifacts-builder": {
+      "enabled": true,
+      "comment": "Complex multi-component artifacts creation"
+    },
+    "brand-guidelines": {
+      "enabled": true,
+      "comment": "Anthropic brand colors and typography application"
+    },
+    "canvas-design": {
+      "enabled": true,
+      "comment": "Visual design for proposal graphics and diagrams"
+    },
+    "internal-comms": {
+      "enabled": true,
+      "comment": "Internal communications formatting and templates"
+    },
+    "mcp-builder": {
+      "enabled": true,
+      "comment": "MCP server creation and integration"
+    },
+    "skill-creator": {
+      "enabled": true,
+      "comment": "Custom skill development"
+    },
+    "slack-gif-creator": {
+      "enabled": true,
+      "comment": "Animated GIF creation for communications"
+    },
+    "theme-factory": {
+      "enabled": true,
+      "comment": "Styling artifacts with themes"
+    },
+    "filesystem": {
+      "enabled": true,
+      "comment": "File system operations"
+    },
+    "figma": {
+      "enabled": true,
+      "comment": "Figma design integration"
+    },
+    "flow-diagram": {
+      "enabled": true,
+      "comment": "Flow diagrams and visual process maps for proposals"
+    },
+    "pdf-filler": {
+      "enabled": true,
+      "comment": "PDF form filling for RFP responses"
+    },
     "pdf": {
       "enabled": true,
       "comment": "PDF creation for proposal documents"
+    },
+    "pptx": {
+      "enabled": true,
+      "comment": "PowerPoint presentation generation for proposals"
     },
     "docx": {
       "enabled": true,
@@ -26,6 +82,38 @@
     "xlsx": {
       "enabled": true,
       "comment": "Excel spreadsheets for compliance matrices"
+    },
+    "context7": {
+      "enabled": true,
+      "comment": "Context management"
+    },
+    "n8n-expression-syntax": {
+      "enabled": true,
+      "comment": "n8n expression syntax validation"
+    },
+    "n8n-mcp-tools-expert": {
+      "enabled": true,
+      "comment": "n8n MCP tools expertise"
+    },
+    "n8n-node-configuration": {
+      "enabled": true,
+      "comment": "n8n node configuration guidance"
+    },
+    "n8n-validation-expert": {
+      "enabled": true,
+      "comment": "n8n validation error interpretation"
+    },
+    "n8n-workflow-patterns": {
+      "enabled": true,
+      "comment": "n8n workflow architectural patterns"
+    },
+    "n8n-code-javascript": {
+      "enabled": true,
+      "comment": "JavaScript code in n8n Code nodes"
+    },
+    "n8n-code-python": {
+      "enabled": true,
+      "comment": "Python code in n8n Code nodes"
     }
   },
   "agents": {
