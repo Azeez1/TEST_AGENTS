@@ -12,14 +12,27 @@ from jsonschema import validate
 from .config import config
 from .llm_client import LLMClient
 from .logger import logger
+from .compliance_frameworks import (
+    detect_applicable_frameworks,
+    generate_compliance_section,
+    generate_compliance_matrix_table,
+    ComplianceFramework
+)
 
 
 class ComplianceMatrixBuilder:
     """Build compliance matrix from requirements and KB evidence."""
 
-    def __init__(self):
-        """Initialize compliance matrix builder."""
+    def __init__(self, sector: Optional[str] = None):
+        """
+        Initialize compliance matrix builder.
+
+        Args:
+            sector: Optional sector hint for compliance detection
+        """
         self.llm = LLMClient()
+        self.sector = sector
+        self.detected_frameworks: List[ComplianceFramework] = []
 
         # Load schema
         schema_path = config.schemas_dir / "compliance.schema.json"
@@ -29,8 +42,30 @@ class ComplianceMatrixBuilder:
         # Load prompt template
         self.prompt_template = config.get_prompt("compliance_matrix")
 
+    def detect_frameworks(self, rfp_text: str) -> List[ComplianceFramework]:
+        """
+        Detect applicable compliance frameworks from RFP text.
+
+        Args:
+            rfp_text: Full RFP text
+
+        Returns:
+            List of detected compliance frameworks
+        """
+        logger.info(f"Detecting compliance frameworks (sector: {self.sector})")
+        self.detected_frameworks = detect_applicable_frameworks(rfp_text, self.sector)
+
+        if self.detected_frameworks:
+            framework_names = [fw.name for fw in self.detected_frameworks]
+            logger.info(f"Detected {len(self.detected_frameworks)} frameworks: {', '.join(framework_names[:5])}")
+        else:
+            logger.warning("No compliance frameworks auto-detected")
+
+        return self.detected_frameworks
+
     def build_matrix(
-        self, requirements: List[Dict], kb_evidence: Optional[Dict[str, List[Dict]]] = None
+        self, requirements: List[Dict], kb_evidence: Optional[Dict[str, List[Dict]]] = None,
+        rfp_text: Optional[str] = None
     ) -> Dict[str, any]:
         """
         Build compliance matrix for all requirements.
@@ -38,14 +73,21 @@ class ComplianceMatrixBuilder:
         Args:
             requirements: List of requirements
             kb_evidence: Optional KB evidence mapping (req_id -> docs)
+            rfp_text: Optional full RFP text for framework detection
 
         Returns:
             {
                 'compliance_items': [...],
+                'detected_frameworks': [...],
+                'compliance_summary': str,
                 'metadata': {...}
             }
         """
         logger.info(f"Building compliance matrix for {len(requirements)} requirements")
+
+        # Detect frameworks if RFP text provided
+        if rfp_text and not self.detected_frameworks:
+            self.detect_frameworks(rfp_text)
 
         kb_evidence = kb_evidence or {}
 
@@ -67,7 +109,18 @@ class ComplianceMatrixBuilder:
                 for req in batch:
                     all_items.append(self._create_fallback_entry(req))
 
-        result = {"compliance_items": all_items}
+        result = {
+            "compliance_items": all_items,
+            "detected_frameworks": [
+                {
+                    "id": fw.id,
+                    "name": fw.name,
+                    "category": fw.category,
+                    "description": fw.description
+                }
+                for fw in self.detected_frameworks
+            ]
+        }
 
         # Validate
         try:
@@ -122,10 +175,26 @@ class ComplianceMatrixBuilder:
         Returns:
             Formatted KB context string
         """
-        if not kb_evidence:
-            return "No knowledge base evidence available."
-
         context_parts = []
+
+        # Add detected frameworks context
+        if self.detected_frameworks:
+            context_parts.append("\n### APPLICABLE COMPLIANCE FRAMEWORKS:\n")
+            for fw in self.detected_frameworks[:5]:  # Top 5
+                context_parts.append(f"\n**{fw.name}** ({fw.category}):")
+                context_parts.append(f"\n{fw.description}")
+                if fw.requirements:
+                    context_parts.append("\nKey requirements:")
+                    for req in fw.requirements[:5]:  # Top 5 requirements
+                        context_parts.append(f"  - {req}")
+                context_parts.append("\n")
+
+        # Add KB evidence
+        if not kb_evidence:
+            context_parts.append("\nNo knowledge base evidence available.")
+            return "".join(context_parts)
+
+        context_parts.append("\n### KNOWLEDGE BASE EVIDENCE:\n")
 
         for req in requirements:
             req_id = req["id"]
@@ -142,7 +211,7 @@ class ComplianceMatrixBuilder:
                         f"{i}. [KB: {doc_id}] (score: {score:.3f})\n{doc_text}\n"
                     )
 
-        return "".join(context_parts) if context_parts else "No knowledge base evidence available."
+        return "".join(context_parts)
 
     def _create_fallback_entry(self, requirement: Dict) -> Dict:
         """
@@ -226,3 +295,31 @@ class ComplianceMatrixBuilder:
                 )
 
         logger.info(f"Exported {len(items)} compliance items to CSV")
+
+    def generate_compliance_narrative(self, company_name: str = "Our Company") -> str:
+        """
+        Generate compliance narrative section for proposal.
+
+        Args:
+            company_name: Company name for proposal
+
+        Returns:
+            Formatted compliance narrative text
+        """
+        if not self.detected_frameworks:
+            return ""
+
+        logger.info(f"Generating compliance narrative for {len(self.detected_frameworks)} frameworks")
+        return generate_compliance_section(self.detected_frameworks, company_name)
+
+    def generate_framework_matrix_table(self) -> str:
+        """
+        Generate compliance framework summary table.
+
+        Returns:
+            Markdown table of frameworks
+        """
+        if not self.detected_frameworks:
+            return ""
+
+        return generate_compliance_matrix_table(self.detected_frameworks)
