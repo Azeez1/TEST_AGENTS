@@ -131,22 +131,25 @@
         "Documentation validation",
         "Comprehensive reporting"
       ]
+    }
+  },
+  "workspaces": {
+    "PROPOSAL_TEAM": {
+      "description": "RFP automation and proposal generation workspace",
+      "path": "PROPOSAL_TEAM",
+      "agents": ["rfp-agent"]
     },
-    "rfp-agent": {
-      "description": "RFP automation and proposal generation specialist",
-      "definition": ".claude/agents/rfp-agent.md",
-      "capabilities": [
-        "RFP document ingestion (PDF, DOCX, TXT, ZIP)",
-        "Semantic requirement extraction with LLM",
-        "RFC 2119 priority classification",
-        "Knowledge base retrieval (Pinecone)",
-        "Compliance matrix generation",
-        "Proposal section writing",
-        "Quality assurance validation",
-        "Multi-format export (MD, JSON, CSV, DOCX)"
-      ],
-      "command": "/rfp-process",
-      "auto_activate_triggers": ["rfp", "proposal", "bid", "tender", "procurement", "solicitation"]
+    "MARKETING_TEAM": {
+      "description": "Marketing and content creation workspace",
+      "path": "MARKETING_TEAM"
+    },
+    "ENGINEERING_TEAM": {
+      "description": "Software engineering and development workspace",
+      "path": "ENGINEERING_TEAM"
+    },
+    "QA_TEAM": {
+      "description": "Quality assurance and testing workspace",
+      "path": "QA_TEAM"
     }
   }
 }

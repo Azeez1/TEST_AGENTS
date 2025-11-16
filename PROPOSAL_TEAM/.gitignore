@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Outputs (don't commit proposals by default)
+outputs/*
+!outputs/README.md
+!outputs/.gitkeep
+
+# Knowledge Base (may contain sensitive info)
+kb/resumes/*.pdf
+kb/resumes/*.docx
+kb/past_performance/*.pdf
+kb/certifications/*.pdf
+!kb/**/README.md
+!kb/**/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+*.tmp
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
