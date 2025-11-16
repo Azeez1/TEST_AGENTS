@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RFP Requirements Schema",
+  "type": "object",
+  "required": ["requirements"],
+  "properties": {
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "text", "priority", "category", "source_pages"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^R-[0-9]{3,}$",
+            "description": "Unique requirement ID (e.g., R-001)"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Full requirement text"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["MUST", "SHALL", "SHOULD", "MAY", "OPTIONAL"],
+            "description": "RFC 2119 priority level"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "technical",
+              "management",
+              "staffing",
+              "pricing",
+              "past_performance",
+              "quality",
+              "security",
+              "compliance",
+              "other"
+            ],
+            "description": "Requirement category"
+          },
+          "source_pages": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "minItems": 1,
+            "description": "Page numbers where requirement appears"
+          },
+          "section": {
+            "type": "string",
+            "description": "RFP section reference (e.g., Section 3.2.1)"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Key terms extracted from requirement"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "source_document": {
+          "type": "string"
+        },
+        "extraction_date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "total_requirements": {
+          "type": "integer"
+        },
+        "must_count": {
+          "type": "integer"
+        },
+        "shall_count": {
+          "type": "integer"
+        },
+        "should_count": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
