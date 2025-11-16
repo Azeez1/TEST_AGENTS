@@ -106,6 +106,10 @@
     "n8n-code-python": {
       "enabled": true,
       "comment": "Auto-activates for n8n Code node Python (rare)"
+    },
+    "rfp-agent": {
+      "enabled": true,
+      "comment": "RFP automation and proposal generation - auto-activates on RFP keywords"
     }
   },
   "mcp": {
@@ -131,6 +135,29 @@
         "Documentation validation",
         "Comprehensive reporting"
       ]
+    },
+    "rfp-agent": {
+      "description": "RFP automation and proposal generation specialist",
+      "capabilities": [
+        "RFP document ingestion (PDF, DOCX, TXT, ZIP)",
+        "Intelligent requirement extraction with LLM",
+        "RFC 2119 priority classification",
+        "Knowledge base retrieval (Pinecone)",
+        "Compliance matrix generation",
+        "Proposal section writing",
+        "Quality assurance validation",
+        "Multi-format export (MD, JSON, CSV, DOCX)"
+      ],
+      "location": "dux_rfp_agent/",
+      "command": "/rfp-process"
+    }
+  },
+  "skills_enabled": {
+    "rfp-agent": {
+      "enabled": true,
+      "auto_activate": true,
+      "triggers": ["rfp", "proposal", "bid", "tender", "procurement", "solicitation", "request for proposal"],
+      "description": "Production-ready RFP automation system"
     }
   }
 }
