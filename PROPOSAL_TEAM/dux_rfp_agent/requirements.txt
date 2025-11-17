@@ -37,6 +37,7 @@ python-multipart>=0.0.6
 requests>=2.31.0
 tenacity>=8.2.0
 tqdm>=4.66.0
+jsonschema>=4.17.0
 
 # Development
 pytest>=7.4.0
