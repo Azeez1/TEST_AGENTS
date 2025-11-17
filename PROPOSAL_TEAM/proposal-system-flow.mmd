@@ -1,0 +1,45 @@
+graph TB
+    Start([📄 RFP Document<br/>PDF/DOCX/TXT]) --> Stage1[🔍 Stage 1: READER<br/>Extract text from document<br/>Track page numbers]
+
+    Stage1 --> Stage2[🤖 Stage 2: PARSER AI<br/>Find all requirements<br/>Label: MUST/SHALL/SHOULD<br/>Assign IDs: R-001, R-002...]
+
+    Stage2 --> Stage3{💾 Stage 3: RAG/KNOWLEDGE BASE<br/>Search for proof & examples}
+
+    subgraph KB["📚 Your Knowledge Base (RAG)"]
+        Resume[👤 Team Resumes]
+        Past[🏆 Past Projects]
+        Certs[🎖️ Certifications]
+        Cases[📊 Case Studies]
+        Docs[📝 Technical Docs]
+    end
+
+    Stage3 -->|Query: Need cloud expert?| KB
+    KB -->|Found: John Smith, AWS cert| Stage3
+
+    Stage3 --> Stage4[📋 Stage 4: CHECKLIST BUILDER<br/>Make compliance matrix<br/>Map requirements to solutions<br/>Risk: Low/Medium/High]
+
+    Stage4 --> Stage5[✍️ Stage 5: WRITER AI<br/>Write 3 sections:<br/>1. Executive Summary<br/>2. Technical Approach<br/>3. Management Plan]
+
+    Stage5 --> Stage6[✅ Stage 6: QUALITY CHECKER<br/>Verify all MUST items covered<br/>Check for [TODO] placeholders<br/>Validate citations]
+
+    Stage6 --> Stage7[📦 Stage 7: PACKAGER<br/>Export to multiple formats]
+
+    Stage7 --> Output1[📄 proposal_draft.md<br/>The final letter]
+    Stage7 --> Output2[📊 compliance_matrix.csv<br/>The checklist]
+    Stage7 --> Output3[✅ qa_report.json<br/>Quality report card]
+    Stage7 --> Output4[📑 requirements.json<br/>All requirements found]
+
+    Stage5 -.->|Uses proof from| KB
+    Stage4 -.->|Links evidence from| KB
+
+    classDef input fill:#e3f2fd,stroke:#1565c0,stroke-width:3px
+    classDef stage fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    classDef kb fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef output fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
+    classDef decision fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+
+    class Start input
+    class Stage1,Stage2,Stage4,Stage5,Stage6,Stage7 stage
+    class Stage3 decision
+    class Resume,Past,Certs,Cases,Docs kb
+    class Output1,Output2,Output3,Output4 output
