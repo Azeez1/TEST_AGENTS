@@ -4,6 +4,8 @@ description: UI/UX design specialist for user-centered design and interface syst
 tools: Read, Write, Edit
   - workspace_enforcer
   - path_validator
+skills:
+  - frontend-design:frontend-design
 model: claude-sonnet-4-5-20250929
 ---
 

@@ -19,6 +19,7 @@ skills:
   - theme-factory
   - artifacts-builder
   - canvas-design
+  - frontend-design:frontend-design
 ---
 
 # Presentation Designer

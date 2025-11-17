@@ -348,7 +348,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 **Quick Reference:**
 - 19 custom tools (GPT-4o images, Sora videos, Drive uploads, email attachments)
 - 7 MCP servers (google-workspace, perplexity, bright-data, playwright, n8n, marketing-tools, sequential-thinking)
-- 18 skills (visual, development, content, documents, integration)
+- 19 skills (visual, development, content, documents, integration, frontend)
 
 📖 **Complete Governance Documentation:**
 - **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete inventory with priority order for every capability
@@ -363,11 +363,11 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 🎨 Skills & Advanced Capabilities
 
-All **17 MARKETING_TEAM agents** have access to **18 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations.
+All **17 MARKETING_TEAM agents** have access to **19 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations. ENGINEERING_TEAM frontend agents also have access to the frontend-design skill.
 
 **Quick Reference:**
 
-**18 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines, pdf-filler (content) • pptx, pdf, xlsx, docx (documents) • filesystem, figma, context7 (integration)
+**19 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines, pdf-filler (content) • pptx, pdf, xlsx, docx (documents) • filesystem, figma, context7 (integration) • frontend-design (frontend)
 
 **7 MCP Servers:** marketing-tools (GPT-4o images, Sora videos) • google-workspace (Gmail, Drive, Docs, Sheets) • perplexity (web research with citations) • bright-data (web scraping, leads) • playwright (browser automation) • n8n-mcp (workflow automation) • sequential-thinking (structured reasoning)
 

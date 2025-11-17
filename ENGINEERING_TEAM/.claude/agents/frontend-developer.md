@@ -4,6 +4,8 @@ description: Frontend development specialist for React applications and responsi
 tools: Read, Write, Edit, Bash
   - workspace_enforcer
   - path_validator
+skills:
+  - frontend-design:frontend-design
 model: claude-sonnet-4-5-20250929
 ---
 

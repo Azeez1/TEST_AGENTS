@@ -1,34 +1,53 @@
 {
+  "description": "MARKETING_TEAM settings - All skills enabled for maximum flexibility",
   "skills": {
     "algorithmic-art": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Generative art with p5.js - flow fields, particle systems"
     },
     "artifacts-builder": {
-      "enabled": true
+      "enabled": true,
+      "comment": "React + Tailwind + shadcn/ui for complex interactive artifacts"
     },
     "brand-guidelines": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Anthropic's official brand colors and typography"
     },
     "canvas-design": {
-      "enabled": true
+      "enabled": true,
+      "comment": "PNG/PDF posters, banners, visual art"
     },
     "internal-comms": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Internal communications templates and formats"
     },
     "mcp-builder": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Create MCP servers for external integrations"
     },
     "skill-creator": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Create new skills to extend capabilities"
     },
     "slack-gif-creator": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Animated GIFs for Slack with size validators"
     },
     "theme-factory": {
-      "enabled": true
+      "enabled": true,
+      "comment": "11 preset themes for artifacts (modern, vibrant, minimal, etc.)"
+    },
+    "flow-diagram": {
+      "enabled": true,
+      "comment": "Mermaid diagrams with glassmorphism/neon/hand-drawn styles + LinkedIn carousels"
+    },
+    "infographic-creator": {
+      "enabled": true,
+      "comment": "Static, animated, and interactive infographics for social media (7 types)"
     },
     "filesystem": {
       "enabled": true,
+      "comment": "File system operations",
       "userConfig": {
         "allowed_directories": [
           "C:\\",
@@ -37,60 +56,64 @@
       }
     },
     "figma": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Extract designs from Figma files"
     },
-    "flow-diagram": {
-      "enabled": true
+    "context7": {
+      "enabled": true,
+      "comment": "Context management and retrieval"
     },
     "pdf-filler": {
-      "enabled": true
+      "enabled": true,
+      "comment": "Fill PDF forms programmatically"
     },
     "pdf": {
       "enabled": true,
-      "comment": "pypdf-based PDF creation - comprehensive features, offline capable"
+      "comment": "pypdf-based PDF creation (from document-skills)"
     },
     "pptx": {
       "enabled": true,
-      "comment": "html2pptx PowerPoint generation - no MCP alternative"
+      "comment": "html2pptx PowerPoint generation (from document-skills)"
     },
     "docx": {
       "enabled": true,
-      "comment": "Local Word document creation - use when offline or advanced features needed. Google Docs MCP is primary for cloud collaboration."
+      "comment": "Local Word document creation (from document-skills)"
     },
     "xlsx": {
       "enabled": true,
-      "comment": "Local Excel spreadsheet creation - use when offline or advanced features needed. Google Sheets MCP is primary for cloud collaboration."
-    },
-    "context7": {
-      "enabled": true
+      "comment": "Local Excel spreadsheet creation (from document-skills)"
     },
     "n8n-expression-syntax": {
       "enabled": true,
-      "comment": "Auto-activates when writing {{}} expressions in n8n workflows"
+      "comment": "Validate n8n expressions - auto-activates for {{}} syntax"
     },
     "n8n-mcp-tools-expert": {
       "enabled": true,
-      "comment": "Auto-activates for n8n-mcp tool usage - primary n8n skill"
+      "comment": "n8n-mcp tool usage guidance - primary n8n skill"
     },
     "n8n-node-configuration": {
       "enabled": true,
-      "comment": "Auto-activates for n8n node setup and property dependencies"
+      "comment": "n8n node setup and property dependencies"
     },
     "n8n-validation-expert": {
       "enabled": true,
-      "comment": "Auto-activates on n8n validation errors"
+      "comment": "Interpret and fix n8n validation errors"
     },
     "n8n-workflow-patterns": {
       "enabled": true,
-      "comment": "Provides 5 proven architectures from 2,653+ n8n templates"
+      "comment": "5 proven workflow architectures from 2,653+ templates"
     },
     "n8n-code-javascript": {
       "enabled": true,
-      "comment": "Auto-activates for n8n Code node JavaScript"
+      "comment": "Write JavaScript in n8n Code nodes"
     },
     "n8n-code-python": {
       "enabled": true,
-      "comment": "Auto-activates for n8n Code node Python (rare)"
+      "comment": "Write Python in n8n Code nodes"
+    },
+    "frontend-design:frontend-design": {
+      "enabled": true,
+      "comment": "Production-grade frontend interfaces (plugin from frontend-design)"
     }
   },
   "mcpServers": "inherit"

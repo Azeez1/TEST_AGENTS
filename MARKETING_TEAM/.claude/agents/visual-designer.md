@@ -31,6 +31,7 @@ skills:
   - figma
   - flow-diagram
   - infographic-creator
+  - frontend-design:frontend-design
 ---
 
 # Visual Designer

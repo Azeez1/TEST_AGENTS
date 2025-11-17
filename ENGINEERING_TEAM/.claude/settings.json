@@ -1,5 +1,5 @@
 {
-  "description": "ENGINEERING_TEAM settings - Engineering agents with full workspace access",
+  "description": "ENGINEERING_TEAM settings - All skills enabled with full workspace access",
   "mcpServers": "inherit",
   "tools": {
     "allowed": [
@@ -22,6 +22,7 @@
       "figma",
       "filesystem",
       "flow-diagram",
+      "infographic-creator",
       "internal-comms",
       "mcp-builder",
       "pdf-filler",
@@ -31,8 +32,17 @@
       "pptx",
       "pdf",
       "xlsx",
-      "docx"
-    ]
+      "docx",
+      "n8n-expression-syntax",
+      "n8n-mcp-tools-expert",
+      "n8n-node-configuration",
+      "n8n-validation-expert",
+      "n8n-workflow-patterns",
+      "n8n-code-javascript",
+      "n8n-code-python",
+      "frontend-design:frontend-design"
+    ],
+    "comment": "All skills enabled for engineering flexibility"
   },
   "workspace_access": {
     "description": "Engineering agents can access entire workspace",

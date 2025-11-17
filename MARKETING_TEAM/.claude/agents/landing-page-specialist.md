@@ -23,6 +23,7 @@ tools:
 skills:
   - artifacts-builder
   - theme-factory
+  - frontend-design:frontend-design
 ---
 
 # Landing Page Specialist
