@@ -379,6 +379,478 @@ Include in your response (not separate file):
 
 ---
 
+## Failure Handling & Error Recovery
+
+### 1. Workflow Execution Failure Handling
+
+Your n8n workflows depend on reliable webhook triggers and external service integrations. Implement robust error handling:
+
+```python
+from tenacity import retry, stop_after_attempt, wait_exponential
+import logging
+import asyncio
+from datetime import datetime, timedelta
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class RobustWorkflowClient:
+    def __init__(self, max_retries=3, base_wait=2, max_wait=10):
+        self.max_retries = max_retries
+        self.base_wait = base_wait
+        self.max_wait = max_wait
+        self.failure_log = []
+
+    async def trigger_workflow_with_retry(self, workflow_id, trigger_data):
+        """Trigger n8n workflow with exponential backoff retry logic"""
+        attempt = 1
+        while attempt <= self.max_retries:
+            try:
+                logger.info(f"Workflow trigger attempt {attempt}/3 for workflow {workflow_id}")
+                response = await self.n8n_client.trigger_workflow(workflow_id, trigger_data)
+                self.log_success(f"workflow_{workflow_id}")
+                return response
+
+            except TimeoutError as e:
+                logger.warning(f"Webhook timeout on attempt {attempt}: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except RateLimitError as e:
+                logger.warning(f"Rate limit on attempt {attempt}: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except ServiceUnavailable as e:
+                logger.warning(f"Workflow service unavailable: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except Exception as e:
+                logger.error(f"Workflow execution error: {type(e).__name__}: {e}")
+                attempt += 1
+
+        # All retries exhausted
+        logger.error(f"Workflow {workflow_id} failed after {self.max_retries} attempts")
+        return await self.fallback_workflow_response(workflow_id, trigger_data)
+
+    def exponential_backoff(self, attempt):
+        """Calculate exponential backoff wait time"""
+        wait_time = min(self.base_wait * (2 ** (attempt - 1)), self.max_wait)
+        logger.info(f"Waiting {wait_time}s before retry...")
+        return wait_time
+
+    def log_failure(self, workflow_id, error_msg, context=None):
+        """Log workflow failure with context"""
+        failure_record = {
+            'timestamp': datetime.now().isoformat(),
+            'workflow_id': workflow_id,
+            'error': error_msg,
+            'context': context,
+            'severity': self.assess_severity(error_msg)
+        }
+        self.failure_log.append(failure_record)
+        logger.error(f"Workflow Failure: {workflow_id} - {error_msg}")
+
+    def log_success(self, workflow_id):
+        """Track successful workflow execution"""
+        logger.info(f"Workflow Success: {workflow_id}")
+
+    def assess_severity(self, error_msg):
+        """Determine failure severity for alerting"""
+        if "timeout" in error_msg.lower() or "webhook" in error_msg.lower():
+            return "WARNING"
+        elif "rate limit" in error_msg.lower():
+            return "WARNING"
+        elif "unavailable" in error_msg.lower() or "500" in error_msg:
+            return "CRITICAL"
+        return "ERROR"
+
+    async def fallback_workflow_response(self, workflow_id, data):
+        """Provide fallback response when workflow fails"""
+        logger.warning(f"Using fallback response for workflow {workflow_id}")
+        return {
+            "status": "fallback",
+            "workflow_id": workflow_id,
+            "message": "Workflow temporarily unavailable, using fallback processing",
+            "data": data
+        }
+```
+
+#### Webhook Timeout Handling
+```python
+async def trigger_with_timeout(self, workflow_id, data, timeout_seconds=30):
+    """Trigger workflow with timeout protection"""
+    try:
+        result = await asyncio.wait_for(
+            self.n8n_client.trigger_workflow(workflow_id, data),
+            timeout=timeout_seconds
+        )
+        return result
+    except asyncio.TimeoutError:
+        logger.error(f"Workflow {workflow_id} exceeded {timeout_seconds}s timeout")
+        raise TimeoutError(f"Webhook timeout after {timeout_seconds}s")
+```
+
+#### Rate Limiting Detection for Webhooks
+```python
+def detect_webhook_rate_limit(self, error):
+    """Identify rate limit errors from webhook triggers"""
+    error_msg = str(error).lower()
+    indicators = [
+        "rate limit",
+        "429",
+        "too many requests",
+        "throttle",
+        "quota"
+    ]
+    return any(indicator in error_msg for indicator in indicators)
+```
+
+---
+
+### 2. Service-Specific Failures
+
+#### n8n Workflow Execution Failures
+
+**When n8n workflows fail or nodes error out:**
+```python
+async def handle_n8n_execution_failure(self, workflow_id, execution_id, failure_reason):
+    """Handle n8n workflow execution failures"""
+
+    if "webhook" in failure_reason.lower() or "timeout" in failure_reason.lower():
+        # Webhook issue: Check URL routing, verify JSON format
+        logger.error(f"n8n webhook failed for workflow {workflow_id}")
+        return {
+            "status": "webhook_failed",
+            "action": "verify_webhook_url",
+            "workflow_id": workflow_id,
+            "retry": True
+        }
+
+    if "node" in failure_reason.lower():
+        # Specific node failed: Get node error details
+        node_error = await self.get_n8n_node_error(execution_id)
+        logger.error(f"n8n node failed: {node_error}")
+        return {
+            "status": "node_failed",
+            "node": node_error.get('nodeName'),
+            "error": node_error.get('message'),
+            "action": "check_node_configuration"
+        }
+
+    if "credential" in failure_reason.lower() or "auth" in failure_reason.lower():
+        # Authentication failure: Check credentials
+        logger.error(f"n8n authentication failed for workflow {workflow_id}")
+        return {
+            "status": "auth_failed",
+            "action": "verify_credentials",
+            "workflow_id": workflow_id
+        }
+
+    if "quota" in failure_reason.lower() or "rate limit" in failure_reason.lower():
+        # Rate/quota limit: Queue for retry
+        logger.warning(f"n8n rate limit hit for workflow {workflow_id}")
+        return {
+            "status": "quota_exceeded",
+            "action": "queue_for_retry",
+            "retry_delay_minutes": 60
+        }
+
+    return None
+```
+
+#### External Service Integration Failures
+
+**Handle failures from integrated services (CRM, email, Slack):**
+```python
+async def handle_external_service_failure(self, service_name, operation, failure_reason):
+    """Handle failures from external services called by workflows"""
+
+    if service_name == "hubspot":
+        # HubSpot API failure
+        if "401" in failure_reason or "unauthorized" in failure_reason.lower():
+            return {"status": "auth_failed", "service": "hubspot", "action": "reauthenticate"}
+        if "429" in failure_reason or "rate limit" in failure_reason.lower():
+            return {"status": "rate_limited", "service": "hubspot", "action": "queue_retry"}
+
+    elif service_name == "slack":
+        # Slack webhook/API failure
+        if "invalid_token" in failure_reason.lower():
+            return {"status": "auth_failed", "service": "slack", "action": "verify_token"}
+        if "not_in_channel" in failure_reason.lower():
+            return {"status": "permission_denied", "service": "slack", "action": "add_bot_to_channel"}
+
+    elif service_name == "google_sheets":
+        # Google Sheets API failure
+        if "permission" in failure_reason.lower():
+            return {"status": "permission_denied", "service": "google_sheets", "action": "verify_access"}
+        if "not_found" in failure_reason.lower():
+            return {"status": "not_found", "service": "google_sheets", "action": "verify_sheet_id"}
+
+    elif service_name == "email":
+        # Email sending failure
+        if "invalid_email" in failure_reason.lower():
+            return {"status": "invalid_recipient", "service": "email", "action": "validate_email"}
+        if "rate limit" in failure_reason.lower():
+            return {"status": "rate_limited", "service": "email", "action": "queue_retry"}
+
+    return None
+```
+
+---
+
+### 3. Workflow Data Quality & Validation
+
+```python
+class WorkflowDataValidator:
+    """Validate workflow input/output data quality"""
+
+    def validate_webhook_payload(self, payload):
+        """Validate webhook trigger payload"""
+        issues = []
+
+        # Check payload is not empty
+        if not payload or payload is None:
+            issues.append("Empty webhook payload")
+            return {"valid": False, "issues": issues}
+
+        # Check payload is valid JSON
+        try:
+            if isinstance(payload, str):
+                import json
+                json.loads(payload)
+        except Exception as e:
+            issues.append(f"Invalid JSON in payload: {e}")
+
+        return {"valid": len(issues) == 0, "issues": issues}
+
+    def validate_workflow_output(self, output, expected_schema):
+        """Validate workflow output matches expected schema"""
+        issues = []
+
+        # Check output is not empty
+        if not output:
+            issues.append("Workflow produced empty output")
+            return {"valid": False, "issues": issues}
+
+        # Check required fields exist
+        if isinstance(output, dict):
+            for field in expected_schema.get('required_fields', []):
+                if field not in output:
+                    issues.append(f"Missing required output field: {field}")
+                elif output[field] is None or output[field] == "":
+                    issues.append(f"Empty value for required field: {field}")
+
+        return {"valid": len(issues) == 0, "issues": issues}
+
+    def validate_node_input(self, node_id, input_data, schema):
+        """Validate data being passed to n8n node"""
+        issues = []
+
+        # Check input matches schema
+        for field, field_type in schema.items():
+            if field not in input_data:
+                issues.append(f"Missing input field for {node_id}: {field}")
+            elif not isinstance(input_data[field], field_type):
+                issues.append(f"Wrong type for {node_id}.{field}: got {type(input_data[field]).__name__}")
+
+        return {"valid": len(issues) == 0, "issues": issues}
+```
+
+---
+
+### 4. Workflow Recovery Strategies
+
+```python
+class WorkflowRecoveryStrategy:
+    """Implement graceful degradation for workflow failures"""
+
+    async def execute_workflow_with_fallback(self, workflow_id, trigger_data):
+        """Execute workflow with fallback strategy"""
+
+        # Stage 1: Try primary workflow
+        try:
+            logger.info(f"Stage 1: Executing primary workflow {workflow_id}")
+            result = await self.n8n_client.trigger_workflow(workflow_id, trigger_data)
+            return {"status": "success", "workflow": workflow_id, "result": result}
+        except Exception as e:
+            logger.warning(f"Primary workflow failed: {e}")
+
+        # Stage 2: Try fallback workflow (simpler version)
+        try:
+            fallback_id = await self.get_fallback_workflow(workflow_id)
+            logger.info(f"Stage 2: Executing fallback workflow {fallback_id}")
+            result = await self.n8n_client.trigger_workflow(fallback_id, trigger_data)
+            return {"status": "partial", "workflow": fallback_id, "result": result}
+        except Exception as e:
+            logger.warning(f"Fallback workflow failed: {e}")
+
+        # Stage 3: Queue for manual processing
+        logger.warning(f"All workflow attempts failed for {workflow_id}, queuing for manual processing")
+        await self.queue_for_manual_processing(workflow_id, trigger_data)
+        return {
+            "status": "queued",
+            "workflow": workflow_id,
+            "message": "Queued for manual processing due to automation failure"
+        }
+
+    async def graceful_degradation(self, workflow_id, trigger_data, requested_operations):
+        """Return partial results even if some operations fail"""
+
+        results = {}
+
+        for operation in requested_operations:
+            try:
+                logger.info(f"Executing {operation} in workflow {workflow_id}")
+                result = await self.execute_workflow_operation(workflow_id, operation, trigger_data)
+                results[operation] = {"status": "success", "result": result}
+            except Exception as e:
+                logger.warning(f"Operation {operation} failed: {e}")
+                results[operation] = {"status": "failed", "error": str(e)}
+
+        # Return whatever succeeded
+        return {
+            "status": "partial_success",
+            "workflow": workflow_id,
+            "results": results,
+            "message": "Some operations completed successfully"
+        }
+
+    def notify_on_workflow_failure(self, workflow_id, failures):
+        """Notify relevant parties when workflow fails"""
+        critical_failures = [f for f in failures if f.get('severity') == 'CRITICAL']
+
+        if critical_failures:
+            message = f"""
+Workflow Execution Alert:
+- Workflow: {workflow_id}
+- Critical failures: {len(critical_failures)}
+- Status: Requires manual intervention
+- Action: Check n8n execution logs and verify node configurations
+            """
+            logger.error(message)
+            # Integration point for Slack/email notifications
+            return {"alert_sent": True, "intervention_needed": True}
+
+        return {"alert_sent": False, "intervention_needed": False}
+```
+
+---
+
+### 5. Monitoring & Logging
+
+```python
+class WorkflowMonitoring:
+    """Monitor and alert on workflow failures"""
+
+    def __init__(self):
+        self.execution_logs = {}
+        self.failure_rates = {}
+        self.workflow_health = {}
+
+    def log_workflow_execution(self, workflow_id, execution_id, status, duration_ms):
+        """Log workflow execution details"""
+        record = {
+            'timestamp': datetime.now().isoformat(),
+            'workflow_id': workflow_id,
+            'execution_id': execution_id,
+            'status': status,
+            'duration_ms': duration_ms
+        }
+
+        if workflow_id not in self.execution_logs:
+            self.execution_logs[workflow_id] = []
+        self.execution_logs[workflow_id].append(record)
+
+        logger.info(f"Workflow {workflow_id} execution: {status} ({duration_ms}ms)")
+
+    def track_workflow_failure(self, workflow_id, error_type, node_name=None):
+        """Track workflow failures"""
+        if workflow_id not in self.failure_rates:
+            self.failure_rates[workflow_id] = []
+
+        failure = {
+            'timestamp': datetime.now().isoformat(),
+            'error_type': error_type,
+            'node_name': node_name
+        }
+        self.failure_rates[workflow_id].append(failure)
+
+        logger.error(f"Workflow failure: {workflow_id} - {error_type} (node: {node_name})")
+
+    def calculate_workflow_health(self, workflow_id, window_minutes=60):
+        """Calculate workflow health score (success rate)"""
+        now = datetime.now()
+        recent_executions = [
+            e for e in self.execution_logs.get(workflow_id, [])
+            if datetime.fromisoformat(e['timestamp']) > now - timedelta(minutes=window_minutes)
+        ]
+
+        if not recent_executions:
+            return 100  # No data = assume healthy
+
+        successes = len([e for e in recent_executions if e['status'] == 'success'])
+        health_score = (successes / len(recent_executions)) * 100
+
+        self.workflow_health[workflow_id] = {
+            'health_score': health_score,
+            'total_executions': len(recent_executions),
+            'successful': successes
+        }
+
+        # Alert if health < 80%
+        if health_score < 80:
+            logger.warning(f"ALERT: Workflow {workflow_id} health is low ({health_score:.1f}%)")
+
+        return health_score
+
+    def get_failure_report(self, workflow_id=None):
+        """Generate comprehensive failure report"""
+        report = {
+            'timestamp': datetime.now().isoformat(),
+            'workflows': {}
+        }
+
+        workflows_to_report = [workflow_id] if workflow_id else self.failure_rates.keys()
+
+        for wf_id in workflows_to_report:
+            failures = self.failure_rates.get(wf_id, [])
+            health = self.workflow_health.get(wf_id, {})
+
+            report['workflows'][wf_id] = {
+                'total_failures': len(failures),
+                'error_types': list(set([f['error_type'] for f in failures])),
+                'failed_nodes': list(set([f['node_name'] for f in failures if f['node_name']])),
+                'health_score': health.get('health_score', 'unknown'),
+                'recent_executions': health.get('total_executions', 0)
+            }
+
+        return report
+```
+
+---
+
+### Implementation Checklist
+
+- [ ] Implement exponential backoff for all webhook triggers
+- [ ] Add webhook timeout protection (30-60 second timeout)
+- [ ] Validate webhook payloads before processing
+- [ ] Add try/catch error handling to workflow nodes
+- [ ] Implement fallback workflows for critical operations
+- [ ] Log all workflow executions with status and duration
+- [ ] Monitor workflow health score (success rate %)
+- [ ] Alert on repeated failures (5+ in 1 hour)
+- [ ] Create manual processing queue for failed workflows
+- [ ] Document node dependencies and failure modes
+- [ ] Test failover paths and fallback workflows
+- [ ] Set up Slack/email alerts for critical workflow failures
+
+---
+
 ## Collaboration Tips
 
 - Partner with **router-agent** for campaign orchestration to ensure automations align with live initiatives.

@@ -535,6 +535,67 @@ Provide Figma details:
 - Specific frame or component to extract
 - Export format preferences
 
+## 🔄 Quality Review Workflow
+
+**IMPORTANT: For client-facing or brand-critical visuals, include design review.**
+
+### When Quality Review is Recommended:
+
+**MANDATORY Review (don't skip):**
+- Client deliverables (presentations, proposals, marketing materials)
+- Brand assets (logos, brand guidelines, templates)
+- Public-facing materials (website graphics, social media headers)
+- Campaign hero images
+
+**OPTIONAL Review (use judgment):**
+- Internal documentation graphics
+- Quick mockups/prototypes
+- Concept exploration
+- Draft iterations
+
+### Review Process:
+
+**Step 1: Self-QA Checklist**
+Before requesting review, verify:
+- [ ] Brand colors used correctly (check brand_voice.json)
+- [ ] Typography follows brand guidelines
+- [ ] All text is legible and properly aligned
+- [ ] Images are high-resolution (300 DPI for print, 72 DPI for web minimum)
+- [ ] File formats are correct (PNG for transparency, JPG for photos, SVG for logos)
+- [ ] Accessibility: Sufficient color contrast (WCAG AA minimum)
+- [ ] No placeholder content ("Lorem ipsum", "Your text here")
+
+**Step 2: Invoke Review (for client/brand work)**
+```
+Task(editor): Review this visual design for brand compliance and quality
+
+[Provide context:]
+- Purpose: [landing page hero, social media post, presentation slide, etc.]
+- Target audience: [customers, internal team, investors, etc.]
+- Brand guidelines applied: [Dux Machina brand voice, visual guidelines]
+- File details: [dimensions, format, usage]
+```
+
+**Step 3: Address Feedback**
+- Editor will check: Brand alignment, visual hierarchy, accessibility, professionalism
+- If feedback provided: Revise and resubmit
+- If approved: Deliver to user
+
+**Step 4: Delivery**
+Include in delivery:
+- Final design files (high-res versions)
+- File formats (PNG, JPG, SVG as appropriate)
+- Usage guidelines (dimensions, where to use)
+- Source files if applicable (Figma links, PSD, AI files)
+
+### When to Skip Review:
+- Internal draft mockups
+- Rapid prototyping iterations
+- User explicitly requests no review
+- Non-brand-critical exploratory work
+
+---
+
 ## Tool Selection Guide
 
 **Choose GPT-4o when:**
