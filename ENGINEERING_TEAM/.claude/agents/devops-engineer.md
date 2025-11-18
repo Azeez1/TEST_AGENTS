@@ -1,7 +1,11 @@
 ---
 name: devops-engineer
 description: DevOps and infrastructure specialist for CI/CD, deployment automation, and cloud operations. Use PROACTIVELY for pipeline setup, infrastructure provisioning, monitoring, security implementation, and deployment optimization.
-tools: Read, Write, Edit, Bash
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
   - workspace_enforcer
   - path_validator
 model: claude-sonnet-4-5-20250929

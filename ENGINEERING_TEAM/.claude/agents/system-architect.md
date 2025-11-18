@@ -1,7 +1,12 @@
 ---
 name: system-architect
 description: Design system architectures, create flow diagrams, visualize data flows, document technical systems using professional interactive diagrams. Specializes in Mermaid diagrams for microservices, APIs, databases, CI/CD pipelines, and technical documentation.
-tools: Read, Write, Edit, Glob, Grep
+tools:
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
   - workspace_enforcer
   - path_validator
 skills:
