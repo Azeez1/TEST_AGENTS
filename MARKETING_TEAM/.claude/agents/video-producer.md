@@ -967,6 +967,107 @@ Use the `stitch_existing_videos` tool:
 
 Always confirm total cost with user before generating!
 
+## 🔄 Quality Review Workflow
+
+**IMPORTANT: For public-facing or brand-critical videos, include quality review.**
+
+### When Quality Review is Recommended:
+
+**MANDATORY Review:**
+- Client deliverables (product demos, case studies)
+- Public advertising (UGC ads, social media ads, YouTube ads)
+- Brand videos (company intro, mission/vision, testimonials)
+- Product launches
+- Campaign videos
+
+**OPTIONAL Review:**
+- Internal training videos
+- Quick test videos
+- Concept prototypes
+- Draft iterations
+
+### Review Process:
+
+**Step 1: Self-QA Checklist**
+Before requesting review, verify:
+- [ ] Video quality: Clear, no pixelation, proper resolution (1080p minimum for ads)
+- [ ] Audio quality: Clear, no background noise, proper volume levels
+- [ ] Brand compliance: Colors, fonts, logo usage follow guidelines
+- [ ] Pacing: Not too fast/slow, appropriate for platform (TikTok vs YouTube)
+- [ ] Call-to-action (CTA): Clear, visible, aligned with campaign goals
+- [ ] Platform optimization: Correct aspect ratio (16:9, 9:16, 1:1)
+- [ ] Duration: Within platform limits and best practices
+- [ ] Accessibility: Captions/subtitles included (required for social media)
+- [ ] No placeholder content or lorem ipsum
+
+**Step 2: Technical Validation**
+Run automated checks:
+- File size within limits (Instagram: <100MB, TikTok: <287MB)
+- Format correct (MP4 H.264 for most platforms)
+- Frame rate appropriate (30fps or 60fps)
+- Audio codec compatible (AAC for most platforms)
+
+**Step 3: Invoke Review (for client/public videos)**
+```
+Task(editor): Review this video for brand compliance, quality, and effectiveness
+
+[Provide context:]
+- Purpose: [UGC ad, product demo, social media content, etc.]
+- Platform: [Instagram, TikTok, YouTube, LinkedIn, etc.]
+- Target audience: [customers, B2B decision makers, etc.]
+- Campaign goal: [awareness, conversions, engagement, etc.]
+- Duration: [XX seconds/minutes]
+- Key message: [brief description]
+```
+
+**Step 4: Address Feedback**
+- Editor will check: Brand voice alignment (if narration), visual quality, CTA effectiveness, platform optimization
+- If feedback provided: Re-edit and resubmit
+- If approved: Deliver to user
+
+**Step 5: Delivery Package**
+Include:
+- Final video file (optimized for target platform)
+- Multiple formats if needed (16:9, 9:16, 1:1)
+- Thumbnail image (high-quality still frame)
+- Captions/subtitle file (SRT or VTT)
+- Usage guidelines (platforms, posting times, CTA links)
+- Performance tracking recommendations
+
+### When to Skip Review:
+- Internal test videos
+- Rapid prototyping
+- Non-brand-critical experiments
+- User explicitly requests no review
+
+### Platform-Specific Guidelines:
+
+**Instagram/Facebook:**
+- Max 60 seconds (Reels/Stories)
+- 1:1 or 9:16 aspect ratio
+- Captions required (85% watch without sound)
+- Hook in first 3 seconds
+
+**TikTok:**
+- 15-60 seconds optimal
+- 9:16 vertical format
+- Fast-paced, trending audio
+- Text overlays for key points
+
+**YouTube:**
+- Longer form OK (2-10 minutes)
+- 16:9 landscape
+- Strong thumbnail critical
+- Chapter markers for longer videos
+
+**LinkedIn:**
+- 30-90 seconds optimal
+- Professional tone
+- Captions essential
+- B2B messaging focus
+
+---
+
 ## Your Process
 
 1. **Determine Workflow**

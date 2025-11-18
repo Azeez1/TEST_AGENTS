@@ -455,3 +455,512 @@ Always provide:
 5. **Visualizations**: Suggest chart types for data
 
 Be data-driven, objective, and action-oriented. Numbers without insights are meaningless.
+
+## Failure Handling & Error Recovery
+
+### 1. API Failure Handling
+
+Your analytics work depends on multiple external APIs (Bright Data, Google APIs, data providers). Implement robust error handling:
+
+```python
+from tenacity import retry, stop_after_attempt, wait_exponential
+import logging
+import asyncio
+from datetime import datetime, timedelta
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class RobustAnalyticsClient:
+    def __init__(self, max_retries=3, base_wait=2, max_wait=10):
+        self.max_retries = max_retries
+        self.base_wait = base_wait
+        self.max_wait = max_wait
+        self.failure_log = []
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10)
+    )
+    async def fetch_competitor_data(self, competitor_urls):
+        """Fetch competitor data with exponential backoff retry logic"""
+        try:
+            response = await self.bright_data.scrape_as_markdown(competitor_urls)
+            self.log_success("bright_data_scrape")
+            return response
+        except Exception as e:
+            self.log_failure("bright_data_scrape", str(e))
+            raise
+
+    async def get_analytics_with_fallback(self, metrics_query):
+        """Get analytics data with fallback strategy"""
+        attempt = 1
+        while attempt <= self.max_retries:
+            try:
+                # Try primary: Direct API call
+                logger.info(f"Analytics attempt {attempt}/3: Primary data source")
+                response = await self.primary_analytics_source.query(metrics_query)
+                return response
+
+            except RateLimitError as e:
+                logger.warning(f"Rate limit hit on attempt {attempt}: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except ServiceUnavailable as e:
+                logger.warning(f"Analytics service unavailable: {e}")
+                # Try fallback: Secondary data source
+                try:
+                    logger.info("Fallback 1: Attempting secondary analytics source")
+                    response = await self.secondary_analytics_source.query(metrics_query)
+                    return response
+                except Exception as e2:
+                    logger.error(f"Secondary source failed: {e2}")
+
+                    # Try Bright Data for web-based metrics
+                    try:
+                        logger.info("Fallback 2: Attempting Bright Data competitive metrics")
+                        results = await self.bright_data.search_engine(metrics_query)
+                        return self.extract_metrics_from_scrape(results)
+                    except Exception as e3:
+                        logger.error(f"Bright Data failed: {e3}")
+                        attempt += 1
+
+            except TimeoutError as e:
+                logger.warning(f"API timeout on attempt {attempt}: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except Exception as e:
+                logger.error(f"Unexpected error: {type(e).__name__}: {e}")
+                attempt += 1
+
+        # All retries exhausted - return cached/partial data
+        logger.warning("All analytics attempts failed, returning cached metrics")
+        return self.get_cached_metrics(metrics_query)
+
+    def exponential_backoff(self, attempt):
+        """Calculate exponential backoff wait time"""
+        wait_time = min(self.base_wait * (2 ** (attempt - 1)), self.max_wait)
+        logger.info(f"Waiting {wait_time}s before retry...")
+        return wait_time
+
+    def log_failure(self, endpoint, error_msg, context=None):
+        """Log API failure with context"""
+        failure_record = {
+            'timestamp': datetime.now().isoformat(),
+            'endpoint': endpoint,
+            'error': error_msg,
+            'context': context,
+            'severity': self.assess_severity(error_msg)
+        }
+        self.failure_log.append(failure_record)
+        logger.error(f"API Failure: {endpoint} - {error_msg}")
+
+    def log_success(self, endpoint):
+        """Track successful API calls"""
+        logger.info(f"API Success: {endpoint}")
+
+    def assess_severity(self, error_msg):
+        """Determine failure severity for alerting"""
+        if "rate limit" in error_msg.lower():
+            return "WARNING"
+        elif "timeout" in error_msg.lower():
+            return "WARNING"
+        elif "unavailable" in error_msg.lower() or "500" in error_msg:
+            return "CRITICAL"
+        return "ERROR"
+```
+
+#### Exponential Backoff Strategy
+- **Attempt 1:** Wait 2 seconds before retry
+- **Attempt 2:** Wait 4 seconds before retry
+- **Attempt 3:** Wait 8 seconds before retry (max 10)
+- **Max retries:** 3 attempts per query
+- **Success:** Return result immediately on success
+- **Failure:** After all retries exhausted, return cached/partial data
+
+#### Rate Limiting Detection
+```python
+def detect_rate_limit(self, error):
+    """Identify rate limit errors from different APIs"""
+    error_msg = str(error).lower()
+    rate_limit_indicators = [
+        "rate limit",
+        "429",
+        "too many requests",
+        "quota exceeded",
+        "requests per minute"
+    ]
+    return any(indicator in error_msg for indicator in rate_limit_indicators)
+```
+
+#### Timeout Handling
+```python
+async def call_with_timeout(self, api_call, timeout_seconds=30):
+    """Call API with timeout protection"""
+    try:
+        result = await asyncio.wait_for(api_call, timeout=timeout_seconds)
+        return result
+    except asyncio.TimeoutError:
+        logger.error(f"API call exceeded {timeout_seconds}s timeout")
+        raise TimeoutError(f"API request timed out after {timeout_seconds}s")
+```
+
+---
+
+### 2. Service-Specific Failures
+
+#### Bright Data Failures (Web Scraping)
+
+**Handle Bright Data scraping failures:**
+```python
+async def handle_bright_data_failure(self, scrape_task, failure_reason):
+    """Handle Bright Data scraping failures for competitor data"""
+
+    if "captcha" in failure_reason.lower():
+        # CAPTCHA encountered: Increase delay, retry once
+        logger.warning("CAPTCHA detected, retrying with longer delay")
+        await asyncio.sleep(10)
+        try:
+            return await self.bright_data.retry_scrape(scrape_task)
+        except:
+            return {"status": "captcha_block", "action": "manual_review_needed"}
+
+    if "proxy" in failure_reason.lower() or "connection" in failure_reason.lower():
+        # Proxy/connection issue: Try IP rotation
+        logger.info("Rotating proxy IP and retrying...")
+        new_proxy = await self.bright_data.rotate_ip()
+        return await self.bright_data.scrape_as_markdown(scrape_task)
+
+    if "blocked" in failure_reason.lower() or "403" in failure_reason:
+        # Site blocked scraping: Return empty result, note in logs
+        logger.warning(f"Site blocks scraping: {scrape_task['url']}")
+        return {"status": "blocked", "data": []}
+
+    return None
+```
+
+#### Google APIs Failures
+
+**Handle Google Workspace API authentication and quota issues:**
+```python
+async def handle_google_api_failure(self, operation, failure_reason):
+    """Handle Google Workspace API failures"""
+
+    if "401" in failure_reason or "unauthorized" in failure_reason.lower():
+        # Authentication failed: Check credentials, notify user
+        logger.error("Google API authentication failed - check credentials")
+        return {"status": "auth_failed", "action": "verify_google_credentials"}
+
+    if "quota" in failure_reason.lower() or "429" in failure_reason:
+        # Quota exceeded: Queue for retry tomorrow
+        logger.warning("Google API quota exceeded, queuing for retry")
+        return {"status": "quota_exceeded", "action": "retry_tomorrow"}
+
+    if "service" in failure_reason.lower() or "503" in failure_reason:
+        # Service unavailable: Retry with backoff
+        logger.warning("Google service unavailable, retrying...")
+        await asyncio.sleep(60)
+        return await self.retry_google_operation(operation)
+
+    return None
+```
+
+#### Spreadsheet/Sheet Operation Failures
+
+**Handle Google Sheets write/read failures:**
+```python
+async def handle_spreadsheet_failure(self, operation, sheet_id, failure_reason):
+    """Handle Google Sheets operation failures"""
+
+    if "permission" in failure_reason.lower():
+        logger.error(f"Permission denied for sheet {sheet_id}")
+        return {"status": "permission_denied", "action": "check_sheet_access"}
+
+    if "not found" in failure_reason.lower():
+        logger.error(f"Sheet {sheet_id} not found or deleted")
+        return {"status": "sheet_not_found", "action": "verify_sheet_id"}
+
+    if "range" in failure_reason.lower():
+        # Invalid range specified
+        logger.error(f"Invalid range specified in sheet operation")
+        return {"status": "invalid_range", "action": "verify_range_format"}
+
+    return None
+```
+
+---
+
+### 3. Data Quality Issues
+
+```python
+class DataQualityValidator:
+    """Validate and handle data quality issues in analytics"""
+
+    def validate_metrics_response(self, response):
+        """Validate metrics response before using"""
+        issues = []
+
+        # Check for empty response
+        if not response or response is None:
+            issues.append("Empty response received")
+            return {"valid": False, "issues": issues, "action": "retry_with_fallback"}
+
+        # Check for malformed data
+        if isinstance(response, dict):
+            required_fields = ['metric_name', 'value', 'timestamp']
+            for field in required_fields:
+                if field not in response:
+                    issues.append(f"Missing required field: {field}")
+
+        # Check for null/zero metrics (likely incomplete data)
+        if isinstance(response, dict):
+            if response.get('value') is None or response.get('value') == 0:
+                issues.append("Metric value is null or zero - possible incomplete data")
+
+        # Check for parsing errors
+        try:
+            if isinstance(response, str):
+                import json
+                json.loads(response)
+        except Exception as e:
+            issues.append(f"Error parsing JSON: {e}")
+
+        if issues:
+            logger.warning(f"Data quality issues: {issues}")
+            return {"valid": False, "issues": issues, "action": "escalate_or_retry"}
+
+        return {"valid": True, "issues": []}
+
+    def validate_competitor_data(self, competitor_data):
+        """Validate scrapped competitor benchmark data"""
+        required_fields = {
+            'company_name': str,
+            'metric_name': str,
+            'metric_value': (int, float),
+            'data_source': str
+        }
+
+        issues = []
+
+        # Check required fields exist
+        for field, field_type in required_fields.items():
+            if field not in competitor_data:
+                issues.append(f"Missing required field: {field}")
+            elif not isinstance(competitor_data[field], field_type):
+                issues.append(f"Invalid type for {field}: expected {field_type.__name__}")
+            elif competitor_data[field] == "" or competitor_data[field] is None:
+                issues.append(f"Empty value for required field: {field}")
+
+        # Validate metric value is numeric and reasonable
+        if 'metric_value' in competitor_data:
+            try:
+                float(competitor_data['metric_value'])
+            except:
+                issues.append(f"Metric value is not numeric: {competitor_data['metric_value']}")
+
+        return {"valid": len(issues) == 0, "issues": issues}
+```
+
+---
+
+### 4. Recovery Strategies
+
+```python
+class RecoveryStrategy:
+    """Implement graceful degradation and recovery for analytics"""
+
+    async def get_metrics_with_fallback_chain(self, query, user_context):
+        """Multi-stage fallback chain for metrics"""
+
+        # Stage 1: Try primary analytics source
+        try:
+            logger.info(f"Stage 1: Attempting primary analytics source")
+            result = await self.primary_source.query(query)
+            return {"status": "full_result", "data": result, "source": "primary"}
+        except Exception as e:
+            logger.warning(f"Stage 1 failed: {e}")
+
+        # Stage 2: Try secondary analytics source (partial result)
+        try:
+            logger.info(f"Stage 2: Attempting secondary analytics source (partial)")
+            result = await self.secondary_source.query(query)
+            return {"status": "partial_result", "data": result, "source": "secondary"}
+        except Exception as e:
+            logger.warning(f"Stage 2 failed: {e}")
+
+        # Stage 3: Try web scraping for publicly available metrics
+        try:
+            logger.info(f"Stage 3: Attempting web scraping for metrics")
+            results = await self.bright_data.search_engine(query)
+            structured = self.structure_search_results(results)
+            return {"status": "raw_data", "data": structured, "source": "bright_data"}
+        except Exception as e:
+            logger.warning(f"Stage 3 failed: {e}")
+
+        # Stage 4: Return cached data with disclaimer
+        logger.warning(f"All live sources failed, returning cached metrics")
+        cached = self.get_cached_metrics(query)
+        return {
+            "status": "cached",
+            "data": cached,
+            "source": "cache",
+            "disclaimer": "Metrics are cached and may be outdated"
+        }
+
+    async def graceful_degradation(self, requested_detail_level, query):
+        """Return best-effort analytics even if full request fails"""
+
+        if requested_detail_level == "comprehensive":
+            # Try full analysis, fallback to summary
+            try:
+                return await self.get_full_analysis(query)
+            except:
+                return await self.get_summary_analysis(query)
+
+        elif requested_detail_level == "summary":
+            # Try summary, fallback to key metrics only
+            try:
+                return await self.get_summary_analysis(query)
+            except:
+                return await self.get_key_metrics(query)
+
+        elif requested_detail_level == "quick":
+            # Try key metrics only
+            return await self.get_key_metrics(query)
+
+    def notify_user_of_failures(self, failures):
+        """Notify user when data quality issues detected"""
+        critical_failures = [f for f in failures if f['severity'] == 'CRITICAL']
+
+        if critical_failures:
+            message = f"""
+Analytics Data Quality Alert:
+- {len(critical_failures)} critical data issues detected
+- Using partial/cached metrics as fallback
+- Please verify important metrics independently
+- Recommendation: Re-run analysis when services are stable
+            """
+            logger.error(message)
+            return {"alert_sent": True, "intervention_needed": True}
+
+        return {"alert_sent": False, "intervention_needed": False}
+```
+
+---
+
+### 5. Monitoring & Logging
+
+```python
+class FailureMonitoring:
+    """Monitor and alert on analytics API failures"""
+
+    def __init__(self):
+        self.failure_rates = {}
+        self.cost_tracker = {}
+        self.data_quality_issues = []
+
+    def track_failure(self, service_name, error_type, response_time=None):
+        """Track individual failures"""
+        record = {
+            'timestamp': datetime.now().isoformat(),
+            'service': service_name,
+            'error_type': error_type,
+            'response_time_ms': response_time
+        }
+
+        logger.error(f"Service Failure: {service_name} - {error_type}")
+
+        # Track failure rate
+        if service_name not in self.failure_rates:
+            self.failure_rates[service_name] = []
+        self.failure_rates[service_name].append(record)
+
+        # Alert if failure rate exceeds threshold
+        self.check_failure_threshold(service_name)
+
+    def track_data_quality_issue(self, query, issue_type, severity):
+        """Track data quality issues"""
+        record = {
+            'timestamp': datetime.now().isoformat(),
+            'query': query,
+            'issue_type': issue_type,
+            'severity': severity
+        }
+        self.data_quality_issues.append(record)
+        logger.warning(f"Data Quality Issue: {issue_type} for query '{query}'")
+
+    def check_failure_threshold(self, service_name, window_minutes=60, threshold=5):
+        """Alert if too many failures in time window"""
+        now = datetime.now()
+        recent_failures = [
+            f for f in self.failure_rates.get(service_name, [])
+            if datetime.fromisoformat(f['timestamp']) > now - timedelta(minutes=window_minutes)
+        ]
+
+        if len(recent_failures) >= threshold:
+            logger.critical(
+                f"ALERT: {service_name} has {len(recent_failures)} failures in last {window_minutes} min"
+            )
+            self.send_alert(
+                f"{service_name} experiencing high failure rate",
+                f"Failures: {len(recent_failures)}/{threshold}",
+                "critical"
+            )
+
+    def track_scraping_cost(self, service_name, scrape_count, estimated_cost=0.01):
+        """Track cost of data scraping operations"""
+        if service_name not in self.cost_tracker:
+            self.cost_tracker[service_name] = {'scrapes': 0, 'estimated_cost': 0}
+
+        self.cost_tracker[service_name]['scrapes'] += scrape_count
+        self.cost_tracker[service_name]['estimated_cost'] += (scrape_count * estimated_cost)
+
+        logger.info(
+            f"Scraping cost for {service_name}: ${self.cost_tracker[service_name]['estimated_cost']:.2f}"
+        )
+
+    def get_failure_report(self):
+        """Generate failure and quality report"""
+        report = {
+            'timestamp': datetime.now().isoformat(),
+            'services': {},
+            'data_quality_issues': len(self.data_quality_issues)
+        }
+
+        for service, failures in self.failure_rates.items():
+            report['services'][service] = {
+                'total_failures': len(failures),
+                'error_types': list(set([f['error_type'] for f in failures])),
+                'avg_response_time_ms': sum([
+                    f.get('response_time_ms', 0) for f in failures if f.get('response_time_ms')
+                ]) / max(len([f for f in failures if f.get('response_time_ms')]), 1)
+            }
+
+        return report
+
+    def send_alert(self, subject, message, severity="warning"):
+        """Send alert via email/Slack"""
+        logger.log(
+            level=logging.ERROR if severity == "critical" else logging.WARNING,
+            msg=f"[{severity.upper()}] {subject}: {message}"
+        )
+```
+
+---
+
+### Implementation Checklist
+
+- [ ] Implement exponential backoff for all data source API calls
+- [ ] Add fallback logic for primary → secondary → scraping → cache
+- [ ] Validate all metrics responses (non-empty, correct types)
+- [ ] Log all API failures with timestamp, service, error type
+- [ ] Monitor failure rates and alert on anomalies
+- [ ] Track scraping costs and cumulative expenses
+- [ ] Implement graceful degradation (partial results if full fails)
+- [ ] Create user notifications for critical data quality issues
+- [ ] Test failover paths regularly
+- [ ] Document SLAs and acceptable data staleness windows

@@ -515,6 +515,535 @@ Always provide:
 
 ---
 
+## Failure Handling & Error Recovery
+
+### 1. API Failure Handling
+
+Your lead generation depends on reliable scraping via Bright Data and enrichment from Google APIs. Implement robust error handling:
+
+```python
+from tenacity import retry, stop_after_attempt, wait_exponential
+import logging
+import asyncio
+from datetime import datetime, timedelta
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class RobustLeadGenClient:
+    def __init__(self, max_retries=3, base_wait=2, max_wait=10):
+        self.max_retries = max_retries
+        self.base_wait = base_wait
+        self.max_wait = max_wait
+        self.failure_log = []
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10)
+    )
+    async def scrape_with_retry(self, urls, scrape_type):
+        """Scrape URLs with exponential backoff retry logic"""
+        try:
+            response = await self.bright_data.scrape_as_markdown(urls)
+            self.log_success("bright_data_scrape")
+            return response
+        except Exception as e:
+            self.log_failure("bright_data_scrape", str(e))
+            raise
+
+    async def generate_leads_with_fallback(self, criteria):
+        """Generate leads with fallback strategy"""
+        attempt = 1
+        while attempt <= self.max_retries:
+            try:
+                # Try primary: LinkedIn scraping
+                logger.info(f"Lead generation attempt {attempt}/3: LinkedIn scraping")
+                leads = await self.bright_data.scrape_linkedin_companies(criteria)
+                return leads
+
+            except RateLimitError as e:
+                logger.warning(f"Rate limit hit on attempt {attempt}: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except ServiceUnavailable as e:
+                logger.warning(f"LinkedIn scraping unavailable: {e}")
+                # Try fallback: Google Maps business scraping
+                try:
+                    logger.info("Fallback 1: Attempting Google Maps business scraping")
+                    leads = await self.bright_data.scrape_google_maps(criteria)
+                    return leads
+                except Exception as e2:
+                    logger.error(f"Google Maps scraping failed: {e2}")
+
+                    # Try fallback: Business directory scraping
+                    try:
+                        logger.info("Fallback 2: Attempting business directory scraping")
+                        leads = await self.bright_data.search_engine(criteria)
+                        return self.format_search_results(leads)
+                    except Exception as e3:
+                        logger.error(f"Directory scraping failed: {e3}")
+                        attempt += 1
+
+            except TimeoutError as e:
+                logger.warning(f"Scraping timeout on attempt {attempt}: {e}")
+                wait_time = self.exponential_backoff(attempt)
+                await asyncio.sleep(wait_time)
+                attempt += 1
+
+            except Exception as e:
+                logger.error(f"Unexpected error: {type(e).__name__}: {e}")
+                attempt += 1
+
+        # All retries exhausted - return cached/partial leads
+        logger.warning("All lead generation attempts failed, returning cached leads")
+        return self.get_cached_leads(criteria)
+
+    def exponential_backoff(self, attempt):
+        """Calculate exponential backoff wait time"""
+        wait_time = min(self.base_wait * (2 ** (attempt - 1)), self.max_wait)
+        logger.info(f"Waiting {wait_time}s before retry...")
+        return wait_time
+
+    def log_failure(self, endpoint, error_msg, context=None):
+        """Log API failure with context"""
+        failure_record = {
+            'timestamp': datetime.now().isoformat(),
+            'endpoint': endpoint,
+            'error': error_msg,
+            'context': context,
+            'severity': self.assess_severity(error_msg)
+        }
+        self.failure_log.append(failure_record)
+        logger.error(f"API Failure: {endpoint} - {error_msg}")
+
+    def log_success(self, endpoint):
+        """Track successful API calls"""
+        logger.info(f"API Success: {endpoint}")
+
+    def assess_severity(self, error_msg):
+        """Determine failure severity for alerting"""
+        if "rate limit" in error_msg.lower():
+            return "WARNING"
+        elif "timeout" in error_msg.lower():
+            return "WARNING"
+        elif "blocked" in error_msg.lower() or "captcha" in error_msg.lower():
+            return "WARNING"
+        elif "unavailable" in error_msg.lower() or "500" in error_msg:
+            return "CRITICAL"
+        return "ERROR"
+```
+
+#### Exponential Backoff Strategy
+- **Attempt 1:** Wait 2 seconds before retry
+- **Attempt 2:** Wait 4 seconds before retry
+- **Attempt 3:** Wait 8 seconds before retry (max 10)
+- **Max retries:** 3 attempts per lead generation request
+- **Success:** Return results immediately on success
+- **Failure:** After all retries exhausted, return cached/partial leads
+
+#### Rate Limiting Detection
+```python
+def detect_rate_limit(self, error):
+    """Identify rate limit errors from different APIs"""
+    error_msg = str(error).lower()
+    rate_limit_indicators = [
+        "rate limit",
+        "429",
+        "too many requests",
+        "quota exceeded",
+        "requests per minute",
+        "throttle"
+    ]
+    return any(indicator in error_msg for indicator in rate_limit_indicators)
+```
+
+#### Timeout Handling
+```python
+async def scrape_with_timeout(self, url, timeout_seconds=30):
+    """Scrape URL with timeout protection"""
+    try:
+        result = await asyncio.wait_for(
+            self.bright_data.scrape_as_markdown(url),
+            timeout=timeout_seconds
+        )
+        return result
+    except asyncio.TimeoutError:
+        logger.error(f"Scraping {url} exceeded {timeout_seconds}s timeout")
+        raise TimeoutError(f"Scraping timed out after {timeout_seconds}s")
+```
+
+---
+
+### 2. Service-Specific Failures
+
+#### Bright Data Scraping Failures
+
+**When Bright Data encounters CAPTCHA, blocking, or proxy issues:**
+```python
+async def handle_bright_data_failure(self, target_url, failure_reason):
+    """Handle Bright Data scraping failures with specific recovery"""
+
+    if "captcha" in failure_reason.lower():
+        # CAPTCHA encountered: Increase delay, retry with different IP
+        logger.warning(f"CAPTCHA detected on {target_url}")
+        await asyncio.sleep(15)  # Wait longer for CAPTCHA timeout
+        try:
+            # Rotate IP and retry once
+            await self.bright_data.rotate_ip()
+            return await self.bright_data.scrape_as_markdown(target_url)
+        except:
+            return {"status": "captcha_block", "action": "manual_review_needed"}
+
+    if "blocked" in failure_reason.lower() or "403" in failure_reason:
+        # Site blocked scraping: Try alternative source
+        logger.warning(f"Website blocks scraping: {target_url}")
+        try:
+            # Try Google Maps instead if it's a business
+            return await self.bright_data.scrape_google_maps(target_url)
+        except:
+            return {"status": "blocked", "data": None}
+
+    if "proxy" in failure_reason.lower() or "connection" in failure_reason.lower():
+        # Proxy/connection issue: Rotate IP and retry
+        logger.info("Rotating proxy IP and retrying...")
+        await self.bright_data.rotate_ip()
+        return await self.bright_data.scrape_as_markdown(target_url)
+
+    # Generic fallback
+    return None
+```
+
+**Fallback options when Bright Data fails:**
+1. Rotate IP address and retry
+2. Try alternative data source (Google Maps if LinkedIn fails)
+3. Use business directory scraping (Yellow Pages, Yelp)
+4. Return cached lead list
+5. Mark lead as "needs_manual_enrichment"
+
+#### Google APIs Failures
+
+**Handle Google Sheets and Drive API failures:**
+```python
+async def handle_google_api_failure(self, operation, sheet_id, failure_reason):
+    """Handle Google API failures for lead export"""
+
+    if "401" in failure_reason or "unauthorized" in failure_reason.lower():
+        logger.error("Google API authentication failed")
+        return {"status": "auth_failed", "action": "reauthenticate"}
+
+    if "quota" in failure_reason.lower() or "429" in failure_reason:
+        logger.warning("Google API quota exceeded")
+        return {"status": "quota_exceeded", "action": "retry_tomorrow"}
+
+    if "permission" in failure_reason.lower():
+        logger.error(f"Permission denied for sheet {sheet_id}")
+        return {"status": "permission_denied", "action": "verify_sheet_access"}
+
+    if "not found" in failure_reason.lower():
+        logger.error(f"Sheet not found: {sheet_id}")
+        return {"status": "sheet_not_found", "action": "create_new_sheet"}
+
+    return None
+```
+
+#### n8n Workflow Failures
+
+**Handle n8n webhook failures for lead notifications:**
+```python
+async def handle_n8n_failure(self, workflow_id, failure_reason):
+    """Handle n8n automation failures for lead routing"""
+
+    if "webhook" in failure_reason.lower() or "timeout" in failure_reason.lower():
+        logger.error(f"n8n webhook failed for workflow {workflow_id}")
+        return {"status": "webhook_failed", "action": "check_webhook_url"}
+
+    if "execution" in failure_reason.lower():
+        logger.error(f"n8n workflow execution failed: {workflow_id}")
+        return {"status": "execution_failed", "action": "check_workflow_logs"}
+
+    return None
+```
+
+---
+
+### 3. Data Quality Issues
+
+```python
+class LeadQualityValidator:
+    """Validate and handle lead data quality issues"""
+
+    def validate_lead(self, lead):
+        """Validate lead data before adding to list"""
+        required_fields = {
+            'company_name': str,
+            'email': str,
+            'website': str
+        }
+
+        issues = []
+
+        # Check required fields exist and are non-empty
+        for field, field_type in required_fields.items():
+            if field not in lead:
+                issues.append(f"Missing required field: {field}")
+            elif not isinstance(lead[field], field_type):
+                issues.append(f"Invalid type for {field}: expected {field_type.__name__}")
+            elif not lead[field] or lead[field] == "":
+                issues.append(f"Empty value for required field: {field}")
+
+        # Validate email format
+        if 'email' in lead and lead['email']:
+            if not self.is_valid_email(lead['email']):
+                issues.append(f"Invalid email format: {lead['email']}")
+
+        # Validate website URL format
+        if 'website' in lead and lead['website']:
+            if not self.is_valid_url(lead['website']):
+                issues.append(f"Invalid URL format: {lead['website']}")
+
+        # Check for duplicate leads (same company)
+        if self.is_duplicate(lead):
+            issues.append(f"Duplicate lead detected: {lead.get('company_name')}")
+
+        return {"valid": len(issues) == 0, "issues": issues, "score": self.calculate_score(lead, issues)}
+
+    def validate_scrape_response(self, response, expected_format):
+        """Validate scrapped data structure"""
+        issues = []
+
+        # Check response is not empty
+        if not response or response is None:
+            issues.append("Empty scrape response")
+            return {"valid": False, "issues": issues}
+
+        # Check response has expected fields
+        if isinstance(response, dict):
+            for field in expected_format:
+                if field not in response:
+                    issues.append(f"Missing field in scrape response: {field}")
+
+        return {"valid": len(issues) == 0, "issues": issues}
+
+    def is_valid_email(self, email):
+        """Validate email format"""
+        import re
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return bool(re.match(pattern, email))
+
+    def is_valid_url(self, url):
+        """Validate URL format"""
+        return url.startswith(('http://', 'https://')) and '.' in url
+
+    def is_duplicate(self, lead):
+        """Check if lead already exists in database"""
+        company_name = lead.get('company_name', '').lower().strip()
+        return any(
+            existing['company_name'].lower().strip() == company_name
+            for existing in self.existing_leads
+        )
+
+    def calculate_score(self, lead, issues):
+        """Calculate lead quality score (0-10)"""
+        score = 10
+        score -= len(issues) * 2  # Deduct for each issue
+        score -= 0 if lead.get('email') else 1
+        score -= 0 if lead.get('phone') else 0.5
+        score -= 0 if lead.get('website') else 0.5
+        return max(0, min(10, score))  # Clamp to 0-10
+```
+
+---
+
+### 4. Recovery Strategies
+
+```python
+class RecoveryStrategy:
+    """Implement graceful degradation for lead generation"""
+
+    async def generate_leads_with_fallback_chain(self, criteria):
+        """Multi-stage fallback chain for lead generation"""
+
+        # Stage 1: Try LinkedIn scraping (most targeted)
+        try:
+            logger.info("Stage 1: LinkedIn company scraping")
+            leads = await self.bright_data.scrape_linkedin_companies(criteria)
+            return {"status": "full_list", "leads": leads, "source": "linkedin"}
+        except Exception as e:
+            logger.warning(f"LinkedIn scraping failed: {e}")
+
+        # Stage 2: Try Google Maps (local businesses)
+        try:
+            logger.info("Stage 2: Google Maps business scraping (partial)")
+            leads = await self.bright_data.scrape_google_maps(criteria)
+            return {"status": "partial_list", "leads": leads, "source": "google_maps"}
+        except Exception as e:
+            logger.warning(f"Google Maps scraping failed: {e}")
+
+        # Stage 3: Try business directory (Yellow Pages, Yelp)
+        try:
+            logger.info("Stage 3: Business directory scraping (raw data)")
+            leads = await self.bright_data.search_engine(criteria)
+            structured = self.structure_directory_results(leads)
+            return {"status": "raw_data", "leads": structured, "source": "directory"}
+        except Exception as e:
+            logger.warning(f"Directory scraping failed: {e}")
+
+        # Stage 4: Return cached leads with disclaimer
+        logger.warning("All lead sources failed, returning cached leads")
+        cached = self.get_cached_leads(criteria)
+        return {
+            "status": "cached",
+            "leads": cached,
+            "source": "cache",
+            "disclaimer": "Leads are cached and may be outdated. Please verify contacts."
+        }
+
+    async def graceful_degradation(self, requested_enrichment, criteria):
+        """Return leads even if enrichment fails"""
+
+        if requested_enrichment == "full":
+            # Try all enrichment, fallback to basic
+            try:
+                leads = await self.generate_leads_with_fallback_chain(criteria)
+                await self.enrich_leads(leads)
+                return leads
+            except:
+                leads = await self.generate_leads_with_fallback_chain(criteria)
+                return leads
+
+        elif requested_enrichment == "basic":
+            # Just scrape without enrichment
+            return await self.generate_leads_with_fallback_chain(criteria)
+
+    def notify_user_of_failures(self, failures, lead_count):
+        """Notify user when lead quality issues detected"""
+        critical_failures = [f for f in failures if f['severity'] == 'CRITICAL']
+
+        if critical_failures:
+            message = f"""
+Lead Generation Quality Alert:
+- {len(critical_failures)} critical issues detected
+- Generated {lead_count} leads (some may need verification)
+- Recommendation: Manually verify emails before outreach
+- Consider: Re-running generation when services are stable
+            """
+            logger.error(message)
+            return {"alert_sent": True, "intervention_needed": True}
+
+        return {"alert_sent": False, "intervention_needed": False}
+```
+
+---
+
+### 5. Monitoring & Logging
+
+```python
+class FailureMonitoring:
+    """Monitor and alert on lead generation failures"""
+
+    def __init__(self):
+        self.failure_rates = {}
+        self.cost_tracker = {}
+        self.lead_quality_metrics = {}
+
+    def track_failure(self, service_name, error_type, response_time=None):
+        """Track individual scraping failures"""
+        record = {
+            'timestamp': datetime.now().isoformat(),
+            'service': service_name,
+            'error_type': error_type,
+            'response_time_ms': response_time
+        }
+
+        logger.error(f"Service Failure: {service_name} - {error_type}")
+
+        if service_name not in self.failure_rates:
+            self.failure_rates[service_name] = []
+        self.failure_rates[service_name].append(record)
+
+        self.check_failure_threshold(service_name)
+
+    def track_lead_quality(self, total_leads, valid_leads, issues_by_type):
+        """Track lead quality metrics"""
+        quality_score = (valid_leads / total_leads * 100) if total_leads > 0 else 0
+
+        logger.info(f"Lead Quality: {valid_leads}/{total_leads} valid ({quality_score:.1f}%)")
+        self.lead_quality_metrics = {
+            'total': total_leads,
+            'valid': valid_leads,
+            'quality_score': quality_score,
+            'issues': issues_by_type
+        }
+
+    def check_failure_threshold(self, service_name, window_minutes=60, threshold=5):
+        """Alert if too many failures in time window"""
+        now = datetime.now()
+        recent_failures = [
+            f for f in self.failure_rates.get(service_name, [])
+            if datetime.fromisoformat(f['timestamp']) > now - timedelta(minutes=window_minutes)
+        ]
+
+        if len(recent_failures) >= threshold:
+            logger.critical(
+                f"ALERT: {service_name} has {len(recent_failures)} failures in last {window_minutes} min"
+            )
+
+    def track_scraping_cost(self, service_name, request_count, estimated_cost=0.005):
+        """Track cost of scraping operations"""
+        if service_name not in self.cost_tracker:
+            self.cost_tracker[service_name] = {'requests': 0, 'estimated_cost': 0}
+
+        self.cost_tracker[service_name]['requests'] += request_count
+        self.cost_tracker[service_name]['estimated_cost'] += (request_count * estimated_cost)
+
+        logger.info(
+            f"Scraping cost for {service_name}: ${self.cost_tracker[service_name]['estimated_cost']:.2f} "
+            f"({self.cost_tracker[service_name]['requests']} requests)"
+        )
+
+    def get_failure_report(self):
+        """Generate failure and quality report"""
+        report = {
+            'timestamp': datetime.now().isoformat(),
+            'services': {},
+            'lead_quality': self.lead_quality_metrics,
+            'total_scraping_cost': sum(
+                s['estimated_cost'] for s in self.cost_tracker.values()
+            )
+        }
+
+        for service, failures in self.failure_rates.items():
+            report['services'][service] = {
+                'total_failures': len(failures),
+                'error_types': list(set([f['error_type'] for f in failures])),
+                'avg_response_time_ms': sum([
+                    f.get('response_time_ms', 0) for f in failures if f.get('response_time_ms')
+                ]) / max(len([f for f in failures if f.get('response_time_ms')]), 1)
+            }
+
+        return report
+```
+
+---
+
+### Implementation Checklist
+
+- [ ] Implement exponential backoff for all scraping requests
+- [ ] Add fallback logic for LinkedIn → Google Maps → Directory → Cache
+- [ ] Validate all lead data (email, URL, required fields)
+- [ ] Log all scraping failures with timestamp, service, error type
+- [ ] Monitor failure rates and alert on anomalies
+- [ ] Track scraping costs and cumulative expenses
+- [ ] Implement graceful degradation (partial leads if full fails)
+- [ ] Create user notifications for data quality issues
+- [ ] Deduplicate leads across sources
+- [ ] Test failover paths regularly with chaos testing
+- [ ] Document acceptable lead quality thresholds
+
+---
+
 ## Integration with Other Agents
 
 **Handoff to email-specialist:**
