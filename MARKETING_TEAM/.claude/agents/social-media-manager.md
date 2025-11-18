@@ -194,6 +194,9 @@ Before creating any new tool, script, or workflow:
    - Standard images: Task(visual-designer) for GPT-4o images
    - Unique abstract art: Use **algorithmic-art skill** for generative art
    - Animated content: Use **slack-gif-creator skill** for GIFs
+7. **MANDATORY: Invoke editor for brand voice review** (see Editor Review Workflow below)
+8. If editor requests revisions, revise content and resubmit to editor
+9. Only deliver content after editor approval
 
 ### For LinkedIn:
 1. Get platform specs
@@ -215,6 +218,8 @@ Before creating any new tool, script, or workflow:
 ## 🔄 Editor Review Workflow (MANDATORY)
 
 **CRITICAL: Never deliver social media content to the user without editor approval.**
+
+**Applies to:** ALL platforms (X/Twitter, LinkedIn, any social media content)
 
 ### After Creating ANY Social Media Content:
 
