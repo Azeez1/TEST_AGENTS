@@ -1,21 +1,22 @@
-# ENGINEERING_TEAM - 14 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
+# ENGINEERING_TEAM - 15 Engineering & Infrastructure Agents ⭐ **SUPER TEAM**
 
 ## 🎯 Overview
 
-The **ENGINEERING_TEAM** contains **14 specialized agents** (13 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, and optimization. These agents have **full workspace access** and can work with all 37 agents across the 4 systems.
+The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, optimization, and analytics. These agents have **full workspace access** and can work with all 38 agents across the 4 systems.
 
 **CTO Coordinator:**
-- **cto** ⭐ - Chief Technology Officer for strategic coordination of all 13 specialists
+- **cto** ⭐ - Chief Technology Officer for strategic coordination of all 14 specialists
 
-**Core Agents (8 - Custom Built):**
+**Core Agents (9 - Custom Built):**
 - **devops-engineer** ⭐ - CI/CD, Docker, Kubernetes, Terraform, cloud infrastructure, monitoring (production-ready with 886 lines of code)
 - **frontend-developer** - React components, responsive design, state management, performance
 - **backend-architect** - RESTful APIs, microservices, database schema, scalability planning
 - **security-auditor** ⭐ - Code security analysis, vulnerability scanning, compliance audits (unique comprehensive security)
 - **technical-writer** ⭐ - Documentation, PRDs, technical specs, API docs, user guides (broader scope)
 - **system-architect** ⭐ **NEW** - System architecture design, professional flow diagrams with Mermaid.js, interactive visualizations
-- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 37 agents!)
+- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 38 agents!)
 - **ui-ux-designer** - User research, wireframes, design systems, accessibility, user flows
+- **analytics-dashboard-agent** ⭐ **NEW** - Real-time analytics dashboards, data visualization, multi-source ETL pipelines, client-specific analytics
 
 **Specialist Agents (5 - From aitmpl.com):**
 - **code-reviewer** - Quality, security, maintainability reviews (3.2K community downloads)
@@ -489,30 +490,79 @@ color palette, typography, spacing, and component patterns"
 
 ---
 
+### 14. Analytics Dashboard Agent ⭐ **NEW - CLIENT ANALYTICS**
+**Purpose:** Real-time analytics dashboards and data visualization for client data
+
+**Capabilities:**
+- ✅ **Real-time dashboards** - Interactive React dashboards with WebSocket/SSE updates
+- ✅ **Multi-source data integration** - ETL pipelines for APIs, databases, and files
+- ✅ **Data visualization** - Charts (Chart.js, D3.js), KPIs, tables, interactive widgets
+- ✅ **Data cleaning and transformation** - Pandas-based ETL with outlier detection
+- ✅ **Client customization** - Branded dashboards with custom themes and widgets
+- ✅ **Real-time streaming** - WebSocket and Server-Sent Events for live updates
+- ✅ **Deployment** - Docker, Kubernetes, Vercel-ready configurations
+
+**Tech Stack:**
+- Frontend: React, Chart.js, D3.js, TailwindCSS
+- Backend: FastAPI, WebSocket, Redis, PostgreSQL
+- ETL: Pandas, asyncio, aiohttp
+- Deployment: Docker, Vercel, AWS
+
+**Why Perfect for Your Workspace:**
+- Transforms siloed client data into actionable insights
+- Creates beautiful, fast real-time dashboards
+- Handles multiple data sources (APIs, databases, CSV/Excel/JSON)
+- Client-specific branding and customization
+- Production-ready deployment solutions
+
+**Example Tasks:**
+```
+"Use analytics-dashboard-agent to create a real-time analytics dashboard for Client X
+showing revenue, users, and conversions from their Salesforce API and PostgreSQL database"
+
+"Use analytics-dashboard-agent to build an ETL pipeline that integrates Google Analytics API,
+MySQL sales database, and CSV files from S3, with real-time dashboard updates"
+
+"Use analytics-dashboard-agent to deploy a custom branded dashboard for ACME Corp with
+their logo, colors, and KPIs (MRR, churn rate, LTV) to production using Docker"
+```
+
+**Outputs:** `outputs/dashboards/`, `outputs/pipelines/`, `outputs/deployment/`
+
+**Works with:**
+- **frontend-developer** - Complex React components and UI optimization
+- **backend-architect** - API design and microservices architecture
+- **database-architect** - Database schema and query optimization
+- **devops-engineer** - Deployment, CI/CD, and infrastructure
+- **ui-ux-designer** - Dashboard design and user experience
+
+---
+
 ## 🌐 Workspace-Wide Access
 
 All ENGINEERING_TEAM agents can access and work with:
 
 | System | Agents | What Engineering Agents Can Do |
 |--------|--------|--------------------------------|
-| **MARKETING_TEAM/** | 17 agents | Deploy, audit security, build dashboards, document APIs, optimize prompts, review code, test workflows, design databases |
+| **MARKETING_TEAM/** | 17 agents | Deploy, audit security, build dashboards, document APIs, optimize prompts, review code, test workflows, design databases, create analytics dashboards |
 | **TEST_AGENT/** | 5 agents | Review test code, containerize, build CI/CD, document testing, debug failures |
 | **USER_STORY_AGENT/** | 1 app | Dockerize Streamlit app, security audit, create web alternative, improve UX, optimize prompts |
-| **ENGINEERING_TEAM/** | 12 agents | Self-improvement, documentation, deployment, AI optimization, quality assurance, database design |
+| **ENGINEERING_TEAM/** | 14 agents | Self-improvement, documentation, deployment, AI optimization, quality assurance, database design, analytics dashboards |
 
 **Cross-Team Collaboration:**
-- **DevOps** can deploy ANY of the 37 agents
+- **DevOps** can deploy ANY of the 38 agents
 - **AI Engineer** can optimize prompts for ALL agents
-- **Prompt Engineer** can refine all 37 agent definitions
+- **Prompt Engineer** can refine all 38 agent definitions
 - **Security Auditor** can scan ALL 4 systems
 - **Code Reviewer** ensures quality across ALL codebases
 - **UI/UX Designer** can design dashboards for ALL teams
 - **Frontend Developer** can build UIs for ANY system
 - **Backend Architect** can create APIs for ALL agents
 - **Database Architect** can design unified data layer
-- **Technical Writer** can document ALL 37 agents
+- **Technical Writer** can document ALL 38 agents
 - **Test Engineer** can create test strategies for ALL systems
 - **Debugger** can troubleshoot ANY agent or workflow
+- **Analytics Dashboard Agent** can create dashboards for ANY team's data
 
 ---
 
@@ -521,8 +571,8 @@ All ENGINEERING_TEAM agents can access and work with:
 ```
 ENGINEERING_TEAM/
 ├── .claude/
-│   ├── agents/                  ← 14 agent definitions (1 coordinator + 13 specialists)
-│   │   ├── cto.md                   ⭐ (30K - CTO coordinator for all 13 specialists)
+│   ├── agents/                  ← 15 agent definitions (1 coordinator + 14 specialists)
+│   │   ├── cto.md                   ⭐ (30K - CTO coordinator for all 14 specialists)
 │   │   ├── devops-engineer.md       (24K - production CI/CD, Terraform, Helm)
 │   │   ├── frontend-developer.md    (1.3K - React, responsive design)
 │   │   ├── backend-architect.md     (1.3K - API design, microservices)
@@ -530,6 +580,7 @@ ENGINEERING_TEAM/
 │   │   ├── technical-writer.md      (16K - PRDs, specs, API docs)
 │   │   ├── ai-engineer.md           (1.3K - LLM, RAG, prompt optimization)
 │   │   ├── ui-ux-designer.md        (1.2K - UX design, wireframes, accessibility)
+│   │   ├── analytics-dashboard-agent.md ⭐ NEW (real-time dashboards, ETL, data viz)
 │   │   ├── code-reviewer.md         (quality & security reviews)
 │   │   ├── test-engineer.md         (test automation & QA)
 │   │   ├── prompt-engineer.md       (LLM prompt optimization)
@@ -557,7 +608,9 @@ ENGINEERING_TEAM/
 │   ├── testing/                 ⭐ NEW (test strategies, automation)
 │   ├── optimization/            ⭐ NEW (prompt optimization, benchmarks)
 │   ├── database/                ⭐ NEW (schemas, migrations)
-│   └── debugging/               ⭐ NEW (debugging reports, fixes)
+│   ├── debugging/               ⭐ NEW (debugging reports, fixes)
+│   ├── dashboards/              ⭐ NEW (analytics dashboards, visualizations)
+│   └── pipelines/               ⭐ NEW (ETL pipelines, data integration)
 │
 ├── docs/                        ← Documentation
 │   ├── prds/
@@ -675,20 +728,20 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 ## 📊 Agent Statistics ⭐ **SUPER TEAM**
 
 **Total Workspace:**
-- **36 AI agents** across 4 teams
-- 17 marketing + 5 testing + 1 user story + **13 engineering**
+- **38 AI agents** across 4 teams
+- 17 marketing + 5 testing + 1 user story + **15 engineering**
 - 4 systems working together
 
-**ENGINEERING_TEAM Agents (13 Total):**
+**ENGINEERING_TEAM Agents (15 Total):**
 
 **CTO Coordinator (1 - Custom Built):**
-- ⭐ **cto** - Strategic coordinator for all 13 specialists (~850 lines)
+- ⭐ **cto** - Strategic coordinator for all 14 specialists (~850 lines)
   - Tools: classify_engineering_request, get_engineer_capabilities, list_engineering_agents, create_execution_plan
   - Workflow patterns: End-to-end feature, infrastructure deployment, AI optimization, security audit, troubleshooting
 
-**Core 7 Specialists (Custom Built):**
+**Core 9 Specialists (Custom Built):**
 - 3 official templates (devops, frontend, ui-ux) ← Production-ready
-- 2 new additions (ai-engineer, ui-ux-designer) ← Perfect for this workspace
+- 3 new additions (ai-engineer, system-architect, analytics-dashboard-agent) ← Perfect for this workspace
 - 1 architecture-focused (backend-architect)
 - 2 custom comprehensive (security-auditor, technical-writer) ← Unique capabilities
 
@@ -700,7 +753,7 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 - debugger (1.7K downloads) ← Troubleshooting
 
 **Resources:**
-- Full workspace access to all 37 agents
+- Full workspace access to all 38 agents
 - 17 skills available (inherited from workspace)
 - 7 MCP servers (playwright, google-workspace, perplexity, bright-data, n8n-mcp, sequential-thinking, marketing-tools)
 
@@ -733,9 +786,9 @@ All ENGINEERING_TEAM agents follow these security standards:
    "Use devops-engineer to create a complete Kubernetes deployment for MARKETING_TEAM"
    ```
 
-2. **Optimize All 35 AI Agents**
+2. **Optimize All AI Agents**
    ```
-   "Use ai-engineer and prompt-engineer to optimize prompts for all 37 agents"
+   "Use ai-engineer and prompt-engineer to optimize prompts for all 38 agents"
    ```
 
 3. **Build Agent Dashboard**
@@ -745,7 +798,7 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 4. **Create Documentation**
    ```
-   "Use technical-writer to document all 37 agents with PRDs and API specs"
+   "Use technical-writer to document all 38 agents with PRDs and API specs"
    ```
 
 5. **Security & Quality Audit**
@@ -758,10 +811,15 @@ All ENGINEERING_TEAM agents follow these security standards:
    "Use test-engineer to create test strategies for all systems"
    ```
 
+7. **Build Client Analytics Dashboard**
+   ```
+   "Use analytics-dashboard-agent to create real-time analytics dashboard for client data"
+   ```
+
 ---
 
-**Last Updated:** 2025-10-26
-**Version:** 4.1 - SYSTEM ARCHITECT ADDED ⭐ (14 agents: 1 coordinator + 13 specialists)
-**Total Workspace Agents:** 37 (17 marketing + 5 testing + 1 user story + **14 engineering**)
-**Latest Addition:** system-architect agent - Professional flow diagrams with Mermaid.js and interactive visualizations
+**Last Updated:** 2025-11-18
+**Version:** 5.0 - ANALYTICS DASHBOARD AGENT ADDED ⭐ (15 agents: 1 coordinator + 14 specialists)
+**Total Workspace Agents:** 38 (17 marketing + 5 testing + 1 user story + **15 engineering**)
+**Latest Addition:** analytics-dashboard-agent - Real-time analytics dashboards, ETL pipelines, multi-source data integration
 **Repository:** https://github.com/Azeez1/TEST_AGENTS

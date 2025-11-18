@@ -1,6 +1,6 @@
 # TOOL REGISTRY - Single Source of Truth
 
-**Last Updated:** 2025-11-05
+**Last Updated:** 2025-11-18
 **Total Inventory:** 20 custom tools + 7 MCP servers + 18 skills
 **Maintained by:** Engineering Team (security-auditor + technical-writer)
 
@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This registry documents ALL tools, MCP servers, and skills available to the 37 agents across 4 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
+This registry documents ALL tools, MCP servers, and skills available to the 38 agents across 4 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New Tool (last resort)
 
@@ -165,8 +165,8 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 | **React Artifacts** | `artifacts-builder` (React + shadcn/ui) | N/A | N/A | 1. Skill only | landing-page-specialist | ✅ Active |
 | **MCP Server Creation** | `mcp-builder` (create MCP servers) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
 | **Skill Creation** | `skill-creator` (create new skills) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
-| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 37 agents | ✅ Active (critical) |
-| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 37 agents | ✅ Active (critical) |
+| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 38 agents | ✅ Active (critical) |
+| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 38 agents | ✅ Active (critical) |
 
 **Workspace Management Priority:**
 
@@ -181,7 +181,24 @@ This registry documents ALL tools, MCP servers, and skills available to the 37 a
 **Usage Notes:**
 - **workspace_enforcer:** Validates agent is in correct team workspace (MARKETING_TEAM, QA_TEAM, ENGINEERING_TEAM)
 - **path_validator:** Converts relative paths to absolute paths, enforces cross-team boundaries
-- **Declaring agents:** ALL 37 agents MUST include in YAML frontmatter (automatically added to all agents)
+- **Declaring agents:** ALL 38 agents MUST include in YAML frontmatter (automatically added to all agents)
+
+---
+
+## 📊 Analytics & Dashboard Capabilities
+
+| Capability | Skill | MCP Tool | Custom Tool | Priority Order | Agents Using | Status |
+|------------|-------|----------|-------------|----------------|--------------|--------|
+| **Real-Time Dashboards** | `flow-diagram`, `infographic-creator`, `frontend-design` | N/A | Analytics dashboard implementation (React + Chart.js + WebSocket) | 1. Skills + Custom Implementation | analytics-dashboard-agent | ✅ Active |
+| **Data Integration** | N/A | `mcp__google-workspace__create_spreadsheet`, `read_sheet_values` | ETL pipeline (pandas + asyncio) | 1. Custom Tool + MCP | analytics-dashboard-agent | ✅ Active |
+| **Real-Time Data Streams** | N/A | N/A | WebSocket/SSE implementation (FastAPI) | 1. Custom Implementation only | analytics-dashboard-agent | ✅ Active |
+| **Multi-Source ETL** | N/A | N/A | Data integration pipeline (API + DB + Files) | 1. Custom Tool only | analytics-dashboard-agent | ✅ Active |
+
+**Usage Notes:**
+- **analytics-dashboard-agent**: Primary agent for creating client analytics dashboards with real-time data visualization
+- **Collaboration**: Works with frontend-developer (UI), backend-architect (API), database-architect (data modeling), devops-engineer (deployment)
+- **Tech Stack**: React, Chart.js, D3.js, FastAPI, WebSocket, Redis, PostgreSQL
+- **Use Cases**: Client analytics, KPI tracking, real-time metrics, data visualization, multi-source data integration
 
 ---
 
