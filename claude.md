@@ -2,18 +2,19 @@
 
 ## 📋 Repository Overview
 
-This repository contains **4 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **37 specialized agents** for user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
+This repository contains **5 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **38 specialized agents** for RFP/proposal automation, user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
 
 **Systems:**
 - **USER_STORY_AGENT** (1) - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** (17) - Content creation, social media, images, videos, emails, lead generation, landing pages, workflow automation
 - **QA_TEAM** (5) - Automated pytest test suite generation
 - **ENGINEERING_TEAM** (14) ⭐ **SUPER TEAM** - CTO coordinator + 13 specialists (DevOps, security, frontend, backend, AI/ML, UX, architecture, QA, testing, optimization, database, troubleshooting)
+- **PROPOSAL_TEAM** (1) - RFP automation, compliance matrix generation, and proposal writing with 30+ compliance frameworks
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
 **⚡ Key Facts:**
-- 37 autonomous agents across 4 systems
+- 38 autonomous agents across 5 systems
 - 18 powerful skills (visual, development, documents, integration)
 - 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
 - Memory system with automatic configuration loading
@@ -95,6 +96,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 | **MARKETING_TEAM** | Talk to agents via Claude Code | [README](MARKETING_TEAM/README.md) |
 | **QA_TEAM** | Talk to agents via Claude Code | [README](QA_TEAM/README.md) |
 | **ENGINEERING_TEAM** | Talk to agents via Claude Code | [README](ENGINEERING_TEAM/README.md) |
+| **PROPOSAL_TEAM** | Talk to agents via Claude Code | [README](PROPOSAL_TEAM/README.md) |
 
 **📚 Master Guides:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) • [MCP_SETUP.md](MCP_SETUP.md) • [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
 
@@ -105,11 +107,14 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 ```
 TEST_AGENTS/
 ├── claude.md                        ← YOU ARE HERE
-├── MULTI_AGENT_GUIDE.md             ← Master guide for all 37 agents
+├── MULTI_AGENT_GUIDE.md             ← Master guide for all 38 agents
 ├── AGENT_INVOCATION_BEST_PRACTICES.md  ← Agent invocation patterns
 ├── MEMORY_SYSTEM.md                 ← Memory/Drive/Email strategies
 ├── MCP_SETUP.md, IMPLEMENTATION_SUMMARY.md
 │
+├── USER_STORY_AGENT/                ← 1 agent: Streamlit app for user stories (see README.md)
+│   ├── app_ui.py                    ← Main Streamlit application
+│   └── story_generator.py           ← Core story generation logic
 │
 ├── MARKETING_TEAM/                  ← 17 agents + tools + docs (see README.md)
 │   ├── .claude/agents/              ← 17 marketing agent definitions
@@ -122,9 +127,14 @@ TEST_AGENTS/
 │   ├── .claude/agents/              ← test-orchestrator + 4 specialists
 │   └── tools/                       ← Test generation, coverage analysis
 │
-└── ENGINEERING_TEAM/                ← 14 agents: CTO + 13 specialists (see README.md)
-    ├── .claude/agents/              ← DevOps, security, frontend, backend, AI, etc.
-    └── docs/                        ← PRDs, technical specs, deployment guides
+├── ENGINEERING_TEAM/                ← 14 agents: CTO + 13 specialists (see README.md)
+│   ├── .claude/agents/              ← DevOps, security, frontend, backend, AI, etc.
+│   └── docs/                        ← PRDs, technical specs, deployment guides
+│
+└── PROPOSAL_TEAM/                   ← 1 agent: RFP automation (see README.md)
+    ├── .claude/agents/              ← rfp-agent definition
+    ├── dux_rfp_agent/               ← Core Python package (7-stage pipeline)
+    └── kb/                          ← Pinecone knowledge base
 ```
 
 ---
@@ -139,10 +149,13 @@ TEST_AGENTS/
 | **MARKETING_TEAM** | 17 | Content creation, campaigns, social media, images, videos, emails, lead gen |
 | **QA_TEAM** | 5 | Automated pytest test suite generation |
 | **ENGINEERING_TEAM** | 14 | CTO coordinator + 13 specialists (DevOps, security, frontend, backend, AI, UX, etc.) |
+| **PROPOSAL_TEAM** | 1 | RFP automation, compliance matrix generation, proposal writing |
 
 **Key Agents by Function:**
 
 **Orchestrators:** router-agent, content-strategist (MARKETING), test-orchestrator (QA), cto (ENGINEERING)
+
+**RFP/Proposal:** rfp-agent (PROPOSAL) - 7-stage RFP processing pipeline with 30+ compliance frameworks
 
 **Content & Creative:** copywriter, editor, social-media-manager, visual-designer, video-producer (MARKETING)
 
@@ -155,7 +168,7 @@ TEST_AGENTS/
 **Testing:** unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent (QA)
 
 📖 **Complete Agent Details:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)
-- Detailed capabilities for all 37 agents
+- Detailed capabilities for all 38 agents
 - Invocation examples and patterns
 - API requirements and technology stacks
 - Workflow orchestration strategies
@@ -171,10 +184,11 @@ TEST_AGENTS/
 - [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - API configuration (OpenAI, Gmail, Drive)
 - [QA_TEAM/README.md](QA_TEAM/README.md) - Testing agents overview
 - [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering agents overview
+- [PROPOSAL_TEAM/README.md](PROPOSAL_TEAM/README.md) - RFP automation and proposal generation overview
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 37 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 38 agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - **CRITICAL** - Proper agent invocation patterns
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration, Drive/email strategies, formatting rules
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
@@ -188,6 +202,8 @@ TEST_AGENTS/
 - [MARKETING_TEAM/docs/architecture/mcp-config.md](MARKETING_TEAM/docs/architecture/mcp-config.md) - MCP configuration details
 - [QA_TEAM/BUILD_SUMMARY.md](QA_TEAM/BUILD_SUMMARY.md) - Testing system build notes
 - [ENGINEERING_TEAM/docs/](ENGINEERING_TEAM/docs/) - PRDs, technical specs, API docs, deployment guides
+- [PROPOSAL_TEAM/HOW_IT_WORKS.md](PROPOSAL_TEAM/HOW_IT_WORKS.md) - RFP processing pipeline architecture
+- [PROPOSAL_TEAM/COMPLIANCE_FRAMEWORKS.md](PROPOSAL_TEAM/COMPLIANCE_FRAMEWORKS.md) - 30+ compliance frameworks reference
 
 ### Workflow Guides
 - [USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md](USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md) - Excel + Figma integration workflow

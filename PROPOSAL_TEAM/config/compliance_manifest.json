@@ -1,0 +1,159 @@
+{
+  "total_frameworks": 11,
+  "total_files": 21,
+  "found_files": 21,
+  "documents": [
+    {
+      "framework_id": "cmmc",
+      "framework_name": "CMMC 2.0",
+      "file_name": "CMMC_32 CFR 170 (CMMC Program Rule).pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_32 CFR 170 (CMMC Program Rule).pdf",
+      "size_mb": 10.92
+    },
+    {
+      "framework_id": "cmmc",
+      "framework_name": "CMMC 2.0",
+      "file_name": "CMMC_AssessmentGuideL1v2.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_AssessmentGuideL1v2.pdf",
+      "size_mb": 0.78
+    },
+    {
+      "framework_id": "cmmc",
+      "framework_name": "CMMC 2.0",
+      "file_name": "CMMC_AssessmentGuideL2v2.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_AssessmentGuideL2v2.pdf",
+      "size_mb": 2.17
+    },
+    {
+      "framework_id": "cmmc",
+      "framework_name": "CMMC 2.0",
+      "file_name": "CMMC_ModelOverview.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_ModelOverview.pdf",
+      "size_mb": 0.96
+    },
+    {
+      "framework_id": "cmmc",
+      "framework_name": "CMMC 2.0",
+      "file_name": "CMMC_ScopingGuideL1v2.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_ScopingGuideL1v2.pdf",
+      "size_mb": 0.56
+    },
+    {
+      "framework_id": "cmmc",
+      "framework_name": "CMMC 2.0",
+      "file_name": "CMMC_ScopingGuideL2v2.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_ScopingGuideL2v2.pdf",
+      "size_mb": 0.67
+    },
+    {
+      "framework_id": "fedramp",
+      "framework_name": "FedRAMP",
+      "file_name": "FEDRAMP_Agency_Authorization_Playbook.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\FEDRAMP_Agency_Authorization_Playbook.pdf",
+      "size_mb": 0.71
+    },
+    {
+      "framework_id": "fedramp",
+      "framework_name": "FedRAMP",
+      "file_name": "FEDRAMP_CSP_Authorization_Playbook.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\FEDRAMP_CSP_Authorization_Playbook.pdf",
+      "size_mb": 1.44
+    },
+    {
+      "framework_id": "fedramp",
+      "framework_name": "FedRAMP",
+      "file_name": "FEDRAMP_CSP_Continuous_Monitoring_Performance_Management_Guide.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\FEDRAMP_CSP_Continuous_Monitoring_Performance_Management_Guide.pdf",
+      "size_mb": 0.45
+    },
+    {
+      "framework_id": "nist_800_171",
+      "framework_name": "NIST 800-171",
+      "file_name": "NIST.SP.800-171r3.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\NIST.SP.800-171r3.pdf",
+      "size_mb": 1.52
+    },
+    {
+      "framework_id": "nist_800_171",
+      "framework_name": "NIST 800-171",
+      "file_name": "NIST.SP.800-171Ar3.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\NIST.SP.800-171Ar3.pdf",
+      "size_mb": 1.17
+    },
+    {
+      "framework_id": "nist_800_53",
+      "framework_name": "NIST 800-53",
+      "file_name": "NIST.SP.800-53r5.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\NIST.SP.800-53r5.pdf",
+      "size_mb": 5.79
+    },
+    {
+      "framework_id": "nist_800_53",
+      "framework_name": "NIST 800-53",
+      "file_name": "NIST.SP.800-53Ar5.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\NIST.SP.800-53Ar5.pdf",
+      "size_mb": 7.12
+    },
+    {
+      "framework_id": "nist_800_53",
+      "framework_name": "NIST 800-53",
+      "file_name": "NIST.SP.800-53B.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\NIST.SP.800-53B.pdf",
+      "size_mb": 1.55
+    },
+    {
+      "framework_id": "hipaa",
+      "framework_name": "HIPAA",
+      "file_name": "HIPAA_privacysummary.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\HIPAA_privacysummary.pdf",
+      "size_mb": 0.36
+    },
+    {
+      "framework_id": "hipaa",
+      "framework_name": "HIPAA",
+      "file_name": "HIPAA_security101.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\HIPAA_security101.pdf",
+      "size_mb": 0.2
+    },
+    {
+      "framework_id": "pci_dss",
+      "framework_name": "PCI-DSS",
+      "file_name": "PCI-DSS-v4_0_1.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\PCI-DSS-v4_0_1.pdf",
+      "size_mb": 4.25
+    },
+    {
+      "framework_id": "gdpr",
+      "framework_name": "GDPR",
+      "file_name": "GDPR_CELEX_32016R0679_EN_TXT.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\GDPR_CELEX_32016R0679_EN_TXT.pdf",
+      "size_mb": 0.94
+    },
+    {
+      "framework_id": "glba",
+      "framework_name": "GLBA",
+      "file_name": "GLBA_16 CFR Part 314 (up to date as of 9-30-2025).pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\GLBA_16 CFR Part 314 (up to date as of 9-30-2025).pdf",
+      "size_mb": 0.12
+    },
+    {
+      "framework_id": "glba",
+      "framework_name": "GLBA",
+      "file_name": "GLBA_Privacy_viii-1.1.pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\GLBA_Privacy_viii-1.1.pdf",
+      "size_mb": 0.32
+    },
+    {
+      "framework_id": "dfars",
+      "framework_name": "DFARS",
+      "file_name": "CMMC_DFARS 2019-D041 (Cybersecurity Requirements).pdf",
+      "file_path": "C:\\Users\\sabaa\\OneDrive\\Desktop\\Compliance Frameworks\\CMMC_DFARS 2019-D041 (Cybersecurity Requirements).pdf",
+      "size_mb": 0.39
+    }
+  ],
+  "pinecone_config": {
+    "api_key": "pcsk_YwCSZ_SSsaxk2HxiZM5uRsQ1uCV2KsoNsgGdPmdpNZ99aiZLSaewmCmVEthUi97uENvjH",
+    "index": "rfp-knowledge-base",
+    "namespace": "compliance_frameworks"
+  }
+}

@@ -24,7 +24,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 37 Agents
+### You Have 38 Agents
 
 **MARKETING_TEAM (17 agents):**
 - router-agent - Coordinator
@@ -71,6 +71,9 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 **USER_STORY_AGENT (1 system):**
 - Streamlit application for converting meeting notes to user stories with Excel export
 
+**PROPOSAL_TEAM (1 agent):**
+- rfp-agent - RFP automation, compliance matrix generation, proposal writing with 30+ compliance frameworks
+
 **ROOT SUPERVISOR (1 agent):** ⭐ QUALITY ASSURANCE
 - **supervisor** - Root-level quality assurance agent that verifies task completion across ALL teams
   - **Location**: `/home/user/TEST_AGENTS/.claude/agents/supervisor.md`
@@ -92,7 +95,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ## 🏢 Agent Workspace Assignments
 
-All 37 agents are organized into 4 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+All 38 agents are organized into 5 team workspaces with strict folder boundaries and **automatic workspace awareness**:
 
 ### MARKETING_TEAM (17 agents)
 **Location:** `MARKETING_TEAM/.claude/agents/`
@@ -129,6 +132,16 @@ All 37 agents are organized into 4 team workspaces with strict folder boundaries
 
 **Standalone system:** Operates independently
 **Workspace enforcement:** ✅ ENABLED (if conversational mode exists)
+
+### PROPOSAL_TEAM (1 agent)
+**Location:** `PROPOSAL_TEAM/.claude/agents/`
+**Memory:** Pinecone vector database + `PROPOSAL_TEAM/kb/` (Knowledge Base)
+**Output:** `PROPOSAL_TEAM/outputs/` (proposals, compliance matrices)
+**Config:** `PROPOSAL_TEAM/dux_rfp_agent/config/.env`
+**Type:** 7-stage RFP processing pipeline
+
+**Key capabilities:** RFP parsing, compliance matrix generation, proposal writing
+**Workspace enforcement:** ✅ ENABLED
 
 ---
 

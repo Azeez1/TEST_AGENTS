@@ -43,16 +43,20 @@ FEDRAMP = ComplianceFramework(
         "SaaS/PaaS/IaaS for government clients",
         "Federal data hosting"
     ],
-    levels=["FedRAMP Low", "FedRAMP Moderate", "FedRAMP High"],
+    levels=["FedRAMP Low", "FedRAMP Moderate", "FedRAMP High", "FedRAMP Tailored"],
     requirements=[
-        "NIST 800-53 security controls",
-        "Continuous monitoring (ConMon)",
-        "Incident response procedures",
-        "Encryption at rest and in transit",
-        "Identity & access management (MFA, RBAC)",
-        "System Security Plan (SSP)",
+        "Low: 125 NIST 800-53 controls",
+        "Moderate: 325 NIST 800-53 controls",
+        "High: 421 NIST 800-53 controls",
+        "Continuous monitoring (ConMon) with monthly scans",
+        "Annual 3PAO assessment",
+        "Incident response within US Government timelines",
+        "FIPS 140-2 encryption at rest and in transit",
+        "Multi-factor authentication (PIV/CAC for High)",
+        "System Security Plan (SSP) 400+ pages",
         "Plan of Action & Milestones (POA&M)",
-        "3PAO assessment and authorization"
+        "Supply Chain Risk Management Plan",
+        "Contingency Plan with RPO/RTO targets"
     ],
     keywords=[
         "fedramp", "federal", "cloud", "authorization", "3pao",
@@ -88,13 +92,14 @@ NIST_800_53 = ComplianceFramework(
 
 NIST_800_171 = ComplianceFramework(
     id="nist_800_171",
-    name="NIST SP 800-171 (Protecting Controlled Unclassified Information)",
+    name="NIST SP 800-171 Rev 3 (Protecting Controlled Unclassified Information)",
     category="government",
-    description="Required for contractors handling Controlled Unclassified Information (CUI)",
+    description="Required for contractors handling Controlled Unclassified Information (CUI) - Updated to Revision 3",
     applies_to=[
         "Federal contractors",
         "CUI handling systems",
-        "Non-federal systems processing federal CUI"
+        "Non-federal systems processing federal CUI",
+        "DFARS compliance"
     ],
     requirements=[
         "Access control (14 requirements)",
@@ -110,19 +115,24 @@ NIST_800_171 = ComplianceFramework(
         "Risk assessment (3 requirements)",
         "Security assessment (4 requirements)",
         "System and communications protection (16 requirements)",
-        "System and information integrity (7 requirements)"
+        "System and information integrity (7 requirements)",
+        "Rev 3: Organization-Defined Parameters (ODPs)",
+        "Rev 3: Enhanced security requirements",
+        "110+ security requirements total",
+        "SPRS score reporting",
+        "External Service Provider requirements"
     ],
     keywords=[
         "nist", "800-171", "cui", "controlled unclassified",
-        "contractor", "dfars"
+        "contractor", "dfars", "rev 3", "revision 3", "sprs"
     ]
 )
 
 CMMC = ComplianceFramework(
     id="cmmc",
-    name="CMMC (Cybersecurity Maturity Model Certification)",
+    name="CMMC 2.0 (Cybersecurity Maturity Model Certification)",
     category="government",
-    description="DoD cybersecurity certification for defense contractors",
+    description="DoD cybersecurity certification for defense contractors - Final Rule (32 CFR Part 170)",
     applies_to=[
         "Department of Defense contractors",
         "Defense Industrial Base (DIB)",
@@ -131,16 +141,18 @@ CMMC = ComplianceFramework(
     ],
     levels=["CMMC Level 1 (Foundational)", "CMMC Level 2 (Advanced)", "CMMC Level 3 (Expert)"],
     requirements=[
-        "Level 1: Basic cybersecurity hygiene (17 practices)",
-        "Level 2: Aligns with NIST 800-171 (110 practices)",
-        "Level 3: Advanced/progressive cybersecurity (110+ practices)",
-        "Third-party assessment (C3PAO)",
-        "Self-assessment (Level 1 only)",
-        "Annual certification renewal"
+        "Level 1: Basic cybersecurity hygiene (17 practices from FAR 52.204-21)",
+        "Level 2: Aligns with NIST 800-171 Rev 2 (110 practices)",
+        "Level 3: Based on NIST 800-172 subset (110+ practices)",
+        "Third-party assessment (C3PAO) for Level 2 and 3",
+        "Self-assessment allowed for some Level 2",
+        "3-year certification validity",
+        "POA&M allowed for Level 2 (180 days)",
+        "Affirmation required in SPRS"
     ],
     keywords=[
-        "cmmc", "dod", "defense", "maturity model", "c3pao",
-        "level 1", "level 2", "level 3", "dib"
+        "cmmc", "cmmc 2.0", "dod", "defense", "maturity model", "c3pao",
+        "level 1", "level 2", "level 3", "dib", "32 cfr 170", "sprs"
     ]
 )
 
@@ -269,6 +281,256 @@ SECTION_508 = ComplianceFramework(
     keywords=[
         "508", "section 508", "accessibility", "wcag",
         "ada", "screen reader", "accessible"
+    ]
+)
+
+# Additional Government Compliance Frameworks (User Priority List)
+
+DFARS_CYBERSECURITY = ComplianceFramework(
+    id="dfars_cybersecurity",
+    name="DFARS 252.204-7012 (Safeguarding Covered Defense Information)",
+    category="government",
+    description="DoD contract clause requiring NIST 800-171 compliance for CUI",
+    applies_to=[
+        "DoD contractors and subcontractors",
+        "Companies handling Covered Defense Information (CDI)",
+        "NIST 800-171 implementations",
+        "Supply chain partners"
+    ],
+    requirements=[
+        "Implement NIST SP 800-171 security requirements",
+        "Report cyber incidents within 72 hours",
+        "Support DoD damage assessment activities",
+        "Provide access to systems for forensics",
+        "Flow down requirements to subcontractors",
+        "Submit compliance score to SPRS",
+        "Maintain incident response capability",
+        "Preserve images of affected systems for 90 days"
+    ],
+    keywords=[
+        "dfars", "252.204-7012", "7012", "covered defense",
+        "cdi", "cyber incident", "72 hours", "dod contracts"
+    ]
+)
+
+FAR_52_204_21 = ComplianceFramework(
+    id="far_52_204_21",
+    name="FAR 52.204-21 (Basic Safeguarding of Covered Contractor Information)",
+    category="government",
+    description="Basic cybersecurity requirements for Federal Contract Information (FCI)",
+    applies_to=[
+        "All federal contractors",
+        "Federal Contract Information (FCI) handlers",
+        "CMMC Level 1 baseline"
+    ],
+    requirements=[
+        "Limit access to authorized users",
+        "Limit access to authorized processes",
+        "Verify and monitor users",
+        "Sanitize media before disposal/release",
+        "Protect information at rest",
+        "Protect information in transit",
+        "Update malicious code protection",
+        "Update system patches",
+        "Control physical access to systems",
+        "Authenticate before system access",
+        "Control remote access",
+        "Limit use of portable storage devices",
+        "Scan for vulnerabilities",
+        "Protect communications at system boundaries",
+        "Identify and report flaws",
+        "Provide security awareness training"
+    ],
+    keywords=[
+        "far", "52.204-21", "basic safeguarding", "fci",
+        "federal contract information", "cmmc level 1"
+    ]
+)
+
+ZERO_TRUST = ComplianceFramework(
+    id="zero_trust",
+    name="Zero Trust Architecture (NIST SP 800-207)",
+    category="government",
+    description="Security model requiring verification for every transaction",
+    applies_to=[
+        "Federal agencies (per EO 14028)",
+        "Cloud migrations",
+        "Modern network architectures",
+        "Remote workforce solutions"
+    ],
+    requirements=[
+        "Never trust, always verify principle",
+        "Least privilege access",
+        "Assume breach mentality",
+        "Verify explicitly",
+        "Continuous verification of trust",
+        "Micro-segmentation",
+        "Multi-factor authentication everywhere",
+        "Encryption of data in transit",
+        "Device trust verification",
+        "Identity-based policies",
+        "Real-time risk assessment",
+        "Policy enforcement points (PEP)",
+        "Policy decision points (PDP)"
+    ],
+    keywords=[
+        "zero trust", "zt", "zta", "800-207", "never trust",
+        "always verify", "micro-segmentation", "assume breach"
+    ]
+)
+
+NIST_AI_RMF = ComplianceFramework(
+    id="nist_ai_rmf",
+    name="NIST AI Risk Management Framework (AI RMF 1.0)",
+    category="government",
+    description="Framework for managing risks in AI systems",
+    applies_to=[
+        "AI/ML systems in government",
+        "Federal AI deployments",
+        "Trustworthy AI implementations",
+        "High-risk AI applications"
+    ],
+    requirements=[
+        "Map AI risks and context",
+        "Measure AI performance and impacts",
+        "Manage AI risks throughout lifecycle",
+        "Govern AI development and deployment",
+        "Ensure AI validity and reliability",
+        "Maintain AI safety and security",
+        "Address AI accountability and transparency",
+        "Ensure AI explainability and interpretability",
+        "Protect privacy in AI systems",
+        "Ensure fairness and non-discrimination",
+        "Test for robustness and resilience",
+        "Document AI decision-making processes"
+    ],
+    keywords=[
+        "ai rmf", "nist ai", "artificial intelligence", "machine learning",
+        "trustworthy ai", "ai risk", "ai governance", "explainable ai"
+    ]
+)
+
+CONTINUOUS_ATO = ComplianceFramework(
+    id="continuous_ato",
+    name="Continuous ATO (cATO) / Ongoing Authorization",
+    category="government",
+    description="Continuous monitoring and authorization approach for federal systems",
+    applies_to=[
+        "FedRAMP Continuous Monitoring",
+        "Federal agency systems",
+        "Cloud service providers",
+        "DevSecOps environments"
+    ],
+    requirements=[
+        "Continuous monitoring strategy",
+        "Automated security control assessment",
+        "Real-time risk scoring",
+        "Automated vulnerability scanning",
+        "Continuous compliance validation",
+        "Security metrics and KPIs",
+        "Automated POA&M management",
+        "Change control board integration",
+        "Monthly vulnerability scans",
+        "Annual penetration testing",
+        "Continuous security control monitoring",
+        "Real-time alerting and response"
+    ],
+    keywords=[
+        "cato", "continuous ato", "ongoing authorization",
+        "continuous monitoring", "conmon", "automated compliance"
+    ]
+)
+
+C_SCRM = ComplianceFramework(
+    id="c_scrm",
+    name="Cyber Supply Chain Risk Management (C-SCRM)",
+    category="government",
+    description="Framework for managing cybersecurity risks in supply chains",
+    applies_to=[
+        "Federal contractors",
+        "Critical infrastructure",
+        "Supply chain partners",
+        "Third-party vendors"
+    ],
+    requirements=[
+        "Supply chain risk assessment",
+        "Vendor security assessments",
+        "SBOM (Software Bill of Materials)",
+        "Third-party risk management",
+        "Counterfeit component detection",
+        "Secure software development",
+        "Code provenance tracking",
+        "Vulnerability disclosure program",
+        "Incident response coordination",
+        "Supply chain mapping",
+        "Critical supplier identification",
+        "Alternative supplier planning"
+    ],
+    keywords=[
+        "c-scrm", "supply chain", "sbom", "third party",
+        "vendor risk", "software bill", "provenance"
+    ]
+)
+
+AWS_GOVCLOUD = ComplianceFramework(
+    id="aws_govcloud",
+    name="AWS GovCloud Compliance",
+    category="government",
+    description="Compliance requirements for AWS GovCloud regions",
+    applies_to=[
+        "Federal agencies using AWS",
+        "DoD Impact Levels 2-6",
+        "ITAR-controlled data",
+        "FedRAMP High workloads"
+    ],
+    requirements=[
+        "FedRAMP High authorization",
+        "DoD IL2/IL4/IL5/IL6 compliance",
+        "ITAR compliance",
+        "US persons only access",
+        "Physical isolation from commercial AWS",
+        "FIPS 140-2 Level 2 validated HSMs",
+        "Dedicated GovCloud regions",
+        "Enhanced access controls",
+        "Government-specific SLAs",
+        "Compliance inheritance model",
+        "Shared responsibility model",
+        "AWS Artifact access for compliance docs"
+    ],
+    keywords=[
+        "aws govcloud", "il4", "il5", "il6", "impact level",
+        "govcloud west", "govcloud east", "aws gov"
+    ]
+)
+
+AZURE_GOVERNMENT = ComplianceFramework(
+    id="azure_government",
+    name="Azure Government Compliance",
+    category="government",
+    description="Compliance requirements for Azure Government cloud",
+    applies_to=[
+        "Federal agencies using Azure",
+        "DoD Impact Levels",
+        "State and local government",
+        "FedRAMP High workloads"
+    ],
+    requirements=[
+        "FedRAMP High authorization",
+        "DoD IL2/IL4/IL5 compliance",
+        "CJIS compliance",
+        "IRS 1075 compliance",
+        "US persons only access",
+        "Physical isolation from commercial Azure",
+        "Dedicated datacenters",
+        "Azure Blueprint templates",
+        "Azure Policy for compliance",
+        "Azure Security Center monitoring",
+        "Compliance Manager assessments",
+        "Government-specific regions"
+    ],
+    keywords=[
+        "azure government", "azure gov", "usgov virginia",
+        "usgov arizona", "dod regions", "azure blueprint"
     ]
 )
 
@@ -852,6 +1114,15 @@ ALL_FRAMEWORKS = [
     ITAR,
     EAR,
     SECTION_508,
+    # Additional Government (User Priority)
+    DFARS_CYBERSECURITY,
+    FAR_52_204_21,
+    ZERO_TRUST,
+    NIST_AI_RMF,
+    CONTINUOUS_ATO,
+    C_SCRM,
+    AWS_GOVCLOUD,
+    AZURE_GOVERNMENT,
     # Healthcare
     HIPAA,
     HITECH,
