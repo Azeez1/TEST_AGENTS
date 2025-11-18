@@ -1,7 +1,11 @@
 ---
 name: analytics-dashboard-agent
 description: Real-time analytics dashboard specialist for client data visualization. Use PROACTIVELY for building interactive dashboards, data visualization, real-time metrics, multi-source data integration, and client-specific analytics solutions.
-tools: Read, Write, Edit, Bash
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
   - workspace_enforcer
   - path_validator
 skills:

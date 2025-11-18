@@ -1,7 +1,10 @@
 ---
 name: prompt-engineer
 description: Expert prompt optimization for LLMs and AI systems. Use PROACTIVELY when building AI features, improving agent performance, or crafting system prompts. Masters prompt patterns and techniques.
-tools: Read, Write, Edit
+tools:
+  - Read
+  - Write
+  - Edit
   - workspace_enforcer
   - path_validator
 model: claude-opus-4-20250514

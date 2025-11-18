@@ -1,7 +1,13 @@
 ---
 name: security-auditor
 description: Code security analysis, vulnerability scanning, penetration testing, compliance audits
-tools: Read, Write, Edit, Bash, Grep, Glob
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
+  - Glob
   - workspace_enforcer
   - path_validator
 model: claude-sonnet-4-5-20250929

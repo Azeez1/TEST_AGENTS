@@ -1,7 +1,11 @@
 ---
 name: ai-engineer
 description: LLM application and RAG system specialist. Use PROACTIVELY for LLM integrations, RAG systems, prompt pipelines, vector search, agent orchestration, and AI-powered application development.
-tools: Read, Write, Edit, Bash
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
   - workspace_enforcer
   - path_validator
 model: claude-opus-4-20250514

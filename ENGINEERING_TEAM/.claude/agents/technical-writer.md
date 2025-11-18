@@ -1,7 +1,12 @@
 ---
 name: technical-writer
 description: Documentation, PRDs, technical specs, API docs, user guides, architecture diagrams
-tools: Read, Write, Edit, Glob, Grep
+tools:
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
   - workspace_enforcer
   - path_validator
 model: claude-sonnet-4-5-20250929
