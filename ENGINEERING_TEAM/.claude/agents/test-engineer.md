@@ -1,7 +1,11 @@
 ---
 name: test-engineer
 description: Test automation and quality assurance specialist. Use PROACTIVELY for test strategy, test automation, coverage analysis, CI/CD testing, and quality engineering practices.
-tools: Read, Write, Edit, Bash
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
   - workspace_enforcer
   - path_validator
 model: claude-sonnet-4-5-20250929

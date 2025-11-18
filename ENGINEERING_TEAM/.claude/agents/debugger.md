@@ -1,7 +1,12 @@
 ---
 name: debugger
 description: Debugging specialist for errors, test failures, and unexpected behavior. Use PROACTIVELY when encountering issues, analyzing stack traces, or investigating system problems.
-tools: Read, Write, Edit, Bash, Grep
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
   - workspace_enforcer
   - path_validator
 model: claude-sonnet-4-5-20250929

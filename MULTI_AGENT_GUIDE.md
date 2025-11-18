@@ -52,7 +52,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - edge-case-agent - Edge case identification
 - fixture-agent - Pytest fixtures
 
-**ENGINEERING_TEAM (14 agents) ⭐ SUPER TEAM:**
+**ENGINEERING_TEAM (15 agents) ⭐ SUPER TEAM:**
 - cto - Strategic coordinator & intelligent routing for all specialists
 - devops-engineer - CI/CD, Terraform, Kubernetes, monitoring, security scanning
 - frontend-developer - React, responsive design, state management, accessibility
@@ -62,6 +62,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - system-architect - ✨ **NEW** System architecture design & professional flow diagrams
 - ai-engineer - LLM integration, RAG systems, prompt optimization, agent frameworks
 - ui-ux-designer - User research, wireframes, design systems, user flows
+- analytics-dashboard-agent - ✨ **NEW** Real-time analytics dashboards, ETL pipelines, data visualization
 - code-reviewer - Quality, security, maintainability reviews (3.2K downloads)
 - test-engineer - Test automation, QA strategy, CI/CD testing (1.3K downloads)
 - prompt-engineer - LLM prompt optimization, techniques, benchmarking (2.4K downloads)
@@ -95,7 +96,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ## 🏢 Agent Workspace Assignments
 
-All 38 agents are organized into 5 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+All 39 agents are organized into 5 team workspaces with strict folder boundaries and **automatic workspace awareness**:
 
 ### MARKETING_TEAM (17 agents)
 **Location:** `MARKETING_TEAM/.claude/agents/`
@@ -114,12 +115,12 @@ All 38 agents are organized into 5 team workspaces with strict folder boundaries
 **Testing scope:** Can test ANY codebase in TEST_AGENTS (all 4 systems)
 **Workspace enforcement:** ✅ ENABLED
 
-### ENGINEERING_TEAM (14 agents)
+### ENGINEERING_TEAM (15 agents)
 **Location:** `ENGINEERING_TEAM/.claude/agents/`
 **Memory:** `ENGINEERING_TEAM/memory/` (deployment configs, infrastructure settings)
-**Outputs:** `ENGINEERING_TEAM/outputs/` (PRDs, specs, diagrams, code reviews)
+**Outputs:** `ENGINEERING_TEAM/outputs/` (PRDs, specs, diagrams, code reviews, dashboards, pipelines)
 **Docs:** `ENGINEERING_TEAM/docs/` (technical documentation)
-**Agents:** cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**Agents:** cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, analytics-dashboard-agent, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
 
 **Full workspace access:** Can work with all 4 systems for optimization, deployment, review
 **Workspace enforcement:** ✅ ENABLED
@@ -813,7 +814,7 @@ For comprehensive guide on proper agent invocation:
 ls .claude/agents/                   # Should show 1 .md file (supervisor)
 ls MARKETING_TEAM/.claude/agents/    # Should show 17 .md files
 ls QA_TEAM/.claude/agents/           # Should show 5 .md files
-ls ENGINEERING_TEAM/.claude/agents/  # Should show 14 .md files
+ls ENGINEERING_TEAM/.claude/agents/  # Should show 15 .md files
 ```
 
 ✅ **Try your first agent:**
@@ -837,7 +838,7 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 38 agents perfectly defined (17 marketing + 5 testing + 14 engineering + 1 user story system + 1 root supervisor)
+- ✅ 39 agents perfectly defined (17 marketing + 5 testing + 14 engineering + 1 user story + 1 proposal + 1 root supervisor)
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run

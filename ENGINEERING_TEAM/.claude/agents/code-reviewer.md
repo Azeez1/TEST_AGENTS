@@ -1,7 +1,12 @@
 ---
 name: code-reviewer
 description: Expert code review specialist for quality, security, and maintainability. Use PROACTIVELY after writing or modifying code to ensure high development standards.
-tools: Read, Write, Edit, Bash, Grep
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Grep
   - workspace_enforcer
   - path_validator
 model: claude-sonnet-4-5-20250929
