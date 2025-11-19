@@ -162,12 +162,18 @@ result = gemini.query_with_context(
     "Explain CMMC scoping for Level 2 assessments"
 )
 print("AI Response:", result['response'])
-print("\nGrounding Chunks:")
-for chunk in result['grounding_chunks']:
-    print(f"  - {chunk['content'][:100]}...")
-print("\nGrounding Supports:")
+
+print("\nGrounding Chunks (sources):")
+for i, chunk in enumerate(result['grounding_chunks'], 1):
+    print(f"  [{i}] {chunk['title']}")
+    print(f"      {chunk['text'][:100]}...")
+
+print("\nGrounding Supports (citations):")
 for support in result['grounding_metadata']['grounding_supports']:
-    print(f"  - {support['segment']}")
+    seg = support['segment']
+    indices = support['grounding_chunk_indices']
+    print(f"  - Text: '{seg['text']}'")
+    print(f"    From chunks: {indices}")
 ```
 
 ### Option 3: Integration with Existing RAG Pipeline

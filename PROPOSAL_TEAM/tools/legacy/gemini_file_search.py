@@ -423,7 +423,7 @@ class GeminiFileSearch:
     # Helper methods
 
     def _extract_grounding_chunks(self, response: Any) -> List[Dict[str, Any]]:
-        """Extract grounding chunks from response."""
+        """Extract grounding chunks from file search response."""
         chunks = []
 
         if hasattr(response, "candidates"):
@@ -432,15 +432,26 @@ class GeminiFileSearch:
                     gm = candidate.grounding_metadata
                     if hasattr(gm, "grounding_chunks"):
                         for chunk in gm.grounding_chunks:
-                            chunks.append({
-                                "content": getattr(chunk, "content", ""),
-                                "uri": getattr(getattr(chunk, "web", None), "uri", None),
-                            })
+                            # For file search, chunks have retrieved_context
+                            if hasattr(chunk, "retrieved_context"):
+                                rc = chunk.retrieved_context
+                                chunks.append({
+                                    "title": getattr(rc, "title", ""),
+                                    "text": getattr(rc, "text", ""),
+                                    "uri": getattr(rc, "uri", ""),
+                                })
+                            # Fallback for web search grounding (has web attribute)
+                            elif hasattr(chunk, "web"):
+                                chunks.append({
+                                    "title": getattr(chunk.web, "title", ""),
+                                    "text": "",
+                                    "uri": getattr(chunk.web, "uri", ""),
+                                })
 
         return chunks
 
     def _extract_grounding_metadata(self, response: Any) -> Dict[str, Any]:
-        """Extract grounding metadata from response."""
+        """Extract grounding metadata from file search response."""
         metadata = {
             "grounding_chunks": [],
             "grounding_supports": [],
@@ -452,28 +463,49 @@ class GeminiFileSearch:
                 if hasattr(candidate, "grounding_metadata"):
                     gm = candidate.grounding_metadata
 
-                    # Extract grounding chunks
+                    # Extract grounding chunks (for file search)
                     if hasattr(gm, "grounding_chunks"):
-                        metadata["grounding_chunks"] = [
-                            {"content": getattr(chunk, "content", "")}
-                            for chunk in gm.grounding_chunks
-                        ]
+                        chunks = []
+                        for chunk in gm.grounding_chunks:
+                            if hasattr(chunk, "retrieved_context"):
+                                rc = chunk.retrieved_context
+                                chunks.append({
+                                    "title": getattr(rc, "title", ""),
+                                    "text": getattr(rc, "text", ""),
+                                    "uri": getattr(rc, "uri", ""),
+                                })
+                        metadata["grounding_chunks"] = chunks
 
-                    # Extract grounding supports
+                    # Extract grounding supports (maps text segments to chunks)
                     if hasattr(gm, "grounding_supports"):
-                        metadata["grounding_supports"] = [
-                            {
-                                "segment": getattr(
-                                    getattr(support, "segment", None), "text", ""
-                                ),
+                        supports = []
+                        for support in gm.grounding_supports:
+                            support_data = {
                                 "grounding_chunk_indices": getattr(
                                     support, "grounding_chunk_indices", []
                                 ),
                             }
-                            for support in gm.grounding_supports
-                        ]
 
-                    # Extract web search queries
+                            # Extract segment information
+                            if hasattr(support, "segment"):
+                                seg = support.segment
+                                support_data["segment"] = {
+                                    "text": getattr(seg, "text", ""),
+                                    "start_index": getattr(seg, "start_index", 0),
+                                    "end_index": getattr(seg, "end_index", 0),
+                                }
+
+                            # Extract confidence scores if available
+                            if hasattr(support, "confidence_scores"):
+                                support_data["confidence_scores"] = list(
+                                    support.confidence_scores
+                                )
+
+                            supports.append(support_data)
+
+                        metadata["grounding_supports"] = supports
+
+                    # Extract web search queries (if using web grounding)
                     if hasattr(gm, "web_search_queries"):
                         metadata["web_search_queries"] = list(gm.web_search_queries)
 
