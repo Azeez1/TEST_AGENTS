@@ -228,10 +228,53 @@ System-architect reviews existing architecture for scalability, maintainability,
 - Excel spreadsheet (technical debt inventory)
 - PowerPoint slides (executive presentation)
 
+## When to Use This vs Other Commands
+
+**Use /review-architecture when:**
+- You want SYSTEM-LEVEL architecture review
+- Strategic architectural decisions and patterns
+- Scalability and maintainability focus
+- High-level design assessment
+- Migration planning and modernization
+- Time: 3-16 hours (or 2-3 days for enterprise)
+
+**Use /code-review when:**
+- You want CODE-LEVEL review (not architecture)
+- Multi-perspective analysis (quality + security + tests)
+- File or module-level review (not system-wide)
+- Production readiness check
+- Time: 15min - 5hrs (code focus)
+
+**Use /performance-audit when:**
+- You want PERFORMANCE optimization (not architecture design)
+- Bottleneck identification and tuning
+- Specific performance issues
+- Load testing and metrics
+- Time: 2-10 hours (performance focus)
+
+**Use /security-audit when:**
+- You want SECURITY architecture review
+- Compliance and vulnerability assessment
+- Security-specific deep dive
+- Time: 20-40 minutes (security only)
+
+**Use /design-architecture when:**
+- You want to DESIGN new architecture (not review existing)
+- Greenfield or major redesign
+- Creating architecture from requirements
+- Time: 4-8 hours (design focus)
+
+**Use /scalability-analysis when:**
+- You want SCALABILITY-SPECIFIC analysis (not full architecture)
+- Load capacity planning
+- Scaling strategy only
+- Time: 2-4 hours (scalability focus)
+
 ## Follow-Up Actions
 
 After review, consider:
-- `/refactor-plan` - Create refactoring roadmap
 - `/design-architecture` - Design target architecture
-- `/migration-plan` - Plan migration strategy
+- `/scalability-analysis` - Detailed scalability planning
+- `/performance-audit` - Performance optimization
+- `/security-audit` - Security deep dive
 - `/setup-project` - Set up new architecture structure

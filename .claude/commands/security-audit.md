@@ -118,3 +118,38 @@ Security-auditor performs deep security analysis with devops-engineer for infras
 - Remediation steps for each issue
 - Compliance status report
 - Security score (0-100)
+
+## When to Use This vs Other Commands
+
+**Use /security-audit when:**
+- You ONLY need security analysis (deep dive)
+- Compliance requirements (OWASP, SOC2, GDPR, HIPAA, PCI-DSS)
+- Pre-deployment security check
+- Vulnerability scanning and remediation
+- Infrastructure security review
+- Time: 2-6 hours (security focus only)
+
+**Use /code-review when:**
+- You want MULTI-PERSPECTIVE review (quality + security + tests)
+- General code review (includes security but not security-only)
+- Production readiness (broader than just security)
+- Time: 15min - 5hrs (comprehensive review)
+
+**Use /review-architecture when:**
+- You want SYSTEM-LEVEL architecture review (includes security architecture)
+- Security architecture patterns and design
+- Strategic security assessment (not just vulnerabilities)
+- Time: 3-16 hours (architecture focus)
+
+**Use /deploy-stack when:**
+- You're DEPLOYING and need security check as part of deployment
+- Pre-deployment security validation
+- Infrastructure security hardening
+- Time: 1-8 hours (deployment + security)
+
+**Related Commands:**
+- `/code-review` - Includes security review as part of comprehensive review
+- `/review-architecture` - Architecture-level security assessment
+- `/deploy-stack` - Deployment with security checks
+- `/ship-feature` - Feature delivery with security validation
+- Use `security-check.sh` hook - Automatic credential leak prevention

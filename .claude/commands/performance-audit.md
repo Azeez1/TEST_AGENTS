@@ -176,3 +176,44 @@ Backend-architect and devops-engineer analyze application performance and identi
 - Prioritized optimization list
 - Before/after projections
 - Implementation guide
+
+## When to Use This vs Other Commands
+
+**Use /performance-audit when:**
+- You have PERFORMANCE issues or want optimization
+- Need bottleneck identification
+- Load testing and capacity planning
+- Specific performance metrics and tuning
+- Time: 2-10 hours (performance focus)
+
+**Use /review-architecture when:**
+- You want SYSTEM-LEVEL architecture review
+- Strategic architectural assessment
+- Scalability and maintainability (broader than just performance)
+- Architecture patterns and design decisions
+- Time: 3-16 hours (architecture focus)
+
+**Use /debug-issue when:**
+- You have a SPECIFIC BUG (not general performance)
+- Functional issue (not performance issue)
+- Need root cause analysis for errors
+- Time: 30min - 8hrs (debugging focus)
+
+**Use /scalability-analysis when:**
+- You want SCALABILITY planning (subset of performance)
+- Growth and capacity planning
+- Scaling strategy only
+- Time: 2-4 hours (scalability focus)
+
+**Use /code-review when:**
+- You want CODE QUALITY review (includes performance considerations)
+- General code review (not performance-specific)
+- Multi-perspective analysis
+- Time: 15min - 5hrs (code focus)
+
+**Related Commands:**
+- `/review-architecture` - System architecture review
+- `/scalability-analysis` - Scalability planning
+- `/debug-issue` - Bug fixing (functional issues)
+- `/code-review` - Code quality review
+- `/deploy-stack` - Deployment (can cause performance issues)

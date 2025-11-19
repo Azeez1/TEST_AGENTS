@@ -115,3 +115,44 @@ DevOps-engineer handles end-to-end deployment with monitoring and health checks.
 - Check logs for errors
 - Validate key metrics
 - Update status page
+
+## When to Use This vs Other Commands
+
+**Use /deploy-stack when:**
+- You ONLY need infrastructure deployment and app deployment
+- Infrastructure-as-code focus (Terraform, Kubernetes)
+- No feature development needed
+- Deployment and monitoring setup
+- Time: 1-8 hours (deployment only)
+
+**Use /ship-feature when:**
+- You want COMPLETE feature delivery (dev → test → deploy)
+- Includes feature development + code review + testing + deployment
+- Engineering workflow from code to production
+- Time: 4-16 hours (full feature workflow)
+
+**Use /product-launch when:**
+- You need FULL PRODUCT LAUNCH (Engineering + Marketing + Sales + Finance + QA)
+- Cross-team coordination
+- Product development + Marketing + Sales + Deployment
+- Strategic launch (not just infrastructure)
+- Time: 2-12 weeks (comprehensive)
+
+**Use /security-audit when:**
+- You ONLY need security review of deployment
+- Pre-deployment security check
+- Compliance verification
+- Time: 20-40 minutes (security only)
+
+**Use /performance-audit when:**
+- You want POST-DEPLOYMENT performance analysis
+- Optimization recommendations
+- Scaling strategy
+- Time: 45-90 minutes (performance focus)
+
+**Related Commands:**
+- `/ship-feature` - Feature development + deployment
+- `/product-launch` - Full cross-team product launch
+- `/security-audit` - Security review (pre-deployment)
+- `/performance-audit` - Performance optimization (post-deployment)
+- `/setup-project` - Initial project setup (before first deployment)
