@@ -81,3 +81,58 @@ Use the router-agent to coordinate this workflow:
 ## Time Estimate
 
 2-4 hours for complete campaign package
+
+## Automatic Quality Control
+
+The router-agent automatically triggers verification for:
+- Brand voice compliance (editor reviews all content, tone score 7+)
+- SEO optimization validation
+- Content quality standards
+- Campaign completeness check
+
+## When to Use This vs Other Commands
+
+**Use /launch-campaign when:**
+- You want COMPLETE marketing campaign (research → strategy → content → distribution)
+- Marketing-only workflow (no engineering/sales coordination)
+- Need landing page + content + distribution
+- Time: 2-4 hours
+
+**Use /product-launch when:**
+- You need FULL PRODUCT LAUNCH (Engineering + Marketing + Sales + Finance + QA)
+- Cross-team coordination required
+- Product development + Marketing + Sales enablement
+- Strategic product launch (not just marketing campaign)
+- Time: 2-12 weeks (comprehensive)
+
+**Use /content-suite when:**
+- You want CONTENT in multiple formats (blog + social + email + PDF)
+- Don't need landing page or distribution strategy
+- Content-creation focus only
+- Time: 90-120 minutes (content only)
+
+**Use /social-boost when:**
+- You ONLY need social media content
+- High-frequency posting schedule
+- Social engagement focus only
+- Time: 30-60 minutes (social only)
+
+**Use /proposal-package when:**
+- Creating SALES proposals (can reuse marketing content from campaign)
+- Sales-focused deliverables
+- RFP response workflow
+- Time: 3-5 hours (sales focus)
+
+**Use /competitor-intel when:**
+- You ONLY need competitive analysis (not full campaign)
+- Market research focus
+- No content creation needed
+- Time: 45-90 minutes (research only)
+
+**Related Commands:**
+- `/product-launch` - Full cross-team product launch (includes marketing)
+- `/content-suite` - Content creation only (no landing page/distribution)
+- `/social-boost` - Social media only
+- `/proposal-package` - Sales proposals (can leverage campaign content)
+- `/competitor-intel` - Competitive research only
+- `/seo-audit` - SEO analysis only (used within campaign)

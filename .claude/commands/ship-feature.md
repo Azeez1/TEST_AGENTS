@@ -92,3 +92,54 @@ CTO orchestrates the complete feature delivery workflow across all engineering a
 - Feature requirements document or description
 - Target environment access
 - Necessary API keys/credentials
+
+## Supervisor Verification
+
+After deployment, the CTO automatically triggers supervisor verification to ensure:
+- Code quality meets standards
+- Tests are passing (unit + integration)
+- Security audit completed
+- Documentation is complete
+- Deployment successful
+- Monitoring configured
+
+## When to Use This vs Other Commands
+
+**Use /ship-feature when:**
+- You want COMPLETE feature delivery (dev → test → deploy)
+- Engineering-focused workflow
+- Need end-to-end automation
+- Single feature scope
+
+**Use /product-launch when:**
+- You need CROSS-TEAM coordination (Engineering + Marketing + Sales + Finance + QA)
+- Full product launch (not just engineering)
+- Need go-to-market strategy
+- Marketing campaign + Sales enablement required
+- Time: 2-12 weeks (comprehensive)
+
+**Use /code-review when:**
+- You ONLY need code review (not full delivery)
+- Want multi-perspective analysis
+- Don't need deployment
+- Time: 15min - 5hrs (review only)
+
+**Use /debug-issue when:**
+- You're FIXING a bug (not building new feature)
+- Need root cause analysis
+- Targeted troubleshooting
+- Time: 30min - 8hrs (debugging focus)
+
+**Use /deploy-stack when:**
+- You ONLY need infrastructure deployment
+- Infrastructure-as-code focus
+- No feature development needed
+- Time: 1-3 hours (deployment only)
+
+**Related Commands:**
+- `/product-launch` - Full cross-team product launch
+- `/code-review` - Code quality review only
+- `/debug-issue` - Bug fixing workflow
+- `/deploy-stack` - Infrastructure deployment
+- `/design-architecture` - Architecture design (pre-development)
+- `/security-audit` - Security review only
