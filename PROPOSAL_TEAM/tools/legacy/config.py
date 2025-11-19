@@ -48,6 +48,16 @@ class EmbeddingConfig(BaseModel):
     dimension: int = Field(default=1536)
 
 
+class GeminiConfig(BaseModel):
+    """Gemini File Search configuration (backup RAG system)."""
+
+    api_key: str = Field(default="")
+    file_search_store_name: str = Field(default="rfp-compliance-backup")
+    model: str = Field(default="gemini-2.0-flash-exp")
+    temperature: float = Field(default=0.3)
+    enabled: bool = Field(default=False)
+
+
 class Config:
     """Main configuration class."""
 
@@ -73,6 +83,15 @@ class Config:
             provider=os.getenv("EMBEDDING_PROVIDER", "openai"),
             model=os.getenv("EMBEDDING_MODEL", "text-embedding-3-small"),
             dimension=int(os.getenv("EMBEDDING_DIMENSION", "1536")),
+        )
+
+        # Gemini Configuration (Backup RAG)
+        self.gemini = GeminiConfig(
+            api_key=os.getenv("GEMINI_API_KEY", ""),
+            file_search_store_name=os.getenv("GEMINI_FILE_SEARCH_STORE", "rfp-compliance-backup"),
+            model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp"),
+            temperature=float(os.getenv("GEMINI_TEMPERATURE", "0.3")),
+            enabled=os.getenv("GEMINI_ENABLED", "false").lower() == "true",
         )
 
         # Paths
