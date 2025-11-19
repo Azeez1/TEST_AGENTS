@@ -101,3 +101,37 @@ Markdown report with:
 - Code snippets with issues highlighted
 - Suggested fixes
 - Overall health score
+
+## When to Use This vs Other Commands
+
+**Use /code-review when:**
+- You want MULTI-PERSPECTIVE review (quality + security + testing)
+- Need comprehensive analysis before merging/deploying
+- Want to ensure production readiness
+- Have time for thorough review (15min - 5hrs)
+
+**Use /review-architecture when:**
+- You want SYSTEM-LEVEL architectural review
+- Reviewing design decisions and patterns
+- Evaluating scalability and maintainability
+- Need high-level strategic feedback
+- Time: 30-60 minutes (architectural focus)
+
+**Use /security-audit when:**
+- You ONLY need security analysis (deep dive)
+- Compliance requirements (OWASP, SOC2, etc.)
+- Pre-deployment security check
+- Time: 20-40 minutes (security focus only)
+
+**Use /debug-issue when:**
+- You have a SPECIFIC BUG to fix (not general review)
+- Need root cause analysis
+- Want implementation of fix
+- Time: 15-30 minutes (targeted troubleshooting)
+
+**Related Commands:**
+- `/review-architecture` - System architecture review (broader scope)
+- `/security-audit` - Security-only deep dive
+- `/debug-issue` - Bug fixing (not general review)
+- `/ship-feature` - Complete feature workflow (includes review + tests + deploy)
+- `/performance-audit` - Performance-specific analysis

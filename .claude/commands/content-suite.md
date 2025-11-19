@@ -61,3 +61,28 @@ Creates blog post, social posts, email sequence, and PDF whitepaper all from one
 ## Time Estimate
 
 90-120 minutes
+
+## When to Use This vs Other Commands
+
+**Use /content-suite when:**
+- You need content in MULTIPLE formats for ONE topic
+- You want coordinated messaging across channels
+- Focus is on content depth and quality
+
+**Use /launch-campaign when:**
+- You need a COMPLETE marketing campaign (includes landing page, distribution)
+- You want comprehensive go-to-market approach
+- Need research, strategy, AND content
+- Time: 2-4 hours (more comprehensive)
+
+**Use /social-boost when:**
+- You ONLY need social media content
+- Want high-frequency posting schedule
+- Focus is on social engagement specifically
+- Time: 30-60 minutes (more focused)
+
+**Related Commands:**
+- `/launch-campaign` - Full campaign with landing page and distribution
+- `/social-boost` - Social media only
+- `/proposal-package` - For sales proposals (can reuse content from this suite)
+- `/product-launch` - For product launches (includes engineering + marketing)

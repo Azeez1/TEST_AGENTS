@@ -129,3 +129,35 @@ Markdown report with:
 - Fix description
 - Prevention recommendations
 - Code changes (diff)
+
+## When to Use This vs Other Commands
+
+**Use /debug-issue when:**
+- You have a SPECIFIC BUG or error to fix
+- Need root cause analysis and resolution
+- Want systematic troubleshooting approach
+- Issue is already identified
+
+**Use /code-review when:**
+- You want GENERAL code quality review (not fixing specific bug)
+- Need multi-perspective analysis (quality + security + tests)
+- Proactive code improvement (not reactive bug fix)
+- Time: 15min - 5hrs (comprehensive review)
+
+**Use /performance-audit when:**
+- Issue is PERFORMANCE-RELATED (not functional bug)
+- Need optimization recommendations
+- Scaling and efficiency focus
+- Time: 45-90 minutes (performance focus)
+
+**Use /security-audit when:**
+- Issue is SECURITY-RELATED vulnerability
+- Need compliance verification
+- Deep security analysis required
+- Time: 20-40 minutes (security focus)
+
+**Related Commands:**
+- `/code-review` - General code quality review
+- `/performance-audit` - Performance optimization
+- `/security-audit` - Security vulnerability analysis
+- `/ship-feature` - Complete feature workflow (includes testing to prevent bugs)
