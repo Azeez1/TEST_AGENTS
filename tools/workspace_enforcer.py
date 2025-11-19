@@ -33,7 +33,7 @@ except (ImportError, AttributeError):
         return func
 
 
-# Define workspace structure for all 4 teams
+# Define workspace structure for all 6 teams
 WORKSPACE_STRUCTURE = {
     "MARKETING_TEAM": {
         "agents": 17,
@@ -93,6 +93,34 @@ WORKSPACE_STRUCTURE = {
         "folders": ["memory", "output", "tools"],
         "memory_files": ["preferences_store.json"],
         "agents_list": ["user_story_agent"]
+    },
+    "FINANCIAL_TEAM": {
+        "agents": 10,
+        "folders": ["memory", "outputs", "tools", ".claude/agents"],
+        "memory_files": [
+            "financial_assumptions.json",
+            "historical_financials.json",
+            "chart_of_accounts.json"
+        ],
+        "agents_list": [
+            "accountant", "deal-analyst", "controller", "cfo-agent",
+            "forecasting-agent", "financial-analyst", "fpna-agent",
+            "portfolio-manager", "tax-advisor", "valuation-agent"
+        ]
+    },
+    "SALES_TEAM": {
+        "agents": 8,
+        "folders": ["memory", "outputs", "tools", ".claude/agents"],
+        "memory_files": [
+            "crm_config.json",
+            "outreach_templates.json",
+            "target_lists.json"
+        ],
+        "agents_list": [
+            "outbound-specialist", "customer-success-manager", "account-executive",
+            "sales-analyst", "proposal-specialist", "sdr-agent",
+            "sales-operations", "sales-manager"
+        ]
     }
 }
 
@@ -111,7 +139,7 @@ def _get_repo_root() -> Path:
             return parent
 
     # Check if we're inside a team folder
-    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT"]
+    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT", "FINANCIAL_TEAM", "SALES_TEAM"]
     for team in team_folders:
         if team in str(current):
             # Navigate up to find TEST_AGENTS
