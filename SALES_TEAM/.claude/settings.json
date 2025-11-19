@@ -1,0 +1,29 @@
+{
+  "teams": {
+    "SALES_TEAM": {
+      "description": "Versatile sales organization for prospecting, closing deals, and customer success",
+      "workspace": "SALES_TEAM",
+      "agents": [
+        "sdr-agent",
+        "account-executive",
+        "sales-operations",
+        "sales-analyst",
+        "proposal-specialist",
+        "customer-success-manager",
+        "outbound-specialist",
+        "sales-manager"
+      ],
+      "memory": "SALES_TEAM/memory/",
+      "outputs": "SALES_TEAM/outputs/",
+      "tools": "SALES_TEAM/tools/"
+    }
+  },
+  "skills": {
+    "filesystem": true,
+    "xlsx": true
+  },
+  "mcp_servers": [
+    "google-workspace",
+    "bright-data"
+  ]
+}

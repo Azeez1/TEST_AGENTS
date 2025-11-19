@@ -1,0 +1,31 @@
+{
+  "teams": {
+    "FINANCIAL_TEAM": {
+      "description": "Hybrid PE/M&A and general finance team for private equity, financial analysis, and accounting operations",
+      "workspace": "FINANCIAL_TEAM",
+      "agents": [
+        "financial-analyst",
+        "forecasting-agent",
+        "deal-analyst",
+        "valuation-agent",
+        "portfolio-manager",
+        "fpna-agent",
+        "cfo-agent",
+        "accountant",
+        "controller",
+        "tax-advisor"
+      ],
+      "memory": "FINANCIAL_TEAM/memory/",
+      "outputs": "FINANCIAL_TEAM/outputs/",
+      "tools": "FINANCIAL_TEAM/tools/"
+    }
+  },
+  "skills": {
+    "filesystem": true,
+    "xlsx": true
+  },
+  "mcp_servers": [
+    "google-workspace",
+    "bright-data"
+  ]
+}
