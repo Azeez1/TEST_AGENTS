@@ -152,24 +152,22 @@ file_paths = [Path(f) for f in ["doc1.pdf", "doc2.pdf", "doc3.pdf"]]
 uploaded = gemini.upload_files_batch(file_paths)
 print(f"Uploaded {len(uploaded)} files")
 
-# Query the knowledge base
+# Query the knowledge base (returns AI response)
 query = "What are the CMMC Level 2 requirements for access control?"
-results = gemini.query(query, top_k=10)
+response = gemini.query(query)
+print(f"Response: {response}")
 
-for result in results:
-    print(f"Score: {result['score']}")
-    print(f"Text: {result['text'][:200]}...")
-    print(f"Metadata: {result['metadata']}")
-    print()
-
-# Query with AI-generated response and citations
+# Query with AI-generated response and grounding metadata
 result = gemini.query_with_context(
     "Explain CMMC scoping for Level 2 assessments"
 )
 print("AI Response:", result['response'])
-print("\nSources:")
-for source in result['sources']:
-    print(f"  - {source['segment']}")
+print("\nGrounding Chunks:")
+for chunk in result['grounding_chunks']:
+    print(f"  - {chunk['content'][:100]}...")
+print("\nGrounding Supports:")
+for support in result['grounding_metadata']['grounding_supports']:
+    print(f"  - {support['segment']}")
 ```
 
 ### Option 3: Integration with Existing RAG Pipeline
@@ -197,8 +195,9 @@ def query_knowledge_base(query_text: str, top_k: int = 10):
         if config.gemini.enabled and GEMINI_AVAILABLE:
             print("→ Falling back to Gemini File Search")
             gemini = GeminiFileSearch()
-            results = gemini.query(query_text, top_k=top_k)
-            return results
+            # Note: Gemini returns AI response, not raw chunks
+            response = gemini.query_with_context(query_text)
+            return response
         else:
             raise Exception("No RAG system available")
 ```
@@ -207,16 +206,28 @@ def query_knowledge_base(query_text: str, top_k: int = 10):
 
 ## Management Operations
 
-### List Uploaded Files
+### List All Stores
 
 ```python
 gemini = GeminiFileSearch()
-files = gemini.list_files()
+stores = gemini.list_stores()
 
-for file in files:
-    print(f"Name: {file['display_name']}")
-    print(f"Metadata: {file['metadata']}")
+for store in stores:
+    print(f"Name: {store['name']}")
+    print(f"Display Name: {store['display_name']}")
+    print(f"Created: {store['create_time']}")
     print()
+```
+
+### Get a Specific Store
+
+```python
+gemini = GeminiFileSearch()
+store = gemini.get_store(store_name="your-store-name")
+
+if store:
+    print(f"Store: {store['display_name']}")
+    print(f"Created: {store['create_time']}")
 ```
 
 ### Get Store Statistics
@@ -226,15 +237,16 @@ gemini = GeminiFileSearch()
 stats = gemini.get_store_stats()
 
 print(f"Store: {stats['display_name']}")
-print(f"Total files: {stats['total_files']}")
 print(f"Model: {stats['model']}")
+print(f"Created: {stats['create_time']}")
 ```
 
-### Delete a File
+### Delete a Store
 
 ```python
 gemini = GeminiFileSearch()
-success = gemini.delete_file("files/abc123xyz")
+# force=True also deletes all documents in the store
+success = gemini.delete_store(force=True)
 print(f"Deleted: {success}")
 ```
 
@@ -384,15 +396,16 @@ GeminiFileSearch(
 
 | Method | Description | Returns |
 |--------|-------------|---------|
-| `create_file_search_store(display_name)` | Create new file search store | Store resource name |
-| `get_or_create_store(display_name)` | Get existing or create new store | Store resource name |
-| `upload_file(file_path, metadata)` | Upload single file | File resource name |
-| `upload_files_batch(file_paths, metadata_list)` | Upload multiple files | List of file names |
-| `query(query_text, top_k, metadata_filter)` | Search documents | List of results |
-| `query_with_context(query_text, top_k)` | Query with AI response | Dict with response + sources |
-| `delete_file(file_name)` | Delete a file | Boolean success |
-| `list_files()` | List all files in store | List of file metadata |
-| `get_store_stats()` | Get store statistics | Dict with stats |
+| `create_file_search_store(display_name)` | Create new file search store | Store resource name (str) |
+| `get_or_create_store(display_name)` | Get existing or create new store | Store resource name (str) |
+| `upload_file(file_path, metadata, wait_for_completion, timeout)` | Upload single file (async) | Operation name (str) |
+| `upload_files_batch(file_paths, metadata_list, wait_for_completion)` | Upload multiple files | List of operation names |
+| `query(query_text, top_k)` | Query and get AI response | AI-generated response (str) |
+| `query_with_context(query_text, top_k)` | Query with grounding metadata | Dict with response + grounding |
+| `list_stores()` | List all file search stores | List of store metadata |
+| `get_store(store_name)` | Get a specific store | Store metadata dict or None |
+| `delete_store(store_name, force)` | Delete a store | Boolean success |
+| `get_store_stats()` | Get current store statistics | Dict with stats |
 
 ---
 

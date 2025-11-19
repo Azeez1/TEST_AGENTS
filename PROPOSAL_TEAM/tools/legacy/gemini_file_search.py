@@ -4,7 +4,7 @@ Provides fully managed RAG capabilities using Google's Gemini API.
 """
 
 import logging
-import os
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -69,7 +69,6 @@ class GeminiFileSearch:
         # Initialize Gemini client
         self.client = genai.Client(api_key=self.api_key)
         self.file_search_store = None
-        self.file_search_tool = None
 
         logger.info(f"Initialized Gemini File Search with model: {self.model}")
 
@@ -86,9 +85,9 @@ class GeminiFileSearch:
         try:
             display_name = display_name or self.store_name
 
-            # Create the file search store
-            self.file_search_store = self.client.files.create_corpus(
-                display_name=display_name
+            # Create the file search store (CORRECT API)
+            self.file_search_store = self.client.file_search_stores.create(
+                config={'display_name': display_name}
             )
 
             logger.info(
@@ -113,15 +112,12 @@ class GeminiFileSearch:
         try:
             display_name = display_name or self.store_name
 
-            # List existing corpora
-            corpora = list(self.client.files.list_corpora())
-
-            # Check if store with this name exists
-            for corpus in corpora:
-                if corpus.display_name == display_name:
-                    self.file_search_store = corpus
-                    logger.info(f"Found existing store: {corpus.name}")
-                    return corpus.name
+            # List existing stores (CORRECT API)
+            for store in self.client.file_search_stores.list():
+                if store.display_name == display_name:
+                    self.file_search_store = store
+                    logger.info(f"Found existing store: {store.name}")
+                    return store.name
 
             # Create new store if not found
             return self.create_file_search_store(display_name)
@@ -134,13 +130,17 @@ class GeminiFileSearch:
         self,
         file_path: Path,
         metadata: Optional[Dict[str, Any]] = None,
+        wait_for_completion: bool = True,
+        timeout: int = 300,
     ) -> str:
         """
         Upload a file to the file search store.
 
         Args:
             file_path: Path to the file to upload
-            metadata: Optional metadata to attach to the file
+            metadata: Optional metadata (stored in display_name for now)
+            wait_for_completion: Wait for async upload to complete
+            timeout: Max seconds to wait for upload completion
 
         Returns:
             Uploaded file resource name
@@ -149,32 +149,34 @@ class GeminiFileSearch:
             if not self.file_search_store:
                 self.get_or_create_store()
 
-            # Prepare metadata
-            file_metadata = metadata or {}
-            file_metadata["original_filename"] = file_path.name
+            # Prepare display name (can include metadata)
+            display_name = file_path.name
+            if metadata and "framework_id" in metadata:
+                display_name = f"{metadata['framework_id']}_{file_path.name}"
 
-            # Upload file to Gemini
-            with open(file_path, "rb") as f:
-                uploaded_file = self.client.files.upload(
-                    file=f,
-                    config=types.UploadFileConfig(
-                        display_name=file_path.name,
-                        mime_type=self._get_mime_type(file_path),
-                    ),
-                )
-
-            # Add to corpus
-            self.client.files.create_corpus_document(
-                corpus=self.file_search_store.name,
-                document=types.Document(
-                    display_name=file_path.name,
-                    custom_metadata=file_metadata,
-                ),
-                files=[uploaded_file],
+            # Upload file to Gemini (CORRECT API)
+            operation = self.client.file_search_stores.upload_to_file_search_store(
+                file=str(file_path),
+                file_search_store_name=self.file_search_store.name,
+                config={'display_name': display_name}
             )
 
-            logger.info(f"Uploaded file: {file_path.name}")
-            return uploaded_file.name
+            logger.info(f"Uploading file: {file_path.name}")
+
+            # Wait for upload to complete (async operation)
+            if wait_for_completion:
+                start_time = time.time()
+                while not operation.done:
+                    if time.time() - start_time > timeout:
+                        raise TimeoutError(
+                            f"Upload timed out after {timeout} seconds"
+                        )
+                    time.sleep(5)
+                    operation = self.client.operations.get(operation)
+
+                logger.info(f"✓ Upload complete: {file_path.name}")
+
+            return operation.name
 
         except Exception as e:
             logger.error(f"Failed to upload file {file_path}: {e}")
@@ -184,6 +186,7 @@ class GeminiFileSearch:
         self,
         file_paths: List[Path],
         metadata_list: Optional[List[Dict[str, Any]]] = None,
+        wait_for_completion: bool = True,
     ) -> List[str]:
         """
         Upload multiple files to the file search store.
@@ -191,73 +194,71 @@ class GeminiFileSearch:
         Args:
             file_paths: List of file paths to upload
             metadata_list: Optional list of metadata dicts (one per file)
+            wait_for_completion: Wait for each upload to complete
 
         Returns:
-            List of uploaded file resource names
+            List of uploaded operation names
         """
         if metadata_list and len(metadata_list) != len(file_paths):
             raise ValueError("metadata_list must match length of file_paths")
 
-        uploaded_files = []
+        uploaded_operations = []
         for i, file_path in enumerate(file_paths):
             metadata = metadata_list[i] if metadata_list else None
             try:
-                file_name = self.upload_file(file_path, metadata)
-                uploaded_files.append(file_name)
+                operation_name = self.upload_file(
+                    file_path, metadata, wait_for_completion
+                )
+                uploaded_operations.append(operation_name)
             except Exception as e:
                 logger.error(f"Failed to upload {file_path}: {e}")
                 continue
 
-        logger.info(f"Uploaded {len(uploaded_files)}/{len(file_paths)} files")
-        return uploaded_files
+        logger.info(
+            f"Uploaded {len(uploaded_operations)}/{len(file_paths)} files"
+        )
+        return uploaded_operations
 
     def query(
         self,
         query_text: str,
         top_k: int = 10,
-        metadata_filter: Optional[Dict[str, Any]] = None,
-    ) -> List[Dict[str, Any]]:
+    ) -> str:
         """
         Query the file search store using Gemini.
 
+        Note: Gemini File Search doesn't directly return chunks like Pinecone.
+        It uses the file search tool to ground responses automatically.
+
         Args:
             query_text: The query string
-            top_k: Number of results to return (not directly controllable in Gemini)
-            metadata_filter: Optional metadata filters (limited support)
+            top_k: Not directly controllable in Gemini
 
         Returns:
-            List of search results with text, metadata, and citations
+            AI-generated response grounded in your documents
         """
         try:
             if not self.file_search_store:
                 self.get_or_create_store()
 
-            # Create file search tool if not exists
-            if not self.file_search_tool:
-                self.file_search_tool = types.Tool(
-                    google_search=types.GoogleSearch(
-                        dynamic_retrieval_config=types.DynamicRetrievalConfig(
-                            mode=types.DynamicRetrievalConfig.Mode.MODE_DYNAMIC,
-                            dynamic_threshold=0.3,
-                        )
-                    )
-                )
-
-            # Query using Gemini with file search
+            # Query using Gemini with file search tool (CORRECT API)
             response = self.client.models.generate_content(
                 model=self.model,
                 contents=query_text,
                 config=types.GenerateContentConfig(
-                    tools=[self.file_search_tool],
+                    tools=[
+                        types.Tool(
+                            file_search=types.FileSearch(
+                                file_search_store_names=[self.file_search_store.name]
+                            )
+                        )
+                    ],
                     temperature=config.gemini.temperature,
                 ),
             )
 
-            # Parse response and extract grounding metadata
-            results = self._parse_search_results(response)
-
-            logger.info(f"Query returned {len(results)} results")
-            return results
+            logger.info(f"Query completed successfully")
+            return response.text if response.text else ""
 
         except Exception as e:
             logger.error(f"Query failed: {e}")
@@ -269,39 +270,40 @@ class GeminiFileSearch:
         top_k: int = 10,
     ) -> Dict[str, Any]:
         """
-        Query and return both the AI response and retrieved context.
+        Query and return both the AI response and grounding metadata.
 
         Args:
             query_text: The query string
-            top_k: Number of results to return
+            top_k: Number of results (not directly controllable)
 
         Returns:
-            Dict with 'response' (AI answer) and 'sources' (retrieved docs)
+            Dict with 'response' (AI answer) and 'grounding_metadata'
         """
         try:
             if not self.file_search_store:
                 self.get_or_create_store()
 
-            # Create file search tool
-            file_search_tool = types.Tool(
-                google_search=types.GoogleSearch()
-            )
-
-            # Generate response with grounding
+            # Generate response with grounding (CORRECT API)
             response = self.client.models.generate_content(
                 model=self.model,
                 contents=query_text,
                 config=types.GenerateContentConfig(
-                    tools=[file_search_tool],
+                    tools=[
+                        types.Tool(
+                            file_search=types.FileSearch(
+                                file_search_store_names=[self.file_search_store.name]
+                            )
+                        )
+                    ],
                     temperature=config.gemini.temperature,
                 ),
             )
 
-            # Extract response text and sources
+            # Extract response and grounding metadata
             result = {
                 "response": response.text if response.text else "",
-                "sources": self._extract_sources(response),
                 "grounding_metadata": self._extract_grounding_metadata(response),
+                "grounding_chunks": self._extract_grounding_chunks(response),
             }
 
             return result
@@ -310,59 +312,94 @@ class GeminiFileSearch:
             logger.error(f"Query with context failed: {e}")
             raise
 
-    def delete_file(self, file_name: str) -> bool:
+    def delete_store(self, store_name: Optional[str] = None, force: bool = True) -> bool:
         """
-        Delete a file from the file search store.
+        Delete a file search store.
 
         Args:
-            file_name: Resource name of the file to delete
+            store_name: Resource name of the store to delete
+            force: If True, delete all documents in store too
 
         Returns:
             True if successful
         """
         try:
-            self.client.files.delete(name=file_name)
-            logger.info(f"Deleted file: {file_name}")
-            return True
-        except Exception as e:
-            logger.error(f"Failed to delete file {file_name}: {e}")
-            return False
+            name = store_name or (
+                self.file_search_store.name if self.file_search_store else None
+            )
+            if not name:
+                raise ValueError("No store name provided")
 
-    def list_files(self) -> List[Dict[str, Any]]:
-        """
-        List all files in the file search store.
-
-        Returns:
-            List of file metadata dicts
-        """
-        try:
-            if not self.file_search_store:
-                self.get_or_create_store()
-
-            documents = list(
-                self.client.files.list_corpus_documents(
-                    corpus=self.file_search_store.name
-                )
+            # Delete store (CORRECT API)
+            self.client.file_search_stores.delete(
+                name=name,
+                config={'force': force}
             )
 
-            files = []
-            for doc in documents:
-                files.append({
-                    "name": doc.name,
-                    "display_name": doc.display_name,
-                    "metadata": doc.custom_metadata,
-                })
+            logger.info(f"Deleted file search store: {name}")
+            if name == self.file_search_store.name:
+                self.file_search_store = None
 
-            logger.info(f"Found {len(files)} files in store")
-            return files
+            return True
 
         except Exception as e:
-            logger.error(f"Failed to list files: {e}")
+            logger.error(f"Failed to delete store: {e}")
+            return False
+
+    def list_stores(self) -> List[Dict[str, Any]]:
+        """
+        List all file search stores.
+
+        Returns:
+            List of store metadata dicts
+        """
+        try:
+            stores = []
+
+            # List stores (CORRECT API)
+            for store in self.client.file_search_stores.list():
+                stores.append({
+                    "name": store.name,
+                    "display_name": store.display_name,
+                    "create_time": getattr(store, "create_time", None),
+                    "update_time": getattr(store, "update_time", None),
+                })
+
+            logger.info(f"Found {len(stores)} file search stores")
+            return stores
+
+        except Exception as e:
+            logger.error(f"Failed to list stores: {e}")
             return []
+
+    def get_store(self, store_name: str) -> Optional[Dict[str, Any]]:
+        """
+        Get a specific file search store by name.
+
+        Args:
+            store_name: Resource name of the store
+
+        Returns:
+            Store metadata dict or None
+        """
+        try:
+            # Get specific store (CORRECT API)
+            store = self.client.file_search_stores.get(name=store_name)
+
+            return {
+                "name": store.name,
+                "display_name": store.display_name,
+                "create_time": getattr(store, "create_time", None),
+                "update_time": getattr(store, "update_time", None),
+            }
+
+        except Exception as e:
+            logger.error(f"Failed to get store {store_name}: {e}")
+            return None
 
     def get_store_stats(self) -> Dict[str, Any]:
         """
-        Get statistics about the file search store.
+        Get statistics about the current file search store.
 
         Returns:
             Dict with store statistics
@@ -371,13 +408,12 @@ class GeminiFileSearch:
             if not self.file_search_store:
                 self.get_or_create_store()
 
-            files = self.list_files()
-
             return {
                 "store_name": self.file_search_store.name,
                 "display_name": self.file_search_store.display_name,
-                "total_files": len(files),
                 "model": self.model,
+                "create_time": getattr(self.file_search_store, "create_time", None),
+                "update_time": getattr(self.file_search_store, "update_time", None),
             }
 
         except Exception as e:
@@ -386,59 +422,59 @@ class GeminiFileSearch:
 
     # Helper methods
 
-    def _get_mime_type(self, file_path: Path) -> str:
-        """Determine MIME type from file extension."""
-        extension = file_path.suffix.lower()
-        mime_types = {
-            ".pdf": "application/pdf",
-            ".txt": "text/plain",
-            ".md": "text/markdown",
-            ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            ".doc": "application/msword",
-            ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            ".csv": "text/csv",
-            ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            ".html": "text/html",
-        }
-        return mime_types.get(extension, "application/octet-stream")
+    def _extract_grounding_chunks(self, response: Any) -> List[Dict[str, Any]]:
+        """Extract grounding chunks from response."""
+        chunks = []
 
-    def _parse_search_results(self, response: Any) -> List[Dict[str, Any]]:
-        """Parse Gemini response into search results."""
-        results = []
+        if hasattr(response, "candidates"):
+            for candidate in response.candidates:
+                if hasattr(candidate, "grounding_metadata"):
+                    gm = candidate.grounding_metadata
+                    if hasattr(gm, "grounding_chunks"):
+                        for chunk in gm.grounding_chunks:
+                            chunks.append({
+                                "content": getattr(chunk, "content", ""),
+                                "uri": getattr(getattr(chunk, "web", None), "uri", None),
+                            })
 
-        # Extract grounding chunks if available
-        if hasattr(response, "grounding_metadata"):
-            for chunk in response.grounding_metadata.grounding_chunks:
-                results.append({
-                    "text": chunk.content if hasattr(chunk, "content") else "",
-                    "score": 1.0,  # Gemini doesn't return scores
-                    "metadata": {},
-                })
-
-        return results
-
-    def _extract_sources(self, response: Any) -> List[Dict[str, Any]]:
-        """Extract source citations from response."""
-        sources = []
-
-        if hasattr(response, "grounding_metadata"):
-            for support in response.grounding_metadata.grounding_supports:
-                sources.append({
-                    "segment": support.segment.text if hasattr(support, "segment") else "",
-                    "grounding_chunk_indices": support.grounding_chunk_indices,
-                })
-
-        return sources
+        return chunks
 
     def _extract_grounding_metadata(self, response: Any) -> Dict[str, Any]:
         """Extract grounding metadata from response."""
-        if hasattr(response, "grounding_metadata"):
-            return {
-                "web_search_queries": getattr(
-                    response.grounding_metadata, "web_search_queries", []
-                ),
-                "search_entry_point": getattr(
-                    response.grounding_metadata, "search_entry_point", None
-                ),
-            }
-        return {}
+        metadata = {
+            "grounding_chunks": [],
+            "grounding_supports": [],
+            "web_search_queries": [],
+        }
+
+        if hasattr(response, "candidates"):
+            for candidate in response.candidates:
+                if hasattr(candidate, "grounding_metadata"):
+                    gm = candidate.grounding_metadata
+
+                    # Extract grounding chunks
+                    if hasattr(gm, "grounding_chunks"):
+                        metadata["grounding_chunks"] = [
+                            {"content": getattr(chunk, "content", "")}
+                            for chunk in gm.grounding_chunks
+                        ]
+
+                    # Extract grounding supports
+                    if hasattr(gm, "grounding_supports"):
+                        metadata["grounding_supports"] = [
+                            {
+                                "segment": getattr(
+                                    getattr(support, "segment", None), "text", ""
+                                ),
+                                "grounding_chunk_indices": getattr(
+                                    support, "grounding_chunk_indices", []
+                                ),
+                            }
+                            for support in gm.grounding_supports
+                        ]
+
+                    # Extract web search queries
+                    if hasattr(gm, "web_search_queries"):
+                        metadata["web_search_queries"] = list(gm.web_search_queries)
+
+        return metadata
