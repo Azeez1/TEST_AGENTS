@@ -2,7 +2,7 @@
 
 ## The Simple Truth
 
-**You have 38 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 40 perfectly defined AI agents ready to use RIGHT NOW.**
 
 This includes a **root-level Supervisor Agent** for quality assurance across all teams.
 
@@ -24,9 +24,9 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 38 Agents
+### You Have 40 Agents
 
-**MARKETING_TEAM (17 agents):**
+**MARKETING_TEAM (18 agents):**
 - router-agent - Coordinator
 - automation-agent - ✨ **NEW** n8n workflow automation & orchestration
 - content-strategist - Campaign planning
@@ -44,6 +44,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - pdf-specialist - PDF creation
 - presentation-designer - PowerPoint
 - analyst - Performance analysis & competitive benchmarking
+- newsletter-agent - ✨ **NEW** Email newsletter campaigns and subscriber engagement
 
 **QA_TEAM (5 agents):**
 - test-orchestrator - Testing coordinator
@@ -96,13 +97,13 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ## 🏢 Agent Workspace Assignments
 
-All 39 agents are organized into 5 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+All 40 agents are organized into 5 team workspaces with strict folder boundaries and **automatic workspace awareness**:
 
-### MARKETING_TEAM (17 agents)
+### MARKETING_TEAM (18 agents)
 **Location:** `MARKETING_TEAM/.claude/agents/`
-**Memory:** `MARKETING_TEAM/memory/` (12 config files)
+**Memory:** `MARKETING_TEAM/memory/` (15 config files)
 **Outputs:** `MARKETING_TEAM/outputs/` (blog_posts, images, videos, etc.)
-**Agents:** router-agent, content-strategist, research-agent, lead-gen-agent, automation-agent, copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, email-specialist, gmail-agent, landing-page-specialist, pdf-specialist, presentation-designer, analyst
+**Agents:** router-agent, content-strategist, research-agent, lead-gen-agent, automation-agent, copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, email-specialist, gmail-agent, landing-page-specialist, pdf-specialist, presentation-designer, analyst, newsletter-agent
 
 **Workspace enforcement:** ✅ ENABLED (all agents use workspace_enforcer tool)
 
@@ -838,7 +839,7 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 39 agents perfectly defined (17 marketing + 5 testing + 14 engineering + 1 user story + 1 proposal + 1 root supervisor)
+- ✅ 40 agents perfectly defined (18 marketing + 5 testing + 15 engineering + 1 user story + 1 proposal + 1 root supervisor)
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run
