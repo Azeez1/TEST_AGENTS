@@ -643,7 +643,7 @@ async def analyze_ugc_image_mcp(image_url: str) -> list[TextContent]:
 
 async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filename: str) -> list[TextContent]:
     """
-    Generate product image optimized for Veo 3.1 UGC video conversion using Gemini 2.5 Flash Image.
+    Generate product image optimized for Veo 3.1 UGC video conversion using Gemini 3 Pro Image Preview.
 
     Use this tool when user requests:
     - "Product image for UGC video"
@@ -653,8 +653,8 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
 
     NOT for standalone high-quality images - use generate_gpt4o_image instead.
 
-    Model: gemini-2.5-flash-image
-    Pricing: $0.039 per image (97.5% cheaper than GPT-4o)
+    Model: gemini-3-pro-image-preview
+    Pricing: ~$0.05-0.10 per image (optimized for quality and consistency)
 
     Optimized for:
     - Character consistency across multiple images
@@ -692,7 +692,7 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
         print(f"🎨 Generating Nano Banana image ({aspect_ratio})...", file=sys.stderr)
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash-image",
+            model="gemini-3-pro-image-preview",
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_modalities=["IMAGE"],
@@ -722,15 +722,15 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
             f.write(image_bytes)
 
         # Store the Image Part globally so Veo can use it
-        # For Nano Banana (Gemini Flash Image), the Part is at response.candidates[0].content.parts[0]
+        # For Nano Banana (Gemini 3 Pro Image Preview), the Part is at response.candidates[0].content.parts[0]
         global _last_generated_image
         _last_generated_image = image_part
 
         result_text = (
             f"✅ Product Image Generated!\n\n"
-            f"**Model:** gemini-2.5-flash-image (Nano Banana)\n"
+            f"**Model:** gemini-3-pro-image-preview (Nano Banana)\n"
             f"**Aspect ratio:** {aspect_ratio}\n"
-            f"**Cost:** $0.039\n\n"
+            f"**Cost:** ~$0.05-0.10\n\n"
             f"**Saved to:** {str(output_path)}\n\n"
             f"✨ This image is optimized for Veo 3.1 image-to-video conversion.\n"
             f"✨ Image object cached in memory for immediate Veo 3.1 use.\n\n"
@@ -2070,7 +2070,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_nano_banana_image",
-            description="Generate image using Nano Banana (Gemini 2.5 Flash Image) - $0.039/image, excellent character consistency, optimized for Veo 3.1 image-to-video",
+            description="Generate image using Nano Banana (Gemini 3 Pro Image Preview) - ~$0.05-0.10/image, excellent character consistency, optimized for Veo 3.1 image-to-video",
             inputSchema={
                 "type": "object",
                 "properties": {
