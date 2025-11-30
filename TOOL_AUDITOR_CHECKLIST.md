@@ -507,7 +507,7 @@ done
 
 **Date:** YYYY-MM-DD
 **Auditor:** security-auditor agent
-**Scope:** All 37 agents, 19 custom tools, 7 MCP servers, 18 skills
+**Scope:** All 59 agents across 7 teams, 20 custom tools, 7 MCP servers, 21 skills
 
 ---
 

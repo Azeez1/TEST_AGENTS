@@ -6,7 +6,7 @@ Common questions about TEST_AGENTS multi-agent system.
 
 ### What is TEST_AGENTS?
 
-TEST_AGENTS is a multi-agent system with **39 specialized AI agents** across 5 teams (MARKETING, ENGINEERING, QA, PROPOSAL, USER_STORY_AGENT, and ROOT supervisor). Each agent has specific capabilities and coordinates with other agents to complete complex tasks.
+TEST_AGENTS is a multi-agent system with **59 specialized AI agents** across 7 teams (MARKETING, ENGINEERING, QA, PROPOSAL, FINANCIAL, SALES, USER_STORY_AGENT, and ROOT supervisor). Each agent has specific capabilities and coordinates with other agents to complete complex tasks.
 
 **See:** [GETTING_STARTED.md](GETTING_STARTED.md)
 
@@ -14,12 +14,14 @@ TEST_AGENTS is a multi-agent system with **39 specialized AI agents** across 5 t
 
 ### How many agents are there?
 
-**Total: 39 agents**
-- MARKETING_TEAM: 17 agents
-- ENGINEERING_TEAM: 14 agents
+**Total: 59 agents**
+- MARKETING_TEAM: 18 agents
+- ENGINEERING_TEAM: 15 agents
 - QA_TEAM: 5 agents
 - PROPOSAL_TEAM: 1 agent
-- USER_STORY_AGENT: 1 agent
+- FINANCIAL_TEAM: 10 agents (NEW)
+- SALES_TEAM: 8 agents (NEW)
+- USER_STORY_AGENT: 1 system
 - ROOT: 1 supervisor
 
 **See:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) for complete list

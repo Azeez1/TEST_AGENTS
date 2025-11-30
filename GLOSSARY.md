@@ -14,8 +14,8 @@ The complete path to a file from the root directory.
 
 ### Agent
 A specialized AI assistant with specific capabilities and tools.
-- Example: `copywriter`, `research-agent`, `visual-designer`
-- TEST_AGENTS has 39 agents across 5 teams
+- Example: `copywriter`, `research-agent`, `visual-designer`, `deal-analyst`, `sdr-agent`
+- TEST_AGENTS has 59 agents across 7 teams
 - **See:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)
 
 ### Agent Coordination

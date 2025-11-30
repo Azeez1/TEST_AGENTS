@@ -498,10 +498,10 @@ If you answered NO to any → Revise your invocation to be more minimal ⚠️
 ## 📖 See Also
 
 - **[claude.md](claude.md)** - Complete repository navigation guide
-- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 37 agents
+- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 59 agents
 - **Agent Definitions:** `.claude/agents/*.md` files in each system folder
 - **Memory Configuration:** `memory/*.json` files in MARKETING_TEAM folder
 
 ---
 
-**Last Updated:** 2025-11-02
+**Last Updated:** 2025-11-26

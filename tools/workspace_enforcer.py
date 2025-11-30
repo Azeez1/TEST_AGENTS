@@ -1,7 +1,11 @@
 """
 Workspace Enforcer - Validate agent workspace context and enforce folder boundaries
 
-This tool ensures all 58 agents operate in their correct team workspaces and prevents
+
+This tool ensures all 59 agents operate in their correct team workspaces and prevents
+
+This tool ensures all 59 agents operate in their correct team workspaces and prevents
+
 location confusion by validating workspace context before every task.
 
 Usage:
@@ -419,7 +423,11 @@ def get_team_info(team: str) -> Dict[str, any]:
 
 def list_all_agents() -> Dict[str, List[str]]:
     """
-    List all 58 agents organized by team.
+
+    List all 59 agents organized by team.
+
+    List all 59 agents organized by team.
+
 
     Returns:
         Dictionary mapping team names to agent lists

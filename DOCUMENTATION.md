@@ -7,7 +7,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 **First-time setup (5 minutes):**
 1. [GETTING_STARTED.md](GETTING_STARTED.md) - Quick start guide
 2. [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) - Configure API keys (if needed)
-3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Browse all 39 agents
+3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Browse all 59 agents
 
 **Learn the basics:**
 - [claude.md](claude.md) - Repository navigation hub
@@ -28,7 +28,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 - [CHANGELOG.md](CHANGELOG.md) - Version history
 
 **Agent System:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 39 agents explained
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 59 agents explained
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - How to invoke agents
 - [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) - Agent-specific rules
 - [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) - Quality verification system

@@ -2,7 +2,7 @@
 
 **For AI Assistants and Developers**
 
-This guide explains how the memory system works across all 37 agents in the repository, ensuring consistent configuration without hardcoding values.
+This guide explains how the memory system works across all 59 agents in the repository, ensuring consistent configuration without hardcoding values.
 
 ---
 
@@ -457,9 +457,9 @@ Best regards
 ## See Also
 
 - **[claude.md](claude.md)** - Repository navigation guide
-- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 37 agents
+- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 59 agents
 - **Agent Definitions:** `.claude/agents/*.md` files in each system folder
 
 ---
 
-**Last Updated:** 2025-11-02
+**Last Updated:** 2025-11-26

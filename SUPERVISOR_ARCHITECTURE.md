@@ -65,13 +65,22 @@ The **Supervisor Agent** is a root-level quality assurance layer that sits above
 ├── MULTI_AGENT_GUIDE.md                     # Updated with supervisor info
 │
 ├── ENGINEERING_TEAM/
-│   └── .claude/agents/                      # 14 engineering agents
+│   └── .claude/agents/                      # 15 engineering agents
 │
 ├── MARKETING_TEAM/
-│   └── .claude/agents/                      # 17 marketing agents
+│   └── .claude/agents/                      # 18 marketing agents
 │
-└── QA_TEAM/
-    └── .claude/agents/                      # 5 testing agents
+├── QA_TEAM/
+│   └── .claude/agents/                      # 5 testing agents
+│
+├── PROPOSAL_TEAM/
+│   └── .claude/agents/                      # 1 proposal agent
+│
+├── FINANCIAL_TEAM/
+│   └── .claude/agents/                      # 10 financial agents
+│
+└── SALES_TEAM/
+    └── .claude/agents/                      # 8 sales agents
 ```
 
 ## How It Works
@@ -163,11 +172,14 @@ SUPERVISOR AGENT
 - Gives **deployment readiness** assessment
 
 ### 5. Cross-Team
-- Works across **all teams**:
-  - ENGINEERING_TEAM
-  - MARKETING_TEAM
-  - QA_TEAM
-  - USER_STORY_AGENT
+- Works across **all 7 teams**:
+  - ENGINEERING_TEAM (15 agents)
+  - MARKETING_TEAM (18 agents)
+  - QA_TEAM (5 agents)
+  - PROPOSAL_TEAM (1 agent)
+  - FINANCIAL_TEAM (10 agents)
+  - SALES_TEAM (8 agents)
+  - USER_STORY_AGENT (1 app)
 - Understands **different verification criteria** for each team
 - Adapts verification approach based on task type
 

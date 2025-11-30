@@ -1,6 +1,6 @@
 # TOOL REGISTRY - Single Source of Truth
 
-**Last Updated:** 2025-11-18
+**Last Updated:** 2025-11-26
 **Total Inventory:** 20 custom tools + 7 MCP servers + 18 skills
 **Maintained by:** Engineering Team (security-auditor + technical-writer)
 
@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This registry documents ALL tools, MCP servers, and skills available to the 38 agents across 4 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
+This registry documents ALL tools, MCP servers, and skills available to the 59 agents across 7 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New Tool (last resort)
 
@@ -165,8 +165,8 @@ This registry documents ALL tools, MCP servers, and skills available to the 38 a
 | **React Artifacts** | `artifacts-builder` (React + shadcn/ui) | N/A | N/A | 1. Skill only | landing-page-specialist | ✅ Active |
 | **MCP Server Creation** | `mcp-builder` (create MCP servers) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
 | **Skill Creation** | `skill-creator` (create new skills) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
-| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 38 agents | ✅ Active (critical) |
-| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 38 agents | ✅ Active (critical) |
+| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 59 agents | ✅ Active (critical) |
+| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 59 agents | ✅ Active (critical) |
 
 **Workspace Management Priority:**
 
@@ -181,7 +181,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 38 a
 **Usage Notes:**
 - **workspace_enforcer:** Validates agent is in correct team workspace (MARKETING_TEAM, QA_TEAM, ENGINEERING_TEAM)
 - **path_validator:** Converts relative paths to absolute paths, enforces cross-team boundaries
-- **Declaring agents:** ALL 38 agents MUST include in YAML frontmatter (automatically added to all agents)
+- **Declaring agents:** ALL 59 agents MUST include in YAML frontmatter (automatically added to all agents)
 
 ---
 

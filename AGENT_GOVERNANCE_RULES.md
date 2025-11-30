@@ -1,7 +1,7 @@
 # AGENT GOVERNANCE RULES
 
-**Last Updated:** 2025-11-03
-**Applies To:** All 37 agents across 4 teams
+**Last Updated:** 2025-11-26
+**Applies To:** All 59 agents across 7 teams (MARKETING, ENGINEERING, QA, PROPOSAL, FINANCIAL, SALES, USER_STORY_AGENT)
 **Enforced By:** CTO agent + security-auditor (quarterly audits)
 
 ---

@@ -4,13 +4,15 @@ Welcome! This guide will get you up and running with the TEST_AGENTS multi-agent
 
 ## What is TEST_AGENTS?
 
-TEST_AGENTS is a sophisticated multi-agent system with **39 specialized AI agents** across 5 teams:
-- **MARKETING_TEAM** (17 agents) - Content, campaigns, research, automation
-- **ENGINEERING_TEAM** (14 agents) - Development, architecture, testing, security
+TEST_AGENTS is a sophisticated multi-agent system with **59 specialized AI agents** across 7 teams:
+- **MARKETING_TEAM** (18 agents) - Content, campaigns, research, automation, newsletters
+- **ENGINEERING_TEAM** (15 agents) - CTO + 14 specialists (DevOps, security, frontend, backend, AI)
 - **QA_TEAM** (5 agents) - Test creation, fixtures, edge cases
 - **PROPOSAL_TEAM** (1 agent) - RFP parsing and proposal generation
+- **FINANCIAL_TEAM** (10 agents) - PE/M&A, valuations, FP&A, accounting, tax
+- **SALES_TEAM** (8 agents) - SDR, AE, sales ops, proposals, customer success
 - **ROOT** (1 supervisor) - Cross-team quality verification
-- **USER_STORY_AGENT** (1 agent) - User story management
+- **USER_STORY_AGENT** (1 system) - User story management
 
 ## Quick Start (5 Minutes)
 
@@ -28,10 +30,12 @@ TEST_AGENTS/
 ├── GOVERNANCE_OVERVIEW.md      # Governance rules map
 ├── GETTING_STARTED.md          # This file
 │
-├── MARKETING_TEAM/             # 17 marketing agents
-├── ENGINEERING_TEAM/           # 14 engineering agents
+├── MARKETING_TEAM/             # 18 marketing agents
+├── ENGINEERING_TEAM/           # 15 engineering agents
 ├── QA_TEAM/                    # 5 QA agents
 ├── PROPOSAL_TEAM/              # 1 proposal agent
+├── FINANCIAL_TEAM/             # 10 finance agents (NEW)
+├── SALES_TEAM/                 # 8 sales agents (NEW)
 ├── USER_STORY_AGENT/           # User story management
 │
 ├── .claude/

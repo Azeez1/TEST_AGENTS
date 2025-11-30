@@ -1,7 +1,7 @@
 """
 Workspace enforcement validation tests
 
-Tests that all 37 agents operate in correct workspaces
+Tests that all 59 agents across 7 teams operate in correct workspaces
 """
 
 import pytest

@@ -2,20 +2,23 @@
 
 ## 📋 Repository Overview
 
-This repository contains **5 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **38 specialized agents** for RFP/proposal automation, user story generation, marketing automation, test generation, software engineering, quality assurance, and AI/ML development.
+This repository contains **7 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **59 specialized agents** for RFP/proposal automation, user story generation, marketing automation, test generation, software engineering, quality assurance, AI/ML development, financial analysis, and sales operations.
 
 **Systems:**
 - **USER_STORY_AGENT** (1) - Transform meeting notes into backlog-ready user stories with Excel export
-- **MARKETING_TEAM** (17) - Content creation, social media, images, videos, emails, lead generation, landing pages, workflow automation
+- **MARKETING_TEAM** (18) - Content creation, social media, images, videos, emails, lead generation, landing pages, workflow automation, newsletters
 - **QA_TEAM** (5) - Automated pytest test suite generation
-- **ENGINEERING_TEAM** (14) ⭐ **SUPER TEAM** - CTO coordinator + 13 specialists (DevOps, security, frontend, backend, AI/ML, UX, architecture, QA, testing, optimization, database, troubleshooting)
+- **ENGINEERING_TEAM** (15) ⭐ **SUPER TEAM** - CTO coordinator + 14 specialists (DevOps, security, frontend, backend, AI/ML, UX, architecture, QA, testing, optimization, database, troubleshooting, analytics)
 - **PROPOSAL_TEAM** (1) - RFP automation, compliance matrix generation, and proposal writing with 30+ compliance frameworks
+- **FINANCIAL_TEAM** (10) ⭐ **NEW** - PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, tax, CFO strategy)
+- **SALES_TEAM** (8) ⭐ **NEW** - Full sales lifecycle (SDR, AE, sales ops, proposals, customer success, analytics)
+- **ROOT** (1) - Supervisor agent for cross-team quality assurance
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
 **⚡ Key Facts:**
-- 38 autonomous agents across 5 systems
-- 18 powerful skills (visual, development, documents, integration)
+- 59 autonomous agents across 7 systems
+- 21 powerful skills (visual, development, documents, integration, n8n automation)
 - 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
 - Memory system with automatic configuration loading
 - No Python orchestrators - pure Claude Code conversation
@@ -25,7 +28,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 **🚀 Getting Started:**
 - [Use Existing Tools First](#️-critical-use-existing-tools-first) - Priority order for AI assistants
 - [Agent Invocation Guidelines](#-agent-invocation-guidelines-for-ai-assistants) - How to invoke agents properly
-- [Complete Agent Directory](#-complete-agent-directory) - All 37 agents at a glance
+- [Complete Agent Directory](#-complete-agent-directory) - All 59 agents at a glance
 - [Quick Start Examples](#-quick-start-examples) - Common workflows
 
 **📚 Key Resources:**
@@ -97,6 +100,8 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 | **QA_TEAM** | Talk to agents via Claude Code | [README](QA_TEAM/README.md) |
 | **ENGINEERING_TEAM** | Talk to agents via Claude Code | [README](ENGINEERING_TEAM/README.md) |
 | **PROPOSAL_TEAM** | Talk to agents via Claude Code | [README](PROPOSAL_TEAM/README.md) |
+| **FINANCIAL_TEAM** | Talk to agents via Claude Code | [README](FINANCIAL_TEAM/README.md) |
+| **SALES_TEAM** | Talk to agents via Claude Code | [README](SALES_TEAM/README.md) |
 
 **📚 Master Guides:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) • [MCP_SETUP.md](MCP_SETUP.md) • [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
 
@@ -107,17 +112,19 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 ```
 TEST_AGENTS/
 ├── claude.md                        ← YOU ARE HERE
-├── MULTI_AGENT_GUIDE.md             ← Master guide for all 38 agents
+├── MULTI_AGENT_GUIDE.md             ← Master guide for all 59 agents
 ├── AGENT_INVOCATION_BEST_PRACTICES.md  ← Agent invocation patterns
 ├── MEMORY_SYSTEM.md                 ← Memory/Drive/Email strategies
 ├── MCP_SETUP.md, IMPLEMENTATION_SUMMARY.md
 │
-├── USER_STORY_AGENT/                ← 1 agent: Streamlit app for user stories (see README.md)
+├── .claude/agents/                  ← 1 root agent (supervisor)
+│
+├── USER_STORY_AGENT/                ← 1 system: Streamlit app for user stories (see README.md)
 │   ├── app_ui.py                    ← Main Streamlit application
 │   └── story_generator.py           ← Core story generation logic
 │
-├── MARKETING_TEAM/                  ← 17 agents + tools + docs (see README.md)
-│   ├── .claude/agents/              ← 17 marketing agent definitions
+├── MARKETING_TEAM/                  ← 18 agents + tools + docs (see README.md)
+│   ├── .claude/agents/              ← 18 marketing agent definitions
 │   ├── tools/                       ← GPT-4o images, Sora videos, Gmail, Drive
 │   ├── outputs/                     ← Generated content (gitignored)
 │   ├── examples/, templates/        ← Reference materials (git-tracked)
@@ -127,14 +134,22 @@ TEST_AGENTS/
 │   ├── .claude/agents/              ← test-orchestrator + 4 specialists
 │   └── tools/                       ← Test generation, coverage analysis
 │
-├── ENGINEERING_TEAM/                ← 14 agents: CTO + 13 specialists (see README.md)
+├── ENGINEERING_TEAM/                ← 15 agents: CTO + 14 specialists (see README.md)
 │   ├── .claude/agents/              ← DevOps, security, frontend, backend, AI, etc.
 │   └── docs/                        ← PRDs, technical specs, deployment guides
 │
-└── PROPOSAL_TEAM/                   ← 1 agent: RFP automation (see README.md)
-    ├── .claude/agents/              ← rfp-agent definition
-    ├── dux_rfp_agent/               ← Core Python package (7-stage pipeline)
-    └── kb/                          ← Pinecone knowledge base
+├── PROPOSAL_TEAM/                   ← 1 agent: RFP automation (see README.md)
+│   ├── .claude/agents/              ← rfp-agent definition
+│   ├── dux_rfp_agent/               ← Core Python package (7-stage pipeline)
+│   └── kb/                          ← Pinecone knowledge base
+│
+├── FINANCIAL_TEAM/                  ← 10 agents: PE/M&A + Finance (see README.md)
+│   ├── .claude/agents/              ← deal-analyst, valuation, FP&A, CFO, etc.
+│   └── memory/                      ← Financial assumptions, historical data
+│
+└── SALES_TEAM/                      ← 8 agents: Full sales lifecycle (see README.md)
+    ├── .claude/agents/              ← SDR, AE, sales-ops, proposals, CSM, etc.
+    └── memory/                      ← CRM configs, templates, target lists
 ```
 
 ---
@@ -145,19 +160,23 @@ TEST_AGENTS/
 
 | System | Agents | Primary Use |
 |--------|--------|-------------|
+| **ROOT** | 1 | Supervisor for cross-team quality assurance |
 | **USER_STORY_AGENT** | 1 | Meeting notes → Excel user stories (Streamlit app) |
-| **MARKETING_TEAM** | 17 | Content creation, campaigns, social media, images, videos, emails, lead gen |
+| **MARKETING_TEAM** | 18 | Content creation, campaigns, social media, images, videos, emails, lead gen, newsletters |
 | **QA_TEAM** | 5 | Automated pytest test suite generation |
-| **ENGINEERING_TEAM** | 14 | CTO coordinator + 13 specialists (DevOps, security, frontend, backend, AI, UX, etc.) |
+| **ENGINEERING_TEAM** | 15 | CTO coordinator + 14 specialists (DevOps, security, frontend, backend, AI, UX, analytics, etc.) |
 | **PROPOSAL_TEAM** | 1 | RFP automation, compliance matrix generation, proposal writing |
+| **FINANCIAL_TEAM** | 10 | PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, CFO strategy) |
+| **SALES_TEAM** | 8 | Full sales lifecycle (SDR, AE, sales ops, proposals, customer success) |
+| **TOTAL** | **59** | **Complete enterprise AI agent workforce** |
 
 **Key Agents by Function:**
 
-**Orchestrators:** router-agent, content-strategist (MARKETING), test-orchestrator (QA), cto (ENGINEERING)
+**Orchestrators:** router-agent, content-strategist (MARKETING), test-orchestrator (QA), cto (ENGINEERING), cfo-agent (FINANCIAL), sales-manager (SALES), supervisor (ROOT)
 
 **RFP/Proposal:** rfp-agent (PROPOSAL) - 7-stage RFP processing pipeline with 30+ compliance frameworks
 
-**Content & Creative:** copywriter, editor, social-media-manager, visual-designer, video-producer (MARKETING)
+**Content & Creative:** copywriter, editor, social-media-manager, visual-designer, video-producer, newsletter-agent (MARKETING)
 
 **Technical/Engineering:** devops-engineer, frontend-developer, backend-architect, security-auditor, system-architect (ENGINEERING)
 
@@ -167,8 +186,12 @@ TEST_AGENTS/
 
 **Testing:** unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent (QA)
 
+**Finance:** deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor (FINANCIAL)
+
+**Sales:** sdr-agent, account-executive, sales-operations, sales-analyst, proposal-specialist, customer-success-manager, outbound-specialist (SALES)
+
 📖 **Complete Agent Details:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)
-- Detailed capabilities for all 38 agents
+- Detailed capabilities for all 59 agents
 - Invocation examples and patterns
 - API requirements and technology stacks
 - Workflow orchestration strategies
@@ -185,10 +208,12 @@ TEST_AGENTS/
 - [QA_TEAM/README.md](QA_TEAM/README.md) - Testing agents overview
 - [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering agents overview
 - [PROPOSAL_TEAM/README.md](PROPOSAL_TEAM/README.md) - RFP automation and proposal generation overview
+- [FINANCIAL_TEAM/README.md](FINANCIAL_TEAM/README.md) - PE/M&A and finance agents overview
+- [SALES_TEAM/README.md](SALES_TEAM/README.md) - Sales lifecycle agents overview
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 38 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 59 agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - **CRITICAL** - Proper agent invocation patterns
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration, Drive/email strategies, formatting rules
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
@@ -357,7 +382,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 📋 Tool Governance
 
-**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 37 agents and prevents redundant tool creation.
+**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 59 agents and prevents redundant tool creation.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New
 
@@ -379,11 +404,11 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 🎨 Skills & Advanced Capabilities
 
-All **17 MARKETING_TEAM agents** have access to **19 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations. ENGINEERING_TEAM frontend agents also have access to the frontend-design skill.
+All **18 MARKETING_TEAM agents** have access to **21 powerful skills** and **7 MCP servers** for visual creation, development, document processing, and external integrations. ENGINEERING_TEAM frontend agents also have access to the frontend-design skill.
 
 **Quick Reference:**
 
-**19 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines, pdf-filler (content) • pptx, pdf, xlsx, docx (documents) • filesystem, figma, context7 (integration) • frontend-design (frontend)
+**21 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram, infographic-creator (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines (content) • document-skills (pptx, pdf, xlsx, docx) • n8n-code-javascript, n8n-code-python, n8n-expression-syntax, n8n-mcp-tools-expert, n8n-node-configuration, n8n-validation-expert, n8n-workflow-patterns (n8n automation) • frontend-design (frontend)
 
 **7 MCP Servers:** marketing-tools (GPT-4o images, Sora videos) • google-workspace (Gmail, Drive, Docs, Sheets) • perplexity (web research with citations) • bright-data (web scraping, leads) • playwright (browser automation) • n8n-mcp (workflow automation) • sequential-thinking (structured reasoning)
 
@@ -568,7 +593,7 @@ Talk to Claude Code:
 3. **Follow the documentation map** - Links to all key docs
 4. **Respect .gitignore** - Don't track outputs, credentials, or artifacts
 5. **Use the multi-agent system** - Invoke specialized agents for complex tasks
-6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 20 agents
+6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 59 agents
 
 **Common patterns:**
 - Each system has a README.md with quick start
@@ -606,7 +631,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ### About Workspace Awareness
 
-**All 37 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
+**All 59 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
 
 **Quick Troubleshooting:**
 - If "Workspace validation failed" → Check `pwd` (should be TEST_AGENTS or team folder) → Navigate to correct directory
@@ -625,14 +650,20 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ## 📝 Recent Updates
 
-**Last Updated:** 2025-10-26
+**Last Updated:** 2025-11-25
 
 **Latest Major Changes:**
-- ✨ **system-architect agent** - 14th Engineering agent for professional Mermaid diagrams with interactive HTML (37 agents total)
-- ✨ **flow-diagram skill** - 18th skill for system architecture, flowcharts, sequence diagrams, ER diagrams
-- ✨ **CTO coordinator** - Strategic orchestration for all 13 Engineering specialists with intelligent routing
-- ✨ **Engineering Super Team** - 14 agents (CTO + 13 specialists: 8 custom built + 5 community validated from aitmpl.com)
-- ✨ **automation-agent** - 17th Marketing agent for n8n workflow automation (400+ integrations)
+- ✨ **59 agents total** - Updated agent counts across all 7 teams
+- ✨ **FINANCIAL_TEAM** (10 agents) - PE/M&A + General Finance (deal-analyst, valuation, FP&A, CFO, accounting, tax)
+- ✨ **SALES_TEAM** (8 agents) - Full sales lifecycle (SDR, AE, sales-ops, proposals, CSM, analytics)
+- ✨ **newsletter-agent** - 18th Marketing agent for email newsletter campaigns
+- ✨ **analytics-dashboard-agent** - 15th Engineering agent for data visualization and dashboards
+- ✨ **21 skills** - Including 7 n8n automation skills for workflow development
+- ✨ **system-architect agent** - Professional Mermaid diagrams with interactive HTML
+- ✨ **flow-diagram skill** - System architecture, flowcharts, sequence diagrams, ER diagrams
+- ✨ **CTO coordinator** - Strategic orchestration for all 14 Engineering specialists with intelligent routing
+- ✨ **Engineering Super Team** - 15 agents (CTO + 14 specialists)
+- ✨ **automation-agent** - Marketing agent for n8n workflow automation (400+ integrations)
 - 🧠 **Memory system standardization** - All agents auto-read config files (email, Drive, brand voice)
 - 🔥 **Hybrid Perplexity research** - Custom tools + MCP fallback for maximum reliability
 
