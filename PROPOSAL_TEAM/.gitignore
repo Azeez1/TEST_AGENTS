@@ -28,6 +28,11 @@ outputs/*
 !outputs/README.md
 !outputs/.gitkeep
 
+# Memory (don't commit sensitive config by default)
+memory/*
+!memory/README.md
+!memory/.gitkeep
+
 # Knowledge Base (may contain sensitive info)
 kb/resumes/*.pdf
 kb/resumes/*.docx

@@ -1,7 +1,7 @@
 """
 Workspace Enforcer - Validate agent workspace context and enforce folder boundaries
 
-This tool ensures all 37 agents operate in their correct team workspaces and prevents
+This tool ensures all 58 agents operate in their correct team workspaces and prevents
 location confusion by validating workspace context before every task.
 
 Usage:
@@ -33,10 +33,10 @@ except (ImportError, AttributeError):
         return func
 
 
-# Define workspace structure for all 6 teams
+# Define workspace structure for all 7 teams
 WORKSPACE_STRUCTURE = {
     "MARKETING_TEAM": {
-        "agents": 17,
+        "agents": 18,
         "folders": ["memory", "outputs", "tools", ".claude/agents"],
         "memory_files": [
             "brand_voice.json",
@@ -58,7 +58,7 @@ WORKSPACE_STRUCTURE = {
             "social-media-manager", "visual-designer", "video-producer",
             "seo-specialist", "email-specialist", "gmail-agent",
             "landing-page-specialist", "pdf-specialist",
-            "presentation-designer", "analyst"
+            "presentation-designer", "analyst", "newsletter-agent"
         ]
     },
     "QA_TEAM": {
@@ -74,7 +74,7 @@ WORKSPACE_STRUCTURE = {
         ]
     },
     "ENGINEERING_TEAM": {
-        "agents": 14,
+        "agents": 15,
         "folders": ["memory", "outputs", "docs", "tools", ".claude/agents"],
         "memory_files": [
             "deployment_configs.json",
@@ -85,7 +85,7 @@ WORKSPACE_STRUCTURE = {
             "backend-architect", "security-auditor", "technical-writer",
             "system-architect", "ai-engineer", "ui-ux-designer",
             "code-reviewer", "test-engineer", "prompt-engineer",
-            "database-architect", "debugger"
+            "database-architect", "debugger", "analytics-dashboard-agent"
         ]
     },
     "USER_STORY_AGENT": {
@@ -121,6 +121,17 @@ WORKSPACE_STRUCTURE = {
             "sales-analyst", "proposal-specialist", "sdr-agent",
             "sales-operations", "sales-manager"
         ]
+    },
+    "PROPOSAL_TEAM": {
+        "agents": 1,
+        "folders": ["memory", "outputs", "tools", ".claude/agents"],
+        "memory_files": [
+            "rfp_templates.json",
+            "proposal_guidelines.json"
+        ],
+        "agents_list": [
+            "rfp-agent"
+        ]
     }
 }
 
@@ -139,7 +150,7 @@ def _get_repo_root() -> Path:
             return parent
 
     # Check if we're inside a team folder
-    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT", "FINANCIAL_TEAM", "SALES_TEAM"]
+    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT", "FINANCIAL_TEAM", "SALES_TEAM", "PROPOSAL_TEAM"]
     for team in team_folders:
         if team in str(current):
             # Navigate up to find TEST_AGENTS
@@ -408,7 +419,7 @@ def get_team_info(team: str) -> Dict[str, any]:
 
 def list_all_agents() -> Dict[str, List[str]]:
     """
-    List all 37 agents organized by team.
+    List all 58 agents organized by team.
 
     Returns:
         Dictionary mapping team names to agent lists
