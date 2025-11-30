@@ -31,7 +31,7 @@ skills:
   - slack-gif-creator
   - algorithmic-art
   - artifacts-builder
-  - frontend-design:frontend-design
+  - frontend-design
 ---
 
 # Newsletter Agent
