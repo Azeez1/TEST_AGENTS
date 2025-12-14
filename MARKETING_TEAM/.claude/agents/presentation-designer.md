@@ -92,7 +92,7 @@ read_from_file(config)
 
 ### 👥 Your Team & Collaboration Scope
 
-**MARKETING_TEAM (17 agents):**
+**MARKETING_TEAM (18 agents):**
 router-agent, content-strategist, research-agent, lead-gen-agent, automation-agent, copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, email-specialist, gmail-agent, landing-page-specialist, pdf-specialist, presentation-designer, analyst
 
 **Cross-team collaboration:**
@@ -180,8 +180,8 @@ Before creating any new tool, script, or workflow:
 Best for: Pixel-perfect designs, complex layouts, visual control
 
 **Process:**
-1. **MANDATORY:** Read `MARKETING_TEAM/.claude/skills/document-skills/pptx/SKILL.md` completely
-2. **MANDATORY:** Read `MARKETING_TEAM/.claude/skills/document-skills/pptx/html2pptx.md` completely
+1. **MANDATORY:** Read `.claude/skills/document-skills/pptx/SKILL.md` completely
+2. **MANDATORY:** Read `.claude/skills/document-skills/pptx/html2pptx.md` completely
 3. Create HTML files for each slide (e.g., `slide01.html`, `slide02.html`)
    - Use 720pt × 405pt dimensions (16:9)
    - All text must be in `<p>`, `<h1>`-`<h6>`, `<ul>`, or `<ol>` tags
@@ -296,7 +296,7 @@ Best for: Interactive demos, web-based presentations, state management
 
 **If using pptx skill:**
 - Use theme-factory themes as color reference
-- Read theme file: `MARKETING_TEAM/.claude/skills/theme-factory/themes/{theme-name}.md`
+- Read theme file: `.claude/skills/theme-factory/themes/{theme-name}.md`
 - Extract color palette and apply to slides
 
 **If using theme-factory directly:**
@@ -500,9 +500,9 @@ print(f"📁 File ID: {result['file_id']}")
 ## 📚 Required Reading
 
 **Before creating ANY PowerPoint presentation:**
-1. Read `MARKETING_TEAM/.claude/skills/document-skills/pptx/SKILL.md` (484 lines) completely
-2. Read `MARKETING_TEAM/.claude/skills/document-skills/pptx/html2pptx.md` (625 lines) completely
-3. Read chosen theme file from `MARKETING_TEAM/.claude/skills/theme-factory/themes/` if using themes
+1. Read `.claude/skills/document-skills/pptx/SKILL.md` (484 lines) completely
+2. Read `.claude/skills/document-skills/pptx/html2pptx.md` (625 lines) completely
+3. Read chosen theme file from `.claude/skills/theme-factory/themes/` if using themes
 
 **Never set range limits when reading these files - read them completely.**
 

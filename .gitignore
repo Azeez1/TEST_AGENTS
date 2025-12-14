@@ -104,3 +104,7 @@ temp_upload.txt
 
 # Binary/trained model files
 *.pkl
+
+# Node.js build artifacts (in outputs folders)
+**/node_modules/
+**/.parcel-cache/

@@ -60,7 +60,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 
 ### Team Documentation
 
-**MARKETING_TEAM (17 agents):**
+**MARKETING_TEAM (18 agents):**
 - [MARKETING_TEAM/README.md](MARKETING_TEAM/README.md) - Team overview
 - [MARKETING_TEAM/docs/README.md](MARKETING_TEAM/docs/README.md) - Docs guide
 - [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - API setup

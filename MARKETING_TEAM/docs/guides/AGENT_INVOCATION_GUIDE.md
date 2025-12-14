@@ -667,5 +667,5 @@ That's it. Trust the agent.
 ---
 
 **Last Updated:** 2025-01-29
-**Applies To:** MARKETING_TEAM (17 agents)
+**Applies To:** MARKETING_TEAM (18 agents)
 **See Also:** [claude.md](../../../claude.md) - Repository-wide agent guidelines

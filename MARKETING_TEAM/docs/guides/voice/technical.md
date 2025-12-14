@@ -38,7 +38,7 @@ Agent (social-media-manager voice): "I'll create an engaging LinkedIn post highl
 ### Core Capabilities
 - ✅ **Real-time voice interaction** - Speak to agents and hear responses instantly
 - ✅ **Natural language routing** - No need to memorize commands; just talk naturally
-- ✅ **All 17 agents supported** - Full access to entire marketing team
+- ✅ **All 18 agents supported** - Full access to entire marketing team
 - ✅ **Multi-context management** - Handle up to 5 concurrent conversations
 - ✅ **Conversation memory** - Sessions saved to `memory/voice_sessions.json`
 - ✅ **Interruption handling** - Stop agent mid-response if needed

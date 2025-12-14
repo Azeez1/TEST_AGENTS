@@ -91,7 +91,7 @@ read_from_file(config)
 
 ### 👥 Your Team & Collaboration Scope
 
-**MARKETING_TEAM (17 agents):**
+**MARKETING_TEAM (18 agents):**
 router-agent, content-strategist, research-agent, lead-gen-agent, automation-agent, copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, email-specialist, gmail-agent, landing-page-specialist, pdf-specialist, presentation-designer, analyst
 
 **Cross-team collaboration:**

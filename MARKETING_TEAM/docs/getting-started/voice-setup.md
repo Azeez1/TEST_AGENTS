@@ -106,7 +106,7 @@ Just mention the agent name in your message:
 
 ## ✅ What Works
 
-- ✅ Type messages to any of 17 agents
+- ✅ Type messages to any of 18 agents
 - ✅ Agent responds with text
 - ✅ Audio file saved automatically
 - ✅ Natural language agent detection

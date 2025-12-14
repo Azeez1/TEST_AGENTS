@@ -7,7 +7,7 @@
 - Type messages to agents
 - Agent responds with text + audio file
 - Session tracking and memory
-- All 17 agents available
+- All 18 agents available
 - **Actually works!**
 
 ---
@@ -101,7 +101,7 @@ The **Streamlit UI** (`voice_app.py`) and the original **WebSocket CLI** (`voice
 
 ### What Works ✅
 
-- ✅ Type messages to any of 17 agents
+- ✅ Type messages to any of 18 agents
 - ✅ Agent detection from keywords
 - ✅ Audio generation (TTS)
 - ✅ Session persistence
@@ -321,7 +321,7 @@ A: For text-based interaction with audio files, yes! For real-time voice, needs 
 - ✅ Working text-based conversation
 - ✅ Audio generation for all agents
 - ✅ Session tracking and memory
-- ✅ All 17 agents accessible
+- ✅ All 18 agents accessible
 - ✅ Simple to use
 
 **What you don't have (yet):**

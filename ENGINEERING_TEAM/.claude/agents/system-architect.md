@@ -755,7 +755,7 @@ Create professional PowerPoint presentations for architecture reviews, design pr
 - Executive briefings
 - Conference talks
 
-**Workflow:** Read `MARKETING_TEAM/.claude/skills/document-skills/pptx/SKILL.md` for complete instructions
+**Workflow:** Read `.claude/skills/document-skills/pptx/SKILL.md` for complete instructions
 
 **Output location:** `ENGINEERING_TEAM/outputs/design/presentations/`
 

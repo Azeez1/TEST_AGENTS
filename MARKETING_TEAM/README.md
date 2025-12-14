@@ -16,7 +16,7 @@ You: "Use the social-media-manager subagent to create a LinkedIn post about AI t
 Claude: [Creates professional LinkedIn post with hashtags and formatting]
 ```
 
-**That's it!** Your 17 agents are ready to use right now.
+**That's it!** Your 18 agents are ready to use right now.
 
 ---
 
@@ -56,7 +56,7 @@ Claude: [Creates professional LinkedIn post with hashtags and formatting]
 
 These guides explain:
 - How to set up APIs (OpenAI, Gmail, Google Drive)
-- How to invoke each of the 17 agents
+- How to invoke each of the 18 agents
 - Real-world examples with actual output
 - Common workflows
 - Tips & best practices
@@ -174,7 +174,7 @@ When you say:
 1. **Each agent has a "⚙️ Configuration Files (READ FIRST)" section** in their definition
 2. **Agents read memory files at task start** using the Read tool or filesystem skill
 3. **Configuration is applied automatically** - emails, Drive folders, brand voice, visual styles
-4. **Update once, affects all agents** - change email config, all 17 agents use it
+4. **Update once, affects all agents** - change email config, all 18 agents use it
 
 ### Memory Files (MARKETING_TEAM/memory/)
 
@@ -193,7 +193,7 @@ When you say:
 ✅ **Easy updates** - Change one memory file, all agents benefit immediately
 ✅ **Single source of truth** - Configuration lives in one place, not scattered across 17 files
 
-**Example:** Change `default_to` in `email_config.json` from `user1@example.com` to `user2@example.com` → all 17 agents now send emails to `user2@example.com` by default.
+**Example:** Change `default_to` in `email_config.json` from `user1@example.com` to `user2@example.com` → all 18 agents now send emails to `user2@example.com` by default.
 
 ---
 
