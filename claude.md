@@ -36,6 +36,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 - [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 18 skills + 7 MCP servers
 - [Configuration & Setup](#️-configuration--setup) - API keys, MCP servers
 - [Memory System](#-memory-system---how-it-works) - Automatic configuration loading
+- [LLAR Governance](#-llar-governance-framework) - Orchestrator task routing, reflection, memory
 - [Documentation Map](#-documentation-map) - All guides and references
 
 **🛠️ For Developers:**
@@ -399,6 +400,62 @@ The repository uses a **hybrid approach** for managing agent outputs:
 - **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow
 - **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - Deprecation process
 - **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking (16 metrics)
+
+---
+
+## 🧠 LLAR Governance Framework
+
+**LLAR (Layered Language Agent Reasoning)** is the meta-governance framework for the 59-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
+
+**Key Principles:**
+- Orchestrators govern teams (specialists stay lean)
+- One agent, one role (no overlapping responsibilities)
+- Reflect before output (catch issues early)
+- Store what matters (preferences, goals, strategies)
+- Explicit conflict resolution hierarchy
+
+**Architecture:**
+```
+                    ┌─────────────────────┐
+                    │     SUPERVISOR      │
+                    │   (LLAR-12 Full)    │
+                    │ Conflict Resolution │
+                    └──────────┬──────────┘
+                               │
+        ┌──────────────────────┼──────────────────────┐
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ router-agent  │    │     cto       │    │test-orchestr. │
+│  MARKETING    │    │ ENGINEERING   │    │    QA_TEAM    │
+│  (18 agents)  │    │  (15 agents)  │    │  (5 agents)   │
+│   LLAR 6-11   │    │   LLAR 6-11   │    │   LLAR 6-11   │
+└───────────────┘    └───────────────┘    └───────────────┘
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│  rfp-agent    │    │  cfo-agent    │    │sales-manager  │
+│   PROPOSAL    │    │  FINANCIAL    │    │  SALES_TEAM   │
+│  (1 agent)    │    │  (10 agents)  │    │  (8 agents)   │
+│   LLAR 6-11   │    │   LLAR 6-11   │    │   LLAR 6-11   │
+└───────────────┘    └───────────────┘    └───────────────┘
+```
+
+**LLAR Components:**
+| Component | Purpose |
+|-----------|---------|
+| **LLAR-6 Routing** | Task classification (direct_llm, single_tool, multi_tool_chain, ask_user) |
+| **LLAR-7 Decomposition** | One-agent-one-role, parallel vs sequential execution |
+| **LLAR-8 Reflection** | Pre-output validation (count, groundedness, hallucination) |
+| **LLAR-9 Memory** | Store preferences/goals/strategies, ignore ephemeral |
+| **LLAR-10 Evaluation** | Groundedness, accuracy, precision thresholds |
+| **LLAR-11 Tool Governance** | Schema enforcement, circuit breaker, rate limits |
+| **LLAR-12 Conflict Resolution** | Permissions > Referee > Consensus > Voting > Orchestrator > Self-Healing |
+
+📖 **Complete LLAR Documentation:**
+- **[LLAR_GOVERNANCE.md](LLAR_GOVERNANCE.md)** - Full LLAR 1-12 framework documentation
+- **[LLAR_CONFIG.json](LLAR_CONFIG.json)** - Central LLAR configuration
+- **`{TEAM}/memory/llar_memory.json`** - Team-specific LLAR memory (6 files)
 
 ---
 

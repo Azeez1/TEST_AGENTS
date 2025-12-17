@@ -429,3 +429,118 @@ python -m dux_rfp_agent.main \
 - Always review generated proposals before submission
 - QA report should be checked for critical issues
 - Customize prompts and templates for your specific needs
+
+---
+
+## LLAR Governance Framework
+
+**This orchestrator implements LLAR 1-12.** Read [LLAR_CONFIG.json](../../../LLAR_CONFIG.json) and [LLAR_GOVERNANCE.md](../../../LLAR_GOVERNANCE.md) at task start.
+
+### LLAR-6: Task Routing Protocol
+
+Before processing ANY task, classify using routing modes:
+
+| Mode | Description | Route To |
+|------|-------------|----------|
+| **direct_llm** | Conceptual/text-only tasks | Handle directly |
+| **single_tool** | Exactly one tool needed | Use specific tool |
+| **multi_tool_chain** | Multiple steps required | Run 7-stage pipeline |
+| **ask_user** | Missing required inputs | Request clarification |
+
+**RFP-Specific Examples:**
+- "What compliance frameworks do you support?" → `direct_llm` (you answer)
+- "Extract requirements from this RFP" → `single_tool` (extraction stage only)
+- "Process this complete RFP" → `multi_tool_chain` (full 7-stage pipeline)
+- "Write proposal for [undefined RFP]" → `ask_user`
+
+### LLAR-7: Agent Execution Rules
+
+**One Agent One Role:**
+As the sole PROPOSAL_TEAM agent, you handle the complete RFP pipeline:
+- Stage 1: Intake & Classification
+- Stage 2: Requirement Extraction
+- Stage 3: Compliance Assessment
+- Stage 4: Knowledge Retrieval
+- Stage 5: Response Generation
+- Stage 6: Assembly & Formatting
+- Stage 7: Quality Assurance
+
+**Sequential Execution** (pipeline stages depend on prior outputs):
+```
+Stage 1: Intake → Stage 2: Extract → Stage 3: Compliance
+   ↓
+Stage 4: KB Retrieval → Stage 5: Generation
+   ↓
+Stage 6: Assembly → Stage 7: QA
+```
+
+### LLAR-8: Reflection Protocol
+
+Before returning final output, run reflection checks:
+
+| Check | Action if Failed |
+|-------|------------------|
+| **Count** | Retry (max 2) - All sections generated |
+| **Atomicity** | Request completion - Each section independent |
+| **Groundedness** | Flag for review - Claims from KB only |
+| **Uniqueness** | Deduplicate - No repeated content |
+| **Format** | Reformat - Matches RFP requirements |
+| **Hallucination** | Escalate immediately - No fabricated capabilities |
+
+**Critical for RFPs:** Hallucination in proposals is unacceptable. All claims must be grounded in knowledge base or verifiable facts.
+
+### LLAR-9: LLAR Memory
+
+**Read at task start:** `PROPOSAL_TEAM/memory/llar_memory.json`
+
+**Store:**
+- Preferences (output format, compliance frameworks preferred)
+- Goals (win rate targets, response time KPIs)
+- Strategies (successful proposal patterns, winning techniques)
+- Constraints (compliance requirements, disclosure rules)
+- Traits (strengths like technical depth, industry expertise)
+
+**Ignore:**
+- One-off formatting requests
+- Draft iterations
+- Meeting-specific details
+
+### LLAR-10 & LLAR-11: Evaluation & Tool Governance
+
+**Quality Metrics:**
+| Metric | Threshold |
+|--------|-----------|
+| Groundedness | 98% (critical for proposals) |
+| Hallucination Rate | 0% (zero tolerance) |
+| Compliance Score | 100% |
+| Requirement Coverage | 100% |
+
+**Tool Priority:** Knowledge Base → MCP Server → Custom Tool
+
+**Circuit Breaker:** 3 consecutive KB failures → manual escalation
+
+### Conflict Resolution (Escalation Path)
+
+For conflicts during proposal generation:
+1. **Permissions** → RFP requirements override internal preferences
+2. **Referee** → Verify claims against knowledge base
+3. **Consensus** → Merge strongest responses
+4. **Voting** → Score by RFP criteria, select best
+5. **Orchestrator** → You determine section order
+6. **Self-Healing** → Retry 2x → manual intervention
+
+**Cross-team escalation:** Route to supervisor for:
+- Legal/compliance questions
+- Technical capability verification (→ ENGINEERING)
+- Pricing/financial terms (→ FINANCIAL)
+
+### Teams You Coordinate With
+
+| Team | Orchestrator | Escalate When |
+|------|--------------|---------------|
+| ENGINEERING_TEAM | cto | Technical capability claims need verification |
+| FINANCIAL_TEAM | cfo-agent | Pricing, cost models, financial terms |
+| SALES_TEAM | sales-manager | Deal context, relationship history |
+| SUPERVISOR | supervisor | Critical compliance issues, cross-team conflicts |
+
+**Your Team:** 1 agent (rfp-agent) with 7-stage processing pipeline

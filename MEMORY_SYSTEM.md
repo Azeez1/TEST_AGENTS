@@ -39,7 +39,7 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### MARKETING_TEAM Memory
 **Location:** `MARKETING_TEAM/memory/`
 
-**Files (12 total):**
+**Files (13 total):**
 - `brand_voice.json` - Dux Machina tone and messaging
 - `email_config.json` - Gmail defaults
 - `google_drive_config.json` - Drive folder IDs
@@ -52,31 +52,58 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 - `learned_preferences.json` - User preferences
 - `social_media_accounts.json` - Social accounts
 - `content_calendar.json` - Publishing schedule
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
-**Access:** All 17 MARKETING_TEAM agents read automatically
+**Access:** All 18 MARKETING_TEAM agents read automatically
 
 ### QA_TEAM Memory
 **Location:** `QA_TEAM/memory/`
 
-**Files (2 total):**
+**Files (3 total):**
 - `learned_patterns.json` - Common edge cases and test patterns
 - `test_settings.json` - Testing preferences and configurations
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
 **Access:** All 5 QA_TEAM agents read automatically
 
 ### ENGINEERING_TEAM Memory
 **Location:** `ENGINEERING_TEAM/memory/`
 
-**Files (2 total):**
+**Files (3 total):**
 - `deployment_configs.json` - AWS/GCP deployment settings
 - `infrastructure_settings.json` - Infrastructure preferences
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
-**Access:** All 14 ENGINEERING_TEAM agents read automatically
+**Access:** All 15 ENGINEERING_TEAM agents read automatically
 
 ### USER_STORY_AGENT Memory
 **Location:** `USER_STORY_AGENT/memory/preferences_store.json`
 
 **Access:** Streamlit app reads on startup
+
+### PROPOSAL_TEAM Memory
+**Location:** `PROPOSAL_TEAM/memory/`
+
+**Files (1 total):**
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, compliance frameworks)
+
+**Access:** rfp-agent reads at task start
+
+### FINANCIAL_TEAM Memory
+**Location:** `FINANCIAL_TEAM/memory/`
+
+**Files (1 total):**
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, financial standards)
+
+**Access:** All 10 FINANCIAL_TEAM agents read automatically
+
+### SALES_TEAM Memory
+**Location:** `SALES_TEAM/memory/`
+
+**Files (1 total):**
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, CRM configs)
+
+**Access:** All 8 SALES_TEAM agents read automatically
 
 ---
 

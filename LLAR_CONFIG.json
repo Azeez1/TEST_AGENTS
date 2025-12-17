@@ -1,0 +1,175 @@
+{
+  "version": "1.0.0",
+  "framework": "LLAR_1_12",
+  "last_updated": "2025-12-14",
+  "description": "Layered Language Agent Reasoning governance framework for 59-agent multi-team system",
+
+  "routing": {
+    "direct_llm": {
+      "description": "Conceptual or text-only tasks requiring no tools",
+      "examples": ["explain concept", "summarize text", "provide advice", "answer questions"],
+      "route_to": "orchestrator_self"
+    },
+    "single_tool": {
+      "description": "Tasks requiring exactly one tool invocation",
+      "examples": ["send email", "create document", "generate image", "search web"],
+      "route_to": "single_specialist"
+    },
+    "multi_tool_chain": {
+      "description": "Tasks requiring multiple tools or sequential steps",
+      "examples": ["create campaign", "build feature", "generate test suite", "process RFP"],
+      "route_to": "multi_specialist_coordination"
+    },
+    "ask_user": {
+      "description": "Missing required inputs that cannot be inferred",
+      "examples": ["target audience undefined", "budget not specified", "timeline unclear"],
+      "route_to": "user_clarification"
+    }
+  },
+
+  "agent_rules": {
+    "one_agent_one_role": true,
+    "parallel_execution": {
+      "enabled": true,
+      "condition": "Independent extraction tasks with no data dependencies"
+    },
+    "sequential_execution": {
+      "enabled": true,
+      "condition": "Synthesis depends on prior outputs"
+    }
+  },
+
+  "reflection": {
+    "enabled": true,
+    "checks": {
+      "count": "Verify expected number of outputs produced",
+      "atomicity": "Each output is independent and complete",
+      "groundedness": "All claims traceable to source material",
+      "uniqueness": "No duplicate outputs",
+      "format": "Output matches expected schema/format",
+      "hallucination": "No fabricated facts or citations"
+    },
+    "retry_limit": 2,
+    "fallback_required": true,
+    "fallback_actions": [
+      "Log failure reason",
+      "Attempt with simplified prompt",
+      "Escalate to user if still failing"
+    ]
+  },
+
+  "memory": {
+    "store": {
+      "preferences": "User preferences and defaults",
+      "goals": "Long-term objectives and KPIs",
+      "strategies": "Successful approaches and patterns",
+      "constraints": "Boundaries and limitations",
+      "traits": "Team-specific characteristics"
+    },
+    "ignore": {
+      "temporary_tasks": "One-off requests not worth remembering",
+      "rewrite_requests": "Iterative refinement requests",
+      "ephemeral_details": "Context-specific details that expire"
+    },
+    "persistence": {
+      "location": "{team}/memory/llar_memory.json",
+      "update_trigger": "Task completion with learnings",
+      "retention": "Indefinite for preferences/goals, 90 days for strategies"
+    }
+  },
+
+  "evaluation": {
+    "metrics": {
+      "groundedness": {
+        "description": "Claims traceable to sources",
+        "threshold": 0.95
+      },
+      "hallucination_rate": {
+        "description": "Rate of fabricated content",
+        "threshold": 0.02
+      },
+      "accuracy": {
+        "description": "Correctness of outputs",
+        "threshold": 0.90
+      },
+      "precision": {
+        "description": "Relevance of retrieved information",
+        "threshold": 0.85
+      },
+      "recall": {
+        "description": "Coverage of required information",
+        "threshold": 0.80
+      }
+    },
+    "enforce_thresholds": true
+  },
+
+  "tool_governance": {
+    "enforce_schema": true,
+    "retry_limit": 2,
+    "circuit_breaker": {
+      "enabled": true,
+      "failure_threshold": 3,
+      "reset_timeout_seconds": 300
+    },
+    "rate_limit": {
+      "enabled": true,
+      "requests_per_minute": 60
+    },
+    "boundary_violation_is_error": true,
+    "priority_order": ["MCP", "Skill", "Custom Tool", "Create New"]
+  },
+
+  "governance_hierarchy": {
+    "priority_order": [
+      "permissions",
+      "referee",
+      "consensus",
+      "voting",
+      "orchestrator",
+      "self_healing"
+    ],
+    "rules": {
+      "authority_conflict": {
+        "resolution": "permissions",
+        "description": "When agents have conflicting authority levels, higher authority wins"
+      },
+      "fact_conflict": {
+        "resolution": "referee",
+        "description": "When agents disagree on facts, supervisor adjudicates"
+      },
+      "merge_valid_outputs": {
+        "resolution": "consensus",
+        "description": "When multiple valid outputs exist, merge them"
+      },
+      "select_one_output": {
+        "resolution": "voting",
+        "description": "When one output must be selected, use voting"
+      },
+      "workflow_ordering": {
+        "resolution": "orchestrator",
+        "description": "Orchestrator determines execution sequence"
+      },
+      "malfunction": {
+        "resolution": "self_healing",
+        "description": "Automatic retry with fallback on failures"
+      }
+    }
+  },
+
+  "team_orchestrators": {
+    "ROOT": "supervisor",
+    "MARKETING_TEAM": "router-agent",
+    "QA_TEAM": "test-orchestrator",
+    "ENGINEERING_TEAM": "cto",
+    "PROPOSAL_TEAM": "rfp-agent",
+    "FINANCIAL_TEAM": "cfo-agent",
+    "SALES_TEAM": "sales-manager"
+  },
+
+  "escalation_paths": {
+    "intra_team": "Team orchestrator handles",
+    "cross_team": "Supervisor adjudicates",
+    "unresolved": "Escalate to user"
+  }
+}
