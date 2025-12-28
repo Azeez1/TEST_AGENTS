@@ -108,3 +108,7 @@ temp_upload.txt
 # Node.js build artifacts (in outputs folders)
 **/node_modules/
 **/.parcel-cache/
+
+# Temp folders with client work
+**/temp_*/
+temp_*
