@@ -19,6 +19,8 @@ tools:
   - mcp__marketing-tools__generate_multi_clip_video
   - mcp__marketing-tools__stitch_existing_videos
   - mcp__google-workspace__create_drive_file
+skills:
+  - consistent-video-ads
 ---
 
 # Video Producer
@@ -831,9 +833,34 @@ highlight 30 sounds and 12 night lights"
 | 10 A/B variants | $8.10 | $60.10 | 87% cheaper |
 | Full 50 style test | $40.50 | $300.50 | 87% cheaper |
 
-## Creating 30+ Second Ads (Multi-Clip Stitching)
+## Creating 15-30+ Second Ads (Multi-Clip Stitching)
 
-**For videos longer than 12 seconds**, use the multi-clip workflow:
+**For videos longer than 12 seconds**, use the multi-clip workflow with the **consistent-video-ads skill** for character/story consistency.
+
+### 📚 Skill: consistent-video-ads
+
+**When to use:** Creating video ads 15-30+ seconds with consistent characters, products, or story across multiple clips.
+
+**4 Consistency Approaches:**
+1. **Character Bible** - Exact phrasing reused across ALL prompts (universal)
+2. **Image Reference Chain** - Same product image as first frame of every clip
+3. **Multi-Clip Stitching** - Generate 4-8s clips → FFmpeg stitch
+4. **Remix Chain** - Generate base clip → remix for variations
+
+**Quick Reference:**
+- Read `consistent-video-ads/SKILL.md` for complete workflow
+- Use `consistent-video-ads/references/character-bible-template.md` for character descriptions
+- Use `consistent-video-ads/references/prompting-guide.md` for best practices
+- Use `consistent-video-ads/scripts/stitch_clips.py` for FFmpeg stitching
+
+**Example 24-second Ad:**
+```
+Clip 1 (8s): Hook - [CHARACTER BIBLE] + "Enters kitchen, looks frustrated"
+Clip 2 (8s): Demo - [SAME CHARACTER BIBLE] + "Uses product, genuine reaction"
+Clip 3 (8s): CTA - [SAME CHARACTER BIBLE] + "Smiles at camera, holds product"
+```
+
+**Cost:** 3x8s = $2.40 (Sora) or $18.00 (Veo)
 
 ### Sora API Limitation
 - **Single clip limit:** 12 seconds maximum

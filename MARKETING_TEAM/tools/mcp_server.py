@@ -641,7 +641,7 @@ async def analyze_ugc_image_mcp(image_url: str) -> list[TextContent]:
         )]
 
 
-async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filename: str) -> list[TextContent]:
+async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filename: str, image_size: str = "2K") -> list[TextContent]:
     """
     Generate product image optimized for Veo 3.1 UGC video conversion using Gemini 3 Pro Image Preview.
 
@@ -653,8 +653,8 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
 
     NOT for standalone high-quality images - use generate_gpt4o_image instead.
 
-    Model: gemini-3-pro-image-preview
-    Pricing: ~$0.05-0.10 per image (optimized for quality and consistency)
+    Model: gemini-3-pro-image-preview (Nano Banana Pro)
+    Pricing: ~$0.134/image (1K/2K), ~$0.24/image (4K)
 
     Optimized for:
     - Character consistency across multiple images
@@ -666,6 +666,7 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
         prompt: Natural language image description (emphasize: human holding product, selfie-style)
         aspect_ratio: "9:16" (default), "16:9", "1:1", etc.
         filename: Output filename (without extension, .png added automatically)
+        image_size: Resolution - "1K", "2K" (default), or "4K"
 
     Returns:
         Image saved to outputs/images/, ready for Veo 3.1 UGC video generation
@@ -689,14 +690,15 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
         client = genai.Client(api_key=api_key)
 
         # Generate image
-        print(f"🎨 Generating Nano Banana image ({aspect_ratio})...", file=sys.stderr)
+        # SDK v1.56.0 uses camelCase: aspectRatio, imageSize
+        print(f"🎨 Generating Nano Banana Pro image ({aspect_ratio}, {image_size})...", file=sys.stderr)
 
         response = client.models.generate_content(
             model="gemini-3-pro-image-preview",
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_modalities=["IMAGE"],
-                image_config=types.ImageConfig(aspect_ratio=aspect_ratio)
+                image_config=types.ImageConfig(aspectRatio=aspect_ratio, imageSize=image_size)
             )
         )
 
@@ -726,11 +728,15 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
         global _last_generated_image
         _last_generated_image = image_part
 
+        # Calculate cost based on resolution
+        cost = "~$0.24" if image_size == "4K" else "~$0.134"
+
         result_text = (
             f"✅ Product Image Generated!\n\n"
-            f"**Model:** gemini-3-pro-image-preview (Nano Banana)\n"
+            f"**Model:** gemini-3-pro-image-preview (Nano Banana Pro)\n"
+            f"**Resolution:** {image_size}\n"
             f"**Aspect ratio:** {aspect_ratio}\n"
-            f"**Cost:** ~$0.05-0.10\n\n"
+            f"**Cost:** {cost}\n\n"
             f"**Saved to:** {str(output_path)}\n\n"
             f"✨ This image is optimized for Veo 3.1 image-to-video conversion.\n"
             f"✨ Image object cached in memory for immediate Veo 3.1 use.\n\n"
@@ -2070,7 +2076,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_nano_banana_image",
-            description="Generate image using Nano Banana (Gemini 3 Pro Image Preview) - ~$0.05-0.10/image, excellent character consistency, optimized for Veo 3.1 image-to-video",
+            description="Generate image using Nano Banana Pro (Gemini 3 Pro Image Preview) - ~$0.134/image (1K/2K), ~$0.24/image (4K), excellent character consistency, optimized for Veo 3.1 image-to-video",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2087,6 +2093,12 @@ async def list_tools() -> list[Tool]:
                     "filename": {
                         "type": "string",
                         "description": "Output filename (without extension, .png will be added)"
+                    },
+                    "image_size": {
+                        "type": "string",
+                        "description": "Output resolution: 1K, 2K (default), or 4K",
+                        "enum": ["1K", "2K", "4K"],
+                        "default": "2K"
                     }
                 },
                 "required": ["prompt", "filename"]
@@ -2260,7 +2272,8 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
             return await generate_nano_banana_image_mcp(
                 prompt=arguments["prompt"],
                 aspect_ratio=arguments.get("aspect_ratio", "9:16"),
-                filename=arguments["filename"]
+                filename=arguments["filename"],
+                image_size=arguments.get("image_size", "2K")
             )
 
         elif name == "analyze_ugc_image":

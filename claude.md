@@ -35,7 +35,8 @@ All agents work through natural conversation with Claude Code - no Python orches
 - [Project Structure](#-project-structure) - Repository layout
 - [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 18 skills + 7 MCP servers
 - [Configuration & Setup](#️-configuration--setup) - API keys, MCP servers
-- [Memory System](#-memory-system---how-it-works) - Automatic configuration loading
+- [Memory System](#-memory-system) - Automatic configuration loading
+- [Operational Memory](#root-level-operational-memory) - MCP lessons learned, workarounds
 - [LLAR Governance](#-llar-governance-framework) - Orchestrator task routing, reflection, memory
 - [Documentation Map](#-documentation-map) - All guides and references
 
@@ -564,6 +565,18 @@ pip install workspace-mcp                # Google Workspace
 - ✅ All agents read configs automatically (no hardcoding)
 
 📖 **Complete Guide:** [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - JSON examples, Drive/email strategies, formatting rules
+
+### Root-Level Operational Memory
+
+**Location:** `.claude/memory/` - Stores operational learnings for Claude Code across all teams.
+
+**Files:**
+- `mcp_lessons_learned.json` - MCP tool quirks, limitations, and workarounds
+
+**Key Learnings (READ FIRST when using MCP tools):**
+- **Google Sheets truncation**: MCP truncates results to ~50 rows. Use browser Ctrl+F to find row numbers first, then read specific rows via MCP.
+- **No native search**: Google Workspace MCP can only READ ranges, not search. Browser search is faster for finding specific values.
+- **Sheet tab naming**: Include sheet name in range for multi-tab spreadsheets: `'SheetName!A1:Z100'`
 
 ---
 
