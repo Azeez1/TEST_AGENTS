@@ -1,0 +1,314 @@
+{
+  "metadata": {
+    "description": "Business profiles for competitive analysis, investor narrative, and strategic planning",
+    "created": "2026-01-06",
+    "last_updated": "2026-01-06",
+    "owner": "Dux Holdings"
+  },
+
+  "ecosystem": {
+    "thesis": "One builds systems. The other owns outcomes.",
+    "connection": {
+      "machina_role": "Cash flow, leverage, intelligence - sharpens mind, builds deal access, funds momentum",
+      "vitae_role": "Ownership, compounding, permanence - locks in upside, makes it permanent"
+    },
+    "flywheel": [
+      "Dux Machina generates cash flow and operational intelligence",
+      "Intelligence reveals acquisition opportunities (distressed ops, optimization plays)",
+      "Dux Vitae Capital acquires physical assets with structured deals",
+      "Portfolio companies become Machina implementation clients",
+      "Compound both cash flow streams"
+    ]
+  },
+
+  "businesses": {
+    "business_one": {
+      "name": "Dux Machina",
+      "website": "https://duxmachina.com",
+      "tagline": "Strategy that builds. Systems that scale.",
+      "category": "Hybrid AI Systems Consultancy + Implementation Partner",
+
+      "core_operating_principle": "We give leadership clear visibility into operations, then quietly remove the friction that visibility reveals.",
+
+      "positioning": {
+        "headline": "Strategic AI architecture meets elite execution — from roadmap to runtime",
+        "differentiator": "Other consultants leave PDFs. Dev shops build without strategy. We do both.",
+        "value_proposition": "We bridge strategy and execution. 60% consultancy. 40% implementation. You choose the partnership model.",
+        "what_we_are_not": ["Not SaaS", "Not a dev shop", "Not strategy-only"],
+        "what_we_are": "We sit ABOVE the tools, architect the system, then execute or govern it"
+      },
+
+      "target_market": {
+        "company_sizes": ["Mid-market", "Enterprise"],
+        "revenue_threshold": "$5M+ revenue organizations",
+        "industries": ["Ops-heavy industries", "Gov-con & regulated environments", "Fintech", "Healthcare", "IT Services", "Cybersecurity"],
+        "ideal_customer": "Leaders who FEEL friction but can't SEE it"
+      },
+
+      "services": {
+        "core_pillars": [
+          {
+            "name": "System Design & Architecture",
+            "description": "AI-native operating systems",
+            "deliverables": ["Workflow orchestration", "Data + observability layers", "No rip-and-replace approach"]
+          },
+          {
+            "name": "Implementation & Execution",
+            "description": "Build + integrate production systems",
+            "deliverables": ["AI agents", "Automations", "Dashboards", "Close gap between strategy and runtime"]
+          },
+          {
+            "name": "Operational Observability",
+            "description": "Visibility installs and continuous friction removal",
+            "deliverables": ["Leak scans", "Decision latency detection", "Visibility installs", "Continuous friction removal"]
+          },
+          {
+            "name": "Consulting & Governance",
+            "description": "Executive advisory and compliance architecture",
+            "deliverables": ["Executive advisory", "RFP & compliance architecture", "AI authority and decision frameworks"]
+          }
+        ],
+        "partnership_models": [
+          {
+            "name": "Advisory Partnership",
+            "type": "Strategy-Only",
+            "description": "AI transformation roadmaps and proven frameworks for teams with internal dev capacity",
+            "deliverable": "Strategic guidance, tactical roadmaps"
+          },
+          {
+            "name": "Implementation Partnership",
+            "type": "Full Execution",
+            "description": "Strategy plus implementation. Complete transformation from design to deployment",
+            "deliverable": "Working systems in production"
+          },
+          {
+            "name": "Ongoing Partnership",
+            "type": "Hybrid Retainer",
+            "description": "Ongoing strategic advisory plus tactical execution. Flexible scope, evolving needs",
+            "deliverable": "Continuous optimization"
+          },
+          {
+            "name": "Sprint Partnership",
+            "type": "Project-Based",
+            "description": "Defined scope, upfront pricing. Specific transformations delivered within fixed timelines",
+            "deliverable": "Measurable outcomes by deadline"
+          }
+        ],
+        "rfp_consulting": {
+          "name": "Precision Proposal Engineering",
+          "description": "Strategic frameworks + elite execution for federal contractors, IT consultancies, and cybersecurity firms",
+          "target_industries": ["IT Service Providers (MSPs)", "Cybersecurity Firms (SOC, Pen Testing, GRC)", "Federal Contractors"],
+          "capabilities": [
+            "Compliance architecture (NIST, FedRAMP, HIPAA)",
+            "Technical writing with security controls articulation",
+            "Cloud and cybersecurity literacy",
+            "System design and architecture documentation",
+            "Proposal strategy and evaluation optimization"
+          ],
+          "service_tiers": [
+            {
+              "name": "RFP Readiness & Compliance Gap Audit",
+              "type": "Strategic",
+              "includes": ["Analysis of past proposals", "Compliance gap identification", "Scoring issue analysis", "Actionable improvement roadmap"]
+            },
+            {
+              "name": "Full Proposal Engineering",
+              "type": "Most Popular",
+              "includes": ["Complete compliance matrix development", "Technical writing with security controls", "Architecture diagrams and documentation", "Volume creation and submission oversight"]
+            },
+            {
+              "name": "Proposal Department Retainer",
+              "type": "Ongoing",
+              "includes": ["Ongoing proposal support", "Proposal library building", "Continuous compliance readiness", "Optimized proposal operations"]
+            }
+          ],
+          "process": ["Discovery", "Design", "Build", "Deploy"]
+        }
+      },
+
+      "client_flow": {
+        "principle": "Disciplined - No free value leakage. Authority compounds.",
+        "stages": ["Lead", "Diagnostic", "Paid Audit", "Execute (or Stop)"]
+      },
+
+      "revenue_model": [
+        "Paid audits",
+        "Implementation engagements",
+        "Retainers & governance",
+        "Long-term system ownership leverage"
+      ],
+
+      "process": {
+        "name": "Two-Track Approach",
+        "description": "Same strategic rigor. Different execution paths.",
+        "tracks": [
+          {
+            "name": "Strategy-Only Advisory",
+            "description": "For teams with internal dev capacity. We architect the strategy, your team executes.",
+            "steps": ["Discovery & Assessment", "Strategic Roadmap Design"]
+          },
+          {
+            "name": "Full Execution Partnership",
+            "description": "Complete transformation. We design and build. Strategy to production.",
+            "steps": ["Strategic Design", "Build & Integrate"]
+          }
+        ],
+        "raci": {
+          "client_responsibilities": [
+            "Executive sponsor & project lead",
+            "Process owners (sales, ops, finance, etc.)",
+            "Data export approval & validation",
+            "Champion users for training & adoption"
+          ],
+          "dux_machina_responsibilities": [
+            "Solution architecture & configuration",
+            "Migration engineering & integrations",
+            "AI workflows & assistants",
+            "Training, SOPs, analytics instrumentation"
+          ]
+        }
+      },
+
+      "competitive_positioning": {
+        "vs_saas_sprawl": {
+          "timeline": "8-12 weeks vs Ongoing",
+          "cost": "Flexible models vs $10K-$25K/mo",
+          "data_unification": "Strategic design vs Siloed",
+          "failure_risk": "Low vs High",
+          "learning_curve": "Minimal vs High"
+        },
+        "vs_erp": {
+          "timeline": "8-12 weeks vs 18+ months",
+          "cost": "Flexible vs $50K+ setup + $15K/mo",
+          "failure_risk": "15% vs 68%"
+        },
+        "vs_custom_dev": {
+          "timeline": "8-12 weeks vs 12+ months",
+          "cost": "Flexible vs $200K+ setup"
+        }
+      },
+
+      "proof_points": {
+        "client_results": [
+          {
+            "scenario": "Operations team drowning in data entry",
+            "transformation": "12 weeks: Strategic roadmap + Custom AI agents + Workflow automation + Team training",
+            "results": {
+              "efficiency_gain": "60%",
+              "annual_savings": "$180K",
+              "outcome": "Autonomous systems handling routine operations"
+            }
+          },
+          {
+            "scenario": "Multiple vendor proposals, analysis paralysis",
+            "transformation": "6 weeks: Discovery + Strategic roadmap design + Framework delivery",
+            "results": {
+              "iteration_speed": "3x faster",
+              "team_alignment": "100%",
+              "outcome": "Clear 18-month AI roadmap executed flawlessly by internal team"
+            }
+          }
+        ],
+        "company_stats": {
+          "businesses_transformed": "500+",
+          "average_implementation": "90 days",
+          "failure_rate": "15% (vs 68% ERP)",
+          "user_adoption_rate": "94%"
+        },
+        "team_stats": {
+          "implementation_specialists": "50+",
+          "average_experience": "12 years ERP/SaaS",
+          "successful_deployments": "200+",
+          "countries": "15"
+        },
+        "industry_stats": {
+          "productivity_gains": "42% (IDC, 2023)",
+          "manual_data_entry_reduction": "73% (Gartner, 2024)",
+          "roi_timeline": "3.2x within 18 months (HBR, 2024)"
+        }
+      },
+
+      "brand": {
+        "origin_story": "Built by operators, for operators. Started after experiencing tool sprawl, data silos, and failed implementations.",
+        "mission": "Every mid-market business should have access to enterprise-grade technology without enterprise complexity and cost.",
+        "plain_truth": "This is how you turn AI chaos into executive leverage.",
+        "visual_identity": {
+          "primary_colors": ["Black", "Gold/Yellow (#FFD700)"],
+          "style": "Dark theme, premium, professional"
+        }
+      },
+
+      "additional_services": [
+        "Operational Clarity",
+        "Visibility + Leak Scan"
+      ],
+
+      "ctas": [
+        "Design Your AI Roadmap",
+        "See Client Transformations",
+        "Schedule Audit",
+        "Get Started"
+      ]
+    },
+
+    "business_two": {
+      "name": "Dux Vitae Capital",
+      "website": null,
+      "tagline": "Owner-Operator Private Equity Platform",
+      "category": "Private Equity Acquisition Firm",
+
+      "core_thesis": {
+        "summary": "Buy boring, durable, cash-flowing U.S. manufacturing businesses using structured deals — not speculation, not hype.",
+        "principles": [
+          "Buy REAL assets that throw off cash",
+          "Use OPM / OPB (banks, seller notes, credibility)",
+          "Structure > price",
+          "Governance beats hustle"
+        ]
+      },
+
+      "acquisition_targets": {
+        "description": "Boring, durable, cash-flowing businesses",
+        "types": [
+          "Infrastructure-adjacent manufacturers",
+          "Asset-heavy, repeat-PO businesses",
+          "Strong collateral, weak optimization"
+        ]
+      },
+
+      "buy_box": {
+        "revenue": "$4M - $12M",
+        "ebitda_margin": ">=12% preferred",
+        "customer_concentration": "Low",
+        "assets": "Real equipment, real inventory, real balance sheets"
+      },
+
+      "deal_structure": {
+        "leverage": "Conservative (2.5-3.0x)",
+        "financing_sources": ["Seller financing", "Senior debt"],
+        "equity_requirement": "Minimal or zero personal cash",
+        "governance": "Chairman + governance layer for credibility"
+      },
+
+      "operator_role": {
+        "title": "Capital Allocator / Deal Architect / Chairman",
+        "responsibilities": [
+          "Capital allocator",
+          "Deal architect",
+          "Chairman / governance authority"
+        ],
+        "not_responsible_for": "Day-to-day operations"
+      },
+
+      "endgame": {
+        "strategy": "Stack assets. Compound cash flow.",
+        "vision": "Build a long-term holding company that OWNS physical bottlenecks in the AI/automation era"
+      },
+
+      "brand": {
+        "plain_truth": "This is how real wealth is built. Slow, disciplined, inevitable.",
+        "philosophy": "Real assets, structured deals, permanent ownership"
+      }
+    }
+  }
+}
