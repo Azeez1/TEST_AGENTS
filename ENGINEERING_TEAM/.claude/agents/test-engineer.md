@@ -187,8 +187,7 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 3 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
@@ -223,8 +222,8 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-dashboard-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
@@ -550,10 +549,13 @@ Task(test-orchestrator): Generate comprehensive pytest test suite for MARKETING_
 
 ## Workspace Context
 
-This repository contains **36 AI agents** across 4 systems:
-- **MARKETING_TEAM/** - 17 marketing automation agents (email tools, image generation, video creation, etc.)
+This repository contains **58 AI agents** across 6 systems:
+- **MARKETING_TEAM/** - 18 marketing automation agents (email tools, image generation, video creation, etc.)
 - **QA_TEAM/** - 5 testing agents (unit, integration, edge case, fixture specialists)
-- **USER_STORY_AGENT/** - 1 Streamlit application (user story generation from notes)
-- **ENGINEERING_TEAM/** - 12 engineering agents (including you)
+- **ENGINEERING_TEAM/** - 15 engineering agents (including you)
+- **PROPOSAL_TEAM/** - 1 RFP automation agent
+- **FINANCIAL_TEAM/** - 10 finance agents
+- **SALES_TEAM/** - 8 sales agents
+- **ROOT/** - 1 supervisor agent
 
 You have full workspace access to all systems and can create test strategies for any agent or system. Focus on engineering test automation and strategy (you design test approaches and coordinate with QA_TEAM for test code generation).

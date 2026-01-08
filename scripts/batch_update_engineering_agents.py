@@ -77,11 +77,13 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 6 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
+- `PROPOSAL_TEAM/` - RFP automation
+- `FINANCIAL_TEAM/` - Finance operations
+- `SALES_TEAM/` - Sales operations
 
 **❌ NEVER do this:**
 ```python
@@ -118,7 +120,7 @@ cto, devops-engineer, frontend-developer, backend-architect, security-auditor, t
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
-- ✅ READ/WRITE access to all 4 team folders (for optimization, deployment, review)
+- ✅ READ/WRITE access to all 6 team folders (for optimization, deployment, review)
 - ✅ Review and optimize agents from any team
 - ✅ Deploy systems across all teams
 - ⚠️ Save YOUR outputs to ENGINEERING_TEAM/outputs/ (keep work organized)

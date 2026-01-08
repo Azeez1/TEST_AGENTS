@@ -368,27 +368,35 @@ function Dashboard() {
 
 ## Usage with TEST_AGENTS Repository
 
-### All 35 Agents Supported
+### All 58 Agents Supported
 
-The `example-app.tsx` includes mock data for all 35 agents:
+The `example-app.tsx` includes mock data for all 58 agents:
 
-**MARKETING_TEAM (17 agents):**
+**MARKETING_TEAM (18 agents):**
 - router-agent, copywriter, social-media-manager, visual-designer, video-producer
 - seo-specialist, email-specialist, gmail-agent, landing-page-specialist
 - pdf-specialist, presentation-designer, analyst, content-strategist
-- editor, research-agent, lead-gen-agent, automation-agent
+- editor, research-agent, lead-gen-agent, automation-agent, newsletter-agent
 
-**TEST_AGENT (5 agents):**
+**QA_TEAM (5 agents):**
 - test-orchestrator, unit-test-agent, integration-test-agent
 - edge-case-agent, fixture-agent
 
-**ENGINEERING_TEAM (12 agents):**
-- devops-engineer, frontend-developer, backend-architect, security-auditor
+**ENGINEERING_TEAM (15 agents):**
+- cto, devops-engineer, frontend-developer, backend-architect, security-auditor
 - technical-writer, ai-engineer, ui-ux-designer, code-reviewer
-- test-engineer, prompt-engineer, database-architect, debugger
+- test-engineer, prompt-engineer, database-architect, debugger, system-architect, analytics-dashboard-agent
 
-**USER_STORY_AGENT (1 system):**
-- user-story-agent
+**PROPOSAL_TEAM (1 agent):**
+- rfp-agent
+
+**FINANCIAL_TEAM (10 agents):**
+- cfo-agent, deal-analyst, valuation-agent, portfolio-manager, financial-analyst
+- forecasting-agent, fpna-agent, accountant, controller, tax-advisor
+
+**SALES_TEAM (8 agents):**
+- sales-manager, sdr-agent, account-executive, sales-operations, sales-analyst
+- proposal-specialist, customer-success-manager, outbound-specialist
 
 ---
 

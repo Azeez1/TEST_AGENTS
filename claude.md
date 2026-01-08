@@ -2,22 +2,21 @@
 
 ## 📋 Repository Overview
 
-This repository contains **7 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **59 specialized agents** for RFP/proposal automation, user story generation, marketing automation, test generation, software engineering, quality assurance, AI/ML development, financial analysis, and sales operations.
+This repository contains **6 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **58 specialized agents** for RFP/proposal automation, marketing automation, test generation, software engineering, quality assurance, AI/ML development, financial analysis, and sales operations.
 
 **Systems:**
-- **USER_STORY_AGENT** (1) - Transform meeting notes into backlog-ready user stories with Excel export
 - **MARKETING_TEAM** (18) - Content creation, social media, images, videos, emails, lead generation, landing pages, workflow automation, newsletters
 - **QA_TEAM** (5) - Automated pytest test suite generation
 - **ENGINEERING_TEAM** (15) ⭐ **SUPER TEAM** - CTO coordinator + 14 specialists (DevOps, security, frontend, backend, AI/ML, UX, architecture, QA, testing, optimization, database, troubleshooting, analytics)
 - **PROPOSAL_TEAM** (1) - RFP automation, compliance matrix generation, and proposal writing with 30+ compliance frameworks
-- **FINANCIAL_TEAM** (10) ⭐ **NEW** - PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, tax, CFO strategy)
-- **SALES_TEAM** (8) ⭐ **NEW** - Full sales lifecycle (SDR, AE, sales ops, proposals, customer success, analytics)
+- **FINANCIAL_TEAM** (10) - PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, tax, CFO strategy)
+- **SALES_TEAM** (8) - Full sales lifecycle (SDR, AE, sales ops, proposals, customer success, analytics)
 - **ROOT** (1) - Supervisor agent for cross-team quality assurance
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
 **⚡ Key Facts:**
-- 59 autonomous agents across 7 systems
+- 58 autonomous agents across 6 systems
 - 21 powerful skills (visual, development, documents, integration, n8n automation)
 - 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
 - Memory system with automatic configuration loading
@@ -28,12 +27,12 @@ All agents work through natural conversation with Claude Code - no Python orches
 **🚀 Getting Started:**
 - [Use Existing Tools First](#️-critical-use-existing-tools-first) - Priority order for AI assistants
 - [Agent Invocation Guidelines](#-agent-invocation-guidelines-for-ai-assistants) - How to invoke agents properly
-- [Complete Agent Directory](#-complete-agent-directory) - All 59 agents at a glance
+- [Complete Agent Directory](#-complete-agent-directory) - All 58 agents at a glance
 - [Quick Start Examples](#-quick-start-examples) - Common workflows
 
 **📚 Key Resources:**
 - [Project Structure](#-project-structure) - Repository layout
-- [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 18 skills + 7 MCP servers
+- [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 20 skills + 7 MCP servers
 - [Configuration & Setup](#️-configuration--setup) - API keys, MCP servers
 - [Memory System](#-memory-system) - Automatic configuration loading
 - [Operational Memory](#root-level-operational-memory) - MCP lessons learned, workarounds
@@ -55,7 +54,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 **Priority Order:**
 1. **Use existing agents** (`.claude/agents/*.md` files) - Invoke them explicitly
-2. **Use installed skills** (`.claude/skills/*`) - 18 powerful skills available
+2. **Use installed skills** (`.claude/skills/*`) - 20 powerful skills available
 3. **Use MCP servers** - 7 external integrations (Playwright, Google Workspace, Perplexity, Bright Data, etc.)
 4. **Use existing tools** (`tools/*.py`) - Simpler utilities and API wrappers
 5. **Only if none exist** - Then create new implementations
@@ -97,7 +96,6 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 | System | Launch | Documentation |
 |--------|--------|---------------|
-| **USER_STORY_AGENT** | `streamlit run app_ui.py` | [README](USER_STORY_AGENT/README.md) |
 | **MARKETING_TEAM** | Talk to agents via Claude Code | [README](MARKETING_TEAM/README.md) |
 | **QA_TEAM** | Talk to agents via Claude Code | [README](QA_TEAM/README.md) |
 | **ENGINEERING_TEAM** | Talk to agents via Claude Code | [README](ENGINEERING_TEAM/README.md) |
@@ -114,16 +112,12 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 ```
 TEST_AGENTS/
 ├── claude.md                        ← YOU ARE HERE
-├── MULTI_AGENT_GUIDE.md             ← Master guide for all 59 agents
+├── MULTI_AGENT_GUIDE.md             ← Master guide for all 58 agents
 ├── AGENT_INVOCATION_BEST_PRACTICES.md  ← Agent invocation patterns
 ├── MEMORY_SYSTEM.md                 ← Memory/Drive/Email strategies
 ├── MCP_SETUP.md, IMPLEMENTATION_SUMMARY.md
 │
 ├── .claude/agents/                  ← 1 root agent (supervisor)
-│
-├── USER_STORY_AGENT/                ← 1 system: Streamlit app for user stories (see README.md)
-│   ├── app_ui.py                    ← Main Streamlit application
-│   └── story_generator.py           ← Core story generation logic
 │
 ├── MARKETING_TEAM/                  ← 18 agents + tools + docs (see README.md)
 │   ├── .claude/agents/              ← 18 marketing agent definitions
@@ -163,14 +157,13 @@ TEST_AGENTS/
 | System | Agents | Primary Use |
 |--------|--------|-------------|
 | **ROOT** | 1 | Supervisor for cross-team quality assurance |
-| **USER_STORY_AGENT** | 1 | Meeting notes → Excel user stories (Streamlit app) |
 | **MARKETING_TEAM** | 18 | Content creation, campaigns, social media, images, videos, emails, lead gen, newsletters |
 | **QA_TEAM** | 5 | Automated pytest test suite generation |
 | **ENGINEERING_TEAM** | 15 | CTO coordinator + 14 specialists (DevOps, security, frontend, backend, AI, UX, analytics, etc.) |
 | **PROPOSAL_TEAM** | 1 | RFP automation, compliance matrix generation, proposal writing |
 | **FINANCIAL_TEAM** | 10 | PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, CFO strategy) |
 | **SALES_TEAM** | 8 | Full sales lifecycle (SDR, AE, sales ops, proposals, customer success) |
-| **TOTAL** | **59** | **Complete enterprise AI agent workforce** |
+| **TOTAL** | **58** | **Complete enterprise AI agent workforce** |
 
 **Key Agents by Function:**
 
@@ -193,7 +186,7 @@ TEST_AGENTS/
 **Sales:** sdr-agent, account-executive, sales-operations, sales-analyst, proposal-specialist, customer-success-manager, outbound-specialist (SALES)
 
 📖 **Complete Agent Details:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)
-- Detailed capabilities for all 59 agents
+- Detailed capabilities for all 58 agents
 - Invocation examples and patterns
 - API requirements and technology stacks
 - Workflow orchestration strategies
@@ -204,7 +197,6 @@ TEST_AGENTS/
 ## 📖 Documentation Map
 
 ### Getting Started
-- [USER_STORY_AGENT/README.md](USER_STORY_AGENT/README.md) - User story generation quick start
 - [MARKETING_TEAM/README.md](MARKETING_TEAM/README.md) - Marketing agents overview
 - [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - API configuration (OpenAI, Gmail, Drive)
 - [QA_TEAM/README.md](QA_TEAM/README.md) - Testing agents overview
@@ -215,7 +207,7 @@ TEST_AGENTS/
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 59 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 58 agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - **CRITICAL** - Proper agent invocation patterns
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration, Drive/email strategies, formatting rules
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
@@ -231,10 +223,6 @@ TEST_AGENTS/
 - [ENGINEERING_TEAM/docs/](ENGINEERING_TEAM/docs/) - PRDs, technical specs, API docs, deployment guides
 - [PROPOSAL_TEAM/HOW_IT_WORKS.md](PROPOSAL_TEAM/HOW_IT_WORKS.md) - RFP processing pipeline architecture
 - [PROPOSAL_TEAM/COMPLIANCE_FRAMEWORKS.md](PROPOSAL_TEAM/COMPLIANCE_FRAMEWORKS.md) - 30+ compliance frameworks reference
-
-### Workflow Guides
-- [USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md](USER_STORY_AGENT/EXCEL_FIGMA_WORKFLOW.md) - Excel + Figma integration workflow
-- [USER_STORY_AGENT/CLEAN_CODEBASE.md](USER_STORY_AGENT/CLEAN_CODEBASE.md) - Codebase structure reference
 
 ---
 
@@ -384,7 +372,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 📋 Tool Governance
 
-**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 59 agents and prevents redundant tool creation.
+**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 58 agents and prevents redundant tool creation.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New
 
@@ -406,7 +394,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 🧠 LLAR Governance Framework
 
-**LLAR (Layered Language Agent Reasoning)** is the meta-governance framework for the 59-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
+**LLAR (Layered Language Agent Reasoning)** is the meta-governance framework for the 58-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
 
 **Key Principles:**
 - Orchestrators govern teams (specialists stay lean)
@@ -479,12 +467,6 @@ All **18 MARKETING_TEAM agents** have access to **21 powerful skills** and **7 M
 ## ⚙️ Configuration & Setup
 
 ### Environment Variables
-
-**USER_STORY_AGENT:**
-```bash
-# USER_STORY_AGENT/.env
-ANTHROPIC_API_KEY=your_anthropic_key_here
-```
 
 **MARKETING_TEAM:**
 ```bash
@@ -582,13 +564,6 @@ pip install workspace-mcp                # Google Workspace
 
 ## 🚀 Quick Start Examples
 
-### Generate User Stories
-```bash
-cd USER_STORY_AGENT
-streamlit run app_ui.py
-# Upload notes → Choose format → Generate → Download Excel
-```
-
 ### Create Marketing Content
 ```
 Talk to Claude Code:
@@ -603,7 +578,7 @@ Talk to Claude Code:
 ```
 Talk to Claude Code:
 
-"Use the test-orchestrator to scan USER_STORY_AGENT and generate comprehensive tests"
+"Use the test-orchestrator to scan MARKETING_TEAM and generate comprehensive tests"
 "Use the unit-test-agent to generate tests for story_generator.py"
 "Use the edge-case-agent to identify edge cases in file validation"
 ```
@@ -611,16 +586,6 @@ Talk to Claude Code:
 ---
 
 ## 🎯 Common Use Cases
-
-### User Story Generation
-**Goal:** Convert meeting notes to Excel user stories
-**System:** USER_STORY_AGENT
-**Steps:**
-1. Launch Streamlit: `streamlit run app_ui.py`
-2. Upload notes (PDF, DOCX, TXT, images, etc.)
-3. Choose AC format (Gherkin or Explicit/Detailed)
-4. Optionally enable browser research mode
-5. Generate and download Excel
 
 ### Marketing Campaign
 **Goal:** Create a complete social media campaign
@@ -663,7 +628,7 @@ Talk to Claude Code:
 3. **Follow the documentation map** - Links to all key docs
 4. **Respect .gitignore** - Don't track outputs, credentials, or artifacts
 5. **Use the multi-agent system** - Invoke specialized agents for complex tasks
-6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 59 agents
+6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 58 agents
 
 **Common patterns:**
 - Each system has a README.md with quick start
@@ -693,7 +658,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - `visual_guidelines.json` - Design standards (read by visual agents)
 - `docs_folder_structure.json` - Docs organization (AI assistants only)
 - `learned_patterns.json` - Test generation patterns (QA_TEAM)
-- `preferences_store.json` - User preferences (USER_STORY_AGENT)
+- `preferences_store.json` - User preferences (general use)
 
 **How it works:** Each agent's `.claude/agents/*.md` file includes a "⚙️ Configuration Files (READ FIRST)" section with explicit instructions to read relevant memory files at task start. This ensures consistency across all agents without hardcoding configuration.
 
@@ -701,7 +666,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ### About Workspace Awareness
 
-**All 59 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
+**All 58 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
 
 **Quick Troubleshooting:**
 - If "Workspace validation failed" → Check `pwd` (should be TEST_AGENTS or team folder) → Navigate to correct directory
@@ -723,7 +688,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 **Last Updated:** 2025-11-25
 
 **Latest Major Changes:**
-- ✨ **59 agents total** - Updated agent counts across all 7 teams
+- ✨ **58 agents total** - Updated agent counts across all 6 teams
 - ✨ **FINANCIAL_TEAM** (10 agents) - PE/M&A + General Finance (deal-analyst, valuation, FP&A, CFO, accounting, tax)
 - ✨ **SALES_TEAM** (8 agents) - Full sales lifecycle (SDR, AE, sales-ops, proposals, CSM, analytics)
 - ✨ **newsletter-agent** - 18th Marketing agent for email newsletter campaigns

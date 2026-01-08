@@ -48,7 +48,7 @@ def _get_repo_root() -> Path:
             return parent
 
     # Check if we're inside a team folder
-    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT", "FINANCIAL_TEAM", "SALES_TEAM"]
+    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "PROPOSAL_TEAM", "FINANCIAL_TEAM", "SALES_TEAM"]
     for team in team_folders:
         if team in str(current):
             # Navigate up to find TEST_AGENTS
@@ -85,9 +85,12 @@ OUTPUT_STRUCTURES = {
             "security_reports", "deployment", "optimizations"
         ]
     },
-    "USER_STORY_AGENT": {
-        "base": "output",
-        "subfolders": []
+    "PROPOSAL_TEAM": {
+        "base": "outputs",
+        "subfolders": [
+            "proposals", "compliance_matrices", "rfp_responses",
+            "templates", "scoring_reports"
+        ]
     },
     "FINANCIAL_TEAM": {
         "base": "outputs",
@@ -119,8 +122,8 @@ MEMORY_FILES = {
     "ENGINEERING_TEAM": [
         "deployment_configs.json", "infrastructure_settings.json"
     ],
-    "USER_STORY_AGENT": [
-        "preferences_store.json"
+    "PROPOSAL_TEAM": [
+        "compliance_frameworks.json", "rfp_templates.json", "win_themes.json"
     ],
     "FINANCIAL_TEAM": [
         "financial_assumptions.json", "historical_financials.json", "chart_of_accounts.json"

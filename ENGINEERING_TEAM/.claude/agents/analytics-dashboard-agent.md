@@ -61,8 +61,7 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 3 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system

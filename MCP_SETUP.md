@@ -1,6 +1,6 @@
 # MCP Browser Automation Setup & Usage
 
-Complete guide for autonomous browser research with USER_STORY_AGENT.
+Complete guide for autonomous browser automation and research.
 
 ---
 
@@ -172,6 +172,5 @@ success, stories, msg = await agent.generate_from_notes(
 ---
 
 For more details, see:
-- [README.md](USER_STORY_AGENT/README.md) - Full application guide
 - [.mcp.json](.mcp.json) - MCP configuration
-- [mcp_client.py](USER_STORY_AGENT/mcp_client.py) - Implementation
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 58 agents with browser capabilities

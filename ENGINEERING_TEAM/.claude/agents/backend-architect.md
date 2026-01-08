@@ -57,8 +57,7 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 3 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
@@ -93,8 +92,8 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-dashboard-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)

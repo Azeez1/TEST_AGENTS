@@ -144,7 +144,7 @@ const fetchAgentsFromAPI = async (): Promise<Agent[]> => {
       description: 'n8n workflow automation',
     },
 
-    // TEST_AGENT (5 agents)
+    // QA_TEAM (5 agents)
     {
       id: 't1',
       name: 'test-orchestrator',
@@ -267,14 +267,6 @@ const fetchAgentsFromAPI = async (): Promise<Agent[]> => {
       description: 'Root cause analysis and troubleshooting',
     },
 
-    // USER_STORY_AGENT (1 system)
-    {
-      id: 'u1',
-      name: 'user-story-agent',
-      status: 'idle',
-      lastRunTime: new Date(Date.now() - 43200000), // 12 hours ago
-      description: 'Meeting notes to user stories with Excel export',
-    },
   ];
 };
 
@@ -344,7 +336,7 @@ export default function AgentDashboardApp() {
                 Agent Status Dashboard
               </h1>
               <p className="mt-1 text-sm text-gray-600">
-                Monitor 35 agents across 4 systems
+                Monitor 58 agents across 6 systems
               </p>
             </div>
 

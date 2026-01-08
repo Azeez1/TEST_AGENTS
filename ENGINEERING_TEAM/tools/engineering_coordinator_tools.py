@@ -80,6 +80,24 @@ ENGINEERING_INTENTS = {
         "description": "Frontend development with React/Next.js",
         "keywords": ["frontend", "react", "next.js", "component", "responsive"],
         "phases": ["design", "implementation", "review"]
+    },
+    "build_dashboard": {
+        "agents": ["analytics-dashboard-agent", "frontend-developer", "database-architect", "ui-ux-designer"],
+        "description": "Analytics dashboard and data visualization development",
+        "keywords": ["dashboard", "analytics", "visualization", "chart", "metrics", "reporting", "kpi", "d3", "chart.js"],
+        "phases": ["data_modeling", "design", "implementation", "review"]
+    },
+    "design_system_architecture": {
+        "agents": ["system-architect", "backend-architect", "technical-writer"],
+        "description": "System architecture design and diagram creation",
+        "keywords": ["architecture diagram", "system design", "mermaid", "flowchart", "sequence diagram", "er diagram", "class diagram", "component diagram"],
+        "phases": ["analysis", "design", "visualization", "documentation"]
+    },
+    "coordinate_project": {
+        "agents": ["cto", "technical-writer"],
+        "description": "Multi-phase project coordination across engineering specialists",
+        "keywords": ["coordinate", "orchestrate", "project", "plan", "multiple agents", "workflow", "pipeline"],
+        "phases": ["planning", "coordination", "execution", "review"]
     }
 }
 
@@ -325,6 +343,48 @@ async def get_engineer_capabilities(args):
             "tools": ["Debuggers", "Logging analysis", "Hypothesis testing"],
             "approach": "Systematic troubleshooting with hypothesis testing",
             "best_for": "Troubleshooting agent coordination, API integration, and workflow issues"
+        },
+        "cto": {
+            "role": "Strategic engineering coordinator and orchestrator",
+            "capabilities": [
+                "Intent classification for engineering requests",
+                "Multi-agent workflow orchestration",
+                "Cross-team collaboration coordination",
+                "Technical strategy and decision-making",
+                "Resource allocation and phase planning"
+            ],
+            "outputs": ["Execution plans", "Agent coordination", "Technical strategies"],
+            "tools": ["classify_engineering_request", "get_engineer_capabilities", "list_engineering_agents", "create_execution_plan"],
+            "approach": "Strategic coordination with intelligent routing to 14 specialist agents",
+            "best_for": "Complex multi-phase engineering projects requiring multiple specialists"
+        },
+        "system-architect": {
+            "role": "System architecture and professional diagram creation",
+            "capabilities": [
+                "Mermaid diagram generation (flowcharts, sequence, ER, class)",
+                "System architecture design and visualization",
+                "Interactive HTML diagram exports",
+                "Architecture decision documentation",
+                "Component and service boundary design"
+            ],
+            "outputs": ["Mermaid diagrams", "Architecture diagrams", "Interactive HTML visualizations"],
+            "tools": ["Read", "Write", "Edit", "flow-diagram skill"],
+            "approach": "Visual-first architecture with professional diagram standards",
+            "best_for": "System design visualization and architecture documentation"
+        },
+        "analytics-dashboard-agent": {
+            "role": "Data visualization and analytics dashboard specialist",
+            "capabilities": [
+                "React dashboard component development",
+                "Chart.js and D3.js visualizations",
+                "Real-time data dashboard design",
+                "KPI and metrics visualization",
+                "Interactive filtering and drill-down interfaces"
+            ],
+            "outputs": ["Dashboard components", "Data visualizations", "Analytics interfaces"],
+            "tools": ["Read", "Write", "Edit", "frontend-design skill"],
+            "approach": "Data-driven design with performance optimization",
+            "best_for": "Building analytics dashboards and data visualization interfaces"
         }
     }
 
@@ -350,12 +410,12 @@ async def get_engineer_capabilities(args):
 
 @tool(
     "list_engineering_agents",
-    "List all 12 engineering specialist agents and their purposes",
+    "List all 15 engineering specialist agents and their purposes",
     {}
 )
 async def list_engineering_agents(args):
     """
-    Return list of all 12 engineering agents
+    Return list of all 15 engineering agents (CTO coordinator + 14 specialists)
     """
     agents = [
         {
@@ -441,21 +501,43 @@ async def list_engineering_agents(args):
             "purpose": "Root cause analysis and troubleshooting",
             "use_for": "Debugging and issue resolution",
             "specialty": "Systematic troubleshooting with hypothesis testing"
+        },
+        {
+            "name": "cto",
+            "category": "Coordination",
+            "purpose": "Strategic engineering coordinator and multi-agent orchestrator",
+            "use_for": "Complex projects requiring multiple specialists",
+            "specialty": "Intent classification and intelligent agent routing"
+        },
+        {
+            "name": "system-architect",
+            "category": "Architecture",
+            "purpose": "System architecture design and Mermaid diagram creation",
+            "use_for": "Architecture visualization and system design",
+            "specialty": "Professional Mermaid diagrams with interactive HTML exports"
+        },
+        {
+            "name": "analytics-dashboard-agent",
+            "category": "Data",
+            "purpose": "Data visualization and analytics dashboard development",
+            "use_for": "Building dashboards and data visualizations",
+            "specialty": "React dashboards with Chart.js/D3.js visualizations"
         }
     ]
 
     result = {
         "total_agents": len(agents),
         "categories": {
+            "Coordination": ["cto"],
             "Infrastructure": ["devops-engineer"],
             "Development": ["frontend-developer"],
-            "Architecture": ["backend-architect"],
+            "Architecture": ["backend-architect", "system-architect"],
             "Security": ["security-auditor"],
             "Documentation": ["technical-writer"],
             "AI/ML": ["ai-engineer", "prompt-engineer"],
             "Design": ["ui-ux-designer"],
             "Quality": ["code-reviewer", "test-engineer"],
-            "Data": ["database-architect"],
+            "Data": ["database-architect", "analytics-dashboard-agent"],
             "Support": ["debugger"]
         },
         "agents": agents

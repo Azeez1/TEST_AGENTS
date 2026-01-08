@@ -60,8 +60,7 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 3 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
@@ -96,8 +95,8 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-dashboard-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
@@ -230,15 +229,18 @@ When asked to write documentation:
 
 ## Workspace Context
 
-This repository contains **28 AI agents** across 4 systems:
-- **MARKETING_TEAM/** - 17 marketing automation agents
-- **TEST_AGENT/** - 5 testing agents
-- **USER_STORY_AGENT/** - 1 Streamlit app
-- **ENGINEERING_TEAM/** - 5 engineering agents (YOU ARE HERE)
+This repository contains **58 AI agents** across 6 systems:
+- **MARKETING_TEAM/** - 18 marketing automation agents
+- **QA_TEAM/** - 5 testing agents
+- **ENGINEERING_TEAM/** - 15 engineering agents (YOU ARE HERE)
+- **PROPOSAL_TEAM/** - 1 RFP automation agent
+- **FINANCIAL_TEAM/** - 10 finance agents
+- **SALES_TEAM/** - 8 sales agents
+- **ROOT/** - 1 supervisor agent
 
 **Documentation Needs:**
-1. **Agent Documentation** - How to use each of the 28 agents
-2. **System Architecture** - How the 4 systems work together
+1. **Agent Documentation** - How to use each of the 58 agents
+2. **System Architecture** - How the 6 systems work together
 3. **API Documentation** - Document Python tools and functions
 4. **PRDs** - Specs for new features and improvements
 5. **Integration Guides** - How to integrate with MCPs and external services
@@ -294,7 +296,7 @@ Build a web-based dashboard that provides a unified interface to manage all 28 A
 
 ### Functional Requirements
 1. **Agent Management**
-   - List all 28 agents with status indicators
+   - List all 58 agents with status indicators
    - Start/stop agents
    - Configure agent parameters
    - View agent capabilities
@@ -346,11 +348,13 @@ Build a web-based dashboard that provides a unified interface to manage all 28 A
          │
          ▼
 ┌─────────────────────────────────────────────┐
-│   AI Agents (28 total)                      │
-│   - MARKETING_TEAM (17)                     │
-│   - TEST_AGENT (5)                          │
-│   - USER_STORY_AGENT (1)                    │
-│   - ENGINEERING_TEAM (5)                    │
+│   AI Agents (58 total)                      │
+│   - MARKETING_TEAM (18)                     │
+│   - QA_TEAM (5)                             │
+│   - ENGINEERING_TEAM (15)                   │
+│   - PROPOSAL_TEAM (1)                       │
+│   - FINANCIAL_TEAM (10)                     │
+│   - SALES_TEAM (8)                          │
 └─────────────────────────────────────────────┘
 ```
 
@@ -516,7 +520,7 @@ Check the status of a task.
 # System Architecture: AI Multi-Agent Workspace
 
 ## Overview
-This document describes the architecture of a multi-agent AI system consisting of 28 specialized agents organized into 4 teams.
+This document describes the architecture of a multi-agent AI system consisting of 58 specialized agents organized into 6 teams.
 
 ## System Diagram
 
@@ -524,15 +528,17 @@ This document describes the architecture of a multi-agent AI system consisting o
 graph TB
     User[User] --> CC[Claude Code]
 
-    CC --> MT[MARKETING_TEAM<br/>17 agents]
-    CC --> TA[TEST_AGENT<br/>5 agents]
-    CC --> USA[USER_STORY_AGENT<br/>1 system]
-    CC --> ET[ENGINEERING_TEAM<br/>5 agents]
+    CC --> MT[MARKETING_TEAM<br/>18 agents]
+    CC --> QA[QA_TEAM<br/>5 agents]
+    CC --> ET[ENGINEERING_TEAM<br/>15 agents]
+    CC --> PT[PROPOSAL_TEAM<br/>1 agent]
+    CC --> FT[FINANCIAL_TEAM<br/>10 agents]
+    CC --> ST[SALES_TEAM<br/>8 agents]
 
     MT --> Tools1[tools/<br/>APIs & Integrations]
-    TA --> Tools2[tools/<br/>Test Generation]
-    USA --> Tools3[Python Libraries]
-    ET --> Tools4[tools/<br/>Backend Services]
+    QA --> Tools2[tools/<br/>Test Generation]
+    ET --> Tools3[tools/<br/>Backend Services]
+    PT --> Tools4[dux_rfp_agent/<br/>RFP Processing]
 
     Tools1 --> MCP[MCP Servers]
     MCP --> OpenAI[OpenAI API]
@@ -543,7 +549,7 @@ graph TB
 
 ## Agent Teams
 
-### 1. MARKETING_TEAM (17 Agents)
+### 1. MARKETING_TEAM (18 Agents)
 **Purpose:** Marketing content automation
 
 **Key Agents:**
@@ -559,7 +565,7 @@ graph TB
 - `send_email_with_attachment.py`: Email automation
 - `upload_to_drive.py`: Google Drive uploads
 
-### 2. TEST_AGENT (5 Agents)
+### 2. QA_TEAM (5 Agents)
 **Purpose:** Automated pytest test generation
 
 **Key Agents:**
@@ -569,25 +575,25 @@ graph TB
 - edge-case-agent: Edge case identification
 - fixture-agent: Pytest fixtures
 
-### 3. USER_STORY_AGENT (1 System)
-**Purpose:** Convert meeting notes to user stories
-
-**Technology:** Streamlit web application
-
-**Features:**
-- Multi-format file support (PDF, DOCX, images)
-- Excel export
-- Gherkin format support
-
-### 4. ENGINEERING_TEAM (5 Agents)
+### 3. ENGINEERING_TEAM (15 Agents)
 **Purpose:** Software engineering and infrastructure
 
 **Key Agents:**
+- cto: Strategic coordinator
 - devops-engineer: Deployment, CI/CD
 - security-auditor: Security scanning
 - frontend-developer: React/Next.js apps
-- backend-developer: Python/FastAPI APIs
+- backend-architect: Python/FastAPI APIs
 - technical-writer: Documentation, PRDs
+- system-architect: Architecture diagrams
+- ai-engineer: ML/AI systems
+- ui-ux-designer: User experience
+- code-reviewer: Code quality
+- test-engineer: Testing strategies
+- prompt-engineer: LLM prompts
+- database-architect: Database design
+- debugger: Troubleshooting
+- analytics-dashboard-agent: Data visualization
 
 ## Data Flow
 
@@ -611,8 +617,7 @@ sequenceDiagram
 ### Languages & Frameworks
 - **Python 3.11+**: Primary language
 - **FastAPI**: API development
-- **Streamlit**: UI for USER_STORY_AGENT
-- **React/Next.js**: Frontend dashboards (future)
+- **React/Next.js**: Frontend dashboards
 
 ### External Services
 - **Anthropic Claude**: AI agent orchestration
@@ -709,4 +714,4 @@ Save all documentation to:
 
 ---
 
-**Ready to document!** Ask me to write PRDs, technical specs, API documentation, user guides, or any other documentation for your 28 AI agents.
+**Ready to document!** Ask me to write PRDs, technical specs, API documentation, user guides, or any other documentation for your 58 AI agents.

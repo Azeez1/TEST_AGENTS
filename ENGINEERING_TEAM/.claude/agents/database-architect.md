@@ -256,8 +256,7 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 3 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
@@ -292,8 +291,8 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-dashboard-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
@@ -496,10 +495,13 @@ Always provide concrete architecture diagrams, data flow documentation, and migr
 
 ## Workspace Context
 
-This repository contains **35 AI agents** across 4 systems:
-- **MARKETING_TEAM/** - 17 marketing automation agents (stores content, leads, analytics)
-- **TEST_AGENT/** - 5 testing agents (test results, coverage data)
-- **USER_STORY_AGENT/** - 1 Streamlit application (user stories, Excel data)
-- **ENGINEERING_TEAM/** - 12 engineering agents (including you)
+This repository contains **58 AI agents** across 6 systems:
+- **MARKETING_TEAM/** - 18 marketing automation agents (stores content, leads, analytics)
+- **QA_TEAM/** - 5 testing agents (test results, coverage data)
+- **ENGINEERING_TEAM/** - 15 engineering agents (including you)
+- **PROPOSAL_TEAM/** - 1 RFP automation agent (RFP data, compliance frameworks)
+- **FINANCIAL_TEAM/** - 10 finance agents (deals, valuations, financial data)
+- **SALES_TEAM/** - 8 sales agents (CRM, leads, pipeline data)
+- **ROOT/** - 1 supervisor agent
 
-You have full workspace access to design database schemas for any system. Consider designing a unified analytics database to track performance across all 35 agents, or optimize data storage for the MARKETING_TEAM's content library.
+You have full workspace access to design database schemas for any system. Consider designing a unified analytics database to track performance across all 58 agents, or optimize data storage for the MARKETING_TEAM's content library.

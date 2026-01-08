@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This registry documents ALL tools, MCP servers, and skills available to the 59 agents across 7 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
+This registry documents ALL tools, MCP servers, and skills available to the 58 agents across 6 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New Tool (last resort)
 
@@ -98,7 +98,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 | **Google Drive (Text Files)** | N/A | `mcp__google-workspace__create_drive_file`, `list_drive_files`, `get_drive_file` | N/A | 1. MCP only | All agents | ✅ Active |
 | **Google Drive (Binary Files)** | N/A | N/A (MCP limitation) | `upload_to_drive.py` | 1. Custom Tool only | pdf-specialist, presentation-designer, visual-designer, video-producer | ✅ Active (MCP gap-filler) |
 | **File Operations** | `filesystem` (read, write, list, delete) | N/A | N/A | 1. Skill only | lead-gen-agent, seo-specialist, analyst | ✅ Active |
-| **Figma Design Extraction** | `figma` (Figma API integration) | N/A | N/A | 1. Skill only | USER_STORY_AGENT (via Playwright MCP) | ✅ Active |
+| **Figma Design Extraction** | `figma` (Figma API integration) | N/A | N/A | 1. Skill only | visual-designer, research-agent | ✅ Active |
 
 **MCP Gap-Fillers (Justified Duplication):**
 - **Binary Uploads:** Google Workspace MCP can't upload binary files (PDFs, images, videos) → `upload_to_drive.py` required
@@ -115,7 +115,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 | **Strategic Analysis** | N/A | `mcp__perplexity__perplexity_reason` | `strategic_analysis()` | 1. Custom Tool → 2. MCP fallback | research-agent | ✅ Active (HYBRID) |
 | **SERP Scraping** | N/A | `mcp__bright-data__search_engine` (Google, Bing, Yandex) | N/A | 1. MCP only | seo-specialist, lead-gen-agent, analyst | ✅ Active (5K free/month) |
 | **Web Scraping** | N/A | `mcp__bright-data__scrape_as_markdown`, `scrape_batch` | N/A | 1. MCP only | research-agent, lead-gen-agent, seo-specialist | ✅ Active |
-| **Browser Automation** | N/A | `mcp__playwright__playwright_navigate`, `screenshot`, `click`, `fill`, `evaluate` | N/A | 1. MCP only | USER_STORY_AGENT, seo-specialist, research-agent | ✅ Active |
+| **Browser Automation** | N/A | `mcp__playwright__playwright_navigate`, `screenshot`, `click`, `fill`, `evaluate` | N/A | 1. MCP only | seo-specialist, research-agent | ✅ Active |
 
 **HYBRID Strategy Rationale (Perplexity):**
 - **Custom tools** provide comprehensive research workflows with multi-step logic
@@ -165,8 +165,8 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 | **React Artifacts** | `artifacts-builder` (React + shadcn/ui) | N/A | N/A | 1. Skill only | landing-page-specialist | ✅ Active |
 | **MCP Server Creation** | `mcp-builder` (create MCP servers) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
 | **Skill Creation** | `skill-creator` (create new skills) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
-| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 59 agents | ✅ Active (critical) |
-| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 59 agents | ✅ Active (critical) |
+| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 58 agents | ✅ Active (critical) |
+| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 58 agents | ✅ Active (critical) |
 
 **Workspace Management Priority:**
 
@@ -181,7 +181,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 **Usage Notes:**
 - **workspace_enforcer:** Validates agent is in correct team workspace (MARKETING_TEAM, QA_TEAM, ENGINEERING_TEAM)
 - **path_validator:** Converts relative paths to absolute paths, enforces cross-team boundaries
-- **Declaring agents:** ALL 59 agents MUST include in YAML frontmatter (automatically added to all agents)
+- **Declaring agents:** ALL 58 agents MUST include in YAML frontmatter (automatically added to all agents)
 
 ---
 
@@ -210,7 +210,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 | **google-workspace** | G Suite automation | `send_email`, `create_doc`, `create_spreadsheet`, `create_drive_file`, `search_emails` | gmail-agent, copywriter, analyst, pdf-specialist, presentation-designer | ✅ Active |
 | **perplexity** | Web research with citations | `perplexity_ask`, `perplexity_reason`, `perplexity_search` | research-agent (HYBRID fallback) | ✅ Active |
 | **bright-data** | Web scraping (5K free/month) | `search_engine` (Google/Bing/Yandex), `scrape_as_markdown`, `scrape_batch` | seo-specialist, lead-gen-agent, research-agent, analyst | ✅ Active |
-| **playwright** | Browser automation | `navigate`, `screenshot`, `click`, `fill`, `evaluate`, `get_visible_html` | USER_STORY_AGENT, seo-specialist, research-agent | ✅ Active |
+| **playwright** | Browser automation | `navigate`, `screenshot`, `click`, `fill`, `evaluate`, `get_visible_html` | seo-specialist, research-agent | ✅ Active |
 | **n8n-mcp** | Workflow automation (400+ integrations) | n8n workflow execution | automation-agent | ✅ Active |
 | **sequential-thinking** | Structured reasoning | `sequentialthinking` (step-by-step problem solving) | cto, system-architect | ✅ Active |
 

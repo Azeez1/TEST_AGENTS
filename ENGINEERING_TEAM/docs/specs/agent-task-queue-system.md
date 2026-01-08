@@ -33,7 +33,7 @@
 
 ### Overview
 
-The Agent Task Queue System is a distributed task management and orchestration platform designed to enable efficient, scalable, and reliable execution of AI agent tasks across the multi-agent workspace containing 35 specialized agents in 4 teams (MARKETING_TEAM, TEST_AGENT, USER_STORY_AGENT, ENGINEERING_TEAM).
+The Agent Task Queue System is a distributed task management and orchestration platform designed to enable efficient, scalable, and reliable execution of AI agent tasks across the multi-agent workspace containing 58 specialized agents in 6 teams (MARKETING_TEAM, QA_TEAM, ENGINEERING_TEAM, PROPOSAL_TEAM, FINANCIAL_TEAM, SALES_TEAM).
 
 ### Business Value
 
@@ -99,7 +99,7 @@ The multi-agent workspace currently operates with the following limitations:
 
 ### Solution Overview
 
-Build a distributed task queue system using **Celery** (Python task queue) with **Redis** (message broker and result backend) to provide reliable, scalable task execution for all 35 AI agents.
+Build a distributed task queue system using **Celery** (Python task queue) with **Redis** (message broker and result backend) to provide reliable, scalable task execution for all 58 AI agents.
 
 ### Core Components
 
@@ -136,10 +136,12 @@ Build a distributed task queue system using **Celery** (Python task queue) with 
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                 AI Agent Executors                           │
-│  - MARKETING_TEAM agents (17)                                │
-│  - TEST_AGENT agents (5)                                     │
-│  - USER_STORY_AGENT (1)                                      │
-│  - ENGINEERING_TEAM agents (12)                              │
+│  - MARKETING_TEAM agents (18)                                │
+│  - QA_TEAM agents (5)                                        │
+│  - ENGINEERING_TEAM agents (15)                              │
+│  - PROPOSAL_TEAM agents (1)                                  │
+│  - FINANCIAL_TEAM agents (10)                                │
+│  - SALES_TEAM agents (8)                                     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -300,10 +302,12 @@ graph TB
     end
 
     subgraph "Agent Execution Layer"
-        Marketing[MARKETING_TEAM<br/>17 Agents]
-        Test[TEST_AGENT<br/>5 Agents]
-        UserStory[USER_STORY_AGENT<br/>1 Agent]
-        Engineering[ENGINEERING_TEAM<br/>12 Agents]
+        Marketing[MARKETING_TEAM<br/>18 Agents]
+        QA[QA_TEAM<br/>5 Agents]
+        Engineering[ENGINEERING_TEAM<br/>15 Agents]
+        Proposal[PROPOSAL_TEAM<br/>1 Agent]
+        Financial[FINANCIAL_TEAM<br/>10 Agents]
+        Sales[SALES_TEAM<br/>8 Agents]
     end
 
     subgraph "Storage Layer"
@@ -340,9 +344,11 @@ graph TB
     LowQ --> Worker4
 
     Worker1 --> Marketing
-    Worker2 --> Test
+    Worker2 --> QA
     Worker3 --> Engineering
-    Worker4 --> UserStory
+    Worker4 --> Proposal
+    Worker4 --> Financial
+    Worker4 --> Sales
 
     Worker1 --> PostgreSQL
     Worker2 --> PostgreSQL
@@ -350,9 +356,11 @@ graph TB
     Worker4 --> PostgreSQL
 
     Marketing --> S3
-    Test --> S3
+    QA --> S3
     Engineering --> S3
-    UserStory --> S3
+    Proposal --> S3
+    Financial --> S3
+    Sales --> S3
 
     Redis --> Flower
     Worker1 --> Prometheus
@@ -455,9 +463,9 @@ task_max_retries = 3
 
 **Worker Specialization:**
 - **Marketing Workers:** Handle copywriter, visual-designer, video-producer, gmail-agent tasks
-- **Testing Workers:** Handle test-orchestrator, unit-test-agent, edge-case-agent tasks
+- **QA Workers:** Handle test-orchestrator, unit-test-agent, edge-case-agent tasks
 - **Engineering Workers:** Handle devops-engineer, frontend-developer, backend-architect tasks
-- **General Workers:** Handle USER_STORY_AGENT and miscellaneous tasks
+- **General Workers:** Handle PROPOSAL_TEAM, FINANCIAL_TEAM, SALES_TEAM and miscellaneous tasks
 
 #### 4. PostgreSQL Database
 
@@ -2316,14 +2324,16 @@ httpx==0.25.2  # Async HTTP client for testing
 
 ### Agent Dependencies
 
-**All 35 agents must be executable:**
+**All 58 agents must be executable:**
 
 | Team | Agents | Dependencies |
 |------|--------|--------------|
-| MARKETING_TEAM | 17 agents | OpenAI API, Gmail API, Google Drive API, Perplexity API, Bright Data API |
-| TEST_AGENT | 5 agents | pytest, pytest-cov, anthropic |
-| USER_STORY_AGENT | 1 system | streamlit, pandas, openpyxl, anthropic |
-| ENGINEERING_TEAM | 12 agents | Various (Docker, Kubernetes, Terraform, etc.) |
+| MARKETING_TEAM | 18 agents | OpenAI API, Gmail API, Google Drive API, Perplexity API, Bright Data API |
+| QA_TEAM | 5 agents | pytest, pytest-cov, anthropic |
+| ENGINEERING_TEAM | 15 agents | Various (Docker, Kubernetes, Terraform, etc.) |
+| PROPOSAL_TEAM | 1 agent | anthropic, pinecone |
+| FINANCIAL_TEAM | 10 agents | pandas, openpyxl, anthropic |
+| SALES_TEAM | 8 agents | anthropic, CRM integrations |
 
 **Agent execution requirements:**
 - All agent `.md` definitions accessible
@@ -2525,9 +2535,11 @@ httpx==0.25.2  # Async HTTP client for testing
 
 **Agent Documentation:**
 - MARKETING_TEAM README: `MARKETING_TEAM/README.md`
-- TEST_AGENT README: `TEST_AGENT/README.md`
-- USER_STORY_AGENT README: `USER_STORY_AGENT/README.md`
+- QA_TEAM README: `QA_TEAM/README.md`
 - ENGINEERING_TEAM README: `ENGINEERING_TEAM/README.md`
+- PROPOSAL_TEAM README: `PROPOSAL_TEAM/README.md`
+- FINANCIAL_TEAM README: `FINANCIAL_TEAM/README.md`
+- SALES_TEAM README: `SALES_TEAM/README.md`
 - Multi-Agent Guide: `MULTI_AGENT_GUIDE.md`
 
 **Architecture Documentation:**

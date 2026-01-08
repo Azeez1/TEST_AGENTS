@@ -93,16 +93,15 @@ class TestWorkspaceEnforcement:
 
     def test_workspace_folders_exist(self):
         """Test all team workspace folders exist"""
-        teams = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT"]
+        teams = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "PROPOSAL_TEAM", "FINANCIAL_TEAM", "SALES_TEAM"]
 
         for team in teams:
             team_path = repo_root / team
             assert team_path.exists(), f"{team} folder missing"
 
-            # Check memory folders (except USER_STORY_AGENT uses different structure)
-            if team != "USER_STORY_AGENT":
-                memory_path = team_path / "memory"
-                assert memory_path.exists(), f"{team}/memory/ folder missing"
+            # Check memory folders
+            memory_path = team_path / "memory"
+            assert memory_path.exists(), f"{team}/memory/ folder missing"
 
 
 class TestAgentDefinitions:

@@ -2,9 +2,9 @@
 
 ## The Simple Truth
 
-**You have 59 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 58 perfectly defined AI agents ready to use RIGHT NOW.**
 
-This includes a **root-level Supervisor Agent** for quality assurance across all 7 teams.
+This includes a **root-level Supervisor Agent** for quality assurance across all 6 teams.
 
 🔥 **NEW: Automatic Quality Verification!** Team coordinators now automatically verify significant work is complete before delivery.
 
@@ -70,9 +70,6 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - database-architect - Database design, data modeling, scalability (1.2K downloads)
 - debugger - Root cause analysis, troubleshooting, error investigation (1.7K downloads)
 
-**USER_STORY_AGENT (1 system):**
-- Streamlit application for converting meeting notes to user stories with Excel export
-
 **PROPOSAL_TEAM (1 agent):**
 - rfp-agent - RFP automation, compliance matrix generation, proposal writing with 30+ compliance frameworks
 
@@ -119,7 +116,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ## 🏢 Agent Workspace Assignments
 
-All 59 agents are organized into 7 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+All 58 agents are organized into 6 team workspaces with strict folder boundaries and **automatic workspace awareness**:
 
 ### MARKETING_TEAM (18 agents)
 **Location:** `MARKETING_TEAM/.claude/agents/`
@@ -147,15 +144,6 @@ All 59 agents are organized into 7 team workspaces with strict folder boundaries
 
 **Full workspace access:** Can work with all 4 systems for optimization, deployment, review
 **Workspace enforcement:** ✅ ENABLED
-
-### USER_STORY_AGENT (1 system)
-**Location:** `USER_STORY_AGENT/`
-**Memory:** `USER_STORY_AGENT/memory/preferences_store.json`
-**Output:** `USER_STORY_AGENT/output/` (Excel files)
-**Type:** Streamlit application (not conversational agent)
-
-**Standalone system:** Operates independently
-**Workspace enforcement:** ✅ ENABLED (if conversational mode exists)
 
 ### PROPOSAL_TEAM (1 agent)
 **Location:** `PROPOSAL_TEAM/.claude/agents/`
@@ -304,11 +292,11 @@ Would you like me to also generate a header image using the visual-designer suba
 ### Example 2: Testing - Generate Tests
 
 ```
-You: "Use the test-orchestrator subagent to scan USER_STORY_AGENT and generate tests"
+You: "Use the test-orchestrator subagent to scan MARKETING_TEAM and generate tests"
 
 Me: [Reading QA_TEAM/.claude/agents/test-orchestrator.md...]
 
-I'll coordinate comprehensive test generation for USER_STORY_AGENT.
+I'll coordinate comprehensive test generation for MARKETING_TEAM.
 
 [Using scan_codebase tool...]
 
@@ -552,7 +540,6 @@ Each agent invocation happens in a **separate context window**:
 - `FINANCIAL_TEAM/.claude/agents/` - 10 finance agents
 - `SALES_TEAM/.claude/agents/` - 8 sales agents
 - `.claude/agents/` - 1 root supervisor
-- Plus USER_STORY_AGENT Streamlit system
 
 ### Q: Can I create my own agents?
 **A: YES!** Create a new `.md` file in `.claude/agents/` with:
@@ -887,8 +874,8 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 59 agents perfectly defined across 7 teams
-  - 18 MARKETING + 5 QA + 15 ENGINEERING + 1 USER_STORY + 1 PROPOSAL + 10 FINANCIAL + 8 SALES + 1 ROOT SUPERVISOR
+- ✅ 58 agents perfectly defined across 6 teams
+  - 18 MARKETING + 5 QA + 15 ENGINEERING + 1 PROPOSAL + 10 FINANCIAL + 8 SALES + 1 ROOT SUPERVISOR
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run

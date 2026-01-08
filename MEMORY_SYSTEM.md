@@ -2,7 +2,7 @@
 
 **For AI Assistants and Developers**
 
-This guide explains how the memory system works across all 59 agents in the repository, ensuring consistent configuration without hardcoding values.
+This guide explains how the memory system works across all 58 agents in the repository, ensuring consistent configuration without hardcoding values.
 
 ---
 
@@ -75,11 +75,6 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
 **Access:** All 15 ENGINEERING_TEAM agents read automatically
-
-### USER_STORY_AGENT Memory
-**Location:** `USER_STORY_AGENT/memory/preferences_store.json`
-
-**Access:** Streamlit app reads on startup
 
 ### PROPOSAL_TEAM Memory
 **Location:** `PROPOSAL_TEAM/memory/`
@@ -227,15 +222,6 @@ All memory files are in the `MARKETING_TEAM/memory/` directory:
 **Location:** `QA_TEAM/memory/learned_patterns.json`
 **Used by:** test-orchestrator, unit-test-agent, edge-case-agent
 **Why:** Improves test quality over time
-
----
-
-#### 7. preferences_store.json (USER_STORY_AGENT)
-**Purpose:** User preferences for story generation
-
-**Location:** `USER_STORY_AGENT/memory/preferences_store.json`
-**Used by:** USER_STORY_AGENT Streamlit app
-**Why:** Remembers user preferences across sessions
 
 ---
 

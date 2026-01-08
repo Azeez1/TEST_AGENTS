@@ -1,6 +1,6 @@
 # 🤖 MARKETING_TEAM - Multi-Agent Marketing System
 
-**17 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
+**18 AI marketing agents powered by Claude Agent SDK - ready to use through Claude Code**
 
 Create complete marketing campaigns and generate business leads through natural conversation. Generate blog posts, social content, images, videos, emails, leads, and more by simply talking to your AI marketing team.
 
@@ -63,7 +63,7 @@ These guides explain:
 
 ---
 
-## 🤖 Your 17 Marketing Agents
+## 🤖 Your 18 Marketing Agents
 
 | Agent | Purpose | Invoke With |
 |-------|---------|-------------|
@@ -84,6 +84,7 @@ These guides explain:
 | **pdf-specialist** | PDF whitepaper creation | `"Use pdf-specialist for PDF"` |
 | **presentation-designer** | PowerPoint decks | `"Use presentation-designer for deck"` |
 | **analyst** | Performance analysis + competitive benchmarking | `"Use analyst to analyze data"` |
+| **newsletter-agent** | Email-safe HTML newsletters & topic ideation | `"Use newsletter-agent to create a newsletter"` |
 
 ---
 
@@ -191,7 +192,7 @@ When you say:
 ✅ **No hardcoding** - Email addresses and folder IDs never hardcoded in agent definitions
 ✅ **Consistency** - All agents use same email addresses, same Drive folders, same brand voice
 ✅ **Easy updates** - Change one memory file, all agents benefit immediately
-✅ **Single source of truth** - Configuration lives in one place, not scattered across 17 files
+✅ **Single source of truth** - Configuration lives in one place, not scattered across 18 files
 
 **Example:** Change `default_to` in `email_config.json` from `user1@example.com` to `user2@example.com` → all 18 agents now send emails to `user2@example.com` by default.
 
@@ -593,7 +594,7 @@ MARKETING_TEAM/
 │       ├── mcp-config.md
 │       └── build-notes.md
 ├── .claude/
-│   └── agents/                       ← 17 agent definitions
+│   └── agents/                       ← 18 agent definitions
 │       ├── router-agent.md
 │       ├── lead-gen-agent.md         ← NEW!
 │       ├── copywriter.md
@@ -723,7 +724,7 @@ You'll find `orchestrator.py` in the `archive/` folder. This was an earlier atte
 
 ---
 
-**Your 17 marketing agents are ready!** Just start talking to Claude Code.
+**Your 18 marketing agents are ready!** Just start talking to Claude Code.
 
 **✨ NEW: Lead generation with Bright Data MCP - 5,000 free requests/month for business lead discovery!**
 

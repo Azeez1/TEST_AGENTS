@@ -1,11 +1,7 @@
 """
 Workspace Enforcer - Validate agent workspace context and enforce folder boundaries
 
-
-This tool ensures all 59 agents operate in their correct team workspaces and prevents
-
-This tool ensures all 59 agents operate in their correct team workspaces and prevents
-
+This tool ensures all 58 agents operate in their correct team workspaces and prevents
 location confusion by validating workspace context before every task.
 
 Usage:
@@ -92,12 +88,6 @@ WORKSPACE_STRUCTURE = {
             "database-architect", "debugger", "analytics-dashboard-agent"
         ]
     },
-    "USER_STORY_AGENT": {
-        "agents": 1,
-        "folders": ["memory", "output", "tools"],
-        "memory_files": ["preferences_store.json"],
-        "agents_list": ["user_story_agent"]
-    },
     "FINANCIAL_TEAM": {
         "agents": 10,
         "folders": ["memory", "outputs", "tools", ".claude/agents"],
@@ -154,7 +144,7 @@ def _get_repo_root() -> Path:
             return parent
 
     # Check if we're inside a team folder
-    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "USER_STORY_AGENT", "FINANCIAL_TEAM", "SALES_TEAM", "PROPOSAL_TEAM"]
+    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "FINANCIAL_TEAM", "SALES_TEAM", "PROPOSAL_TEAM"]
     for team in team_folders:
         if team in str(current):
             # Navigate up to find TEST_AGENTS
@@ -326,9 +316,6 @@ def get_absolute_paths(team: str) -> Dict[str, str]:
     if team == "QA_TEAM":
         paths["outputs"] = str(team_path / "tests")
         paths["tests"] = str(team_path / "tests")
-    elif team == "USER_STORY_AGENT":
-        paths["outputs"] = str(team_path / "output")
-        paths["output"] = str(team_path / "output")
     else:
         paths["outputs"] = str(team_path / "outputs")
 
@@ -423,10 +410,7 @@ def get_team_info(team: str) -> Dict[str, any]:
 
 def list_all_agents() -> Dict[str, List[str]]:
     """
-
-    List all 59 agents organized by team.
-
-    List all 59 agents organized by team.
+    List all 58 agents organized by team.
 
 
     Returns:

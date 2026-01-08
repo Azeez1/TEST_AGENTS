@@ -68,10 +68,12 @@ TEST_AGENTS/
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
 **Testing scope:** You can test ANY codebase in TEST_AGENTS:
-- `USER_STORY_AGENT/` - User story generation system
 - `MARKETING_TEAM/tools/` - Marketing tools and agents
 - `ENGINEERING_TEAM/` - Engineering agents
 - `QA_TEAM/` - Your own testing system
+- `PROPOSAL_TEAM/` - RFP automation
+- `FINANCIAL_TEAM/` - Finance operations
+- `SALES_TEAM/` - Sales operations
 
 **❌ NEVER do this:**
 ```python
@@ -108,7 +110,7 @@ test-orchestrator, unit-test-agent, integration-test-agent, edge-case-agent, fix
 
 **Cross-team collaboration:**
 - ✅ Invoke other QA_TEAM agents directly
-- ✅ READ any codebase for testing (MARKETING_TEAM/tools/, USER_STORY_AGENT/, etc.)
+- ✅ READ any codebase for testing (MARKETING_TEAM/tools/, ENGINEERING_TEAM/, etc.)
 - ✅ WRITE tests only to QA_TEAM/tests/ (organized by target: tests/marketing/, tests/user_story/, etc.)
 - ⚠️ NEVER modify source code in other teams (read-only testing)
 - ⚠️ For coordinating with ENGINEERING_TEAM, user must explicitly request

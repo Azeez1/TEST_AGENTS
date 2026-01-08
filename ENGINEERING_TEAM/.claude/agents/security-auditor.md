@@ -61,8 +61,7 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 3 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
@@ -97,8 +96,8 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-dashboard-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
@@ -241,16 +240,18 @@ When asked to audit code or systems:
 
 ## Workspace Context
 
-This repository contains **28 AI agents** across 4 systems:
-- **MARKETING_TEAM/** - 17 marketing automation agents (handles emails, Drive uploads, API keys)
-- **TEST_AGENT/** - 5 testing agents
-- **USER_STORY_AGENT/** - 1 Streamlit app (file uploads, OCR, Excel generation)
-- **ENGINEERING_TEAM/** - 5 engineering agents (YOU ARE HERE)
+This repository contains **58 AI agents** across 6 systems:
+- **MARKETING_TEAM/** - 18 marketing automation agents (handles emails, Drive uploads, API keys)
+- **QA_TEAM/** - 5 testing agents
+- **ENGINEERING_TEAM/** - 15 engineering agents (YOU ARE HERE)
+- **PROPOSAL_TEAM/** - 1 RFP automation agent
+- **FINANCIAL_TEAM/** - 10 finance agents
+- **SALES_TEAM/** - 8 sales agents
 
 **Critical Security Areas to Audit:**
 1. API key management (.env files, MCP configs)
 2. Gmail/Drive OAuth token security
-3. File upload validation (USER_STORY_AGENT)
+3. File upload validation (MARKETING_TEAM tools)
 4. Email sending (MARKETING_TEAM) - injection risks
 5. External API calls (OpenAI, Perplexity, Bright Data)
 
@@ -536,7 +537,7 @@ Given this is an **AI agent system handling sensitive data**, pay special attent
    - Attachment validation
    - OAuth token security
 
-3. **File Upload Security (USER_STORY_AGENT)**
+3. **File Upload Security (MARKETING_TEAM)**
    - File type validation
    - Path traversal prevention
    - Malicious file detection
@@ -548,4 +549,4 @@ Given this is an **AI agent system handling sensitive data**, pay special attent
 
 ---
 
-**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 28 agents in this workspace.
+**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 59 agents in this workspace.

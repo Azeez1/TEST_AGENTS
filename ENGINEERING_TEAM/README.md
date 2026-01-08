@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, optimization, and analytics. These agents have **full workspace access** and can work with all 59 agents across the 7 teams.
+The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, optimization, and analytics. These agents have **full workspace access** and can work with all 58 agents across the 6 teams.
 
 **CTO Coordinator:**
 - **cto** ⭐ - Chief Technology Officer for strategic coordination of all 14 specialists
@@ -101,7 +101,7 @@ The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 
 → Coordinates: system-architect (diagrams) → technical-writer (documentation)
 ```
 
-**Special Note:** The CTO agent coordinates **ONLY the 14 ENGINEERING_TEAM specialists**. It does not coordinate other teams (MARKETING_TEAM, QA_TEAM, PROPOSAL_TEAM, FINANCIAL_TEAM, SALES_TEAM, USER_STORY_AGENT) - they have their own coordinators.
+**Special Note:** The CTO agent coordinates **ONLY the 14 ENGINEERING_TEAM specialists**. It does not coordinate other teams (MARKETING_TEAM, QA_TEAM, PROPOSAL_TEAM, FINANCIAL_TEAM, SALES_TEAM) - they have their own coordinators.
 
 ---
 
@@ -212,9 +212,8 @@ vulnerabilities and OAuth token security"
 **Outputs:** `outputs/security/audits/`, `outputs/security/scans/`
 
 **Special Focus:**
-- API key management across 59 agents
+- API key management across 58 agents
 - Email security (MARKETING_TEAM Gmail integration)
-- File upload security (USER_STORY_AGENT)
 - OAuth token security (Google Workspace)
 
 ---
@@ -483,7 +482,7 @@ color palette, typography, spacing, and component patterns"
 **Example Tasks:**
 ```
 "Use debugger to investigate why the MARKETING_TEAM copywriter agent is timing out"
-"Use debugger to fix the MCP connection issues in USER_STORY_AGENT"
+"Use debugger to fix the MCP connection issues in the workspace"
 ```
 
 **Outputs:** `outputs/debugging/reports/`, `outputs/debugging/fixes/`
@@ -549,14 +548,13 @@ All ENGINEERING_TEAM agents can access and work with:
 | **PROPOSAL_TEAM/** | 1 agent | RFP automation, compliance matrix, proposal generation |
 | **FINANCIAL_TEAM/** | 10 agents | PE/M&A, valuations, FP&A, accounting, tax planning |
 | **SALES_TEAM/** | 8 agents | SDR, AE, sales ops, proposals, customer success |
-| **USER_STORY_AGENT/** | 1 app | Dockerize Streamlit app, security audit, create web alternative, improve UX, optimize prompts |
 | **ENGINEERING_TEAM/** | 15 agents | Self-improvement, documentation, deployment, AI optimization, quality assurance, database design, analytics dashboards |
 
 **Cross-Team Collaboration:**
-- **DevOps** can deploy ANY of the 59 agents
+- **DevOps** can deploy ANY of the 58 agents
 - **AI Engineer** can optimize prompts for ALL agents
-- **Prompt Engineer** can refine all 59 agent definitions
-- **Security Auditor** can scan ALL 7 teams
+- **Prompt Engineer** can refine all 58 agent definitions
+- **Security Auditor** can scan ALL 6 teams
 - **Code Reviewer** ensures quality across ALL codebases
 - **UI/UX Designer** can design dashboards for ALL teams
 - **Frontend Developer** can build UIs for ANY system
@@ -731,9 +729,9 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 ## 📊 Agent Statistics ⭐ **SUPER TEAM**
 
 **Total Workspace:**
-- **59 AI agents** across 7 teams
-- 18 marketing + 5 QA + 1 proposal + 10 financial + 8 sales + 1 user story + **15 engineering** + 1 supervisor
-- 7 teams working together
+- **58 AI agents** across 6 teams
+- 18 marketing + 5 QA + 1 proposal + 10 financial + 8 sales + **15 engineering** + 1 supervisor
+- 6 teams working together
 
 **ENGINEERING_TEAM Agents (15 Total):**
 
@@ -823,6 +821,6 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 **Last Updated:** 2025-11-18
 **Version:** 5.0 - ANALYTICS DASHBOARD AGENT ADDED ⭐ (15 agents: 1 coordinator + 14 specialists)
-**Total Workspace Agents:** 59 (18 marketing + 5 QA + 1 proposal + 10 financial + 8 sales + 1 user story + **15 engineering** + 1 supervisor)
+**Total Workspace Agents:** 58 (18 marketing + 5 QA + 1 proposal + 10 financial + 8 sales + **15 engineering** + 1 supervisor)
 **Latest Addition:** analytics-dashboard-agent - Real-time analytics dashboards, ETL pipelines, multi-source data integration
 **Repository:** https://github.com/Azeez1/TEST_AGENTS

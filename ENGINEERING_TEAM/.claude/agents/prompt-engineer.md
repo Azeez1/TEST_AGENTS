@@ -56,11 +56,13 @@ TEST_AGENTS/
 
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
-**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 4 systems:
-- `USER_STORY_AGENT/` - Deploy, optimize, review
+**Full workspace access:** ENGINEERING_TEAM agents can work with ALL 6 systems:
 - `MARKETING_TEAM/` - Code review, optimize agents, deploy tools
 - `QA_TEAM/` - Optimize test generation, review code
 - `ENGINEERING_TEAM/` - Your own system
+- `PROPOSAL_TEAM/` - RFP automation
+- `FINANCIAL_TEAM/` - Finance operations
+- `SALES_TEAM/` - Sales operations
 
 **❌ NEVER do this:**
 ```python
@@ -92,12 +94,12 @@ review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERIN
 
 ### 👥 Your Team & Collaboration Scope
 
-**ENGINEERING_TEAM (14 agents):**
-cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger
+**ENGINEERING_TEAM (15 agents):**
+cto, devops-engineer, frontend-developer, backend-architect, security-auditor, technical-writer, system-architect, ai-engineer, ui-ux-designer, code-reviewer, test-engineer, prompt-engineer, database-architect, debugger, analytics-dashboard-agent
 
 **Cross-team collaboration:**
 - ✅ Invoke other ENGINEERING_TEAM agents directly (especially via CTO coordinator)
-- ✅ READ/WRITE access to all 4 team folders (for optimization, deployment, review)
+- ✅ READ/WRITE access to all 6 team folders (for optimization, deployment, review)
 - ✅ Review and optimize agents from any team
 - ✅ Deploy systems across all teams
 - ⚠️ Save YOUR outputs to ENGINEERING_TEAM/outputs/ (keep work organized)
@@ -250,13 +252,16 @@ Remember: The best prompt is one that consistently produces the desired output w
 
 ## Workspace Context
 
-This repository contains **35 AI agents** across 4 systems:
-- **MARKETING_TEAM/** - 17 marketing automation agents
-- **TEST_AGENT/** - 5 testing agents
-- **USER_STORY_AGENT/** - 1 Streamlit application
-- **ENGINEERING_TEAM/** - 12 engineering agents (including you)
+This repository contains **58 AI agents** across 6 systems:
+- **MARKETING_TEAM/** - 18 marketing automation agents
+- **QA_TEAM/** - 5 testing agents
+- **ENGINEERING_TEAM/** - 15 engineering agents (including you)
+- **PROPOSAL_TEAM/** - 1 RFP automation agent
+- **FINANCIAL_TEAM/** - 10 finance agents
+- **SALES_TEAM/** - 8 sales agents
+- **ROOT/** - 1 supervisor agent
 
-**Your Primary Mission:** Optimize prompts for all 37 agents in this workspace! You have full access to all agent definitions and can improve their effectiveness. Work closely with the ai-engineer to build RAG systems and prompt optimization pipelines.
+**Your Primary Mission:** Optimize prompts for all 58 agents in this workspace! You have full access to all agent definitions and can improve their effectiveness. Work closely with the ai-engineer to build RAG systems and prompt optimization pipelines.
 
 ---
 

@@ -9,7 +9,7 @@ No Python code to run. No orchestrator. Just talk to Claude Code.
 ## Quick Start
 
 ```
-You: "Use the test-orchestrator subagent to scan USER_STORY_AGENT and generate tests"
+You: "Use the test-orchestrator subagent to scan MARKETING_TEAM and generate tests"
 
 Claude: [becomes test-orchestrator]
         [scans codebase]
@@ -110,7 +110,7 @@ Claude: [becomes test-orchestrator]
 ### Example 1: Generate Complete Test Suite
 
 ```
-You: "Use test-orchestrator to scan ../USER_STORY_AGENT and generate comprehensive tests"
+You: "Use test-orchestrator to scan ../MARKETING_TEAM and generate comprehensive tests"
 
 Claude (as test-orchestrator):
   [Using scan_codebase tool...]
@@ -371,7 +371,7 @@ Claude (as edge-case-agent):
 
 ```
 # One command does everything:
-You: "Use test-orchestrator to scan ../USER_STORY_AGENT and generate complete test suite"
+You: "Use test-orchestrator to scan ../MARKETING_TEAM and generate complete test suite"
 
 Claude: [Coordinates all specialist agents automatically]
         [Generates unit + integration + edge case tests]
@@ -516,7 +516,7 @@ Each test file contains:
 
 1. **Try your first test generation:**
    ```
-   "Use test-orchestrator to scan ../USER_STORY_AGENT"
+   "Use test-orchestrator to scan ../MARKETING_TEAM"
    ```
 
 2. **Review generated tests:**

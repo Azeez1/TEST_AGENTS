@@ -11,7 +11,7 @@ Generate comprehensive pytest test suites through natural conversation. Create u
 **No Python code to run. No setup. Just talk to Claude Code:**
 
 ```
-You: "Use the test-orchestrator subagent to scan USER_STORY_AGENT and generate tests"
+You: "Use the test-orchestrator subagent to scan MARKETING_TEAM and generate tests"
 
 Claude: [Scans codebase]
         [Generates comprehensive test suite]
@@ -75,7 +75,7 @@ When you say:
 ### Example 1: Complete Test Suite Generation
 
 ```
-You: "Use test-orchestrator to scan ../USER_STORY_AGENT and generate comprehensive tests"
+You: "Use test-orchestrator to scan ../MARKETING_TEAM and generate comprehensive tests"
 
 Claude (as test-orchestrator):
   [Using scan_codebase tool...]
@@ -299,7 +299,7 @@ QA_TEAM/
 
 **Generate your first tests:**
 ```
-"Use test-orchestrator to scan ../USER_STORY_AGENT"
+"Use test-orchestrator to scan ../MARKETING_TEAM"
 ```
 
 **Unit tests for specific module:**

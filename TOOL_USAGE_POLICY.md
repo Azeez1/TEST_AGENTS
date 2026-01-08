@@ -1,7 +1,7 @@
 # TOOL USAGE POLICY - Hierarchy of Authority
 
 **Last Updated:** 2025-11-26
-**Applies To:** All 59 agents across 7 teams (MARKETING, ENGINEERING, QA, PROPOSAL, FINANCIAL, SALES, USER_STORY_AGENT)
+**Applies To:** All 58 agents across 6 teams (MARKETING, ENGINEERING, QA, PROPOSAL, FINANCIAL, SALES)
 **Enforced By:** CTO agent + security-auditor (quarterly audits)
 
 ---

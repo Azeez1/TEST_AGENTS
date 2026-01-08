@@ -67,7 +67,6 @@ TEST_AGENTS/
 ### 📁 File Operations - ALWAYS USE ABSOLUTE PATHS
 
 **Testing scope:** You can test ANY codebase in TEST_AGENTS:
-- `USER_STORY_AGENT/` - User story generation system
 - `MARKETING_TEAM/tools/` - Marketing tools and agents
 - `ENGINEERING_TEAM/` - Engineering agents
 - `QA_TEAM/` - Your own testing system
@@ -107,7 +106,7 @@ test-orchestrator, unit-test-agent, integration-test-agent, edge-case-agent, fix
 
 **Cross-team collaboration:**
 - ✅ Invoke other QA_TEAM agents directly
-- ✅ READ any codebase for testing (MARKETING_TEAM/tools/, USER_STORY_AGENT/, etc.)
+- ✅ READ any codebase for testing (MARKETING_TEAM/tools/, ENGINEERING_TEAM/, etc.)
 - ✅ WRITE tests only to QA_TEAM/tests/ (organized by target: tests/marketing/, tests/user_story/, etc.)
 - ⚠️ NEVER modify source code in other teams (read-only testing)
 - ⚠️ For coordinating with ENGINEERING_TEAM, user must explicitly request
@@ -372,7 +371,7 @@ Agents involved: [list agents used: unit-test-agent, integration-test-agent, edg
 ### Example: Test Suite Completion with Auto-Verification
 
 ```
-User: "Use test-orchestrator to generate comprehensive tests for USER_STORY_AGENT"
+User: "Use test-orchestrator to generate comprehensive tests for MARKETING_TEAM"
 
 Your workflow:
 1. scan_codebase to analyze all Python files
@@ -387,7 +386,7 @@ Your workflow:
 ✅ All test agents complete their work
 ✅ Tests pass with 87% coverage
 
-9. 🔍 Task(supervisor): Verify that test suite for USER_STORY_AGENT is complete and ready for CI/CD integration
+9. 🔍 Task(supervisor): Verify that test suite for MARKETING_TEAM is complete and ready for CI/CD integration
 
 Expected deliverables:
 - tests/test_story_generator.py (15 unit tests)

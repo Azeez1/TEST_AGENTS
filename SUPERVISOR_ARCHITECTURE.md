@@ -21,7 +21,7 @@ The **Supervisor Agent** is a root-level quality assurance layer that sits above
 │                                     │   │                           │
 │  - Task Verification                │   │  ┌─────────────────────┐  │
 │  - Quality Gates                    │   │  │  ENGINEERING_TEAM   │  │
-│  - Deliverable Inspection           │   │  │  (14 agents)        │  │
+│  - Deliverable Inspection           │   │  │  (15 agents)        │  │
 │  - Test Validation                  │   │  │  - cto              │  │
 │  - Documentation Checks             │   │  │  - devops-engineer  │  │
 │  - Security Scanning                │   │  │  - backend-architect│  │
@@ -31,10 +31,10 @@ The **Supervisor Agent** is a root-level quality assurance layer that sits above
                                           │                           │
                                           │  ┌─────────────────────┐  │
                                           │  │  MARKETING_TEAM     │  │
-                                          │  │  (17 agents)        │  │
+                                          │  │  (18 agents)        │  │
                                           │  │  - router-agent     │  │
                                           │  │  - copywriter       │  │
-                                          │  │  - social-media-mgr │  │
+                                          │  │  - social-media-manager │
                                           │  │  - ... etc          │  │
                                           │  └─────────────────────┘  │
                                           │                           │
@@ -172,14 +172,13 @@ SUPERVISOR AGENT
 - Gives **deployment readiness** assessment
 
 ### 5. Cross-Team
-- Works across **all 7 teams**:
+- Works across **all 6 teams**:
   - ENGINEERING_TEAM (15 agents)
   - MARKETING_TEAM (18 agents)
   - QA_TEAM (5 agents)
   - PROPOSAL_TEAM (1 agent)
   - FINANCIAL_TEAM (10 agents)
   - SALES_TEAM (8 agents)
-  - USER_STORY_AGENT (1 app)
 - Understands **different verification criteria** for each team
 - Adapts verification approach based on task type
 

@@ -28,8 +28,7 @@
       "/home/user/TEST_AGENTS/ENGINEERING_TEAM",
       "/home/user/TEST_AGENTS/FINANCIAL_TEAM",
       "/home/user/TEST_AGENTS/SALES_TEAM",
-      "/home/user/TEST_AGENTS/PROPOSAL_TEAM",
-      "/home/user/TEST_AGENTS/USER_STORY_AGENT"
+      "/home/user/TEST_AGENTS/PROPOSAL_TEAM"
     ],
     "write_paths": [
       "/home/user/TEST_AGENTS/QA_TEAM"

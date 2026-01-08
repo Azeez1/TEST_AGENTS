@@ -152,7 +152,7 @@ async def classify_test_intent(args):
 • **Run Tests** - Execute existing tests
 • **Coverage** - Analyze test coverage gaps
 
-Example: "Scan USER_STORY_AGENT and generate comprehensive tests"
+Example: "Scan MARKETING_TEAM and generate comprehensive tests"
 """
         }
 
@@ -294,8 +294,8 @@ async def extract_target_path(args):
         r"['\"]([^'\"]+)['\"]",  # Quoted paths
         r"(?:scan|test|analyze)\s+([^\s]+)",  # After action verbs
         r"(?:path|directory|folder):\s*([^\s]+)",  # Explicit path labels
-        r"(?:for|in)\s+([A-Z_]+)",  # ALL_CAPS folder names like USER_STORY_AGENT
-        r"\.\./([A-Za-z_]+)",  # Relative paths like ../USER_STORY_AGENT
+        r"(?:for|in)\s+([A-Z_]+)",  # ALL_CAPS folder names like MARKETING_TEAM
+        r"\.\./([A-Za-z_]+)",  # Relative paths like ../MARKETING_TEAM
     ]
 
     extracted_path = None
@@ -307,7 +307,7 @@ async def extract_target_path(args):
 
     # If no path found, check for common folder names
     if not extracted_path:
-        common_folders = ["USER_STORY_AGENT", "MARKETING_TEAM", "QA_TEAM"]
+        common_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "PROPOSAL_TEAM", "FINANCIAL_TEAM", "SALES_TEAM"]
         for folder in common_folders:
             if folder in user_message:
                 extracted_path = f"../{folder}"
@@ -316,7 +316,7 @@ async def extract_target_path(args):
     result = {
         "found_path": extracted_path is not None,
         "path": extracted_path,
-        "suggestion": "Please specify a path like: '../USER_STORY_AGENT'" if not extracted_path else None
+        "suggestion": "Please specify a path like: '../MARKETING_TEAM'" if not extracted_path else None
     }
 
     return {

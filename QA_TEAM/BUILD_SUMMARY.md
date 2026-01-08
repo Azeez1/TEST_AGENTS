@@ -75,7 +75,7 @@ pip install -r requirements.txt
 python orchestrator.py
 
 # 3. Scan and generate tests
-test-agent> scan ../USER_STORY_AGENT
+test-agent> scan ../MARKETING_TEAM
 ```
 
 That's it! The agent will:
@@ -89,10 +89,10 @@ That's it! The agent will:
 
 ## 💡 Example Workflow
 
-### Testing USER_STORY_AGENT
+### Testing MARKETING_TEAM
 
 ```
-test-agent> scan ../USER_STORY_AGENT
+test-agent> scan ../MARKETING_TEAM
 
 🔍 Scanning codebase...
 
@@ -341,7 +341,7 @@ def pytest_configure(config):
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `scan <path>` | Scan codebase and generate all tests | `scan ../USER_STORY_AGENT` |
+| `scan <path>` | Scan codebase and generate all tests | `scan ../MARKETING_TEAM` |
 | `generate <file>` | Generate tests for single file | `generate story_generator.py` |
 | `run` | Run all tests with coverage | `run` |
 | `coverage [path]` | Analyze coverage gaps | `coverage` |
@@ -556,20 +556,20 @@ pytest --cov=. tests/
 
 ---
 
-## 🎁 Example: Test Both Projects
-
-### Test USER_STORY_AGENT
-```bash
-python orchestrator.py
-test-agent> scan ../USER_STORY_AGENT
-```
+## 🎁 Example: Test Projects
 
 ### Test MARKETING_TEAM
+```bash
+python orchestrator.py
+test-agent> scan ../MARKETING_TEAM
+```
+
+### Test MARKETING_TEAM Tools
 ```bash
 test-agent> scan ../MARKETING_TEAM/tools
 ```
 
-### Test Both
+### Test All Projects
 ```bash
 test-agent> scan ..
 ```
@@ -596,7 +596,7 @@ Your Test Agent is fully built and ready to use!
 **Next Steps:**
 1. Install dependencies: `pip install -r requirements.txt`
 2. Run orchestrator: `python orchestrator.py`
-3. Scan a codebase: `scan ../USER_STORY_AGENT`
+3. Scan a codebase: `scan ../MARKETING_TEAM`
 4. Watch the magic happen! ✨
 
 ---
