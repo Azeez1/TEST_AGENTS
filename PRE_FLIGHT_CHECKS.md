@@ -1,7 +1,7 @@
 # PRE-FLIGHT CHECKS - Mandatory Workflow
 
 **Last Updated:** 2025-11-26
-**Applies To:** All 59 agents across 7 teams before creating/declaring/using any tool or skill
+**Applies To:** All 58 agents across 7 teams before creating/declaring/using any tool or skill
 **Enforcement:** CTO agent + all engineering agents
 
 ---

@@ -151,12 +151,17 @@ Before creating any new tool, script, or workflow:
    - Used when: Creating ALL social media content (LinkedIn, X/Twitter)
    - Required for: EVERY post to maintain brand consistency
 
-2. **memory/email_config.json** - Email defaults for sharing social media content
+2. **memory/twitter_config.json** - Twitter/X account configuration
+   - Contains: `handle` (@EZdaArchitect), `profile_url`, `display_name`
+   - Used when: Posting to Twitter/X via browser automation
+   - Required for: All Twitter/X operations with claude-in-chrome MCP
+
+3. **memory/email_config.json** - Email defaults for sharing social media content
    - Contains: `user_google_email`, `default_to`, `default_cc`
    - Used when: Sharing post drafts, content calendars, campaign plans
    - Required for: Google Workspace MCP email tools
 
-3. **memory/google_drive_config.json** - Drive folder structure and upload locations
+4. **memory/google_drive_config.json** - Drive folder structure and upload locations
    - Contains: Folder IDs for organized file storage (especially `social_media` folder)
    - Used when: Uploading images, GIFs, generative art, post schedules
    - Required for: Google Drive file uploads

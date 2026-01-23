@@ -549,4 +549,4 @@ Given this is an **AI agent system handling sensitive data**, pay special attent
 
 ---
 
-**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 59 agents in this workspace.
+**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 58 agents in this workspace.

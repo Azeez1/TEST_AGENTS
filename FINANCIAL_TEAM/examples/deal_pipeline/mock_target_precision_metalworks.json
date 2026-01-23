@@ -1,0 +1,215 @@
+{
+  "company_overview": {
+    "name": "Precision MetalWorks LLC",
+    "location": "Toledo, Ohio",
+    "founded": 2007,
+    "industry": "Custom Metal Fabrication & CNC Machining",
+    "employees": 34,
+    "facility_sqft": 28000,
+    "owner": {
+      "name": "Robert 'Bob' Kaminski",
+      "age": 62,
+      "role": "Owner/President",
+      "years_with_company": 17,
+      "succession_plan": "None - wants to retire within 18 months",
+      "involvement": "High - manages key customer relationships, approves all quotes over $25K"
+    }
+  },
+
+  "business_description": {
+    "summary": "Precision MetalWorks manufactures custom metal components and assemblies for industrial OEMs, primarily serving agricultural equipment, HVAC, and material handling sectors.",
+    "capabilities": [
+      "CNC machining (5 machines)",
+      "Metal fabrication & welding",
+      "Sheet metal forming",
+      "Assembly & light integration",
+      "Powder coating (outsourced)"
+    ],
+    "certifications": ["ISO 9001:2015", "AWS D1.1 Welding"],
+    "competitive_advantages": [
+      "17-year relationships with key accounts",
+      "Quick-turn capability (5-7 day lead times vs industry 3-4 weeks)",
+      "In-house engineering support",
+      "Located in Midwest manufacturing corridor"
+    ]
+  },
+
+  "financials": {
+    "currency": "USD",
+    "fiscal_year_end": "December 31",
+
+    "income_statement": {
+      "2023": {
+        "revenue": 7840000,
+        "cogs": 5096000,
+        "gross_profit": 2744000,
+        "gross_margin": 0.35,
+        "operating_expenses": {
+          "salaries_wages": 892000,
+          "rent_utilities": 168000,
+          "insurance": 124000,
+          "maintenance_repairs": 89000,
+          "professional_fees": 45000,
+          "marketing": 12000,
+          "other_overhead": 156000,
+          "owner_compensation": 285000,
+          "total_opex": 1771000
+        },
+        "ebitda": 973000,
+        "ebitda_margin": 0.124,
+        "depreciation": 312000,
+        "interest_expense": 67000,
+        "pretax_income": 594000,
+        "taxes": 142000,
+        "net_income": 452000
+      },
+      "2022": {
+        "revenue": 7120000,
+        "cogs": 4699200,
+        "gross_profit": 2420800,
+        "gross_margin": 0.34,
+        "ebitda": 854000,
+        "ebitda_margin": 0.12,
+        "net_income": 378000
+      },
+      "2021": {
+        "revenue": 6340000,
+        "cogs": 4234780,
+        "gross_profit": 2105220,
+        "gross_margin": 0.332,
+        "ebitda": 698000,
+        "ebitda_margin": 0.11,
+        "net_income": 289000
+      }
+    },
+
+    "balance_sheet_2023": {
+      "assets": {
+        "cash": 342000,
+        "accounts_receivable": 1180000,
+        "inventory": {
+          "raw_materials": 289000,
+          "wip": 156000,
+          "finished_goods": 67000,
+          "total": 512000
+        },
+        "prepaid_expenses": 45000,
+        "total_current_assets": 2079000,
+        "property_plant_equipment": {
+          "land_building": 0,
+          "machinery_equipment": 2890000,
+          "vehicles": 187000,
+          "office_equipment": 45000,
+          "accumulated_depreciation": -1456000,
+          "net_ppe": 1666000
+        },
+        "total_assets": 3745000
+      },
+      "liabilities": {
+        "accounts_payable": 423000,
+        "accrued_expenses": 156000,
+        "current_portion_ltd": 189000,
+        "total_current_liabilities": 768000,
+        "long_term_debt": 634000,
+        "total_liabilities": 1402000
+      },
+      "equity": {
+        "retained_earnings": 2343000,
+        "total_equity": 2343000
+      }
+    },
+
+    "key_metrics": {
+      "revenue_cagr_3yr": 0.112,
+      "avg_ebitda_margin_3yr": 0.118,
+      "debt_to_ebitda": 0.85,
+      "current_ratio": 2.71,
+      "ar_days": 55,
+      "inventory_turns": 9.95,
+      "capex_2023": 234000,
+      "maintenance_capex_estimate": 180000
+    }
+  },
+
+  "customers": {
+    "top_10_concentration": 0.78,
+    "top_customer_concentration": 0.23,
+    "customer_breakdown": [
+      {"name": "AgriCore Industries", "revenue_pct": 0.23, "years_customer": 14, "contract": "None - PO based"},
+      {"name": "Midwest HVAC Systems", "revenue_pct": 0.18, "years_customer": 11, "contract": "Annual blanket PO"},
+      {"name": "ConveyorTech Inc", "revenue_pct": 0.12, "years_customer": 8, "contract": "None - PO based"},
+      {"name": "Great Lakes Machinery", "revenue_pct": 0.09, "years_customer": 6, "contract": "None - PO based"},
+      {"name": "Buckeye Material Handling", "revenue_pct": 0.08, "years_customer": 9, "contract": "None - PO based"},
+      {"name": "Various smaller accounts", "revenue_pct": 0.30, "years_customer": "Varies", "contract": "PO based"}
+    ],
+    "customer_retention_rate": 0.94,
+    "average_order_value": 18500,
+    "repeat_order_rate": 0.87
+  },
+
+  "assets_detail": {
+    "equipment_list": [
+      {"item": "Haas VF-4 CNC Mill (2019)", "fmv_estimate": 85000},
+      {"item": "Haas VF-2 CNC Mill (2017)", "fmv_estimate": 62000},
+      {"item": "Haas ST-20 CNC Lathe (2020)", "fmv_estimate": 78000},
+      {"item": "Mazak QT-200 CNC Lathe (2015)", "fmv_estimate": 45000},
+      {"item": "Doosan DNM 500 CNC Mill (2021)", "fmv_estimate": 95000},
+      {"item": "Amada RG-80 Press Brake (2018)", "fmv_estimate": 68000},
+      {"item": "Amada LC-2415 Laser (2016)", "fmv_estimate": 120000},
+      {"item": "Lincoln PowerWave Welders (6 units)", "fmv_estimate": 42000},
+      {"item": "Overhead cranes (2 x 5-ton)", "fmv_estimate": 35000},
+      {"item": "Misc tooling, fixtures, inspection", "fmv_estimate": 89000}
+    ],
+    "total_equipment_fmv": 719000,
+    "real_estate": "Leased - 28,000 sqft facility, $6,000/month, 4 years remaining",
+    "vehicles": [
+      {"item": "2020 Ford F-250 (delivery)", "fmv": 32000},
+      {"item": "2019 Ford Transit (service)", "fmv": 24000},
+      {"item": "2018 Chevy Silverado", "fmv": 22000}
+    ],
+    "inventory_value_at_cost": 512000
+  },
+
+  "workforce": {
+    "headcount": 34,
+    "breakdown": {
+      "production": 24,
+      "engineering": 3,
+      "admin_sales": 4,
+      "management": 3
+    },
+    "key_employees": [
+      {"name": "Mike Torres", "role": "Shop Foreman", "years": 12, "critical": true},
+      {"name": "Sarah Chen", "role": "Engineering Manager", "years": 8, "critical": true},
+      {"name": "Jim Kowalski", "role": "Sales Manager (Bob's nephew)", "years": 5, "critical": false}
+    ],
+    "union": false,
+    "avg_tenure_years": 6.2,
+    "avg_hourly_rate_production": 24.50
+  },
+
+  "opportunities": [
+    "Owner-dependent relationships can be transitioned with proper handoff",
+    "No formal sales process - opportunity to professionalize and grow",
+    "Quoting process is manual/Excel - automation could improve margins",
+    "Underutilized 2nd shift capacity (currently 1 shift only)",
+    "Powder coating currently outsourced - could bring in-house",
+    "No ERP system - running on QuickBooks + spreadsheets"
+  ],
+
+  "risks": [
+    "Owner concentration - Bob manages top 3 customer relationships personally",
+    "Top customer (AgriCore) = 23% of revenue, no contract",
+    "Key man risk on Shop Foreman (Mike Torres)",
+    "Facility is leased, not owned",
+    "Some equipment approaching end of useful life (2015-2016 vintage)",
+    "No formal quality management beyond ISO cert"
+  ],
+
+  "asking_price": {
+    "seller_expectation": 4200000,
+    "basis": "Approximately 4.3x 2023 EBITDA",
+    "seller_motivation": "Retirement - wants clean exit, open to reasonable structure",
+    "deal_notes": "Seller open to: 12-24 month transition, some seller financing, earnout on customer retention"
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "deal_analysis": {
+    "target": "Precision MetalWorks LLC",
+    "location": "Toledo, Ohio",
+    "industry": "Custom Metal Fabrication & CNC Machining",
+    "analysis_date": "2026-01-06",
+    "status": "PROCEED TO LOI",
+    "analyst": "Dux Vitae Capital"
+  },
+
+  "phase_1_buy_box_screening": {
+    "agent": "deal-analyst",
+    "result": "PASS",
+    "criteria": {
+      "revenue_range": {"target": "$4M-$12M", "actual": "$7.84M", "pass": true},
+      "ebitda_margin": {"target": ">=12%", "actual": "12.4%", "pass": true},
+      "customer_concentration": {"target": "Low", "actual": "23% top customer", "pass": false, "flag": true},
+      "real_assets": {"target": "Equipment/Inventory", "actual": "$1.23M", "pass": true},
+      "asset_heavy": {"target": "Yes", "actual": "Yes", "pass": true},
+      "infrastructure_adjacent": {"target": "Manufacturing", "actual": "Yes", "pass": true},
+      "repeat_purchase": {"target": "High", "actual": "87%", "pass": true}
+    },
+    "score": "6/7",
+    "flags": [
+      "Top customer (AgriCore) = 23% revenue, no contract",
+      "Owner manages top 3 customer relationships directly",
+      "Facility leased (not owned) - 4 years remaining",
+      "Key man risk: Shop Foreman (Mike Torres, 12 years)"
+    ],
+    "positives": [
+      "11.2% revenue CAGR over 3 years",
+      "94% customer retention rate",
+      "Low leverage (0.85x Debt/EBITDA)",
+      "Strong current ratio (2.71)",
+      "Motivated seller, open to structure",
+      "ISO 9001 certified operations"
+    ]
+  },
+
+  "phase_2_valuation": {
+    "agent": "valuation-agent",
+    "adjusted_ebitda": 1138000,
+    "adjustments": {
+      "reported_ebitda": 973000,
+      "owner_excess_comp": 135000,
+      "owner_perks": 18000,
+      "one_time_legal": 12000
+    },
+    "methods": {
+      "ebitda_multiple": {
+        "low": {"multiple": 3.0, "value": 3414000},
+        "mid": {"multiple": 3.5, "value": 3983000},
+        "high": {"multiple": 4.5, "value": 5121000}
+      },
+      "asset_based": {
+        "tangible_assets": 2713000,
+        "liabilities": 1402000,
+        "net_asset_value": 1311000,
+        "with_intangibles": 2111000
+      },
+      "dcf": {
+        "discount_rate": 0.25,
+        "terminal_multiple": 3.5,
+        "value": 3893000
+      }
+    },
+    "conclusion": {
+      "fair_value_range": {"low": 3200000, "high": 4000000},
+      "target_price": {"low": 3500000, "high": 3700000},
+      "max_price": 4000000,
+      "seller_ask": 4200000,
+      "recommendation": "Negotiate down or offset with structure"
+    }
+  },
+
+  "phase_3_deal_structure": {
+    "agent": "deal-analyst",
+    "purchase_price": 3800000,
+    "multiple": "3.3x Adjusted EBITDA",
+    "financing_stack": {
+      "senior_debt": {
+        "amount": 2400000,
+        "percent": 63,
+        "terms": "SBA 7a, 10yr, Prime+2.75%, 25yr am, PG required"
+      },
+      "seller_note": {
+        "amount": 1000000,
+        "percent": 26,
+        "terms": "5yr, 6% interest, 12mo I/O, subordinated"
+      },
+      "earnout": {
+        "amount": 300000,
+        "percent": 8,
+        "terms": "Customer retention >90% Y1-Y2"
+      },
+      "buyer_equity": {
+        "amount": 100000,
+        "percent": 3,
+        "terms": "Working capital cushion"
+      }
+    },
+    "debt_service": {
+      "year_1": {"total": 438000, "fcf_after_debt": 700000, "dscr": 2.6},
+      "year_2": {"total": 656000, "fcf_after_debt": 544000, "dscr": 1.8},
+      "year_3": {"total": 647000, "fcf_after_debt": 613000, "dscr": 1.9}
+    },
+    "leverage": {
+      "total_debt": 3400000,
+      "debt_to_ebitda": 3.0
+    },
+    "key_terms": {
+      "transition": "Bob stays 18 months at $150K/yr consulting",
+      "earnout": "$150K Y1 + $150K Y2 if top 5 retained >90%",
+      "escrow": "$200K holdback for 12 months",
+      "non_compete": "5 years, 150 mile radius",
+      "retention_pool": "$50K for key employees"
+    },
+    "returns": {
+      "year_1_fcf": 700000,
+      "cash_on_cash_y1": "700%"
+    }
+  },
+
+  "phase_4_operations": {
+    "agent": "cto",
+    "current_friction_points": [
+      "No ERP - QuickBooks + spreadsheets",
+      "Manual quoting (Excel)",
+      "No production visibility",
+      "Owner approval bottleneck (>$25K quotes)",
+      "Single shift only",
+      "Powder coating outsourced"
+    ],
+    "100_day_roadmap": {
+      "days_1_30": {
+        "name": "Stabilize & Observe",
+        "priorities": [
+          "Customer relationship transition",
+          "Key employee retention",
+          "Operational baseline dashboards"
+        ]
+      },
+      "days_31_60": {
+        "name": "Quick Wins",
+        "initiatives": [
+          {"name": "Quoting Automation", "impact": "$80-120K/yr savings"},
+          {"name": "Production Visibility", "impact": "60% reduction in status calls"},
+          {"name": "Cash Flow Optimization", "impact": "$100-150K WC release"}
+        ]
+      },
+      "days_61_100": {
+        "name": "Growth Foundation",
+        "initiatives": [
+          {"name": "Sales Pipeline System", "impact": "New business visibility"},
+          {"name": "Second Shift Pilot", "impact": "$400-600K capacity"},
+          {"name": "ERP Evaluation", "impact": "Y2 implementation prep"}
+        ]
+      }
+    },
+    "machina_value_add": {
+      "total_annual_impact": {"low": 330000, "high": 520000},
+      "ebitda_improvement": "29-46%",
+      "implementation_fee": "~$75-100K",
+      "ongoing_retainer": "~$5K/month"
+    }
+  },
+
+  "phase_5_recommendation": {
+    "agent": "cfo-agent",
+    "decision": "GO - PROCEED TO LOI",
+    "investment_thesis": [
+      "Asset-backed downside protection ($2.7M tangible assets)",
+      "Durable cash flows (87% repeat, 94% retention)",
+      "Clear operational upside ($330-520K via Machina)",
+      "Favorable structure (seller note, earnout, transition)",
+      "Machina flywheel activation"
+    ],
+    "risk_assessment": {
+      "customer_concentration": "MEDIUM - mitigated by earnout and transition",
+      "owner_dependency": "MEDIUM - 18mo transition, documentation",
+      "key_man": "LOW-MED - retention bonus, cross-training",
+      "facility_lease": "LOW - 4yr remaining, favorable rate",
+      "equipment_age": "LOW - CapEx budgeted",
+      "economic_cycle": "LOW - diverse end markets"
+    },
+    "projections": {
+      "year_5_ebitda": 1770000,
+      "exit_multiple": 4.0,
+      "exit_ev": 7080000,
+      "remaining_debt": 1200000,
+      "equity_value_at_exit": 5880000,
+      "cumulative_fcf": 3810000,
+      "total_return": 9690000,
+      "moic": "96.9x",
+      "irr": ">200%"
+    },
+    "next_steps": [
+      "Issue LOI at $3.8M with proposed structure",
+      "Negotiate transition and earnout terms",
+      "Engage SBA lender for pre-qualification",
+      "Begin customer concentration diligence",
+      "Schedule facility visit and equipment inspection"
+    ]
+  }
+}

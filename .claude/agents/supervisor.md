@@ -476,4 +476,4 @@ When verifying task completion, also check LLAR compliance:
 | PROPOSAL_TEAM | rfp-agent | 1 |
 | FINANCIAL_TEAM | cfo-agent | 10 |
 | SALES_TEAM | sales-manager | 8 |
-| **TOTAL** | **7 orchestrators** | **59 agents** |
+| **TOTAL** | **7 orchestrators** | **58 agents** |

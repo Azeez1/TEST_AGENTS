@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Memo - Precision MetalWorks LLC | Dux Vitae Capital</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #B8860B;
+            --gold-light: #DAA520;
+            --gold-glow: rgba(184, 134, 11, 0.3);
+            --dark-bg: #0a0e14;
+            --dark-card: #131920;
+            --dark-border: #1e2530;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --success: #48bb78;
+            --warning: #ecc94b;
+            --danger: #f56565;
+            --info: #4299e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--dark-card) 0%, rgba(184, 134, 11, 0.1) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+        }
+
+        .logo {
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .company-name {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .company-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .recommendation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--dark-bg);
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            box-shadow: 0 0 40px var(--gold-glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px var(--gold-glow); }
+            50% { box-shadow: 0 0 60px var(--gold-glow), 0 0 80px rgba(184, 134, 11, 0.2); }
+        }
+
+        .recommendation-badge svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-6 { grid-template-columns: repeat(6, 1fr); }
+
+        @media (max-width: 1200px) {
+            .grid-6 { grid-template-columns: repeat(3, 1fr); }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(184, 134, 11, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--dark-bg);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+
+        /* Metric Cards */
+        .metric-card {
+            text-align: center;
+            padding: 24px 16px;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Buy Box Scorecard */
+        .scorecard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .scorecard-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .scorecard-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .scorecard-status {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .status-pass {
+            background: rgba(72, 187, 120, 0.2);
+            color: var(--success);
+        }
+
+        .status-flag {
+            background: rgba(236, 201, 75, 0.2);
+            color: var(--warning);
+        }
+
+        .scorecard-value {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .score-summary {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.1), rgba(184, 134, 11, 0.05));
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .score-big {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .score-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            padding: 20px 0;
+        }
+
+        .chart-container-small {
+            height: 250px;
+        }
+
+        /* Risk Matrix */
+        .risk-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+        }
+
+        .risk-low { border-color: var(--success); }
+        .risk-medium { border-color: var(--warning); }
+        .risk-high { border-color: var(--danger); }
+
+        .risk-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .risk-badge.low {
+            background: rgba(72, 187, 120, 0.2);
+            color: var(--success);
+        }
+
+        .risk-badge.medium {
+            background: rgba(236, 201, 75, 0.2);
+            color: var(--warning);
+        }
+
+        .risk-content {
+            flex: 1;
+        }
+
+        .risk-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .risk-mitigation {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gold), var(--dark-border));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 40px;
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 40px;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--gold);
+            border-radius: 50%;
+            border: 4px solid var(--dark-bg);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            flex: 1;
+            max-width: calc(50% - 40px);
+            background: var(--dark-card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--dark-border);
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ROI Summary */
+        .roi-card {
+            background: linear-gradient(135deg, var(--dark-card), rgba(184, 134, 11, 0.15));
+            border: 2px solid var(--gold);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .roi-value {
+            font-size: 64px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .roi-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Financing Stack Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--dark-border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer-logo {
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        /* Thesis Points */
+        .thesis-list {
+            list-style: none;
+        }
+
+        .thesis-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .thesis-list li:last-child {
+            border-bottom: none;
+        }
+
+        .thesis-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(72, 187, 120, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .thesis-icon svg {
+            width: 14px;
+            height: 14px;
+            color: var(--success);
+        }
+
+        /* Next Steps */
+        .next-steps {
+            counter-reset: step;
+        }
+
+        .next-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .next-step::before {
+            counter-increment: step;
+            content: counter(step);
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            color: var(--dark-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-detail {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header animate">
+            <div class="logo">Dux Vitae Capital</div>
+            <h1 class="company-name">Precision MetalWorks LLC</h1>
+            <p class="company-subtitle">Toledo, Ohio | Custom Metal Fabrication & CNC Machining</p>
+            <div class="recommendation-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                PROCEED TO LOI
+            </div>
+        </header>
+
+        <!-- Key Metrics Dashboard -->
+        <section class="animate delay-1">
+            <h2 class="section-title">Key Metrics</h2>
+            <div class="grid grid-6">
+                <div class="card metric-card">
+                    <div class="metric-value">$7.84M</div>
+                    <div class="metric-label">Revenue (2023)</div>
+                </div>
+                <div class="card metric-card">
+                    <div class="metric-value">$1.14M</div>
+                    <div class="metric-label">Adj. EBITDA</div>
+                </div>
+                <div class="card metric-card">
+                    <div class="metric-value">$3.8M</div>
+                    <div class="metric-label">Purchase Price</div>
+                </div>
+                <div class="card metric-card">
+                    <div class="metric-value">3.3x</div>
+                    <div class="metric-label">EBITDA Multiple</div>
+                </div>
+                <div class="card metric-card">
+                    <div class="metric-value">$100K</div>
+                    <div class="metric-label">Equity Required</div>
+                </div>
+                <div class="card metric-card">
+                    <div class="metric-value">$700K</div>
+                    <div class="metric-label">Y1 Free Cash Flow</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buy Box & Financing -->
+        <section class="animate delay-2">
+            <div class="grid grid-2">
+                <!-- Buy Box Scorecard -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11l3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Buy Box Scorecard</h3>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-pass">&#10003;</span>
+                            <span>Revenue ($4M-$12M)</span>
+                        </div>
+                        <span class="scorecard-value">$7.84M</span>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-pass">&#10003;</span>
+                            <span>EBITDA Margin (&#8805;12%)</span>
+                        </div>
+                        <span class="scorecard-value">12.4%</span>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-flag">!</span>
+                            <span>Customer Concentration</span>
+                        </div>
+                        <span class="scorecard-value">23% top</span>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-pass">&#10003;</span>
+                            <span>Real Assets</span>
+                        </div>
+                        <span class="scorecard-value">$1.23M</span>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-pass">&#10003;</span>
+                            <span>Asset-Heavy Business</span>
+                        </div>
+                        <span class="scorecard-value">Yes</span>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-pass">&#10003;</span>
+                            <span>Infrastructure Adjacent</span>
+                        </div>
+                        <span class="scorecard-value">Manufacturing</span>
+                    </div>
+
+                    <div class="scorecard-item">
+                        <div class="scorecard-label">
+                            <span class="scorecard-status status-pass">&#10003;</span>
+                            <span>Repeat Purchase Model</span>
+                        </div>
+                        <span class="scorecard-value">87%</span>
+                    </div>
+
+                    <div class="score-summary">
+                        <div class="score-big">6/7</div>
+                        <div class="score-label">Criteria Passed</div>
+                    </div>
+                </div>
+
+                <!-- Financing Stack -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Financing Stack ($3.8M)</h3>
+                    </div>
+                    <div class="chart-container chart-container-small">
+                        <canvas id="financingChart"></canvas>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #B8860B;"></div>
+                            <span>Senior Debt (SBA) - $2.4M</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #DAA520;"></div>
+                            <span>Seller Note - $1.0M</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #4299e1;"></div>
+                            <span>Earnout - $300K</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #48bb78;"></div>
+                            <span>Equity - $100K</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5-Year Projections -->
+        <section class="animate delay-3">
+            <h2 class="section-title">5-Year Financial Projections</h2>
+            <div class="card">
+                <div class="chart-container">
+                    <canvas id="projectionsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Matrix & Investment Thesis -->
+        <section class="animate delay-4">
+            <div class="grid grid-2">
+                <!-- Risk Matrix -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Risk Assessment</h3>
+                    </div>
+
+                    <div class="risk-item risk-medium">
+                        <span class="risk-badge medium">Medium</span>
+                        <div class="risk-content">
+                            <div class="risk-title">Customer Concentration (23%)</div>
+                            <div class="risk-mitigation">Mitigated by earnout + 18mo transition + 14yr relationship tenure</div>
+                        </div>
+                    </div>
+
+                    <div class="risk-item risk-medium">
+                        <span class="risk-badge medium">Medium</span>
+                        <div class="risk-content">
+                            <div class="risk-title">Owner Dependency</div>
+                            <div class="risk-mitigation">Bob stays 18 months; key relationships documented</div>
+                        </div>
+                    </div>
+
+                    <div class="risk-item risk-low">
+                        <span class="risk-badge low">Low-Med</span>
+                        <div class="risk-content">
+                            <div class="risk-title">Key Man Risk (Shop Foreman)</div>
+                            <div class="risk-mitigation">Retention bonus at close; cross-training planned</div>
+                        </div>
+                    </div>
+
+                    <div class="risk-item risk-low">
+                        <span class="risk-badge low">Low</span>
+                        <div class="risk-content">
+                            <div class="risk-title">Facility Lease</div>
+                            <div class="risk-mitigation">4 years remaining at $2.57/sqft; renewal likely</div>
+                        </div>
+                    </div>
+
+                    <div class="risk-item risk-low">
+                        <span class="risk-badge low">Low</span>
+                        <div class="risk-content">
+                            <div class="risk-title">Economic Cycle</div>
+                            <div class="risk-mitigation">Diverse end markets; maintenance work is recession-resistant</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investment Thesis -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Investment Thesis</h3>
+                    </div>
+
+                    <ul class="thesis-list">
+                        <li>
+                            <span class="thesis-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            <div>
+                                <strong>Asset-Backed Downside Protection</strong><br>
+                                <span style="color: var(--text-secondary); font-size: 14px;">$2.7M tangible assets = 71% of purchase price coverage</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="thesis-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            <div>
+                                <strong>Durable Cash Flows</strong><br>
+                                <span style="color: var(--text-secondary); font-size: 14px;">87% repeat orders, 94% customer retention over 17 years</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="thesis-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            <div>
+                                <strong>Clear Operational Upside</strong><br>
+                                <span style="color: var(--text-secondary); font-size: 14px;">$330-520K annual EBITDA improvement via Dux Machina</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="thesis-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            <div>
+                                <strong>Favorable Structure</strong><br>
+                                <span style="color: var(--text-secondary); font-size: 14px;">Seller note + earnout + 18mo transition = aligned incentives</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="thesis-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            <div>
+                                <strong>Flywheel Activation</strong><br>
+                                <span style="color: var(--text-secondary); font-size: 14px;">Portfolio company becomes Machina client; compound both streams</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 100-Day Roadmap Timeline -->
+        <section class="animate delay-5">
+            <h2 class="section-title">100-Day Post-Acquisition Roadmap</h2>
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Days 1-30</div>
+                            <div class="timeline-title">Stabilize & Observe</div>
+                            <div class="timeline-description">
+                                Customer relationship transitions, key employee retention bonuses,
+                                operational baseline dashboards (Dux Machina), workflow mapping
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Days 31-60</div>
+                            <div class="timeline-title">Quick Wins</div>
+                            <div class="timeline-description">
+                                Quoting automation ($80-120K/yr savings), production visibility system,
+                                AR optimization ($100-150K WC release), process improvements
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Days 61-100</div>
+                            <div class="timeline-title">Growth Foundation</div>
+                            <div class="timeline-description">
+                                Sales pipeline system (CRM), second shift pilot ($400-600K capacity),
+                                ERP evaluation for Year 2 implementation
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI Summary -->
+        <section>
+            <h2 class="section-title">Return Analysis</h2>
+            <div class="grid grid-2">
+                <div class="card roi-card">
+                    <div class="roi-value">96.9x</div>
+                    <div class="roi-label">Multiple on Invested Capital</div>
+                </div>
+                <div class="card roi-card">
+                    <div class="roi-value">>200%</div>
+                    <div class="roi-label">Internal Rate of Return</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Steps -->
+        <section style="margin-top: 24px;">
+            <h2 class="section-title">Next Steps</h2>
+            <div class="card">
+                <div class="next-steps">
+                    <div class="next-step">
+                        <div class="step-content">
+                            <div class="step-title">Issue LOI at $3.8M with proposed structure</div>
+                            <div class="step-detail">Include seller note, earnout, and transition terms</div>
+                        </div>
+                    </div>
+                    <div class="next-step">
+                        <div class="step-content">
+                            <div class="step-title">Negotiate transition and earnout terms</div>
+                            <div class="step-detail">Finalize 18-month consulting arrangement with Bob</div>
+                        </div>
+                    </div>
+                    <div class="next-step">
+                        <div class="step-content">
+                            <div class="step-title">Engage SBA lender for pre-qualification</div>
+                            <div class="step-detail">Target $2.4M SBA 7(a) loan with personal guarantee</div>
+                        </div>
+                    </div>
+                    <div class="next-step">
+                        <div class="step-content">
+                            <div class="step-title">Begin customer concentration diligence</div>
+                            <div class="step-detail">Verify top 5 customer relationships and revenue stability</div>
+                        </div>
+                    </div>
+                    <div class="next-step">
+                        <div class="step-content">
+                            <div class="step-title">Schedule facility visit and equipment inspection</div>
+                            <div class="step-detail">Verify equipment FMV and operational condition</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">DUX VITAE CAPITAL</div>
+            <p>Investment Memo | Precision MetalWorks LLC | January 6, 2026</p>
+            <p style="margin-top: 8px; font-size: 12px;">Prepared by: FINANCIAL_TEAM Agent System | Reviewed by: deal-analyst, valuation-agent, cfo-agent, cto</p>
+        </footer>
+    </div>
+
+    <script>
+        // Financing Stack Donut Chart
+        const financingCtx = document.getElementById('financingChart').getContext('2d');
+        new Chart(financingCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Senior Debt (SBA)', 'Seller Note', 'Earnout', 'Buyer Equity'],
+                datasets: [{
+                    data: [63, 26, 8, 3],
+                    backgroundColor: ['#B8860B', '#DAA520', '#4299e1', '#48bb78'],
+                    borderColor: '#0a0e14',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 5-Year Projections Chart
+        const projectionsCtx = document.getElementById('projectionsChart').getContext('2d');
+        new Chart(projectionsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                datasets: [
+                    {
+                        label: 'Revenue ($M)',
+                        data: [8.46, 9.05, 9.60, 10.02, 10.42],
+                        backgroundColor: 'rgba(184, 134, 11, 0.8)',
+                        borderColor: '#B8860B',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        order: 2
+                    },
+                    {
+                        label: 'EBITDA ($M)',
+                        data: [1.23, 1.45, 1.63, 1.70, 1.77],
+                        backgroundColor: 'rgba(72, 187, 120, 0.8)',
+                        borderColor: '#48bb78',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        order: 2
+                    },
+                    {
+                        label: 'Free Cash Flow ($M)',
+                        data: [0.59, 0.57, 0.80, 0.88, 0.96],
+                        type: 'line',
+                        borderColor: '#4299e1',
+                        backgroundColor: 'rgba(66, 153, 225, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#4299e1',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0aec0'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0aec0',
+                            callback: function(value) {
+                                return '$' + value + 'M';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#a0aec0',
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': $' + context.parsed.y.toFixed(2) + 'M';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

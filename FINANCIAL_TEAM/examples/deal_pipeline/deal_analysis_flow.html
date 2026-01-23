@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Analysis Pipeline | Dux Vitae Capital</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #B8860B;
+            --gold-light: #DAA520;
+            --gold-glow: rgba(184, 134, 11, 0.4);
+            --dark-bg: #0a0e14;
+            --dark-card: #131920;
+            --dark-border: #1e2530;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --success: #48bb78;
+            --info: #4299e1;
+            --purple: #9f7aea;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(184, 134, 11, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(184, 134, 11, 0.05) 0%, transparent 40%);
+            animation: pulse-bg 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-2%, -2%) rotate(1deg); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--text-primary), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .target-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.2), rgba(184, 134, 11, 0.1));
+            border: 1px solid var(--gold);
+            padding: 12px 24px;
+            border-radius: 50px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .target-badge svg {
+            width: 20px;
+            height: 20px;
+            color: var(--gold);
+        }
+
+        /* Main diagram container */
+        .diagram-section {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diagram-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Mermaid container */
+        .mermaid-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 600px;
+        }
+
+        .mermaid {
+            min-width: 100%;
+        }
+
+        /* Phase cards grid */
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 1200px) {
+            .phase-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .phase-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .phase-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .phase-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(184, 134, 11, 0.1);
+        }
+
+        .phase-number {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--gold);
+            color: var(--dark-bg);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .phase-agent {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+
+        .phase-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .phase-inputs, .phase-outputs {
+            margin-bottom: 12px;
+        }
+
+        .phase-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .phase-list {
+            list-style: none;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .phase-list li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .phase-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        .phase-output-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--success);
+            background: rgba(72, 187, 120, 0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        /* Flywheel section */
+        .flywheel-section {
+            background: linear-gradient(135deg, var(--dark-card), rgba(184, 134, 11, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .flywheel-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--gold);
+        }
+
+        .flywheel-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .flywheel-node {
+            background: var(--dark-card);
+            border: 2px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 20px 30px;
+            text-align: center;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .flywheel-node:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .flywheel-node.vitae {
+            border-color: var(--gold);
+        }
+
+        .flywheel-node.machina {
+            border-color: var(--info);
+        }
+
+        .flywheel-node.target {
+            border-color: var(--success);
+        }
+
+        .flywheel-node-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .flywheel-node-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .flywheel-arrow {
+            font-size: 24px;
+            color: var(--gold);
+            animation: arrow-pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes arrow-pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(5px); }
+        }
+
+        .flywheel-description {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--dark-border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer-logo {
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--dark-border);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: var(--dark-bg);
+            border-color: var(--gold);
+        }
+
+        /* Arrows connector animation */
+        .data-flow-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .data-flow-indicator .arrow {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            position: relative;
+        }
+
+        .data-flow-indicator .arrow::after {
+            content: '▶';
+            position: absolute;
+            right: -8px;
+            top: -7px;
+            color: var(--gold);
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">Dux Vitae Capital</div>
+            <h1 class="title">Deal Analysis Pipeline</h1>
+            <p class="subtitle">Multi-Agent Coordination Flow for PE Acquisition Analysis</p>
+            <div class="target-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span><strong>Target:</strong> Precision MetalWorks LLC | Toledo, Ohio | $7.84M Revenue</span>
+            </div>
+        </header>
+
+        <!-- Main Flow Diagram -->
+        <section class="diagram-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    5-Phase Agent Coordination Flow
+                </h2>
+                <div class="controls">
+                    <button class="btn" onclick="zoomIn()">Zoom +</button>
+                    <button class="btn" onclick="zoomOut()">Zoom -</button>
+                    <button class="btn" onclick="resetZoom()">Reset</button>
+                </div>
+            </div>
+
+            <div class="mermaid-container" id="diagram-container">
+                <pre class="mermaid" id="main-diagram">
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'primaryColor': '#B8860B',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#DAA520',
+    'lineColor': '#DAA520',
+    'secondaryColor': '#131920',
+    'tertiaryColor': '#1e2530',
+    'background': '#0a0e14',
+    'mainBkg': '#131920',
+    'nodeBorder': '#B8860B',
+    'clusterBkg': '#131920',
+    'clusterBorder': '#B8860B',
+    'titleColor': '#B8860B',
+    'edgeLabelBackground': '#131920'
+  },
+  'flowchart': {
+    'curve': 'basis',
+    'nodeSpacing': 60,
+    'rankSpacing': 80,
+    'useMaxWidth': true
+  }
+}}%%
+
+flowchart TB
+    subgraph INPUT["📥 INPUT"]
+        direction TB
+        TARGET["🏭 Target Company<br/>Precision MetalWorks LLC<br/>$7.84M Revenue | 34 Employees"]
+        CIM["📄 CIM/Financials<br/>3-Year P&L, Balance Sheet<br/>Customer List, Asset Schedule"]
+    end
+
+    subgraph PHASE1["⚡ PHASE 1: BUY BOX SCREENING"]
+        direction TB
+        DA1["🤖 deal-analyst"]
+        BB["📋 Buy Box Criteria<br/>Revenue: $4M-$12M ✅<br/>EBITDA Margin: ≥12% ✅<br/>Customer Concentration ⚠️<br/>Asset-Heavy: Yes ✅<br/>Repeat Purchase: 87% ✅<br/>Infrastructure Adjacent ✅<br/>Real Assets: $1.23M ✅"]
+        FLAGS["🚩 Flags Identified<br/>• Top customer 23% (no contract)<br/>• Owner manages key relationships<br/>• Key man risk: Shop Foreman<br/>• Facility leased (4yr remaining)"]
+    end
+
+    subgraph PHASE2["💰 PHASE 2: VALUATION"]
+        direction TB
+        VA["🤖 valuation-agent"]
+        METHODS["📊 3 Valuation Methods<br/>━━━━━━━━━━━━━━━━<br/>EBITDA Multiple: 3.0-4.5x<br/>→ $3.4M - $5.1M<br/>━━━━━━━━━━━━━━━━<br/>DCF (25% discount)<br/>→ $3.9M<br/>━━━━━━━━━━━━━━━━<br/>Asset-Based NAV<br/>→ $2.1M (floor)"]
+        VALOUT["✅ Fair Value Range<br/>$3.2M - $4.0M<br/>Seller Ask: $4.2M<br/>Recommendation: Negotiate"]
+    end
+
+    subgraph PHASE3["🔧 PHASE 3: DEAL STRUCTURE"]
+        direction TB
+        DA2["🤖 deal-analyst"]
+        STACK["💵 Financing Stack<br/>━━━━━━━━━━━━━━━━<br/>Senior Debt (SBA 7a): 63%<br/>$2.4M @ Prime+2.75%<br/>━━━━━━━━━━━━━━━━<br/>Seller Note: 26%<br/>$1.0M @ 6%, 5yr<br/>━━━━━━━━━━━━━━━━<br/>Earnout: 8%<br/>$300K customer retention<br/>━━━━━━━━━━━━━━━━<br/>Buyer Equity: 3%<br/>$100K cash"]
+        TERMS["📝 Key Terms<br/>• 18mo transition @ $150K/yr<br/>• $200K escrow holdback<br/>• 5yr non-compete, 150mi<br/>• $50K retention pool"]
+    end
+
+    subgraph PHASE4["🚀 PHASE 4: POST-ACQUISITION OPS"]
+        direction TB
+        CTO["🤖 cto"]
+        ROADMAP["📅 100-Day Roadmap<br/>━━━━━━━━━━━━━━━━<br/>Days 1-30: Stabilize<br/>Customer transitions<br/>Key employee retention<br/>━━━━━━━━━━━━━━━━<br/>Days 31-60: Quick Wins<br/>Quoting automation<br/>AR optimization<br/>━━━━━━━━━━━━━━━━<br/>Days 61-100: Growth<br/>Sales pipeline CRM<br/>2nd shift pilot"]
+        MACHINA["⚡ Dux Machina Value-Add<br/>Annual EBITDA Impact:<br/>$330K - $520K (+29-46%)<br/>Implementation: ~$75-100K<br/>Ongoing: ~$5K/month"]
+    end
+
+    subgraph PHASE5["📊 PHASE 5: INVESTMENT MEMO"]
+        direction TB
+        CFO["🤖 cfo-agent"]
+        THESIS["🎯 Investment Thesis<br/>• Asset-backed downside ($2.7M)<br/>• Durable cash flows (87% repeat)<br/>• Clear operational upside<br/>• Favorable structure alignment<br/>• Flywheel activation"]
+        RETURNS["💎 Projected Returns<br/>━━━━━━━━━━━━━━━━<br/>Y5 EBITDA: $1.77M<br/>Exit EV (4.0x): $7.08M<br/>Total Return: $9.69M<br/>━━━━━━━━━━━━━━━━<br/>MOIC: 96.9x<br/>IRR: >200%"]
+    end
+
+    subgraph OUTPUT["✅ OUTPUT"]
+        direction TB
+        DECISION["🟢 GO - PROCEED TO LOI<br/>Purchase Price: $3.8M<br/>Multiple: 3.3x Adj. EBITDA<br/>Equity Required: $100K"]
+        NEXT["📋 Next Steps<br/>1. Issue LOI<br/>2. Negotiate terms<br/>3. SBA pre-qualification<br/>4. Customer diligence<br/>5. Facility inspection"]
+    end
+
+    %% Main Flow Connections
+    TARGET --> DA1
+    CIM --> DA1
+    DA1 --> BB
+    BB --> FLAGS
+
+    FLAGS -->|"PASS 6/7<br/>+ 4 flags"| VA
+    VA --> METHODS
+    METHODS --> VALOUT
+
+    VALOUT -->|"$3.2M-$4.0M<br/>fair value"| DA2
+    DA2 --> STACK
+    STACK --> TERMS
+
+    TERMS -->|"$3.8M @ 3.3x<br/>$100K equity"| CTO
+    CTO --> ROADMAP
+    ROADMAP --> MACHINA
+
+    MACHINA -->|"+$330-520K<br/>EBITDA/yr"| CFO
+    CFO --> THESIS
+    THESIS --> RETURNS
+
+    RETURNS -->|"96.9x MOIC<br/>>200% IRR"| DECISION
+    DECISION --> NEXT
+
+    %% Styling
+    classDef input fill:#1a365d,stroke:#4299e1,stroke-width:2px,color:#fff
+    classDef phase1 fill:#744210,stroke:#B8860B,stroke-width:2px,color:#fff
+    classDef phase2 fill:#22543d,stroke:#48bb78,stroke-width:2px,color:#fff
+    classDef phase3 fill:#553c9a,stroke:#9f7aea,stroke-width:2px,color:#fff
+    classDef phase4 fill:#1a365d,stroke:#4299e1,stroke-width:2px,color:#fff
+    classDef phase5 fill:#744210,stroke:#DAA520,stroke-width:2px,color:#fff
+    classDef output fill:#22543d,stroke:#48bb78,stroke-width:3px,color:#fff
+    classDef agent fill:#B8860B,stroke:#DAA520,stroke-width:2px,color:#0a0e14
+
+    class TARGET,CIM input
+    class DA1,BB,FLAGS phase1
+    class VA,METHODS,VALOUT phase2
+    class DA2,STACK,TERMS phase3
+    class CTO,ROADMAP,MACHINA phase4
+    class CFO,THESIS,RETURNS phase5
+    class DECISION,NEXT output
+    class DA1,VA,DA2,CTO,CFO agent
+                </pre>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #B8860B;"></div>
+                    <span>Agent Node</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #744210;"></div>
+                    <span>Analysis Phase</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #22543d;"></div>
+                    <span>Valuation / Output</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #553c9a;"></div>
+                    <span>Deal Structure</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #1a365d;"></div>
+                    <span>Operations</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase Details Cards -->
+        <section>
+            <h2 class="section-title" style="margin-bottom: 30px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 28px; height: 28px;">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+                Phase Details & Data Flow
+            </h2>
+
+            <div class="phase-grid">
+                <!-- Phase 1 -->
+                <div class="phase-card">
+                    <div class="phase-number">1</div>
+                    <div class="phase-agent">deal-analyst</div>
+                    <div class="phase-title">Buy Box Screening</div>
+                    <div class="phase-inputs">
+                        <div class="phase-label">Inputs</div>
+                        <ul class="phase-list">
+                            <li>CIM / Financial Package</li>
+                            <li>Target Company Profile</li>
+                            <li>Buy Box Criteria (7 items)</li>
+                        </ul>
+                    </div>
+                    <div class="phase-outputs">
+                        <div class="phase-label">Outputs</div>
+                        <ul class="phase-list">
+                            <li>Pass/Fail on each criterion</li>
+                            <li>Flagged risks for diligence</li>
+                            <li>Initial positives list</li>
+                        </ul>
+                    </div>
+                    <div class="phase-output-value">PASS 6/7 + 4 Flags</div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="phase-card">
+                    <div class="phase-number">2</div>
+                    <div class="phase-agent">valuation-agent</div>
+                    <div class="phase-title">Valuation Analysis</div>
+                    <div class="phase-inputs">
+                        <div class="phase-label">Inputs</div>
+                        <ul class="phase-list">
+                            <li>3-Year Financials</li>
+                            <li>EBITDA Add-backs</li>
+                            <li>Comparable Multiples</li>
+                        </ul>
+                    </div>
+                    <div class="phase-outputs">
+                        <div class="phase-label">Outputs</div>
+                        <ul class="phase-list">
+                            <li>EBITDA Multiple Range</li>
+                            <li>DCF Valuation</li>
+                            <li>Asset-Based Floor</li>
+                        </ul>
+                    </div>
+                    <div class="phase-output-value">$3.2M - $4.0M Fair Value</div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="phase-card">
+                    <div class="phase-number">3</div>
+                    <div class="phase-agent">deal-analyst</div>
+                    <div class="phase-title">Deal Structure</div>
+                    <div class="phase-inputs">
+                        <div class="phase-label">Inputs</div>
+                        <ul class="phase-list">
+                            <li>Valuation Range</li>
+                            <li>Seller Motivations</li>
+                            <li>Financing Options</li>
+                        </ul>
+                    </div>
+                    <div class="phase-outputs">
+                        <div class="phase-label">Outputs</div>
+                        <ul class="phase-list">
+                            <li>Financing Stack Design</li>
+                            <li>Key Deal Terms</li>
+                            <li>Debt Service Model</li>
+                        </ul>
+                    </div>
+                    <div class="phase-output-value">$3.8M @ 3.3x, $100K Equity</div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="phase-card">
+                    <div class="phase-number">4</div>
+                    <div class="phase-agent">cto</div>
+                    <div class="phase-title">Post-Acquisition Ops</div>
+                    <div class="phase-inputs">
+                        <div class="phase-label">Inputs</div>
+                        <ul class="phase-list">
+                            <li>Operational Friction Points</li>
+                            <li>Technology Stack</li>
+                            <li>Workforce Analysis</li>
+                        </ul>
+                    </div>
+                    <div class="phase-outputs">
+                        <div class="phase-label">Outputs</div>
+                        <ul class="phase-list">
+                            <li>100-Day Roadmap</li>
+                            <li>Machina Implementation Plan</li>
+                            <li>EBITDA Improvement Est.</li>
+                        </ul>
+                    </div>
+                    <div class="phase-output-value">+$330-520K EBITDA/yr</div>
+                </div>
+
+                <!-- Phase 5 -->
+                <div class="phase-card">
+                    <div class="phase-number">5</div>
+                    <div class="phase-agent">cfo-agent</div>
+                    <div class="phase-title">Investment Memo</div>
+                    <div class="phase-inputs">
+                        <div class="phase-label">Inputs</div>
+                        <ul class="phase-list">
+                            <li>All Phase Outputs</li>
+                            <li>Risk Assessments</li>
+                            <li>Return Projections</li>
+                        </ul>
+                    </div>
+                    <div class="phase-outputs">
+                        <div class="phase-label">Outputs</div>
+                        <ul class="phase-list">
+                            <li>Investment Thesis</li>
+                            <li>GO/NO-GO Decision</li>
+                            <li>Next Steps Action Plan</li>
+                        </ul>
+                    </div>
+                    <div class="phase-output-value">GO: 96.9x MOIC, >200% IRR</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flywheel Section -->
+        <section class="flywheel-section">
+            <h2 class="flywheel-title">The Dux Ecosystem Flywheel</h2>
+
+            <div class="flywheel-diagram">
+                <div class="flywheel-node vitae">
+                    <div class="flywheel-node-title" style="color: var(--gold);">Dux Vitae Capital</div>
+                    <div class="flywheel-node-subtitle">Acquires Asset-Heavy Business</div>
+                </div>
+
+                <div class="flywheel-arrow">→</div>
+
+                <div class="flywheel-node target">
+                    <div class="flywheel-node-title" style="color: var(--success);">Precision MetalWorks</div>
+                    <div class="flywheel-node-subtitle">Portfolio Company</div>
+                </div>
+
+                <div class="flywheel-arrow">→</div>
+
+                <div class="flywheel-node machina">
+                    <div class="flywheel-node-title" style="color: var(--info);">Dux Machina</div>
+                    <div class="flywheel-node-subtitle">Implements AI Systems</div>
+                </div>
+
+                <div class="flywheel-arrow">→</div>
+
+                <div class="flywheel-node">
+                    <div class="flywheel-node-title">Operational Improvement</div>
+                    <div class="flywheel-node-subtitle">+$330-520K EBITDA/yr</div>
+                </div>
+            </div>
+
+            <p class="flywheel-description">
+                <strong>One builds systems. The other owns outcomes.</strong><br><br>
+                Dux Vitae Capital acquires cash-flowing, asset-heavy businesses.
+                Dux Machina then implements AI automation and operational systems,
+                generating both consulting revenue AND increased portfolio company value.
+                The flywheel compounds both cash flow streams while building permanent ownership.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">DUX VITAE CAPITAL</div>
+            <p>Deal Analysis Pipeline | Precision MetalWorks LLC | January 6, 2026</p>
+            <p style="margin-top: 8px; font-size: 12px;">
+                Agents Used: deal-analyst (x2) | valuation-agent | cto | cfo-agent
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Mermaid with dark theme
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                nodeSpacing: 60,
+                rankSpacing: 80
+            },
+            themeVariables: {
+                primaryColor: '#B8860B',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#DAA520',
+                lineColor: '#DAA520',
+                secondaryColor: '#131920',
+                tertiaryColor: '#1e2530',
+                background: '#0a0e14'
+            }
+        });
+
+        // Zoom controls
+        let currentZoom = 1;
+        const container = document.getElementById('diagram-container');
+
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + 0.2, 2);
+            applyZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - 0.2, 0.5);
+            applyZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const diagram = document.getElementById('main-diagram');
+            if (diagram) {
+                diagram.style.transform = `scale(${currentZoom})`;
+                diagram.style.transformOrigin = 'center top';
+            }
+        }
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

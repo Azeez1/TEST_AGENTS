@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added - LLAR Governance Framework (2025-12-14)
 
-**LLAR (Layered Language Agent Reasoning) 1-12** - Meta-governance framework for the 59-agent multi-team system.
+**LLAR (Layered Language Agent Reasoning) 1-12** - Meta-governance framework for the 58-agent multi-team system.
 
 #### New Files Created
 

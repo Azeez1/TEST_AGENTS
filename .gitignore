@@ -112,3 +112,11 @@ temp_upload.txt
 # Temp folders with client work
 **/temp_*/
 temp_*
+
+# Claude Code session temp files
+tmpclaude-*
+tmpclaude-*-cwd
+
+# Test artifacts
+test.txt
+_ul

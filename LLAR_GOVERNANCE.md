@@ -8,7 +8,7 @@
 
 ## Overview
 
-LLAR (Layered Language Agent Reasoning) is a meta-governance framework that provides structured decision-making for the 59-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
+LLAR (Layered Language Agent Reasoning) is a meta-governance framework that provides structured decision-making for the 58-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
 
 **Key Principles:**
 - Orchestrators govern teams (specialists stay lean)
@@ -426,7 +426,7 @@ Specialists do NOT implement LLAR directly:
 - [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Before creating tools
 - [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) - Agent rules
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 59 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 58 agents
 
 ---
 

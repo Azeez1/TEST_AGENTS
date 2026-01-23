@@ -470,7 +470,7 @@ Best regards
 ## See Also
 
 - **[claude.md](claude.md)** - Repository navigation guide
-- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 59 agents
+- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 58 agents
 - **Agent Definitions:** `.claude/agents/*.md` files in each system folder
 
 ---

@@ -1,7 +1,7 @@
 """
 Workspace enforcement validation tests
 
-Tests that all 59 agents across 7 teams operate in correct workspaces
+Tests that all 58 agents across 6 teams operate in correct workspaces
 """
 
 import pytest
@@ -20,14 +20,14 @@ from tools.path_validator import validate_save_path, validate_read_path, get_tea
 class TestWorkspaceEnforcement:
 
     def test_marketing_agents_workspace(self):
-        """Test all 17 MARKETING_TEAM agents have correct workspace"""
+        """Test all 18 MARKETING_TEAM agents have correct workspace"""
         agents = [
             "router-agent", "content-strategist", "research-agent",
             "lead-gen-agent", "automation-agent", "copywriter", "editor",
             "social-media-manager", "visual-designer", "video-producer",
             "seo-specialist", "email-specialist", "gmail-agent",
             "landing-page-specialist", "pdf-specialist",
-            "presentation-designer", "analyst"
+            "presentation-designer", "analyst", "newsletter-agent"
         ]
 
         for agent in agents:
@@ -48,13 +48,13 @@ class TestWorkspaceEnforcement:
             assert "QA_TEAM" in status["workspace_path"]
 
     def test_engineering_agents_workspace(self):
-        """Test all 14 ENGINEERING_TEAM agents have correct workspace"""
+        """Test all 15 ENGINEERING_TEAM agents have correct workspace"""
         agents = [
             "cto", "devops-engineer", "frontend-developer",
             "backend-architect", "security-auditor", "technical-writer",
             "system-architect", "ai-engineer", "ui-ux-designer",
             "code-reviewer", "test-engineer", "prompt-engineer",
-            "database-architect", "debugger"
+            "database-architect", "debugger", "analytics-dashboard-agent"
         ]
 
         for agent in agents:
@@ -112,7 +112,7 @@ class TestAgentDefinitions:
         agents_dir = repo_root / "MARKETING_TEAM" / ".claude" / "agents"
         agent_files = [f for f in agents_dir.iterdir() if f.suffix == ".md"]
 
-        assert len(agent_files) == 17, f"Expected 17 MARKETING_TEAM agents, found {len(agent_files)}"
+        assert len(agent_files) == 18, f"Expected 18 MARKETING_TEAM agents, found {len(agent_files)}"
 
         for agent_file in agent_files:
             with open(agent_file, encoding='utf-8') as f:
@@ -139,7 +139,7 @@ class TestAgentDefinitions:
         agents_dir = repo_root / "ENGINEERING_TEAM" / ".claude" / "agents"
         agent_files = [f for f in agents_dir.iterdir() if f.suffix == ".md"]
 
-        assert len(agent_files) == 14, f"Expected 14 ENGINEERING_TEAM agents, found {len(agent_files)}"
+        assert len(agent_files) == 15, f"Expected 15 ENGINEERING_TEAM agents, found {len(agent_files)}"
 
         for agent_file in agent_files:
             with open(agent_file, encoding='utf-8') as f:

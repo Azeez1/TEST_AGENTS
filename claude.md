@@ -555,10 +555,21 @@ pip install workspace-mcp                # Google Workspace
 **Files:**
 - `mcp_lessons_learned.json` - MCP tool quirks, limitations, and workarounds
 
-**Key Learnings (READ FIRST when using MCP tools):**
-- **Google Sheets truncation**: MCP truncates results to ~50 rows. Use browser Ctrl+F to find row numbers first, then read specific rows via MCP.
-- **No native search**: Google Workspace MCP can only READ ranges, not search. Browser search is faster for finding specific values.
-- **Sheet tab naming**: Include sheet name in range for multi-tab spreadsheets: `'SheetName!A1:Z100'`
+**CRITICAL: On ANY MCP Error, READ `.claude/memory/mcp_lessons_learned.json` FIRST!**
+
+This file contains proven fixes for common MCP issues. Before debugging or asking the user, check if a solution already exists.
+
+**Quick Reference (full details in mcp_lessons_learned.json):**
+
+| Error | Issue ID | Quick Fix |
+|-------|----------|-----------|
+| **MCP tools missing from available list** | `google-mcp-not-connected-005` | **STOP. DO NOT SCRIPT.** Delete creds → kill port 8000 → RESTART Claude Code (2 min) |
+| `invalid_scope` / `Error 400` / truncated scope | `google-oauth-scope-truncation-004` | Delete `~/.google_workspace_mcp/credentials/EMAIL.json`, kill port 8000, retry |
+| Results show "... and X more rows" | `gsheet-truncation-001` | Use browser Ctrl+F first, then read specific rows |
+| Can't search/filter in Sheets | `gsheet-no-search-002` | MCP can only READ, use browser for search |
+| Wrong sheet tab data returned | `gsheet-sheetname-003` | Include sheet name: `'SheetName!A1:Z100'` |
+
+**⚠️ CRITICAL GOVERNANCE:** If google-workspace MCP tools are NOT in available tools list, **DO NOT** attempt Python scripts or manual OAuth workarounds. This wastes 1+ hour. Follow `google-mcp-not-connected-005` - a simple 2-minute fix.
 
 ---
 
