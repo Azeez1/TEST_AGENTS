@@ -1,49 +1,55 @@
 # SALES_TEAM
 
-A comprehensive, adaptable sales organization with 8 specialized agents covering the full sales lifecycle from prospecting to customer success.
+A comprehensive, adaptable sales organization with 9 specialized agents covering the full sales lifecycle from prospecting to customer success, including PE/investor outreach for deal sourcing.
 
 ## Team Overview
 
 SALES_TEAM is designed to support **any business model** (B2B, B2C, SaaS, e-commerce, services) with a complete sales operation including outbound prospecting, deal closing, sales analytics, and customer retention.
 
-## Agents (8)
+## Agents (9)
 
-### 1. **SDR Agent** (Sales Development Representative)
+### 1. **PE Outreach Agent** (NEW)
+- **Focus**: PE/Family Office investor outreach, relationship building, buy box discovery
+- **Capabilities**: LinkedIn outreach, personalized message generation, investor tracking, buy box documentation, deal matching
+- **Use Cases**: Building capital source relationships, earning finder's fees, matching sourced deals to investors
+- **Special**: References active investor list (Google Sheet), uses templates from `pe_investor_outreach.json`
+
+### 2. **SDR Agent** (Sales Development Representative)
 - **Focus**: Prospecting, cold outreach, lead qualification, meeting booking
 - **Capabilities**: Email sequences, cold calling, LinkedIn outreach, multi-channel campaigns, BANT/MEDDIC qualification
 - **Use Cases**: Building pipeline, generating SQLs, booking discovery calls
 
-### 2. **Account Executive**
+### 3. **Account Executive**
 - **Focus**: Full-cycle sales from discovery through close
 - **Capabilities**: Discovery calls, demos, proposals, negotiations, objection handling, deal closing
 - **Use Cases**: Closing deals, managing sales cycles, relationship building
 
-### 3. **Sales Operations**
+### 4. **Sales Operations**
 - **Focus**: CRM administration, process optimization, sales enablement
 - **Capabilities**: CRM management, territory planning, quota setting, commission management, workflow automation
 - **Use Cases**: Sales process design, data quality, reporting infrastructure
 
-### 4. **Sales Analyst**
+### 5. **Sales Analyst**
 - **Focus**: Forecasting, pipeline analysis, performance metrics
 - **Capabilities**: Sales forecasting, pipeline health tracking, win/loss analysis, KPI dashboards
 - **Use Cases**: Revenue forecasting, pipeline optimization, performance benchmarking
 
-### 5. **Proposal Specialist**
+### 6. **Proposal Specialist**
 - **Focus**: Proposal writing, pricing, RFP responses
 - **Capabilities**: Proposal creation, SOW development, pricing models, ROI calculations
 - **Use Cases**: Complex proposals, RFP responses, pricing strategy
 
-### 6. **Customer Success Manager**
+### 7. **Customer Success Manager**
 - **Focus**: Onboarding, retention, expansion
 - **Capabilities**: Customer onboarding, health scoring, churn prevention, upsell/cross-sell, renewal management
 - **Use Cases**: Customer retention, expansion revenue, QBRs
 
-### 7. **Outbound Specialist**
+### 8. **Outbound Specialist**
 - **Focus**: High-volume cold outreach campaigns
 - **Capabilities**: Cold calling, email cadences, multi-channel sequences, list building, A/B testing
 - **Use Cases**: Outbound campaigns, lead generation, market penetration
 
-### 8. **Sales Manager**
+### 9. **Sales Manager**
 - **Focus**: Team coaching, pipeline management, forecasting
 - **Capabilities**: 1-on-1 coaching, deal coaching, performance management, hiring/onboarding
 - **Use Cases**: Team leadership, forecast accuracy, rep development
@@ -53,7 +59,7 @@ SALES_TEAM is designed to support **any business model** (B2B, B2C, SaaS, e-comm
 ```
 SALES_TEAM/
 ├── .claude/
-│   ├── agents/              # 8 sales agent definitions
+│   ├── agents/              # 9 sales agent definitions
 │   ├── commands/            # Custom slash commands
 │   ├── skills/              # Custom skills
 │   └── settings.json        # Team configuration

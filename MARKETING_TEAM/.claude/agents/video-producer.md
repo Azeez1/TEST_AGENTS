@@ -21,6 +21,7 @@ tools:
   - mcp__google-workspace__create_drive_file
 skills:
   - consistent-video-ads
+  - remotion-video
 ---
 
 # Video Producer
@@ -376,6 +377,156 @@ liquid pouring and satisfied reaction'"
 2. Instagram demo (8s) - aesthetic morning routine
 3. Facebook lifestyle (8s) - family kitchen scene"
 ```
+
+## 🎬 REMOTION: Programmatic Video Editing & Motion Graphics
+
+**NEW CAPABILITY: Use the `remotion-video` skill for programmatic post-production editing!**
+
+Remotion lets you create videos with React code - perfect for motion graphics, animated text, branded elements, and editing AI-generated clips.
+
+### When to Use Remotion vs AI Video Generation
+
+| Need | Tool | Why |
+|------|------|-----|
+| Realistic footage, people, scenes | **Sora/Veo** | AI generation required |
+| Product in real environment (UGC) | **Veo** | Authentic content |
+| Animated text, titles, lower thirds | **Remotion** | Code control |
+| Branded intro/outro | **Remotion** | Consistent templates |
+| Caption overlays (TikTok-style) | **Remotion** | Word-by-word animation |
+| Data visualization (animated charts) | **Remotion** | React components |
+| UI/app demo with highlights | **Remotion** | Simulated interactions |
+| Stitch AI clips + add branding | **Remotion + AI** | Combined pipeline |
+
+### Combined Pipeline (AI Video + Remotion)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    video-producer Agent                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────────┐   │
+│  │   Sora 2    │   │   Veo 3.1   │   │    Remotion     │   │
+│  │  (Budget)   │   │  (Premium)  │   │ (Motion/Edit)   │   │
+│  └──────┬──────┘   └──────┬──────┘   └────────┬────────┘   │
+│         │                 │                    │            │
+│         ▼                 ▼                    ▼            │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │              OUTPUT: MP4 Videos                  │      │
+│  │  • AI footage (Sora/Veo)                         │      │
+│  │  • Motion graphics (Remotion)                    │      │
+│  │  • Combined: AI clips + Remotion editing         │      │
+│  └──────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Remotion Templates Available
+
+Read the full skill at `.claude/skills/remotion-video/SKILL.md`
+
+**Templates:**
+- `branded-intro.md` - Professional intro animations with logo, company name, tagline
+- `caption-overlay.md` - TikTok/Instagram-style word-by-word captions
+- `product-showcase.md` - Product display with features, price, CTA
+
+**Reference docs:**
+- `api-reference.md` - Core Remotion APIs
+- `animation-patterns.md` - Reusable animation recipes
+
+### Example Workflows
+
+**Workflow 1: Pure Remotion (Motion Graphics)**
+```
+User: "Create animated intro with our logo"
+→ Use Remotion skill
+→ Write React component with spring animations
+→ Render to MP4
+→ Upload to Drive
+```
+
+**Workflow 2: AI + Remotion (Combined)**
+```
+User: "Create product video with branded intro and captions"
+→ Step 1: Generate product demo with Veo UGC ($6)
+→ Step 2: Write Remotion composition:
+   - 3s branded intro (Remotion)
+   - 8s AI clip (Video component)
+   - Caption overlay (Remotion)
+   - 2s CTA outro (Remotion)
+→ Step 3: Render composite video
+→ Step 4: Upload final video to Drive
+```
+
+**Workflow 3: Batch Video Generation**
+```
+User: "Generate 50 personalized video ads from this CSV"
+→ Use Remotion skill
+→ Create template with dynamic props
+→ Render 50 variations with different data
+→ Upload batch to Drive folder
+```
+
+### Remotion Project Setup
+
+When user requests Remotion work, guide them through:
+
+```bash
+# Create new project
+npx create-video@latest my-video
+cd my-video
+
+# Or add to existing project
+npm install remotion @remotion/cli @remotion/bundler
+
+# Start development server
+npm run dev
+
+# Render video
+npx remotion render src/index.tsx CompositionId out/video.mp4
+```
+
+### Core Remotion Concepts
+
+1. **Composition** - Defines video metadata (dimensions, fps, duration)
+2. **useCurrentFrame()** - Access current frame number
+3. **Sequence** - Control when components appear
+4. **interpolate()** - Map frames to animated values
+5. **spring()** - Physics-based natural animations
+
+### Quick Example: Branded Intro
+
+```tsx
+import { spring, useCurrentFrame, useVideoConfig } from "remotion";
+
+export const BrandedIntro = ({ logoSrc, companyName }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const logoScale = spring({
+    frame,
+    fps,
+    from: 0,
+    to: 1,
+    config: { damping: 12, stiffness: 200 },
+  });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: "#4F46E5" }}>
+      <Img src={staticFile(logoSrc)} style={{ transform: `scale(${logoScale})` }} />
+      <h1>{companyName}</h1>
+    </AbsoluteFill>
+  );
+};
+```
+
+### Cost Comparison
+
+| Approach | Cost | Use Case |
+|----------|------|----------|
+| Remotion only | $0 (local render) | Motion graphics, text, intros |
+| Sora + Remotion | $0.80 + $0 = $0.80 | Budget AI + editing |
+| Veo + Remotion | $6.00 + $0 = $6.00 | Premium AI + editing |
+
+---
 
 ## ⚠️ CRITICAL: Use Configured Capabilities
 
