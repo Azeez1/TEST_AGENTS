@@ -17,7 +17,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 
 **⚡ Key Facts:**
 - 58 autonomous agents across 6 systems
-- 22 powerful skills (visual, development, documents, integration, n8n automation, video)
+- 23 powerful skills (visual, development, documents, integration, n8n automation, video, research)
 - 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
 - Memory system with automatic configuration loading
 - No Python orchestrators - pure Claude Code conversation
@@ -70,6 +70,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 - ✅ "Use gmail-agent with Google Workspace MCP to send emails"
 - ✅ "Use the visual-designer agent with GPT-4o image generation"
 - ✅ "Use existing tools in tools/ for simple API wrappers"
+- ✅ "Use `/last30days AI automation trends` for real-time social research"
 
 **How to Check What Exists:**
 1. Check `.claude/agents/` for available agents
@@ -450,17 +451,42 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 🎨 Skills & Advanced Capabilities
 
-All **18 MARKETING_TEAM agents** have access to **22 powerful skills** and **7 MCP servers** for visual creation, development, document processing, video production, and external integrations. ENGINEERING_TEAM frontend agents also have access to the frontend-design skill.
+All **18 MARKETING_TEAM agents** have access to **23 powerful skills** and **7 MCP servers** for visual creation, development, document processing, video production, research, and external integrations. ENGINEERING_TEAM frontend agents also have access to the frontend-design skill.
 
 **Quick Reference:**
 
-**22 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram, infographic-creator (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines (content) • document-skills (pptx, pdf, xlsx, docx) • n8n-code-javascript, n8n-code-python, n8n-expression-syntax, n8n-mcp-tools-expert, n8n-node-configuration, n8n-validation-expert, n8n-workflow-patterns (n8n automation) • frontend-design (frontend) • remotion-video (video production)
+**23 Skills:** algorithmic-art, canvas-design, slack-gif-creator, theme-factory, flow-diagram, infographic-creator (visual) • artifacts-builder, mcp-builder, skill-creator (development) • internal-comms, brand-guidelines (content) • document-skills (pptx, pdf, xlsx, docx) • n8n-code-javascript, n8n-code-python, n8n-expression-syntax, n8n-mcp-tools-expert, n8n-node-configuration, n8n-validation-expert, n8n-workflow-patterns (n8n automation) • frontend-design (frontend) • remotion-video (video production) • **last30days** (real-time Reddit + X trend research)
 
 **7 MCP Servers:** marketing-tools (GPT-4o images, Sora videos) • google-workspace (Gmail, Drive, Docs, Sheets) • perplexity (web research with citations) • bright-data (web scraping, leads) • playwright (browser automation) • n8n-mcp (workflow automation) • sequential-thinking (structured reasoning)
 
 📖 **Complete Skills & MCP Documentation:**
 - **[skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - 50+ usage examples, agent-skill mapping, complete reference
 - **[SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Cheat sheets and quick lookups
+
+### 🔍 last30days Skill (Real-Time Social Research)
+
+**What it does:** Researches trending topics across Reddit and X from the past 30 days, synthesizes community discussions, and generates actionable insights with engagement metrics.
+
+**Usage:**
+```bash
+/last30days AI automation trends                    # Basic research
+/last30days prompt engineering for Claude           # Tool-specific research
+/last30days --sources=both private equity deals    # Force both Reddit + X
+/last30days --quick startup marketing              # Faster, fewer sources
+/last30days --deep enterprise AI                   # Comprehensive research
+```
+
+**Best Use Cases:**
+- **Research agents**: Market trends, competitive intelligence, community sentiment
+- **Content strategists**: What topics are resonating NOW
+- **Sales agents**: Current buyer pain points and techniques
+- **Engineering agents**: Latest best practices and tool recommendations
+
+**Configuration:** API keys stored in `~/.config/last30days/.env`
+- `OPENAI_API_KEY` - For Reddit research via OpenAI Responses API
+- `XAI_API_KEY` - For X/Twitter research via xAI API (optional - works without)
+
+**Output:** Results saved to `~/.local/share/last30days/out/` (report.json, report.md, context files)
 
 ---
 
@@ -696,9 +722,11 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ## 📝 Recent Updates
 
-**Last Updated:** 2025-11-25
+**Last Updated:** 2026-02-04
 
 **Latest Major Changes:**
+- ✨ **last30days skill** - Real-time trend research from Reddit + X (past 30 days) with engagement metrics
+- ✨ **23 skills total** - Added last30days for social research (requires OpenAI + xAI keys)
 - ✨ **59 agents total** - Updated agent counts across all 6 teams
 - ✨ **FINANCIAL_TEAM** (10 agents) - PE/M&A + General Finance (deal-analyst, valuation, FP&A, CFO, accounting, tax)
 - ✨ **SALES_TEAM** (9 agents) - Full sales lifecycle (SDR, AE, sales-ops, proposals, CSM, analytics, PE investor outreach)

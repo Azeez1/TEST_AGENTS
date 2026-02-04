@@ -31,6 +31,7 @@ tools:
   - mcp__google-workspace__create_doc
 skills:
   - filesystem
+  - last30days
 ---
 
 # Research Agent

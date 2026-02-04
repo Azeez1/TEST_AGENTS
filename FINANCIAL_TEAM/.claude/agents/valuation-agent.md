@@ -20,6 +20,7 @@ tools:
 skills:
   - filesystem
   - xlsx
+  - last30days
 ---
 
 # Valuation Agent

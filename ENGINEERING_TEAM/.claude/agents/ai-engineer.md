@@ -9,6 +9,8 @@ tools:
   - workspace_enforcer
   - path_validator
 model: claude-opus-4-20250514
+skills:
+  - last30days
 ---
 
 ## 🏢 WORKSPACE CONTEXT & VALIDATION

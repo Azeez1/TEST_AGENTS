@@ -19,6 +19,7 @@ skills:
   - algorithmic-art
   - slack-gif-creator
   - canvas-design
+  - last30days
 ---
 
 # Social Media Manager

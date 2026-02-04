@@ -22,6 +22,7 @@ tools:
 skills:
   - filesystem
   - xlsx
+  - last30days
 ---
 
 # Account Executive

@@ -16,6 +16,7 @@ tools:
   - mcp__sequential-thinking__sequentialthinking
 skills:
   - context7
+  - last30days
 ---
 
 # Content Strategist

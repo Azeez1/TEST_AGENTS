@@ -23,6 +23,7 @@ tools:
 skills:
   - filesystem
   - xlsx
+  - last30days
 ---
 
 # SDR Agent (Sales Development Representative)

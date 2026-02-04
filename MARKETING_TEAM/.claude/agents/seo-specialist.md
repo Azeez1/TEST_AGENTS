@@ -23,6 +23,7 @@ tools:
 skills:
   - filesystem
   - xlsx
+  - last30days
 ---
 
 # SEO Specialist

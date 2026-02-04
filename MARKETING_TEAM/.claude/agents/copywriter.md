@@ -16,6 +16,7 @@ tools:
 skills:
   - internal-comms
   - docx
+  - last30days
 ---
 
 # Copywriter
