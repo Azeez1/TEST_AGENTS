@@ -16,7 +16,7 @@ This repository contains **6 autonomous AI agent systems** powered by the Claude
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
 **⚡ Key Facts:**
-- 58 autonomous agents across 6 systems
+- 59 autonomous agents across 6 systems
 - 23 powerful skills (visual, development, documents, integration, n8n automation, video, research)
 - 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
 - Memory system with automatic configuration loading
@@ -32,7 +32,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 
 **📚 Key Resources:**
 - [Project Structure](#-project-structure) - Repository layout
-- [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 22 skills + 7 MCP servers
+- [Skills & MCP Capabilities](#-skills--advanced-capabilities) - 23 skills + 7 MCP servers
 - [Configuration & Setup](#️-configuration--setup) - API keys, MCP servers
 - [Memory System](#-memory-system) - Automatic configuration loading
 - [Operational Memory](#root-level-operational-memory) - MCP lessons learned, workarounds
@@ -54,7 +54,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 **Priority Order:**
 1. **Use existing agents** (`.claude/agents/*.md` files) - Invoke them explicitly
-2. **Use installed skills** (`.claude/skills/*`) - 22 powerful skills available
+2. **Use installed skills** (`.claude/skills/*`) - 23 powerful skills available
 3. **Use MCP servers** - 7 external integrations (Playwright, Google Workspace, Perplexity, Bright Data, etc.)
 4. **Use existing tools** (`tools/*.py`) - Simpler utilities and API wrappers
 5. **Only if none exist** - Then create new implementations
@@ -104,7 +104,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 | **FINANCIAL_TEAM** | Talk to agents via Claude Code | [README](FINANCIAL_TEAM/README.md) |
 | **SALES_TEAM** | Talk to agents via Claude Code | [README](SALES_TEAM/README.md) |
 
-**📚 Master Guides:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) • [MCP_SETUP.md](MCP_SETUP.md) • [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
+**📚 Master Guides:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) • [MCP_SETUP.md](MCP_SETUP.md)
 
 ---
 
@@ -116,7 +116,7 @@ TEST_AGENTS/
 ├── MULTI_AGENT_GUIDE.md             ← Master guide for all 59 agents
 ├── AGENT_INVOCATION_BEST_PRACTICES.md  ← Agent invocation patterns
 ├── MEMORY_SYSTEM.md                 ← Memory/Drive/Email strategies
-├── MCP_SETUP.md, IMPLEMENTATION_SUMMARY.md
+├── MCP_SETUP.md
 │
 ├── .claude/agents/                  ← 1 root agent (supervisor)
 │
@@ -217,7 +217,6 @@ TEST_AGENTS/
 - [ENGINEERING_TEAM/README.md](ENGINEERING_TEAM/README.md) - Engineering workflows and examples
 
 ### Technical Documentation
-- [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Technical implementation overview
 - [MARKETING_TEAM/docs/architecture/system-architecture.md](MARKETING_TEAM/docs/architecture/system-architecture.md) - Marketing system architecture
 - [MARKETING_TEAM/docs/architecture/mcp-config.md](MARKETING_TEAM/docs/architecture/mcp-config.md) - MCP configuration details
 - [QA_TEAM/BUILD_SUMMARY.md](QA_TEAM/BUILD_SUMMARY.md) - Testing system build notes
@@ -387,9 +386,6 @@ The repository uses a **hybrid approach** for managing agent outputs:
 - **[TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)** - Hierarchy of authority (MCP → Skill → Custom → New)
 - **[PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)** - Mandatory workflow before creating tools/skills
 - **[AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md)** - Skill declaration rules, priority documentation
-- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow
-- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - Deprecation process
-- **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking (16 metrics)
 
 ---
 
@@ -461,7 +457,7 @@ All **18 MARKETING_TEAM agents** have access to **23 powerful skills** and **7 M
 
 📖 **Complete Skills & MCP Documentation:**
 - **[skills-and-mcp-guide.md](MARKETING_TEAM/docs/guides/skills-and-mcp-guide.md)** - 50+ usage examples, agent-skill mapping, complete reference
-- **[SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/SKILLS_QUICK_REFERENCE.md)** - Cheat sheets and quick lookups
+- **[SKILLS_QUICK_REFERENCE.md](MARKETING_TEAM/docs/guides/SKILLS_QUICK_REFERENCE.md)** - Cheat sheets and quick lookups
 
 ### 🔍 last30days Skill (Real-Time Social Research)
 
@@ -710,7 +706,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - Marketing agents cannot access QA_TEAM memory (by design - each team has isolated memory)
 - Verify: `pytest tests/test_workspace_enforcement.py -v`
 
-📖 **Complete Workspace Documentation:** [WORKSPACE_ENFORCEMENT_SUMMARY.md](WORKSPACE_ENFORCEMENT_SUMMARY.md)
+📖 **Complete Workspace Documentation:** [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md)
 - 665-line comprehensive guide
 - Implementation details, troubleshooting, test results
 - Tools: workspace_enforcer.py, path_validator.py
@@ -732,7 +728,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - ✨ **SALES_TEAM** (9 agents) - Full sales lifecycle (SDR, AE, sales-ops, proposals, CSM, analytics, PE investor outreach)
 - ✨ **newsletter-agent** - 18th Marketing agent for email newsletter campaigns
 - ✨ **analytics-dashboard-agent** - 15th Engineering agent for data visualization and dashboards
-- ✨ **22 skills** - Including 7 n8n automation skills for workflow development and remotion-video for programmatic video editing
+- ✨ **23 skills** - Including 7 n8n automation skills for workflow development and remotion-video for programmatic video editing
 - ✨ **system-architect agent** - Professional Mermaid diagrams with interactive HTML
 - ✨ **flow-diagram skill** - System architecture, flowcharts, sequence diagrams, ER diagrams
 - ✨ **CTO coordinator** - Strategic orchestration for all 14 Engineering specialists with intelligent routing

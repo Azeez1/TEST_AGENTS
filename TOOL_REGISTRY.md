@@ -1,14 +1,14 @@
 # TOOL REGISTRY - Single Source of Truth
 
-**Last Updated:** 2025-11-26
-**Total Inventory:** 20 custom tools + 7 MCP servers + 18 skills
+**Last Updated:** 2026-02-20
+**Total Inventory:** 35 custom tools + 7 MCP servers + 23 skills
 **Maintained by:** Engineering Team (security-auditor + technical-writer)
 
 ---
 
 ## 📋 Overview
 
-This registry documents ALL tools, MCP servers, and skills available to the 58 agents across 6 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
+This registry documents ALL tools, MCP servers, and skills available to the 59 agents across 6 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New Tool (last resort)
 
@@ -185,6 +185,45 @@ This registry documents ALL tools, MCP servers, and skills available to the 58 a
 
 ---
 
+## 📝 Proposal & RFP Capabilities
+
+| Capability | Custom Tool | Priority Order | Agents Using | Status |
+|------------|-------------|----------------|--------------|--------|
+| **RFP Parsing** | `rfp_parser.py` (extract sections, requirements) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **PDF Extraction** | `pdf_extractor.py` (text + structure from PDFs) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Compliance Engine** | `compliance_engine.py` (30+ frameworks) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Adaptive Proposal Writing** | `adaptive_proposal_writer.py` (7-stage pipeline) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Knowledge Base** | `pinecone_knowledge_base.py` (vector search) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Hybrid Search** | `hybrid_search.py` (semantic + keyword) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Query Expansion** | `query_expander.py` (search optimization) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Embeddings** | `embeddings_generator.py` (vector embeddings) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **Priority Frameworks** | `user_priority_frameworks.py` (scoring) | 1. Custom Tool only | rfp-agent | ✅ Active |
+| **RFP MCP Server** | `rfp_mcp_server.py` (MCP bridge) | 1. Custom Tool only | rfp-agent | ✅ Active |
+
+---
+
+## 🔧 Additional Marketing Tools (Not in Main Tables)
+
+| Capability | Custom Tool | Priority Order | Agents Using | Status |
+|------------|-------------|----------------|--------------|--------|
+| **Deliverables Email** | `send_deliverables_email.py` | 1. Custom Tool only | email-specialist | ✅ Active |
+| **HTML Newsletter** | `send_html_newsletter.py` | 1. Custom Tool only | newsletter-agent | ✅ Active |
+| **Fillable Workbook** | `create_fillable_workbook.py` | 1. Custom Tool only | analyst | ✅ Active |
+| **Capability PDF** | `generate_capability_pdf_final.py` | 1. Custom Tool only | pdf-specialist | ✅ Active |
+| **Capability Statement** | `generate_capability_statement.py` | 1. Custom Tool only | copywriter | ✅ Active |
+| **Workflow Template PDF** | `generate_workflow_template_pdf.py` | 1. Custom Tool only | pdf-specialist | ✅ Active |
+
+---
+
+## 🏠 Root-Level Tools
+
+| Capability | Custom Tool | Priority Order | Agents Using | Status |
+|------------|-------------|----------------|--------------|--------|
+| **Supervisor MCP Server** | `supervisor_mcp_server.py` | 1. Custom Tool only | supervisor | ✅ Active |
+| **Supervisor Tools** | `supervisor_tools.py` | 1. Custom Tool only | supervisor | ✅ Active |
+
+---
+
 ## 📊 Analytics & Dashboard Capabilities
 
 | Capability | Skill | MCP Tool | Custom Tool | Priority Order | Agents Using | Status |
@@ -301,28 +340,45 @@ visual-designer (Nano Banana) → video-producer (Veo 3.1)
 
 ## 🎨 Complete Skills Inventory
 
-### Visual Skills (5)
+### Visual Skills (6)
 - ✅ `algorithmic-art` - p5.js generative art with seeded randomness
 - ✅ `canvas-design` - PNG/PDF visual design with 50+ fonts, professional layouts
 - ✅ `slack-gif-creator` - Animated GIFs optimized for Slack (size constraints)
 - ✅ `theme-factory` - 10 pre-set themes for artifacts (vibrant, professional, minimal, etc.)
 - ✅ `flow-diagram` - Mermaid diagrams (flowcharts, sequence, ER, state, CI/CD) with interactive HTML
+- ✅ `infographic-creator` - Static, animated, and interactive infographics for social media and presentations
 
-### Development Skills (3)
+### Development Skills (4)
 - ✅ `artifacts-builder` - React + Tailwind CSS + shadcn/ui components for elaborate artifacts
 - ✅ `mcp-builder` - Create MCP servers (Python FastMCP or Node/TypeScript SDK)
 - ✅ `skill-creator` - Create new skills extending Claude's capabilities
+- ✅ `frontend-design` - Production-grade frontend interfaces with high design quality
 
 ### Content Skills (3)
 - ✅ `internal-comms` - Internal communications (status reports, leadership updates, FAQs, newsletters)
 - ✅ `brand-guidelines` - Anthropic's official brand colors and typography
 - ✅ `pdf-filler` - PDF form filling and generation
 
-### Document Skills (4 - Built-in)
+### Document Skills (4 - Bundled in `document-skills`)
 - 🔧 `pdf` - PDF creation using pypdf library (ENABLED in MARKETING_TEAM settings)
 - 🔧 `pptx` - PowerPoint generation via html2pptx + PptxGenJS (ENABLED in MARKETING_TEAM settings)
 - ❌ `docx` - Word document generation (NOT enabled - use Google Docs MCP instead)
 - ❌ `xlsx` - Excel operations (NOT enabled - use Google Sheets MCP instead)
+
+### Video Skills (1)
+- ✅ `remotion-video` - Programmatic video creation with React (motion graphics, captions, data viz)
+
+### Research Skills (1)
+- ✅ `last30days` - Real-time Reddit + X trend research with engagement metrics (past 30 days)
+
+### n8n Automation Skills (7)
+- ✅ `n8n-code-javascript` - JavaScript in n8n Code nodes ($input/$json syntax)
+- ✅ `n8n-code-python` - Python in n8n Code nodes (_input/_json syntax)
+- ✅ `n8n-expression-syntax` - n8n expression validation and {{}} syntax
+- ✅ `n8n-mcp-tools-expert` - n8n MCP tool selection and usage patterns
+- ✅ `n8n-node-configuration` - Operation-aware node config and property dependencies
+- ✅ `n8n-validation-expert` - Validation error interpretation and fixing
+- ✅ `n8n-workflow-patterns` - Proven workflow architectural patterns
 
 ### Integration Skills (3)
 - ✅ `filesystem` - File operations (read, write, list, delete, path validation)
@@ -377,7 +433,7 @@ visual-designer (Nano Banana) → video-producer (Veo 3.1)
 
 **Update Frequency:** Real-time (update immediately after tool creation/deprecation)
 
-**Last Audit:** Not yet conducted (first audit scheduled for 2025-12-03)
+**Last Audit:** 2026-02-20 (system-wide audit via 4-agent team)
 
 ---
 
