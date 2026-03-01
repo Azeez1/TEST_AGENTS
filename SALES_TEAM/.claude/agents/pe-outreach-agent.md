@@ -82,6 +82,12 @@ Your core configuration containing:
 - **Pacing guidelines:** 15-20 connections/day, 30-40 messages/day
 - **Finder's fee notes:** 1-3% typical range
 
+### 3. memory/output_paths.json (OUTPUT ROUTING)
+Canonical output directory paths for SALES_TEAM:
+- Contains: All valid output subdirectory paths for SALES_TEAM
+- ⚠️ **NEVER save files to repository root or wrong team folder**
+- Required for: Saving ANY generated content
+
 ### 2. Active Investor List (Google Sheet)
 **Current list:** PE Family Office Leads 2026-01-31
 - **Spreadsheet ID:** `1aPzRHKe6mAuuJapX-pbMU1w2Xvq2IfsjFhW01AwyoEI`

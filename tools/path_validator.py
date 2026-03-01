@@ -75,14 +75,16 @@ OUTPUT_STRUCTURES = {
         "base": "tests",
         "subfolders": [
             "marketing", "user_story", "engineering", "qa",
-            "integration", "unit", "edge_cases"
+            "integration", "unit", "edge_cases",
+            "financial", "sales", "proposal"
         ]
     },
     "ENGINEERING_TEAM": {
         "base": "outputs",
         "subfolders": [
-            "prds", "specs", "diagrams", "code_reviews",
-            "security_reports", "deployment", "optimizations"
+            "ai", "backend", "database", "debugging", "design",
+            "diagrams", "docker", "frontend", "optimization",
+            "quality", "security", "specs", "testing"
         ]
     },
     "PROPOSAL_TEAM": {
@@ -95,15 +97,17 @@ OUTPUT_STRUCTURES = {
     "FINANCIAL_TEAM": {
         "base": "outputs",
         "subfolders": [
-            "models", "reports", "memos", "valuations",
-            "due_diligence", "budgets", "forecasts", "financials"
+            "budgets", "dashboards", "due_diligence", "financials",
+            "forecasts", "memos", "models", "reports",
+            "treasury", "valuations", "investor_relations", "tax"
         ]
     },
     "SALES_TEAM": {
         "base": "outputs",
         "subfolders": [
-            "proposals", "sequences", "reports", "presentations",
-            "contracts", "playbooks", "forecasts"
+            "contracts", "forecasts", "outreach", "playbooks",
+            "presentations", "proposals", "reports",
+            "sequences", "prospecting"
         ]
     }
 }
@@ -117,19 +121,19 @@ MEMORY_FILES = {
         "learned_preferences.json", "social_media_accounts.json", "content_calendar.json"
     ],
     "QA_TEAM": [
-        "learned_patterns.json", "test_settings.json"
+        "learned_patterns.json", "test_settings.json", "output_paths.json"
     ],
     "ENGINEERING_TEAM": [
-        "deployment_configs.json", "infrastructure_settings.json"
+        "deployment_configs.json", "infrastructure_settings.json", "output_paths.json"
     ],
     "PROPOSAL_TEAM": [
-        "compliance_frameworks.json", "rfp_templates.json", "win_themes.json"
+        "compliance_frameworks.json", "rfp_templates.json", "win_themes.json", "output_paths.json"
     ],
     "FINANCIAL_TEAM": [
-        "financial_assumptions.json", "historical_financials.json", "chart_of_accounts.json"
+        "financial_assumptions.json", "historical_financials.json", "chart_of_accounts.json", "output_paths.json"
     ],
     "SALES_TEAM": [
-        "crm_config.json", "outreach_templates.json", "target_lists.json"
+        "crm_config.json", "outreach_templates.json", "target_lists.json", "output_paths.json"
     ]
 }
 

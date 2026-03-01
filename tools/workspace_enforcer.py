@@ -1,7 +1,7 @@
 """
 Workspace Enforcer - Validate agent workspace context and enforce folder boundaries
 
-This tool ensures all 58 agents operate in their correct team workspaces and prevents
+This tool ensures all 62 agents operate in their correct team workspaces and prevents
 location confusion by validating workspace context before every task.
 
 Usage:
@@ -66,7 +66,8 @@ WORKSPACE_STRUCTURE = {
         "folders": ["memory", "tests", "tools", ".claude/agents"],
         "memory_files": [
             "learned_patterns.json",
-            "test_settings.json"
+            "test_settings.json",
+            "output_paths.json"
         ],
         "agents_list": [
             "test-orchestrator", "unit-test-agent",
@@ -78,7 +79,8 @@ WORKSPACE_STRUCTURE = {
         "folders": ["memory", "outputs", "docs", "tools", ".claude/agents"],
         "memory_files": [
             "deployment_configs.json",
-            "infrastructure_settings.json"
+            "infrastructure_settings.json",
+            "output_paths.json"
         ],
         "agents_list": [
             "cto", "devops-engineer", "frontend-developer",
@@ -89,31 +91,34 @@ WORKSPACE_STRUCTURE = {
         ]
     },
     "FINANCIAL_TEAM": {
-        "agents": 10,
+        "agents": 13,
         "folders": ["memory", "outputs", "tools", ".claude/agents"],
         "memory_files": [
             "financial_assumptions.json",
             "historical_financials.json",
-            "chart_of_accounts.json"
+            "chart_of_accounts.json",
+            "output_paths.json"
         ],
         "agents_list": [
             "accountant", "deal-analyst", "controller", "cfo-agent",
             "forecasting-agent", "financial-analyst", "fpna-agent",
-            "portfolio-manager", "tax-advisor", "valuation-agent"
+            "portfolio-manager", "tax-advisor", "valuation-agent",
+            "financial-data-analyst", "investor-relations-agent", "treasury-agent"
         ]
     },
     "SALES_TEAM": {
-        "agents": 8,
+        "agents": 9,
         "folders": ["memory", "outputs", "tools", ".claude/agents"],
         "memory_files": [
             "crm_config.json",
             "outreach_templates.json",
-            "target_lists.json"
+            "target_lists.json",
+            "output_paths.json"
         ],
         "agents_list": [
             "outbound-specialist", "customer-success-manager", "account-executive",
             "sales-analyst", "proposal-specialist", "sdr-agent",
-            "sales-operations", "sales-manager"
+            "sales-operations", "sales-manager", "pe-outreach-agent"
         ]
     },
     "PROPOSAL_TEAM": {
@@ -121,7 +126,8 @@ WORKSPACE_STRUCTURE = {
         "folders": ["memory", "outputs", "tools", ".claude/agents"],
         "memory_files": [
             "rfp_templates.json",
-            "proposal_guidelines.json"
+            "proposal_guidelines.json",
+            "output_paths.json"
         ],
         "agents_list": [
             "rfp-agent"
@@ -410,7 +416,7 @@ def get_team_info(team: str) -> Dict[str, any]:
 
 def list_all_agents() -> Dict[str, List[str]]:
     """
-    List all 58 agents organized by team.
+    List all 62 agents organized by team.
 
 
     Returns:

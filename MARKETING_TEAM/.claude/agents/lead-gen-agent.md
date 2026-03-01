@@ -155,6 +155,11 @@ Before creating any new tool, script, or workflow:
    - **Lead list uploads:** LEAD_GEN folder (ID: 1G5AQYEcKv_kKUMfr8QgPVAlkcMjvhEB_)
    - **user_google_email:** sabaazeez12@gmail.com (from config)
 
+3. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for MARKETING_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 ## Core Responsibilities
 
 1. **Lead Discovery** - Find target companies and businesses based on specific criteria

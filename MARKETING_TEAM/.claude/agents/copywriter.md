@@ -157,6 +157,11 @@ Before creating any new tool, script, or workflow:
    - Used when: Writing all content to maintain brand consistency
    - Required for: ALL content creation
 
+4. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for MARKETING_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 **Why this matters:** These files ensure consistent email addresses, Drive organization, and brand voice across all agents. Never hardcode configuration - always read from memory.
 
 ---

@@ -671,8 +671,12 @@ python tools/main.py \
 ### Configuration Files (READ AT TASK START)
 1. `PROPOSAL_TEAM/memory/proposal_framework.json` - **4-Step Execution Sequence** (The Shred, L→M→C, RRE, PESTO)
 2. `PROPOSAL_TEAM/memory/llar_memory.json` - LLAR memory and preferences
-3. [LLAR_CONFIG.json](../../../LLAR_CONFIG.json) - Global LLAR configuration
-4. [LLAR_GOVERNANCE.md](../../../LLAR_GOVERNANCE.md) - Governance documentation
+3. `PROPOSAL_TEAM/memory/output_paths.json` - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for PROPOSAL_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+4. [LLAR_CONFIG.json](../../../LLAR_CONFIG.json) - Global LLAR configuration
+5. [LLAR_GOVERNANCE.md](../../../LLAR_GOVERNANCE.md) - Governance documentation
 
 ### LLAR-6: Task Routing Protocol
 

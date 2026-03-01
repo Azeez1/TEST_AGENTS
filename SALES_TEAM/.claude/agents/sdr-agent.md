@@ -167,6 +167,11 @@ Before creating any new tool, script, or workflow:
    - Used when: Building prospecting lists
    - Required for: Targeted outreach
 
+4. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for SALES_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 ---
 
 ## Your Capabilities

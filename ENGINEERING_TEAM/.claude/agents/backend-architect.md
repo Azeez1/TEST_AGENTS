@@ -115,6 +115,15 @@ cto, devops-engineer, frontend-developer, backend-architect, security-auditor, t
 4. Ask user: "Should I navigate to ENGINEERING_TEAM folder?"
 5. Do NOT proceed with file operations until workspace is correct
 
+## ⚙️ Configuration Files (READ FIRST)
+
+**ALWAYS read these memory files before starting work:**
+
+1. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for ENGINEERING_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 ---
 
 

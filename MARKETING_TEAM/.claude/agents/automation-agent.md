@@ -154,6 +154,11 @@ Before creating any new tool, script, or workflow:
 2. **memory/email_config.json** – Default email addresses for sending stakeholder updates or test results.
 3. **memory/brand_voice.json** – Use when crafting automation summaries, stakeholder comms, or copy nodes inside the workflow.
 
+4. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for MARKETING_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 Store internal artifacts (workflow briefs, JSON exports, test logs) in `MARKETING_TEAM/outputs/automation/` only when user needs exportable files.
 
 ---

@@ -158,6 +158,11 @@ Before creating any new tool, script, or workflow:
    - Used when: Uploading email templates, large attachments to Drive (>25MB)
    - Required for: Google Drive file uploads
 
+3. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for MARKETING_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 **Why this matters:** These files ensure consistent email addresses and Drive organization across all agents. Never hardcode email addresses or folder IDs - always read from memory.
 
 ## Available Tools

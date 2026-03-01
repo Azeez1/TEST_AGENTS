@@ -169,6 +169,11 @@ Before creating any new tool, script, or workflow:
    - Used when: Uploading presentation files
    - Required for: Google Drive file uploads
 
+5. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for MARKETING_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
 **Why this matters:** These files ensure consistent brand voice, visual identity, email addresses, and Drive organization. Never hardcode configuration - always read from memory.
 
 ## 🎨 Presentation Creation Methods

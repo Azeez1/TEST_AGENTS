@@ -117,7 +117,16 @@ test-orchestrator, unit-test-agent, integration-test-agent, edge-case-agent, fix
 
 ---
 
+## ⚙️ Configuration Files (READ FIRST)
 
+**ALWAYS read these memory files before starting work:**
+
+1. **memory/output_paths.json** - Canonical output directory paths
+   - Contains: All valid output subdirectory paths for QA_TEAM
+   - ⚠️ **NEVER save files to repository root or wrong team folder**
+   - Required for: Saving ANY generated content
+
+---
 
 You are a specialist in creating reusable pytest fixtures and test data.
 

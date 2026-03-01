@@ -2,7 +2,7 @@
 
 **For AI Assistants and Developers**
 
-This guide explains how the memory system works across all 58 agents in the repository, ensuring consistent configuration without hardcoding values.
+This guide explains how the memory system works across all 62 agents in the repository, ensuring consistent configuration without hardcoding values.
 
 ---
 
@@ -59,9 +59,10 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### QA_TEAM Memory
 **Location:** `QA_TEAM/memory/`
 
-**Files (3 total):**
+**Files (4 total):**
 - `learned_patterns.json` - Common edge cases and test patterns
 - `test_settings.json` - Testing preferences and configurations
+- `output_paths.json` - Canonical output directory paths for all QA_TEAM test outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
 **Access:** All 5 QA_TEAM agents read automatically
@@ -69,9 +70,10 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### ENGINEERING_TEAM Memory
 **Location:** `ENGINEERING_TEAM/memory/`
 
-**Files (3 total):**
+**Files (4 total):**
 - `deployment_configs.json` - AWS/GCP deployment settings
 - `infrastructure_settings.json` - Infrastructure preferences
+- `output_paths.json` - Canonical output directory paths for all ENGINEERING_TEAM outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
 **Access:** All 15 ENGINEERING_TEAM agents read automatically
@@ -79,7 +81,8 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### PROPOSAL_TEAM Memory
 **Location:** `PROPOSAL_TEAM/memory/`
 
-**Files (1 total):**
+**Files (2 total):**
+- `output_paths.json` - Canonical output directory paths for all PROPOSAL_TEAM outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, compliance frameworks)
 
 **Access:** rfp-agent reads at task start
@@ -87,18 +90,20 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### FINANCIAL_TEAM Memory
 **Location:** `FINANCIAL_TEAM/memory/`
 
-**Files (1 total):**
+**Files (2 total):**
+- `output_paths.json` - Canonical output directory paths for all FINANCIAL_TEAM outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, financial standards)
 
-**Access:** All 10 FINANCIAL_TEAM agents read automatically
+**Access:** All 13 FINANCIAL_TEAM agents read automatically
 
 ### SALES_TEAM Memory
 **Location:** `SALES_TEAM/memory/`
 
-**Files (1 total):**
+**Files (2 total):**
+- `output_paths.json` - Canonical output directory paths for all SALES_TEAM outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, CRM configs)
 
-**Access:** All 8 SALES_TEAM agents read automatically
+**Access:** All 9 SALES_TEAM agents read automatically
 
 ---
 
@@ -470,9 +475,9 @@ Best regards
 ## See Also
 
 - **[claude.md](claude.md)** - Repository navigation guide
-- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 58 agents
+- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 62 agents
 - **Agent Definitions:** `.claude/agents/*.md` files in each system folder
 
 ---
 
-**Last Updated:** 2025-11-26
+**Last Updated:** 2026-03-01

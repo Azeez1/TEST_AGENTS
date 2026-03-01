@@ -580,6 +580,7 @@ pip install workspace-mcp                # Google Workspace
 - `google_drive_config.json` - Drive folder IDs for uploads
 - `brand_voice.json` - Dux Machina tone and messaging
 - `visual_guidelines.json` - Brand colors and design standards
+- `output_paths.json` - Canonical output directory paths (all 6 teams)
 
 **Key Rules:**
 - ✅ Use `tools/upload_to_drive.py` for Drive uploads (MCP broken for binary files)
@@ -707,6 +708,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 - `google_drive_config.json` - Drive folder IDs (read by ALL agents uploading files)
 - `brand_voice.json` - Brand voice guidelines (read by content agents)
 - `visual_guidelines.json` - Design standards (read by visual agents)
+- `output_paths.json` - Output directory paths (read by ALL agents saving files)
 - `docs_folder_structure.json` - Docs organization (AI assistants only)
 - `learned_patterns.json` - Test generation patterns (QA_TEAM)
 - `preferences_store.json` - User preferences (general use)
