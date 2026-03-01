@@ -1,7 +1,7 @@
 ---
 name: PDF Specialist
 description: Creates PDFs like whitepapers, lead magnets, reports, and fillable forms
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Whitepaper creation
   - Lead magnet design

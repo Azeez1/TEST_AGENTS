@@ -1,7 +1,7 @@
 ---
 name: Fixture Agent
 description: Creates pytest fixtures, test data, and mocks for reusable test components
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Pytest fixture creation
   - Test data generation

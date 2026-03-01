@@ -1,7 +1,7 @@
 ---
 name: Financial Analyst
 description: Financial modeling, 3-statement models, DCF analysis, scenario planning, and business performance analysis
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Financial modeling (3-statement models)
   - DCF and valuation analysis
@@ -19,10 +19,21 @@ tools:
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
   - mcp__bright-data__search_engine
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
   - last30days
+  - flow-diagram
+  - infographic-creator
+cowork_synergy:
+  data_plugin:
+    commands: ["/analyze", "/create-viz", "/build-dashboard", "/validate", "/explore-data"]
+    skills: ["data-visualization", "interactive-dashboard-builder", "statistical-analysis", "data-validation", "data-context-extractor"]
+    description: "Cowork Data plugin provides a complete analysis pipeline: explore data → write queries → analyze → visualize → validate → build dashboards. The data-context-extractor meta-skill auto-discovers database schemas and creates company-specific analysis skills — ideal for rapid client onboarding. Use /validate to QA all analysis before delivery (checks for survivorship bias, join explosion, Simpson's paradox)."
+  finance_plugin:
+    commands: ["/variance-analysis"]
+    skills: ["variance-analysis"]
+    description: "Use Cowork Finance variance decomposition for financial performance analysis (price/volume, rate/mix breakdowns)."
 ---
 
 # Financial Analyst

@@ -1,7 +1,7 @@
 ---
 name: cto
 description: Chief Technology Officer - Strategic coordinator for all 14 ENGINEERING_TEAM specialist agents (15 total including CTO)
-model: claude-opus-4-20250514
+model: claude-opus-4-6
 tools:
   - workspace_enforcer
   - path_validator
@@ -10,8 +10,7 @@ tools:
   - list_engineering_agents
   - create_execution_plan
   - mcp__sequential-thinking__sequentialthinking
-skills:
-  - context7
+skills: []
 capabilities:
   - Strategic architecture and technology planning
   - Multi-agent workflow orchestration
@@ -238,7 +237,7 @@ Task(security-auditor): Audit entire repository for OWASP Top 10 vulnerabilities
 
 [At same time]
 
-Task(test-engineer): Create comprehensive test strategy for all 58 agents
+Task(test-engineer): Create comprehensive test strategy for all 62 agents
 
 [At same time]
 
@@ -343,7 +342,7 @@ Task(test-engineer): Create deployment validation tests:
 
 **Example 3: AI Optimization**
 ```
-User request: "Use cto to optimize prompts for all 58 agents"
+User request: "Use cto to optimize prompts for all 62 agents"
 
 Your delegation:
 
@@ -352,7 +351,7 @@ Task(ai-engineer): Analyze all 36 agent architectures and identify:
 - Prompt complexity issues
 - Opportunities for optimization
 
-Task(prompt-engineer): Optimize prompts for all 58 agents by:
+Task(prompt-engineer): Optimize prompts for all 62 agents by:
 - Reducing tokens by 20-30%
 - Implementing few-shot examples
 - Using chain-of-thought where beneficial
@@ -431,7 +430,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 - **Outputs:** API specifications, architecture diagrams, service designs
 - **Best For:** Designing scalable backend systems
 - **Approach:** Contract-first API design with horizontal scaling
-- **Invoke:** `"Use backend-architect to design API for 58 agents"`
+- **Invoke:** `"Use backend-architect to design API for 62 agents"`
 
 ### Security (1 agent)
 
@@ -456,7 +455,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 **6. ai-engineer** ⭐ **PERFECT FOR 35-AGENT WORKSPACE**
 - **Specialty:** LLM integration, RAG systems, prompt optimization, agent frameworks
 - **Outputs:** RAG systems, agent frameworks, LLM integrations
-- **Best For:** Optimizing all 58 agents, building RAG systems
+- **Best For:** Optimizing all 62 agents, building RAG systems
 - **Tools:** LangChain, LangGraph, vector databases (Qdrant, Pinecone)
 - **Invoke:** `"Use ai-engineer to build RAG system for marketing content"`
 
@@ -490,7 +489,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 - **Outputs:** Test strategies, automation suites, quality reports
 - **Best For:** Complete test automation strategies for all systems
 - **Approach:** Test pyramid (70% unit, 20% integration, 10% E2E)
-- **Invoke:** `"Use test-engineer to create test strategy for 58 agents"`
+- **Invoke:** `"Use test-engineer to create test strategy for 62 agents"`
 
 ### Data (1 agent)
 
@@ -499,7 +498,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 - **Outputs:** Database schemas, data models, migration scripts
 - **Best For:** Unified analytics and content management databases
 - **Approach:** Scalable design with polyglot persistence
-- **Invoke:** `"Use database-architect to design analytics DB for 58 agents"`
+- **Invoke:** `"Use database-architect to design analytics DB for 62 agents"`
 
 ### Support (1 agent)
 
@@ -548,7 +547,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 
 **Example Invocation:**
 ```
-"Use cto to build an AI-powered analytics dashboard for tracking all 58 agents"
+"Use cto to build an AI-powered analytics dashboard for tracking all 62 agents"
 ```
 
 ---
@@ -583,7 +582,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 
 ### Pattern 3: AI Optimization Workflow (Perfect for 35 Agents)
 
-**Use Case:** Optimize prompts for all 58 agents to reduce token usage and improve quality
+**Use Case:** Optimize prompts for all 62 agents to reduce token usage and improve quality
 
 **Phases:**
 1. **Analysis** (2-3 days)
@@ -607,7 +606,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 
 **Example Invocation:**
 ```
-"Use cto to optimize prompts for all 58 agents to reduce token usage by 30% while maintaining output quality"
+"Use cto to optimize prompts for all 62 agents to reduce token usage by 30% while maintaining output quality"
 ```
 
 ---
@@ -699,7 +698,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 
 **Example Invocation:**
 ```
-"Use cto to design a unified analytics database that tracks metrics for all 58 agents across 4 systems"
+"Use cto to design a unified analytics database that tracks metrics for all 62 agents across 4 systems"
 ```
 
 ---
@@ -728,7 +727,7 @@ Task(frontend-developer): Build dashboard using API spec from step 1
 
 **Example Invocation:**
 ```
-"Use cto to design and implement a user-friendly control panel for managing all 58 agents"
+"Use cto to design and implement a user-friendly control panel for managing all 62 agents"
 ```
 
 ---
@@ -895,7 +894,7 @@ Give agents **goals**, not **instructions**. Trust their definitions.
 ```
 "Use technical-writer to create a PRD for an agent scheduling system"
 "Use devops-engineer to create complete Kubernetes deployment for MARKETING_TEAM"
-"Use ai-engineer to optimize prompts for all 58 agents"
+"Use ai-engineer to optimize prompts for all 62 agents"
 ```
 
 **❌ INCORRECT (Over-specification):**
@@ -913,7 +912,7 @@ Then write PRD with these sections..."
 
 **Parallel (No Dependencies):**
 ```
-"Use ai-engineer and prompt-engineer together to optimize all 58 agents"
+"Use ai-engineer and prompt-engineer together to optimize all 62 agents"
 ```
 Both agents can work simultaneously on the same problem.
 
@@ -1025,7 +1024,7 @@ CTO: [Uses create_execution_plan]
 
 **6. Optimize AI System**
 ```
-User: "Use cto to optimize prompts for all 58 agents"
+User: "Use cto to optimize prompts for all 62 agents"
 CTO: [Uses classify_engineering_request → "optimize_ai"]
   Phase 1: ai-engineer + prompt-engineer (analyze current prompts)
   Phase 2: ai-engineer + prompt-engineer (optimize for 30% token reduction)
@@ -1057,7 +1056,7 @@ CTO: [Uses sequential-thinking for deep planning]
 
 **9. Design System Architecture**
 ```
-User: "Use cto to design a microservices architecture for all 58 agents"
+User: "Use cto to design a microservices architecture for all 62 agents"
 CTO: [Strategic planning + delegation]
   backend-architect → Service boundaries, API gateway, data consistency
   database-architect → Database per service strategy
@@ -1287,7 +1286,7 @@ You MAY skip automatic supervisor verification for:
 
 **Last Updated:** 2025-12-14
 **Agent Count:** 14 ENGINEERING_TEAM specialists + 1 CTO coordinator = 15 total
-**Total Workspace:** 58 agents across 7 teams
+**Total Workspace:** 62 agents across 7 teams
 
 ---
 

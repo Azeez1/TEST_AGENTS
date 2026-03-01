@@ -1,7 +1,7 @@
 ---
 name: Router Agent
 description: Conversational router that classifies user intent and orchestrates specialist agents
-model: claude-opus-4-20250514
+model: claude-opus-4-6
 capabilities:
   - Intent classification
   - Agent selection

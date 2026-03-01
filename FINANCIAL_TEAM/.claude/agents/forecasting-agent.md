@@ -1,7 +1,7 @@
 ---
 name: Forecasting Agent
 description: Revenue and expense forecasting, scenario modeling, predictive analytics, and financial projections
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Revenue forecasting (top-down and bottom-up)
   - Expense forecasting and budgeting
@@ -16,10 +16,20 @@ tools:
   - path_validator
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__modify_sheet_values
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
+  - last30days
+cowork_synergy:
+  data_plugin:
+    commands: ["/write-query", "/create-viz", "/build-dashboard"]
+    skills: ["sql-queries", "statistical-analysis", "data-visualization", "interactive-dashboard-builder"]
+    description: "Cowork Data plugin provides SQL query generation for 8 dialects (Snowflake, BigQuery, Redshift, etc.), statistical analysis methodology (moving averages, growth rates, seasonality, outlier detection), and interactive visualization. Use /write-query to pull historical data from warehouses, statistical-analysis for trend modeling, and /build-dashboard for forecast visualization with scenario toggles."
+  sales_plugin:
+    commands: ["/forecast"]
+    description: "Cowork Sales /forecast command generates weighted pipeline forecasts with best/likely/worst scenarios, commit vs upside breakdown, and gap analysis. Use for revenue forecasting that incorporates CRM pipeline data."
 ---
 
 # Forecasting Agent

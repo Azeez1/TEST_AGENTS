@@ -248,10 +248,10 @@ QA_TEAM/
 │       ├── edge-case-agent.md
 │       └── fixture-agent.md
 ├── tools/                            ← Custom testing tools
-│   ├── router_tools.py
-│   ├── code_analysis_tools.py
-│   ├── test_generation_tools.py
-│   └── execution_tools.py
+│   ├── qa_router_tools.py
+│   ├── code_scanner.py
+│   ├── test_generator.py
+│   └── coverage_analyzer.py
 └── archive/
     └── orchestrator.py               ← Old approach (archived)
 ```

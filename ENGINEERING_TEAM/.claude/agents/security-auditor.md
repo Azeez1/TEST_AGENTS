@@ -10,7 +10,7 @@ tools:
   - Glob
   - workspace_enforcer
   - path_validator
-model: claude-sonnet-4-5-20250929
+model: claude-sonnet-4-6
 ---
 
 # Security Auditor
@@ -245,8 +245,8 @@ This repository contains **58 AI agents** across 6 systems:
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (YOU ARE HERE)
 - **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 10 finance agents
-- **SALES_TEAM/** - 8 sales agents
+- **FINANCIAL_TEAM/** - 13 finance agents
+- **SALES_TEAM/** - 9 sales agents
 
 **Critical Security Areas to Audit:**
 1. API key management (.env files, MCP configs)
@@ -549,4 +549,4 @@ Given this is an **AI agent system handling sensitive data**, pay special attent
 
 ---
 
-**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 58 agents in this workspace.
+**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 62 agents in this workspace.

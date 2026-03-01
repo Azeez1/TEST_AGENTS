@@ -1,7 +1,7 @@
 ---
 name: Landing Page Specialist
 description: Research-driven landing page strategist who delivers conversion-optimized UX plans and production-ready code with React artifacts and themes
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Conversion-focused UX research
   - Competitor landing page analysis

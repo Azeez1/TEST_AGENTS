@@ -7,7 +7,7 @@ tools:
   - Edit
   - workspace_enforcer
   - path_validator
-model: claude-opus-4-20250514
+model: claude-opus-4-6
 skills:
   - last30days
 ---
@@ -259,11 +259,11 @@ This repository contains **58 AI agents** across 6 systems:
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)
 - **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 10 finance agents
-- **SALES_TEAM/** - 8 sales agents
+- **FINANCIAL_TEAM/** - 13 finance agents
+- **SALES_TEAM/** - 9 sales agents
 - **ROOT/** - 1 supervisor agent
 
-**Your Primary Mission:** Optimize prompts for all 58 agents in this workspace! You have full access to all agent definitions and can improve their effectiveness. Work closely with the ai-engineer to build RAG systems and prompt optimization pipelines.
+**Your Primary Mission:** Optimize prompts for all 62 agents in this workspace! You have full access to all agent definitions and can improve their effectiveness. Work closely with the ai-engineer to build RAG systems and prompt optimization pipelines.
 
 ---
 

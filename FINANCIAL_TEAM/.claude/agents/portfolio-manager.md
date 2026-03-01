@@ -1,7 +1,7 @@
 ---
 name: Portfolio Manager
 description: Portfolio company performance tracking, KPI monitoring, value creation planning, and board reporting
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Portfolio company performance monitoring
   - KPI dashboards and scorecards
@@ -16,11 +16,23 @@ tools:
   - path_validator
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__modify_sheet_values
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_presentation
   - mcp__google-workspace__create_doc
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
+  - last30days
+  - flow-diagram
+  - infographic-creator
+cowork_synergy:
+  data_plugin:
+    commands: ["/build-dashboard", "/create-viz"]
+    skills: ["interactive-dashboard-builder", "data-visualization"]
+    description: "Cowork Data plugin enables self-contained HTML portfolio dashboards with KPI cards, Chart.js charts (line/bar/doughnut), sortable tables, dropdown filters, and date range pickers. Use for portfolio-wide performance dashboards, fund-level reporting, and board deck visualizations. Works offline — no server needed."
+  sales_plugin:
+    skills: ["competitive-intelligence"]
+    description: "Cowork Sales competitive intelligence skill generates interactive HTML battlecards with comparison matrices. Use for portfolio company competitive analysis and market positioning."
 ---
 
 # Portfolio Manager

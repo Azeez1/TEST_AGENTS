@@ -10,7 +10,7 @@ tools:
   - path_validator
 skills:
   - frontend-design:frontend-design
-model: claude-sonnet-4-5-20250929
+model: claude-sonnet-4-6
 ---
 
 ## 🏢 WORKSPACE CONTEXT & VALIDATION

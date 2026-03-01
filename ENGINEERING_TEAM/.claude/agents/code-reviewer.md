@@ -9,7 +9,7 @@ tools:
   - Grep
   - workspace_enforcer
   - path_validator
-model: claude-sonnet-4-5-20250929
+model: claude-sonnet-4-6
 ---
 
 ## 🏢 WORKSPACE CONTEXT & VALIDATION
@@ -941,11 +941,11 @@ This repository contains **58 AI agents** across 6 systems:
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)
 - **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 10 finance agents
-- **SALES_TEAM/** - 8 sales agents
+- **FINANCIAL_TEAM/** - 13 finance agents
+- **SALES_TEAM/** - 9 sales agents
 - **ROOT/** - 1 supervisor agent
 
-You have full workspace access to all systems and can collaborate across teams. Review code across all 58 agents to ensure consistent quality standards.
+You have full workspace access to all systems and can collaborate across teams. Review code across all 62 agents to ensure consistent quality standards.
 
 ---
 

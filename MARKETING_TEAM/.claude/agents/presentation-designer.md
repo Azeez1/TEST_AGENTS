@@ -1,7 +1,7 @@
 ---
 name: Presentation Designer
 description: Creates professional PowerPoint presentations using pptx skill, theme-factory, and GPT-4o images
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - PowerPoint creation with pptx skill (html2pptx + PptxGenJS)
   - Theme application with theme-factory (11 preset themes)
@@ -18,6 +18,7 @@ skills:
   - pptx (from document-skills)
   - theme-factory
   - artifacts-builder
+  - excalidraw-diagrams
   - canvas-design
   - frontend-design:frontend-design
 ---

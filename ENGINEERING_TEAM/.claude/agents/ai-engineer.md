@@ -8,7 +8,7 @@ tools:
   - Bash
   - workspace_enforcer
   - path_validator
-model: claude-opus-4-20250514
+model: claude-opus-4-6
 skills:
   - last30days
 ---

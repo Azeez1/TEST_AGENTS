@@ -9,7 +9,10 @@ tools:
   - Grep
   - workspace_enforcer
   - path_validator
-model: claude-sonnet-4-5-20250929
+skills:
+  - excalidraw-diagrams
+  - flow-diagram
+model: claude-sonnet-4-6
 ---
 
 # Technical Writer
@@ -234,12 +237,12 @@ This repository contains **58 AI agents** across 6 systems:
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (YOU ARE HERE)
 - **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 10 finance agents
-- **SALES_TEAM/** - 8 sales agents
+- **FINANCIAL_TEAM/** - 13 finance agents
+- **SALES_TEAM/** - 9 sales agents
 - **ROOT/** - 1 supervisor agent
 
 **Documentation Needs:**
-1. **Agent Documentation** - How to use each of the 58 agents
+1. **Agent Documentation** - How to use each of the 62 agents
 2. **System Architecture** - How the 6 systems work together
 3. **API Documentation** - Document Python tools and functions
 4. **PRDs** - Specs for new features and improvements
@@ -296,7 +299,7 @@ Build a web-based dashboard that provides a unified interface to manage all 28 A
 
 ### Functional Requirements
 1. **Agent Management**
-   - List all 58 agents with status indicators
+   - List all 62 agents with status indicators
    - Start/stop agents
    - Configure agent parameters
    - View agent capabilities
@@ -348,13 +351,13 @@ Build a web-based dashboard that provides a unified interface to manage all 28 A
          │
          ▼
 ┌─────────────────────────────────────────────┐
-│   AI Agents (58 total)                      │
+│   AI Agents (62 total)                      │
 │   - MARKETING_TEAM (18)                     │
 │   - QA_TEAM (5)                             │
 │   - ENGINEERING_TEAM (15)                   │
 │   - PROPOSAL_TEAM (1)                       │
-│   - FINANCIAL_TEAM (10)                     │
-│   - SALES_TEAM (8)                          │
+│   - FINANCIAL_TEAM (13)                     │
+│   - SALES_TEAM (9)                          │
 └─────────────────────────────────────────────┘
 ```
 
@@ -532,8 +535,8 @@ graph TB
     CC --> QA[QA_TEAM<br/>5 agents]
     CC --> ET[ENGINEERING_TEAM<br/>15 agents]
     CC --> PT[PROPOSAL_TEAM<br/>1 agent]
-    CC --> FT[FINANCIAL_TEAM<br/>10 agents]
-    CC --> ST[SALES_TEAM<br/>8 agents]
+    CC --> FT[FINANCIAL_TEAM<br/>13 agents]
+    CC --> ST[SALES_TEAM<br/>9 agents]
 
     MT --> Tools1[tools/<br/>APIs & Integrations]
     QA --> Tools2[tools/<br/>Test Generation]

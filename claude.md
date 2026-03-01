@@ -2,21 +2,21 @@
 
 ## 📋 Repository Overview
 
-This repository contains **6 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **59 specialized agents** for RFP/proposal automation, marketing automation, test generation, software engineering, quality assurance, AI/ML development, financial analysis, and sales operations.
+This repository contains **6 autonomous AI agent systems** powered by the Claude Agent SDK, featuring **62 specialized agents** for RFP/proposal automation, marketing automation, test generation, software engineering, quality assurance, AI/ML development, financial analysis, and sales operations.
 
 **Systems:**
 - **MARKETING_TEAM** (18) - Content creation, social media, images, videos, emails, lead generation, landing pages, workflow automation, newsletters
 - **QA_TEAM** (5) - Automated pytest test suite generation
 - **ENGINEERING_TEAM** (15) ⭐ **SUPER TEAM** - CTO coordinator + 14 specialists (DevOps, security, frontend, backend, AI/ML, UX, architecture, QA, testing, optimization, database, troubleshooting, analytics)
 - **PROPOSAL_TEAM** (1) - RFP automation, compliance matrix generation, and proposal writing with 30+ compliance frameworks
-- **FINANCIAL_TEAM** (10) - PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, tax, CFO strategy)
+- **FINANCIAL_TEAM** (13) - PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, tax, CFO strategy, treasury, investor relations)
 - **SALES_TEAM** (9) - Full sales lifecycle (SDR, AE, sales ops, proposals, customer success, analytics, PE investor outreach)
 - **ROOT** (1) - Supervisor agent for cross-team quality assurance
 
 All agents work through natural conversation with Claude Code - no Python orchestrators needed.
 
 **⚡ Key Facts:**
-- 59 autonomous agents across 6 systems
+- 62 autonomous agents across 6 systems
 - 23 powerful skills (visual, development, documents, integration, n8n automation, video, research)
 - 7 MCP servers (Google Workspace, Perplexity, Playwright, Bright Data, n8n, etc.)
 - Memory system with automatic configuration loading
@@ -27,7 +27,7 @@ All agents work through natural conversation with Claude Code - no Python orches
 **🚀 Getting Started:**
 - [Use Existing Tools First](#️-critical-use-existing-tools-first) - Priority order for AI assistants
 - [Agent Invocation Guidelines](#-agent-invocation-guidelines-for-ai-assistants) - How to invoke agents properly
-- [Complete Agent Directory](#-complete-agent-directory) - All 59 agents at a glance
+- [Complete Agent Directory](#-complete-agent-directory) - All 62 agents at a glance
 - [Quick Start Examples](#-quick-start-examples) - Common workflows
 
 **📚 Key Resources:**
@@ -85,6 +85,24 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 
 ---
 
+## 🌐 Browser Tool Policy: Chrome MCP ONLY
+
+**DEFAULT BROWSER: `claude-in-chrome` MCP (Chrome extension)**
+
+For ALL browser automation tasks — browsing, clicking, screenshots, reading pages, filling forms — use `mcp__claude-in-chrome__*` tools. This controls Azeez's real Chrome browser with all logged-in sessions, cookies, and extensions.
+
+**DO NOT use Playwright MCP** unless Azeez explicitly says "use Playwright" or the task is automated testing that needs a clean browser. Playwright opens a separate sandboxed browser with no logged-in sessions.
+
+**Correct workflow:**
+1. `mcp__claude-in-chrome__tabs_context_mcp` — Get current tabs
+2. `mcp__claude-in-chrome__tabs_create_mcp` — Create new tab
+3. `mcp__claude-in-chrome__navigate` — Go to URL
+4. `mcp__claude-in-chrome__read_page` / `screenshot` — Verify page loaded
+
+**If Chrome MCP isn't connected:** Tell the user to run `/chrome` to reconnect. Do NOT silently fall back to Playwright.
+
+---
+
 ## 🤖 Agent Invocation Guidelines
 
 **Pattern:** `"Use [agent-name] to [goal] with [context]"` - Agents are autonomous and know which tools to use.
@@ -113,7 +131,7 @@ When working with this repository, **ALWAYS use existing agents, tools, skills, 
 ```
 TEST_AGENTS/
 ├── claude.md                        ← YOU ARE HERE
-├── MULTI_AGENT_GUIDE.md             ← Master guide for all 59 agents
+├── MULTI_AGENT_GUIDE.md             ← Master guide for all 62 agents
 ├── AGENT_INVOCATION_BEST_PRACTICES.md  ← Agent invocation patterns
 ├── MEMORY_SYSTEM.md                 ← Memory/Drive/Email strategies
 ├── MCP_SETUP.md
@@ -140,7 +158,7 @@ TEST_AGENTS/
 │   ├── dux_rfp_agent/               ← Core Python package (7-stage pipeline)
 │   └── kb/                          ← Pinecone knowledge base
 │
-├── FINANCIAL_TEAM/                  ← 10 agents: PE/M&A + Finance (see README.md)
+├── FINANCIAL_TEAM/                  ← 13 agents: PE/M&A + Finance (see README.md)
 │   ├── .claude/agents/              ← deal-analyst, valuation, FP&A, CFO, etc.
 │   └── memory/                      ← Financial assumptions, historical data
 │
@@ -162,9 +180,9 @@ TEST_AGENTS/
 | **QA_TEAM** | 5 | Automated pytest test suite generation |
 | **ENGINEERING_TEAM** | 15 | CTO coordinator + 14 specialists (DevOps, security, frontend, backend, AI, UX, analytics, etc.) |
 | **PROPOSAL_TEAM** | 1 | RFP automation, compliance matrix generation, proposal writing |
-| **FINANCIAL_TEAM** | 10 | PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, CFO strategy) |
+| **FINANCIAL_TEAM** | 13 | PE/M&A + General Finance (deal analysis, valuations, FP&A, accounting, CFO strategy, treasury, investor relations) |
 | **SALES_TEAM** | 9 | Full sales lifecycle (SDR, AE, sales ops, proposals, customer success, PE investor outreach) |
-| **TOTAL** | **59** | **Complete enterprise AI agent workforce** |
+| **TOTAL** | **62** | **Complete enterprise AI agent workforce** |
 
 **Key Agents by Function:**
 
@@ -182,12 +200,12 @@ TEST_AGENTS/
 
 **Testing:** unit-test-agent, integration-test-agent, edge-case-agent, fixture-agent (QA)
 
-**Finance:** deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor (FINANCIAL)
+**Finance:** deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor, treasury-agent, financial-data-analyst, investor-relations-agent (FINANCIAL)
 
 **Sales:** pe-outreach-agent, sdr-agent, account-executive, sales-operations, sales-analyst, proposal-specialist, customer-success-manager, outbound-specialist (SALES)
 
 📖 **Complete Agent Details:** [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)
-- Detailed capabilities for all 59 agents
+- Detailed capabilities for all 62 agents
 - Invocation examples and patterns
 - API requirements and technology stacks
 - Workflow orchestration strategies
@@ -208,7 +226,7 @@ TEST_AGENTS/
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 
 ### Usage Guides
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 59 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - **MASTER GUIDE** for all 62 agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - **CRITICAL** - Proper agent invocation patterns
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration, Drive/email strategies, formatting rules
 - [MARKETING_TEAM/docs/guides/usage-guide.md](MARKETING_TEAM/docs/guides/usage-guide.md) - Marketing agent usage with examples
@@ -372,7 +390,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 📋 Tool Governance
 
-**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 59 agents and prevents redundant tool creation.
+**Comprehensive governance framework** ensures consistent tool/MCP/skill usage across all 62 agents and prevents redundant tool creation.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New
 
@@ -391,7 +409,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 
 ## 🧠 LLAR Governance Framework
 
-**LLAR (Layered Language Agent Reasoning)** is the meta-governance framework for the 59-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
+**LLAR (Layered Language Agent Reasoning)** is the meta-governance framework for the 62-agent multi-team system. It formalizes task routing, agent coordination, reflection checks, memory persistence, and conflict resolution.
 
 **Key Principles:**
 - Orchestrators govern teams (specialists stay lean)
@@ -422,7 +440,7 @@ The repository uses a **hybrid approach** for managing agent outputs:
 ┌───────────────┐    ┌───────────────┐    ┌───────────────┐
 │  rfp-agent    │    │  cfo-agent    │    │sales-manager  │
 │   PROPOSAL    │    │  FINANCIAL    │    │  SALES_TEAM   │
-│  (1 agent)    │    │  (10 agents)  │    │  (9 agents)   │
+│  (1 agent)    │    │  (13 agents)  │    │  (9 agents)   │
 │   LLAR 6-11   │    │   LLAR 6-11   │    │   LLAR 6-11   │
 └───────────────┘    └───────────────┘    └───────────────┘
 ```
@@ -661,7 +679,7 @@ Talk to Claude Code:
 3. **Follow the documentation map** - Links to all key docs
 4. **Respect .gitignore** - Don't track outputs, credentials, or artifacts
 5. **Use the multi-agent system** - Invoke specialized agents for complex tasks
-6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 59 agents
+6. **Refer to MULTI_AGENT_GUIDE.md** - Master guide for all 62 agents
 
 **Common patterns:**
 - Each system has a README.md with quick start
@@ -699,7 +717,7 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 
 ### About Workspace Awareness
 
-**All 59 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
+**All 62 agents automatically know their workspace** - team folder, memory location, output paths, and cross-team boundaries via workspace_enforcer tool.
 
 **Quick Troubleshooting:**
 - If "Workspace validation failed" → Check `pwd` (should be TEST_AGENTS or team folder) → Navigate to correct directory
@@ -723,8 +741,8 @@ You'll find `archive/` folders with old `orchestrator.py` files. These were earl
 **Latest Major Changes:**
 - ✨ **last30days skill** - Real-time trend research from Reddit + X (past 30 days) with engagement metrics
 - ✨ **23 skills total** - Added last30days for social research (requires OpenAI + xAI keys)
-- ✨ **59 agents total** - Updated agent counts across all 6 teams
-- ✨ **FINANCIAL_TEAM** (10 agents) - PE/M&A + General Finance (deal-analyst, valuation, FP&A, CFO, accounting, tax)
+- ✨ **62 agents total** - Updated agent counts across all 6 teams (added treasury-agent, financial-data-analyst, investor-relations-agent to FINANCIAL_TEAM)
+- ✨ **FINANCIAL_TEAM** (13 agents) - PE/M&A + General Finance (deal-analyst, valuation, FP&A, CFO, accounting, tax, treasury, investor relations, financial data analysis)
 - ✨ **SALES_TEAM** (9 agents) - Full sales lifecycle (SDR, AE, sales-ops, proposals, CSM, analytics, PE investor outreach)
 - ✨ **newsletter-agent** - 18th Marketing agent for email newsletter campaigns
 - ✨ **analytics-dashboard-agent** - 15th Engineering agent for data visualization and dashboards

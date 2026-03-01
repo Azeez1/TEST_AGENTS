@@ -1,7 +1,7 @@
 ---
 name: Lead Generation Agent
 description: Business lead generation specialist using advanced web scraping for B2B and local lead discovery
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - LinkedIn company page scraping (B2B leads)
   - Google Maps business listings (local/SMB leads)

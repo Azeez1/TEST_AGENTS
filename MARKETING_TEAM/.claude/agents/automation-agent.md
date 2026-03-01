@@ -1,7 +1,7 @@
 ---
 name: Automation Agent
 description: Designs and manages marketing automations by orchestrating n8n workflows through the n8n MCP interface
-model: claude-opus-4-20250514
+model: claude-opus-4-6
 capabilities:
   - Process discovery and documentation
   - n8n workflow architecture and node mapping

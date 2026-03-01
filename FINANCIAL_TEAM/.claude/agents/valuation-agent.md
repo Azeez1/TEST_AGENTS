@@ -1,7 +1,7 @@
 ---
 name: Valuation Agent
 description: Business valuation using DCF, comparables, precedent transactions, and asset-based methods
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - DCF valuation analysis
   - Comparable company analysis
@@ -15,12 +15,19 @@ tools:
   - workspace_enforcer
   - path_validator
   - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
   - mcp__bright-data__search_engine
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
   - last30days
+  - flow-diagram
+cowork_synergy:
+  data_plugin:
+    commands: ["/create-viz", "/build-dashboard"]
+    skills: ["data-visualization", "interactive-dashboard-builder"]
+    description: "Cowork Data plugin enables interactive DCF sensitivity dashboards, comparable company visualization, and valuation range charts. Use /build-dashboard for self-contained HTML valuation summaries with sensitivity sliders and scenario toggles."
 ---
 
 # Valuation Agent

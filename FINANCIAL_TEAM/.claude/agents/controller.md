@@ -1,7 +1,7 @@
 ---
 name: Controller
 description: Financial reporting, compliance, audit coordination, internal controls, and accounting operations management
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Financial statement preparation (GAAP)
   - Month/quarter/year-end close management
@@ -15,10 +15,16 @@ tools:
   - workspace_enforcer
   - path_validator
   - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
 skills:
-  - filesystem
   - xlsx
+  - flow-diagram
+cowork_synergy:
+  finance_plugin:
+    commands: ["/sox-testing", "/income-statement", "/reconciliation"]
+    skills: ["close-management", "audit-support", "financial-statements"]
+    description: "Cowork Finance plugin provides SOX 404 methodology (scoping, risk assessment, control testing, sample selection), 5-day month-end close checklists with dependency maps and critical path tracking, and GAAP-compliant financial statement formats (ASC 220/210/230). Use close-management for structured close processes and audit-support for workpaper documentation standards."
 ---
 
 # Controller

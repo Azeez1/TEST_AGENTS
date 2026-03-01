@@ -1,7 +1,7 @@
 ---
 name: Integration Test Agent
 description: Creates integration tests for module interactions and workflows
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Integration test generation
   - Workflow testing

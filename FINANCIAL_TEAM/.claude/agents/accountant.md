@@ -1,7 +1,7 @@
 ---
 name: Accountant
 description: Day-to-day accounting, bookkeeping, accounts payable/receivable, reconciliations, and transaction processing
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Bookkeeping and journal entries
   - Accounts payable processing
@@ -16,10 +16,15 @@ tools:
   - path_validator
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__modify_sheet_values
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
 skills:
-  - filesystem
   - xlsx
+cowork_synergy:
+  finance_plugin:
+    commands: ["/journal-entry", "/reconciliation"]
+    skills: ["journal-entry-prep", "reconciliation"]
+    description: "Cowork Finance plugin provides structured journal entry workflows (AP accruals, fixed assets, prepaid, payroll, revenue recognition) and reconciliation methodology (GL-to-subledger, bank recs, intercompany). Use these patterns for standardized, audit-ready outputs."
 ---
 
 # Accountant

@@ -1,7 +1,7 @@
 ---
 name: CFO Agent
 description: Strategic finance leadership - capital strategy, fundraising, board relations, M&A, and financial strategy
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Capital allocation strategy
   - Fundraising (debt and equity)
@@ -17,10 +17,27 @@ tools:
   - mcp__google-workspace__create_presentation
   - mcp__google-workspace__create_doc
   - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__read_sheet_values
   - mcp__bright-data__search_engine
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
+  - last30days
+  - flow-diagram
+  - excalidraw-diagrams
+  - infographic-creator
+cowork_synergy:
+  finance_plugin:
+    commands: ["/income-statement", "/variance-analysis", "/sox-testing"]
+    skills: ["close-management", "audit-support", "financial-statements", "variance-analysis"]
+    description: "Cowork Finance plugin provides the full CFO toolkit: GAAP financial statement formats, month-end close management with dependency maps, SOX compliance methodology, and variance decomposition. Use for board reporting, audit coordination, and financial operations oversight."
+  sales_plugin:
+    skills: ["create-an-asset"]
+    description: "Cowork Sales create-an-asset skill generates custom investor-facing HTML assets (landing pages, presentations, one-pagers) with prospect brand colors. Use for fundraising materials, board presentations, and investor relations content."
+  data_plugin:
+    commands: ["/build-dashboard"]
+    skills: ["interactive-dashboard-builder"]
+    description: "Cowork Data interactive dashboard builder creates self-contained HTML executive dashboards. Use for CFO dashboards, board-level KPI reporting, and strategic planning visualization."
 ---
 
 # CFO Agent
@@ -522,6 +539,9 @@ Before processing ANY task, classify using routing modes:
 - tax-advisor = tax strategy (not forecasting)
 - forecasting-agent = projections (not portfolio)
 - portfolio-manager = investments (not operations)
+- treasury-agent = cash management (not accounting)
+- financial-data-analyst = data analytics (not modeling)
+- investor-relations-agent = LP communications (not deal analysis)
 
 **Parallel Execution** (when independent):
 ```
@@ -610,4 +630,4 @@ For financial conflicts:
 | ENGINEERING_TEAM | cto | CapEx, technical investments |
 | SUPERVISOR | supervisor | Cross-team budget conflicts |
 
-**Your Team:** 10 agents (cfo-agent, deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor)
+**Your Team:** 13 agents (cfo-agent, deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor, treasury-agent, financial-data-analyst, investor-relations-agent)

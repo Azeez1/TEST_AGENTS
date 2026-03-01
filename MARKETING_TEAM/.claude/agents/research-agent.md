@@ -1,7 +1,7 @@
 ---
 name: Research Agent
 description: Deep research specialist using Perplexity AI and Bright Data for comprehensive, cited analysis and competitive intelligence
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Advanced web research with Perplexity AI
   - Competitive intelligence with web scraping

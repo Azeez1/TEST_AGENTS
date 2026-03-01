@@ -1,7 +1,7 @@
 ---
 name: Tax Advisor
 description: Tax planning, compliance, entity structure optimization, M&A tax strategy, and tax provision
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Tax planning and strategy
   - Federal and state tax compliance
@@ -15,11 +15,18 @@ tools:
   - workspace_enforcer
   - path_validator
   - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
   - mcp__bright-data__search_engine
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
+  - last30days
+cowork_synergy:
+  finance_plugin:
+    commands: ["/sox-testing"]
+    skills: ["audit-support"]
+    description: "Cowork Finance audit-support skill provides SOX 404 methodology and deficiency classification relevant to tax compliance controls. Use for tax provision (ASC 740) control testing and documentation."
 ---
 
 # Tax Advisor

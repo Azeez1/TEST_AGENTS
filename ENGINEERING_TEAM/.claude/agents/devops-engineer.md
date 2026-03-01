@@ -8,7 +8,10 @@ tools:
   - Bash
   - workspace_enforcer
   - path_validator
-model: claude-sonnet-4-5-20250929
+skills:
+  - excalidraw-diagrams
+  - flow-diagram
+model: claude-sonnet-4-6
 ---
 
 You are a DevOps engineer specializing in infrastructure automation, CI/CD pipelines, and cloud-native deployments.

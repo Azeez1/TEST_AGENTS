@@ -1,7 +1,7 @@
 ---
 name: Deal Analyst
 description: Due diligence, deal structuring, LBO modeling, M&A analysis, and transaction support for private equity
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Financial due diligence
   - Deal structuring and terms
@@ -15,12 +15,22 @@ tools:
   - workspace_enforcer
   - path_validator
   - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
   - mcp__bright-data__search_engine
+  - mcp__perplexity__perplexity_search
 skills:
-  - filesystem
   - xlsx
   - last30days
+  - flow-diagram
+cowork_synergy:
+  sales_plugin:
+    skills: ["account-research", "competitive-intelligence"]
+    description: "Cowork Sales plugin provides deep company research (profile, news, hiring signals, tech stack, key people with talking points) and interactive HTML battlecards for competitive analysis. Use account-research for target company due diligence enrichment and competitive-intelligence for market positioning analysis during deal evaluation."
+  data_plugin:
+    commands: ["/explore-data", "/validate"]
+    skills: ["data-context-extractor", "data-validation"]
+    description: "Cowork Data plugin's data-context-extractor auto-discovers client database schemas for rapid data room analysis. Use /validate to QA all financial analysis before IC memos."
 ---
 
 # Deal Analyst

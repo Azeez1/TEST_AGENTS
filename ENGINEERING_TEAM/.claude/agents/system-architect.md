@@ -11,15 +11,12 @@ tools:
   - path_validator
 skills:
   - flow-diagram
+  - excalidraw-diagrams
   - canvas-design
   - artifacts-builder
-  - pptx
-  - pdf
-  - docx
+  - document-skills
   - theme-factory
-  - filesystem
-  - figma
-model: claude-sonnet-4-5-20250929
+model: claude-sonnet-4-6
 ---
 
 # System Architect

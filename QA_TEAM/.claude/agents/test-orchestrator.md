@@ -1,7 +1,7 @@
 ---
 name: Test Orchestrator
 description: Main testing agent that coordinates test generation and execution
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Code analysis and scanning
   - Test strategy planning

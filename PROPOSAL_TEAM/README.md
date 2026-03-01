@@ -30,12 +30,10 @@ PROPOSAL_TEAM/
 │   ├── commands/
 │   │   └── rfp-process.md        # Slash command for processing
 │   └── settings.json             # Team workspace config
-├── dux_rfp_agent/                # Main RFP automation system
-│   ├── src/dux_rfp_agent/        # Source code
-│   ├── tests/                    # Test suite
-│   ├── sample_data/              # Sample RFPs
-│   ├── scripts/                  # Utility scripts
-│   └── config/                   # Configuration
+├── tools/                        # RFP processing tools
+├── scripts/                      # Utility scripts
+├── tests/                        # Test suite
+├── config/                       # Configuration
 ├── outputs/                      # Generated proposals
 ├── kb/                           # Knowledge base documents
 │   ├── resumes/                  # Personnel resumes
@@ -55,7 +53,7 @@ PROPOSAL_TEAM/
 ### 1. Setup
 
 ```bash
-cd PROPOSAL_TEAM/dux_rfp_agent
+cd PROPOSAL_TEAM
 
 # Install dependencies
 pip install -r requirements.txt
@@ -138,18 +136,18 @@ kb/
 
 ```bash
 # Index resumes
-python dux_rfp_agent/scripts/index_kb.py \
+python scripts/index_kb.py \
   --input kb/resumes \
   --type resume \
   --sector government
 
 # Index past performance
-python dux_rfp_agent/scripts/index_kb.py \
+python scripts/index_kb.py \
   --input kb/past_performance \
   --type past_performance
 
 # Index technical docs
-python dux_rfp_agent/scripts/index_kb.py \
+python scripts/index_kb.py \
   --input kb/technical \
   --type technical_writeup
 ```
@@ -194,7 +192,7 @@ outputs/
 
 ### Environment Variables
 
-Edit `dux_rfp_agent/.env`:
+Edit `config/.env`:
 
 ```bash
 # LLM Provider (Required)
@@ -272,9 +270,8 @@ Intelligent document chunking that:
 
 ### Team Docs
 - **README.md** (this file) - Workspace overview
-- **dux_rfp_agent/README.md** - System documentation
-- **dux_rfp_agent/BUILD_SUMMARY.md** - Architecture details
-- **dux_rfp_agent/CLAUDE_CODE_INTEGRATION.md** - Integration guide
+- **HOW_IT_WORKS.md** - System architecture and pipeline details
+- **COMPLIANCE_FRAMEWORKS.md** - 30+ compliance frameworks reference
 
 ### Agent Docs
 - **.claude/agents/rfp-agent.md** - Complete agent definition
@@ -285,18 +282,18 @@ Intelligent document chunking that:
 ## 🧪 Testing
 
 ```bash
-cd dux_rfp_agent
+cd PROPOSAL_TEAM
 
 # Run all tests
-pytest
+pytest tests/
 
 # With coverage
-pytest --cov=dux_rfp_agent --cov-report=html
+pytest tests/ --cov --cov-report=html
 
 # Quick test with sample
-python -m dux_rfp_agent.main \
-  --rfp sample_data/rfp_sample_excerpt.txt \
-  --out ../outputs/test \
+python tools/main.py \
+  --rfp examples/rfp_sample_excerpt.txt \
+  --out outputs/test \
   --no-kb
 ```
 
@@ -306,7 +303,7 @@ python -m dux_rfp_agent.main \
 
 ### "LLM API key not found"
 ```bash
-cd dux_rfp_agent
+cd PROPOSAL_TEAM
 cp config/.env.example .env
 # Edit .env and add OPENAI_API_KEY or ANTHROPIC_API_KEY
 ```
@@ -317,9 +314,8 @@ cp config/.env.example .env
 
 ### "Module not found"
 ```bash
-cd dux_rfp_agent
+cd PROPOSAL_TEAM
 pip install -r requirements.txt
-pip install -e .
 ```
 
 ---
@@ -343,7 +339,7 @@ pip install -e .
 
 ### Example 3: Quick Test
 ```bash
-/rfp-process dux_rfp_agent/sample_data/rfp_sample_excerpt.txt \
+/rfp-process examples/rfp_sample_excerpt.txt \
   --sector government \
   --no-kb
 ```

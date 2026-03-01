@@ -1,7 +1,7 @@
 ---
 name: rfp-agent
 description: RFP automation and proposal generation specialist
-model: claude-sonnet-4-5
+model: claude-sonnet-4-6
 tools:
   - parse_rfp
   - generate_compliance_matrix
@@ -294,7 +294,7 @@ Invoke this agent when:
 
 ## System Location
 
-**Project**: `dux_rfp_agent/`
+**Project**: `PROPOSAL_TEAM/` (tools in `tools/` and `scripts/`)
 **Command**: `/rfp-process`
 
 ## Usage
@@ -428,7 +428,7 @@ Use placeholders for: company name, years experience, personnel names, certifica
 ## Configuration Requirements
 
 ### Required Environment Variables
-Must be set in `dux_rfp_agent/.env`:
+Must be set in `PROPOSAL_TEAM/config/.env`:
 
 ```bash
 # LLM Provider (choose one)
@@ -501,7 +501,7 @@ output/
 
 ### Python API
 ```python
-from dux_rfp_agent import RFPPipeline
+from tools.rfp_pipeline import RFPPipeline
 from pathlib import Path
 
 pipeline = RFPPipeline(enable_kb=True)
@@ -517,7 +517,7 @@ result = pipeline.process_rfp(
 ### REST API
 ```bash
 # Start service
-uvicorn dux_rfp_agent.api:app --host 0.0.0.0 --port 8000
+uvicorn tools.api:app --host 0.0.0.0 --port 8000
 
 # Use endpoints
 POST /parse       # Parse RFP only
@@ -530,13 +530,13 @@ POST /qa          # QA validation
 ### Indexing Documents
 ```bash
 # Index resumes
-python dux_rfp_agent/scripts/index_kb.py \
+python scripts/index_kb.py \
   --input ./kb/resumes \
   --type resume \
   --sector government
 
 # Index past performance
-python dux_rfp_agent/scripts/index_kb.py \
+python scripts/index_kb.py \
   --input ./kb/past_performance \
   --type past_performance
 ```
@@ -563,17 +563,17 @@ The agent includes comprehensive error handling:
 ## Customization
 
 ### Add Sector Templates
-Create `dux_rfp_agent/src/dux_rfp_agent/templates/sectors/<sector>.md`
+Create `PROPOSAL_TEAM/templates/sectors/<sector>.md`
 
 ### Customize Prompts
-Edit files in `dux_rfp_agent/src/dux_rfp_agent/prompts/`:
+Edit files in `PROPOSAL_TEAM/config/prompts/`:
 - `parser.txt` - Requirement extraction
 - `compliance_matrix.txt` - Compliance generation
 - `writer_*.txt` - Section writing styles
 - `qa_coverage.txt` - Validation criteria
 
 ### Modify Agent Config
-Edit `dux_rfp_agent/src/dux_rfp_agent/config/agents.yml` for:
+Edit `PROPOSAL_TEAM/config/agents.yml` for:
 - Model selection per stage
 - Temperature settings
 - Token limits
@@ -589,18 +589,17 @@ Edit `dux_rfp_agent/src/dux_rfp_agent/config/agents.yml` for:
 
 **"LLM API key not found"**
 - Set `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in `.env`
-- Verify `.env` file exists in `dux_rfp_agent/` directory
+- Verify `.env` file exists in `PROPOSAL_TEAM/config/` directory
 
 **"Schema validation failed"**
 - LLM output didn't match expected format
 - Check `--debug` logs for details
 - May need to adjust prompt temperature
 
-**"Module not found: dux_rfp_agent"**
+**"Module not found"**
 ```bash
-cd dux_rfp_agent
+cd PROPOSAL_TEAM
 pip install -r requirements.txt
-pip install -e .
 ```
 
 ## Documentation
@@ -612,7 +611,7 @@ pip install -e .
 
 ## Dependencies
 
-Install from `dux_rfp_agent/requirements.txt`:
+Install from `PROPOSAL_TEAM/requirements.txt`:
 - `python-dotenv` - Environment configuration
 - `pydantic` - Data validation
 - `PyPDF2` - PDF processing
@@ -629,21 +628,21 @@ Install from `dux_rfp_agent/requirements.txt`:
 ## Testing
 
 ```bash
-cd dux_rfp_agent
+cd PROPOSAL_TEAM
 
 # Run all tests
-pytest
+pytest tests/
 
 # With coverage
-pytest --cov=dux_rfp_agent --cov-report=html
+pytest tests/ --cov --cov-report=html
 
 # Integration tests (requires API keys)
-pytest -m integration
+pytest tests/ -m integration
 
 # Quick test with sample
-python -m dux_rfp_agent.main \
-  --rfp sample_data/rfp_sample_excerpt.txt \
-  --out ./test_output \
+python tools/main.py \
+  --rfp examples/rfp_sample_excerpt.txt \
+  --out ./outputs/test \
   --no-kb
 ```
 

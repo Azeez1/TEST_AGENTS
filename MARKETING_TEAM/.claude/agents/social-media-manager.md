@@ -1,7 +1,7 @@
 ---
 name: Social Media Manager
 description: Creates platform-optimized posts for X/Twitter and LinkedIn with generative art and animated GIFs
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Twitter/X thread creation
   - LinkedIn long-form posts

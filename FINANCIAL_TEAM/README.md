@@ -1,12 +1,12 @@
 # FINANCIAL_TEAM
 
-A hybrid Private Equity / M&A + General Finance team with 10 specialized agents covering deal analysis, financial modeling, portfolio management, and corporate accounting.
+A hybrid Private Equity / M&A + General Finance team with 13 specialized agents covering deal analysis, financial modeling, portfolio management, and corporate accounting.
 
 ## Team Overview
 
 FINANCIAL_TEAM combines **PE/M&A capabilities** (due diligence, LBO modeling, valuations) with **general finance operations** (FP&A, accounting, tax) to support private equity investors, business owners, and CFOs.
 
-## Agents (10)
+## Agents (13)
 
 ### PE/M&A Focused Agents
 
@@ -62,12 +62,27 @@ FINANCIAL_TEAM combines **PE/M&A capabilities** (due diligence, LBO modeling, va
 - **Capabilities**: Tax strategy, federal/state compliance, entity structuring, M&A tax, R&D credits
 - **Use Cases**: Tax planning, tax returns, M&A structuring, credits/incentives
 
+#### 11. **Treasury Agent**
+- **Focus**: Cash management, working capital optimization, FX hedging, debt covenant monitoring
+- **Capabilities**: Cash flow forecasting, liquidity planning, sweep accounts, bank relationship management, capital structure optimization
+- **Use Cases**: Daily cash positioning, debt maturity management, FX risk mitigation, working capital improvement
+
+#### 12. **Financial Data Analyst**
+- **Focus**: SQL analytics, dashboard creation, data quality, ETL pipelines
+- **Capabilities**: SQL query generation, interactive HTML dashboards, data visualization, data quality assurance, database schema discovery
+- **Use Cases**: Financial reporting automation, KPI dashboards, data warehouse queries, data quality monitoring
+
+#### 13. **Investor Relations Agent** *(PE/M&A)*
+- **Focus**: LP communications, fund reporting, fundraising materials
+- **Capabilities**: LP quarterly updates, fund performance attribution (IRR, TVPI, DPI), fundraising pitch decks, capital call notices, data room management
+- **Use Cases**: LP reporting, fundraising campaigns, annual meetings, co-investment memos
+
 ## Directory Structure
 
 ```
 FINANCIAL_TEAM/
 ├── .claude/
-│   ├── agents/              # 10 financial agent definitions
+│   ├── agents/              # 13 financial agent definitions
 │   ├── commands/            # Custom slash commands
 │   ├── skills/              # Custom skills
 │   └── settings.json        # Team configuration

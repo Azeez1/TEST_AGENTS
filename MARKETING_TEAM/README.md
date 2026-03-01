@@ -200,7 +200,7 @@ When you say:
 
 ## 🎨 Skills & Advanced Capabilities
 
-Your marketing agents now have access to **13 powerful skills** and **7 MCP servers**!
+Your marketing agents now have access to **23 powerful skills** and **7 MCP servers**!
 
 ### Available Skills
 
@@ -272,7 +272,7 @@ with hero, features, and contact form. Apply theme-factory 'modern' theme."
 
 📖 **[docs/guides/skills-and-mcp-guide.md](docs/guides/skills-and-mcp-guide.md)** - 50+ page comprehensive guide with detailed examples
 
-📋 **[docs/SKILLS_QUICK_REFERENCE.md](docs/SKILLS_QUICK_REFERENCE.md)** - Quick lookup tables and cheat sheets
+📋 **[docs/guides/SKILLS_QUICK_REFERENCE.md](docs/guides/SKILLS_QUICK_REFERENCE.md)** - Quick lookup tables and cheat sheets
 
 ---
 

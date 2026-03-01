@@ -1,7 +1,7 @@
 ---
 name: Content Strategist
 description: Lead agent that plans and coordinates marketing campaigns
-model: claude-opus-4-20250514
+model: claude-opus-4-6
 capabilities:
   - Campaign planning
   - Subagent coordination

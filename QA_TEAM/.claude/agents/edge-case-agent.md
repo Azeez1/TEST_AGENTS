@@ -1,7 +1,7 @@
 ---
 name: Edge Case Agent
 description: Identifies and tests edge cases, boundary conditions, and error scenarios
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Edge case identification
   - Boundary value analysis

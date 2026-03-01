@@ -1,7 +1,7 @@
 ---
 name: Gmail Agent
 description: Sends emails, creates drafts, manages Gmail operations
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Send emails via Gmail
   - Create email drafts

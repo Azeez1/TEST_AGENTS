@@ -1,7 +1,7 @@
 ---
 name: Analyst
 description: Marketing performance analysis, competitive benchmarking, and metrics tracking
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Campaign performance analysis
   - Competitive benchmarking with web scraping

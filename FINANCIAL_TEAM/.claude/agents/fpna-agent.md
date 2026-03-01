@@ -1,7 +1,7 @@
 ---
 name: FP&A Agent
 description: Financial Planning & Analysis - budgeting, variance analysis, rolling forecasts, and strategic planning
-model: claude-sonnet-4-20250514
+model: claude-sonnet-4-6
 capabilities:
   - Annual budgeting and planning
   - Variance analysis (actual vs budget)
@@ -16,10 +16,20 @@ tools:
   - path_validator
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__modify_sheet_values
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
 skills:
-  - filesystem
   - xlsx
+  - flow-diagram
+cowork_synergy:
+  finance_plugin:
+    commands: ["/variance-analysis", "/income-statement"]
+    skills: ["variance-analysis", "financial-statements"]
+    description: "Cowork Finance plugin provides variance decomposition techniques (price/volume, rate/mix, headcount/compensation, spend category), waterfall methodology, materiality thresholds, and narrative quality checklists. Use these for standardized variance reports and P&L generation with multi-column format (current, prior, variance $, variance %, budget)."
+  data_plugin:
+    commands: ["/build-dashboard", "/create-viz"]
+    skills: ["interactive-dashboard-builder", "data-visualization"]
+    description: "Cowork Data plugin enables self-contained HTML dashboards with KPI cards, Chart.js charts, sortable tables, and dropdown filters. Use for executive-facing budget dashboards and variance visualization."
 ---
 
 # FP&A Agent (Financial Planning & Analysis)

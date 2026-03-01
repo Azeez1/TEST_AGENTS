@@ -12,7 +12,7 @@ skills:
   - flow-diagram:flow-diagram
   - infographic-creator:infographic-creator
   - frontend-design:frontend-design
-model: claude-sonnet-4-5-20250929
+model: claude-sonnet-4-6
 ---
 
 ## 🏢 WORKSPACE CONTEXT & VALIDATION
