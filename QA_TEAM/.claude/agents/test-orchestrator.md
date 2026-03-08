@@ -17,6 +17,7 @@ tools:
   - list_test_agents
   - extract_target_path
   - Task (for subagents)
+skills: []
 ---
 
 # Test Orchestrator

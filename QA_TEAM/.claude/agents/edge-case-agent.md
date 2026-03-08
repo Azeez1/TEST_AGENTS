@@ -12,6 +12,7 @@ tools:
   - path_validator
   - identify_edge_cases
   - analyze_function
+skills: []
 ---
 
 # Edge Case Agent

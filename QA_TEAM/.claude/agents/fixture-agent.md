@@ -12,6 +12,7 @@ tools:
   - path_validator
   - create_fixtures
   - analyze_function
+skills: []
 ---
 
 # Fixture Agent

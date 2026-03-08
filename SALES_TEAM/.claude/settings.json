@@ -11,11 +11,11 @@
         "proposal-specialist",
         "customer-success-manager",
         "outbound-specialist",
-        "sales-manager"
+        "sales-manager",
+        "pe-outreach-agent"
       ],
       "memory": "SALES_TEAM/memory/",
-      "outputs": "SALES_TEAM/outputs/",
-      "tools": "SALES_TEAM/tools/"
+      "outputs": "SALES_TEAM/outputs/"
     }
   },
   "skills": {

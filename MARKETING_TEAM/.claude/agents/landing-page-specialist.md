@@ -16,10 +16,13 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - mcp__perplexity__*
-  - mcp__bright-data__*
-  - mcp__google_workspace__create_doc
-  - mcp__google_workspace__upload_to_drive
+  - mcp__perplexity__perplexity_ask
+  - mcp__perplexity__perplexity_search
+  - mcp__perplexity__perplexity_research
+  - mcp__bright-data__scrape_as_markdown
+  - mcp__bright-data__search_engine
+  - mcp__google-workspace__create_doc
+  - mcp__google-workspace__create_drive_file
 skills:
   - artifacts-builder
   - theme-factory

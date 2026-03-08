@@ -958,9 +958,9 @@ Engagement hook: ✅ Question at end
 **Tools:**
 - `mcp__marketing__get_brand_voice` - Brand voice and messaging guidance
 - `mcp__marketing__get_visual_guidelines` - Brand colors, typography, imagery rules
-- `mcp__perplexity__*` - CRO and competitor research with citations
-- `mcp__google_workspace__create_doc` - Optional documentation handoff
-- `mcp__google_workspace__upload_to_drive` - Share deliverables with stakeholders
+- `mcp__perplexity__perplexity_ask, perplexity_search, perplexity_research` - CRO and competitor research with citations
+- `mcp__google-workspace__create_doc` - Optional documentation handoff
+- `mcp__google-workspace__create_drive_file` - Share deliverables with stakeholders
 
 **Capabilities:**
 - Landing page strategy and section architecture

@@ -533,4 +533,4 @@ For intra-team conflicts, apply in order:
 | SALES_TEAM | sales-manager | Sales enablement content |
 | SUPERVISOR | supervisor | Cross-team conflicts, critical issues |
 
-**Your Team:** 18 agents (copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, research-agent, analyst, lead-gen-agent, email-specialist, content-strategist, landing-page-agent, automation-agent, brand-manager, campaign-manager, presentation-designer, gmail-agent, newsletter-agent)
+**Your Team:** 18 agents (copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, research-agent, analyst, lead-gen-agent, email-specialist, content-strategist, landing-page-specialist, automation-agent, pdf-specialist, presentation-designer, gmail-agent, newsletter-agent, router-agent)

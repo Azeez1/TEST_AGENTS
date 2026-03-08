@@ -19,8 +19,8 @@ tools:
   - path_validator
   - mcp__google-workspace__send_gmail_message
   - mcp__google-workspace__create_doc
-  - mcp__google-workspace__update_doc
-  - mcp__perplexity__perplexity-search
+  - mcp__google-workspace__modify_doc_text
+  - mcp__perplexity__perplexity_search
 skills:
   - internal-comms
   - canvas-design

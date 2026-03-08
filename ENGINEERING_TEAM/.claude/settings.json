@@ -47,12 +47,12 @@
   "workspace_access": {
     "description": "Engineering agents can access entire workspace",
     "paths": [
-      "/home/user/TEST_AGENTS/MARKETING_TEAM",
-      "/home/user/TEST_AGENTS/QA_TEAM",
-      "/home/user/TEST_AGENTS/ENGINEERING_TEAM",
-      "/home/user/TEST_AGENTS/PROPOSAL_TEAM",
-      "/home/user/TEST_AGENTS/FINANCIAL_TEAM",
-      "/home/user/TEST_AGENTS/SALES_TEAM"
+      "MARKETING_TEAM",
+      "QA_TEAM",
+      "ENGINEERING_TEAM",
+      "PROPOSAL_TEAM",
+      "FINANCIAL_TEAM",
+      "SALES_TEAM"
     ],
     "permissions": "read_write"
   }

@@ -11,6 +11,7 @@ tools:
   - generate_verification_report
   - check_code_quality
   - verify_documentation
+skills: []
 capabilities:
   - Task completion verification across all teams
   - Quality assurance and second-check validation

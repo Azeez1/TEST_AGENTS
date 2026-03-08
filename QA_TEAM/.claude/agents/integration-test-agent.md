@@ -12,6 +12,7 @@ tools:
   - path_validator
   - scan_codebase
   - generate_integration_tests
+skills: []
 ---
 
 # Integration Test Agent

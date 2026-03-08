@@ -13,6 +13,7 @@ tools:
   - analyze_function
   - generate_unit_tests
   - create_fixtures
+skills: []
 ---
 
 # Unit Test Agent

@@ -13,8 +13,13 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - mcp__bright-data__*
-  - mcp__perplexity__*
+  - mcp__bright-data__scrape_as_markdown
+  - mcp__bright-data__scrape_batch
+  - mcp__bright-data__search_engine
+  - mcp__bright-data__search_engine_batch
+  - mcp__perplexity__perplexity_ask
+  - mcp__perplexity__perplexity_search
+  - mcp__perplexity__perplexity_research
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__create_drive_file
 skills:
@@ -391,7 +396,7 @@ Try: Google Sheets MCP
 - Creates standalone Excel files that work offline and can be imported into any CRM
 
 **For collaborative cloud spreadsheets:**
-- Use `mcp__google_workspace__create_spreadsheet` tool
+- Use `mcp__google-workspace__create_spreadsheet` tool
 - Best for: Real-time collaboration, team lead sharing, Google Drive integration
 - Auto-format headers, freeze top row, add data validation
 - Create summary dashboard tab, share link with team

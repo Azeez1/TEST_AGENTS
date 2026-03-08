@@ -344,7 +344,7 @@ When your primary tool fails, follow this logic:
 ```python
 # Priority 1: Google Sheets MCP (cloud-based, collaborative)
 try:
-    spreadsheet_id = mcp__google_workspace__create_spreadsheet(
+    spreadsheet_id = mcp__google-workspace__create_spreadsheet(
         title="Campaign Analysis",
         data=analysis_data
     )
@@ -382,11 +382,11 @@ try:
 except SkillNotEnabled:
     # Priority 2: Google Docs MCP → Export as PDF
     try:
-        doc_id = mcp__google_workspace__create_doc(
+        doc_id = mcp__google-workspace__create_doc(
             title="Whitepaper",
             content=content
         )
-        mcp__google_workspace__export_as_pdf(doc_id, "whitepaper.pdf")
+        mcp__google-workspace__export_as_pdf(doc_id, "whitepaper.pdf")
         # ⚠️ Limited formatting, but functional
     except MCPError as e:
         # Priority 3: Raise clear error

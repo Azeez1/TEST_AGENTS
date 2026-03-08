@@ -77,7 +77,7 @@
       "rfp-tools": {
         "command": "python3",
         "args": [
-          "/home/user/TEST_AGENTS/PROPOSAL_TEAM/.claude/tools/rfp_mcp_server.py"
+          "PROPOSAL_TEAM/.claude/tools/rfp_mcp_server.py"
         ],
         "description": "RFP processing tools: parse, compliance matrix, proposal writing, QA, KB indexing"
       }

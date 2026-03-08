@@ -11,8 +11,8 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - mcp__google_workspace__create_doc
-  - mcp__google_workspace__update_doc
+  - mcp__google-workspace__create_doc
+  - mcp__google-workspace__modify_doc_text
 skills:
   - internal-comms
   - docx
@@ -279,8 +279,8 @@ including campaign metrics, budget status, and Q2 planning.
 - ✅ Integration with other Google Workspace tools (Drive, Gmail)
 
 **Tools:**
-- `mcp__google_workspace__create_doc` - Create new Google Doc
-- `mcp__google_workspace__update_doc` - Update existing doc content
+- `mcp__google-workspace__create_doc` - Create new Google Doc
+- `mcp__google-workspace__modify_doc_text` - Update existing doc content
 
 **Example Use Cases:**
 - Blog posts (shared for editor review)
@@ -306,7 +306,7 @@ including campaign metrics, budget status, and Q2 planning.
 ### ⚠️ IMPORTANT: Priority Order
 
 **ALWAYS try Google Docs MCP FIRST, fallback to docx skill:**
-1. **Attempt:** `mcp__google_workspace__create_doc` (PRIMARY)
+1. **Attempt:** `mcp__google-workspace__create_doc` (PRIMARY)
 2. **If MCP fails:** Fallback to `docx` skill (SECONDARY)
 3. **Error handling:** Graceful degradation with user notification
 

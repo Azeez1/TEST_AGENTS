@@ -13,11 +13,13 @@
         "cfo-agent",
         "accountant",
         "controller",
-        "tax-advisor"
+        "tax-advisor",
+        "treasury-agent",
+        "financial-data-analyst",
+        "investor-relations-agent"
       ],
       "memory": "FINANCIAL_TEAM/memory/",
-      "outputs": "FINANCIAL_TEAM/outputs/",
-      "tools": "FINANCIAL_TEAM/tools/"
+      "outputs": "FINANCIAL_TEAM/outputs/"
     }
   },
   "skills": {

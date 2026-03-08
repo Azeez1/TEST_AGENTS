@@ -24,14 +24,14 @@
   "workspace_access": {
     "description": "QA agents can READ all teams for testing, WRITE only to QA_TEAM",
     "read_paths": [
-      "/home/user/TEST_AGENTS/MARKETING_TEAM",
-      "/home/user/TEST_AGENTS/ENGINEERING_TEAM",
-      "/home/user/TEST_AGENTS/FINANCIAL_TEAM",
-      "/home/user/TEST_AGENTS/SALES_TEAM",
-      "/home/user/TEST_AGENTS/PROPOSAL_TEAM"
+      "MARKETING_TEAM",
+      "ENGINEERING_TEAM",
+      "FINANCIAL_TEAM",
+      "SALES_TEAM",
+      "PROPOSAL_TEAM"
     ],
     "write_paths": [
-      "/home/user/TEST_AGENTS/QA_TEAM"
+      "QA_TEAM"
     ],
     "permissions": "read_all_write_own"
   }

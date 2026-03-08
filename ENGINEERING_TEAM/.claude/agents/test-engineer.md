@@ -8,6 +8,7 @@ tools:
   - Bash
   - workspace_enforcer
   - path_validator
+skills: []
 model: claude-sonnet-4-6
 ---
 

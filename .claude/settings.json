@@ -9,7 +9,8 @@
       "edit",
       "glob",
       "grep",
-      "task"
+      "task",
+      "mcp__claude-in-chrome__*"
     ]
   },
   "skills": {
@@ -56,6 +57,10 @@
     },
     "flow-diagram": {
       "enabled": true
+    },
+    "excalidraw-diagrams": {
+      "enabled": true,
+      "comment": "Generates editable .excalidraw JSON files — no paid plan needed"
     },
     "pdf-filler": {
       "enabled": true
@@ -113,7 +118,7 @@
       "supervisor-tools": {
         "command": "python3",
         "args": [
-          "/home/user/TEST_AGENTS/.claude/tools/supervisor_mcp_server.py"
+          ".claude/tools/supervisor_mcp_server.py"
         ],
         "description": "Supervisor verification and quality assurance tools"
       }
@@ -150,6 +155,14 @@
     "QA_TEAM": {
       "description": "Quality assurance and testing workspace",
       "path": "QA_TEAM"
+    },
+    "FINANCIAL_TEAM": {
+      "description": "PE/M&A and general finance workspace",
+      "path": "FINANCIAL_TEAM"
+    },
+    "SALES_TEAM": {
+      "description": "Full sales lifecycle workspace",
+      "path": "SALES_TEAM"
     }
   }
 }
