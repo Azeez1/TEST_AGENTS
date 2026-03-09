@@ -480,8 +480,35 @@ npm install remotion @remotion/cli @remotion/bundler
 # Start development server
 npm run dev
 
-# Render video
-npx remotion render src/index.tsx CompositionId out/video.mp4
+# Render video (MUST use --concurrency 1 when embedding video clips)
+npx remotion render src/index.tsx CompositionId out/video.mp4 --concurrency 1
+```
+
+### ⚠️ CRITICAL: Remotion + Embedded Video Clips Fix
+
+**When compositing pre-recorded video clips (Sora/Veo outputs) in Remotion, you MUST follow these rules:**
+
+1. **Re-encode source clips before embedding** — Sora 2 / Veo outputs lack sufficient keyframes for Remotion's frame-accurate seeking:
+   ```bash
+   ffmpeg -y -i input.mp4 -c:v libx264 -g 1 -pix_fmt yuv420p -c:a aac output.mp4
+   ```
+   - `-g 1` = keyframe every frame (required for Remotion compositor)
+   - `-c:a aac` = preserve audio (do NOT strip audio tracks)
+
+2. **Always render with `--concurrency 1`** — Parallel rendering causes "No frame found at position" compositor errors when multiple threads seek the same embedded video file simultaneously.
+
+3. **Use `<OffthreadVideo>` instead of `<Video>`** — Better frame extraction for pre-recorded clips.
+
+4. **Match canvas resolution to source clips** — Don't upscale (e.g., 720x1280 sources on a 1080x1920 canvas causes blur/artifacts). Render at the source resolution.
+
+5. **Clear Remotion temp cache if errors persist:**
+   ```bash
+   rm -rf "$TEMP/remotion-v4*"  # Windows
+   ```
+
+**Correct composite render command:**
+```bash
+npx remotion render src/index.tsx CompositionId out/video.mp4 --codec h264 --concurrency 1
 ```
 
 ### Core Remotion Concepts
@@ -571,11 +598,13 @@ Before creating any new tool, script, or workflow:
 | "Quick test", "draft", "A/B test variations" | `generate_sora_video` | Budget-friendly option ($0.10/sec) |
 | "30+ second ad", "long video" | `generate_multi_clip_video` or `stitch_existing_videos` | Multi-clip stitching |
 
-**NEW: Sora UGC Mode Decision Tree:**
+**Sora UGC Mode Decision Tree:**
 1. **User mentions UGC + budget/test/draft?** → `generate_sora_video` with `ugc_style` parameter
 2. **User mentions UGC + production/client/premium?** → `generate_veo_ugc_from_image`
 3. **User mentions specific UGC style (testimonial, demo)?** → Ask if budget or production
 4. **User unsure?** → Recommend Sora for testing ($0.81), Veo for production ($6.01)
+
+**Anti-Morphing:** All video tools auto-apply `stability_mode="auto"` by default. For maximum stability on brand/product videos, pass `stability_mode="cinematic"`. See **Anti-Morphing Stability Mode** section below.
 
 ### Automatic Image Analysis (Default Workflow)
 
@@ -735,6 +764,40 @@ video-producer will use custom_prompt parameter with expert-crafted prompt
 - Up to 3 reference images for character/product consistency
 - Asset reference type maintains visual consistency
 - Perfect for UGC ad creation from product images
+
+## 🛡️ Anti-Morphing Stability Mode (ALL Video Tools)
+
+**All video generation tools now include `stability_mode` for reducing morphing, warping, and visual artifacts.**
+
+| Mode | When to Use | Effect |
+|------|-------------|--------|
+| `"auto"` (default) | Always — smart detection | Detects UGC → authentic, else → cinematic |
+| `"cinematic"` | Brand videos, product showcases, polished content | Static camera, locked shot, style anchor, full anti-morph |
+| `"authentic"` | UGC, testimonials, demos | Preserves handheld feel, subtle anti-morph keywords |
+| `"off"` | Full manual control, legacy behavior | No enhancement |
+
+**What gets injected automatically:**
+- Style anchor prefix (camera/lens reference to prevent mid-clip aesthetic drift)
+- Static camera triple-emphasis (cinematic mode — prevents camera drift)
+- Anti-morphing keywords (no warping, consistent appearance, stable lighting)
+- Spatial anchoring (foreground/midground/background layer separation)
+- Duration-aware pacing (fewer actions for shorter clips)
+- Physics stability (natural hair, fabric, liquid behavior)
+- **Veo bonus:** Auto-injects negative_prompt with anti-morph terms
+
+**Usage in all video tools:**
+```python
+# Sora
+generate_sora_video(prompt="...", stability_mode="cinematic", ...)
+
+# Veo text-to-video
+generate_veo_text_to_video(prompt="...", stability_mode="cinematic", ...)
+
+# Fallback chain
+generate_video_with_fallback(prompt="...", stability_mode="auto", ...)
+```
+
+**IMPORTANT:** `stability_mode="auto"` is the default for ALL video generation. You don't need to specify it — every video gets anti-morphing protection automatically.
 
 ## Sora-2 Specifications (OpenAI)
 

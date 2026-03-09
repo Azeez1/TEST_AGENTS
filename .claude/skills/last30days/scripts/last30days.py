@@ -15,12 +15,22 @@ Options:
 """
 
 import argparse
+import io
 import json
 import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
+
+# Force UTF-8 stdout/stderr on Windows to prevent cp1252 UnicodeEncodeError
+# when outputting Unicode characters (arrows, checkmarks, emoji, etc.)
+if sys.platform == "win32" and not isinstance(sys.stdout, io.TextIOWrapper):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+elif sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 # Add lib to path
 SCRIPT_DIR = Path(__file__).parent.resolve()

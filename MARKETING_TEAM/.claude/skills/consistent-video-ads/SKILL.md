@@ -138,7 +138,38 @@ python scripts/stitch_clips.py \
     --duration 0.5
 ```
 
-## Best Practices (from OpenAI Cookbook)
+## Anti-Morphing Stability Mode (NEW)
+
+All video generation functions now include a `stability_mode` parameter that automatically injects anti-morphing directives into prompts:
+
+| Mode | When to Use | What It Does |
+|------|-------------|--------------|
+| `"auto"` (default) | Always — smart detection | Detects UGC keywords → authentic, else → cinematic |
+| `"cinematic"` | Brand videos, product showcases | Static camera triple-emphasis, style anchor, spatial anchoring |
+| `"authentic"` | UGC, testimonials, demos | Preserves handheld feel, adds subtle anti-morph keywords |
+| `"off"` | Legacy behavior, full control | No enhancement — raw prompt passed through |
+
+**Usage:**
+```python
+mcp__marketing-tools__generate_sora_video(
+    prompt="...",
+    stability_mode="cinematic",   # Maximum anti-morphing
+    seconds="8",
+    ...
+)
+```
+
+**What gets injected (cinematic mode):**
+- Style anchor prefix (camera/lens reference for visual consistency)
+- Static camera triple-emphasis (stationary, fixed, no drift)
+- Anti-morphing keywords (no warping, consistent appearance, stable lighting)
+- Spatial anchoring (foreground/midground/background layer hints)
+- Duration-aware pacing (fewer actions for shorter clips)
+- Physics stability (natural material behavior)
+
+**Veo 3.1 bonus:** Also auto-injects negative_prompt with anti-morphing terms (warping, flickering, face drift, etc.)
+
+## Best Practices (from OpenAI Cookbook + Community Research)
 
 1. **Detailed descriptions beat short prompts** - More detail = more consistency
 2. **Reuse exact phrasing** - Don't paraphrase between clips
@@ -146,6 +177,10 @@ python scripts/stitch_clips.py \
 4. **Include lighting** - "Soft natural lighting", "Golden hour warmth"
 5. **4s clips often better** - More coherent than longer clips
 6. **Multi-shot timestamps** - Can include `[0:00-0:04]...[0:04-0:08]` in single prompt
+7. **One action per shot** - Limit to one subject action + one camera move max
+8. **Style anchor at start** - Open with era/film/device reference to lock visual consistency
+9. **Generate 3-5 variants** - Same prompt has ~50% quality variance, pick the best
+10. **24fps over 60fps** - Higher FPS makes temporal artifacts more visible
 
 ## References
 

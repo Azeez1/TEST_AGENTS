@@ -28,6 +28,9 @@ from openai import AsyncOpenAI
 import httpx
 import base64
 
+# Tenacity retry logic for API resilience
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+
 # Google Gen AI imports for Veo 3.1 and Nano Banana
 try:
     from google import genai
@@ -56,6 +59,18 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
+# Structured logging with loguru
+from loguru import logger
+logger.remove()  # Remove default handler
+logger.add(sys.stderr, level="INFO", format="<level>{level:<7}</level> | {message}")
+logger.add(
+    str(Path(__file__).parent.parent / "logs" / "mcp_server.log"),
+    rotation="10 MB",
+    retention="7 days",
+    level="DEBUG",
+    format="{time:YYYY-MM-DD HH:mm:ss} | {level:<7} | {function}:{line} | {message}"
+)
+
 # Create MCP server
 app = Server("marketing-tools")
 
@@ -75,7 +90,7 @@ def load_ugc_templates_from_memory():
         memory_path = Path(__file__).parent.parent / 'memory' / 'ugc_prompt_templates.json'
 
         if not memory_path.exists():
-            print(f"⚠️  UGC templates not found at {memory_path}, using defaults", file=sys.stderr)
+            logger.warning(f"UGC templates not found at {memory_path}, using defaults")
             return None, ["testimonial", "demo", "unboxing", "lifestyle"]
 
         with open(memory_path, 'r', encoding='utf-8') as f:
@@ -109,15 +124,15 @@ def load_ugc_templates_from_memory():
                     'facebook': template_data['platform_optimized'].get('facebook', '')
                 }
             else:
-                print(f"⚠️  Template '{style_name}' missing platform_optimized, skipping", file=sys.stderr)
+                logger.warning(f"Template '{style_name}' missing platform_optimized, skipping")
 
-        print(f"✅ Loaded {len(style_names)} UGC styles from memory/ugc_prompt_templates.json", file=sys.stderr)
-        print(f"   Available styles: {', '.join(sorted(style_names)[:10])}{'...' if len(style_names) > 10 else ''}", file=sys.stderr)
+        logger.success(f"Loaded {len(style_names)} UGC styles from memory/ugc_prompt_templates.json")
+        logger.debug(f"Available styles: {', '.join(sorted(style_names)[:10])}{'...' if len(style_names) > 10 else ''}")
 
         return ugc_templates, sorted(style_names)
 
     except Exception as e:
-        print(f"⚠️  Error loading UGC templates: {e}, using defaults", file=sys.stderr)
+        logger.warning(f"Error loading UGC templates: {e}, using defaults")
         return None, ["testimonial", "demo", "unboxing", "lifestyle"]
 
 # Load templates at module startup
@@ -125,9 +140,113 @@ LOADED_UGC_TEMPLATES, AVAILABLE_UGC_STYLES = load_ugc_templates_from_memory()
 
 
 # ============================================================================
+# ANTI-MORPHING PROMPT ENHANCEMENT ENGINE
+# ============================================================================
+
+def enhance_prompt_for_stability(prompt: str, stability_mode: str = "auto", duration_seconds: int = 8) -> str:
+    """
+    Inject anti-morphing, anti-warping directives into video prompts.
+
+    Stability modes:
+    - "cinematic": Maximum stability — static camera, locked shot, smooth motion.
+                   Best for product showcases, brand videos, polished content.
+    - "authentic": UGC-style handheld feel preserved, but with subtle anti-morph
+                   keywords. Best for testimonials, demos, lifestyle content.
+    - "auto": Detects UGC keywords in prompt → authentic, otherwise → cinematic.
+    - "off": No enhancement (raw prompt passed through).
+
+    Techniques applied (based on community research + OpenAI cookbook):
+    1. Style anchor prefix (film/device reference for visual consistency)
+    2. Static camera triple-emphasis (cinematic mode only)
+    3. Anti-morphing keywords (smooth motion, no warping, consistent appearance)
+    4. Spatial anchoring (foreground/midground/background layer hints)
+    5. Duration-aware pacing (shorter = fewer actions)
+    6. Negative-prompt embedding (natural language exclusions)
+    """
+    if stability_mode == "off":
+        return prompt
+
+    # Auto-detect: if prompt has UGC markers, use authentic mode
+    if stability_mode == "auto":
+        ugc_markers = ["ugc", "handheld", "selfie", "authentic", "casual", "testimonial",
+                       "unboxing", "reaction", "vlog", "real people", "natural shake"]
+        prompt_lower = prompt.lower()
+        if any(marker in prompt_lower for marker in ugc_markers):
+            stability_mode = "authentic"
+        else:
+            stability_mode = "cinematic"
+
+    enhancements = []
+
+    # --- 1. Style Anchor Prefix ---
+    # Anchors the visual style to prevent mid-clip aesthetic drift
+    if stability_mode == "cinematic":
+        enhancements.append(
+            "Cinematic footage shot on a professional camera with a 50mm lens, "
+            "shallow depth of field, natural color grading, consistent warm tones throughout."
+        )
+    else:  # authentic
+        enhancements.append(
+            "Shot on iPhone 15 Pro, 2025 casual content creator aesthetic, "
+            "natural colors, consistent exposure throughout."
+        )
+
+    # --- 2. Camera Stability (triple-emphasis for cinematic) ---
+    if stability_mode == "cinematic":
+        enhancements.append(
+            "Static shot, stationary camera, fixed tripod. "
+            "The camera does not move. Motionless camera is fixed at the same position. "
+            "Stable horizon line, no camera drift or pan."
+        )
+    # authentic mode: no camera override (preserves handheld feel)
+
+    # --- 3. Core Anti-Morphing Keywords ---
+    anti_morph = (
+        "Smooth continuous motion throughout. Consistent subject appearance from start to finish. "
+        "Stable lighting with no flickering or color shifts. "
+        "No warping, no morphing, no sudden changes in subject geometry."
+    )
+    enhancements.append(anti_morph)
+
+    # --- 4. Spatial Anchoring ---
+    # Helps the model maintain scene coherence across frames
+    enhancements.append(
+        "Maintain clear separation between foreground subject, midground environment, "
+        "and background elements throughout the entire clip."
+    )
+
+    # --- 5. Duration-Aware Pacing ---
+    if duration_seconds <= 4:
+        enhancements.append("Single action, single moment captured. Minimal movement.")
+    elif duration_seconds <= 8:
+        enhancements.append("One to two actions maximum. Measured, deliberate pacing.")
+    else:
+        enhancements.append("Keep actions simple and sequential. No rapid transitions.")
+
+    # --- 6. Physics & Material Stability ---
+    enhancements.append(
+        "Physically accurate material behavior. "
+        "Hair, fabric, and liquid move naturally with consistent physics."
+    )
+
+    # Build the enhanced prompt: original prompt first, then stability layer
+    stability_block = "\n\n".join(enhancements)
+    enhanced = f"{prompt}\n\nVIDEO STABILITY REQUIREMENTS:\n{stability_block}"
+
+    logger.info(f"Prompt enhanced for stability (mode={stability_mode}, duration={duration_seconds}s)")
+    return enhanced
+
+
+# ============================================================================
 # MCP-NATIVE TOOL FUNCTIONS (Direct API calls, no @tool decorator)
 # ============================================================================
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
 async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, filename: str) -> list[TextContent]:
     """
     Generate image using GPT-4o (gpt-image-1) - MCP native implementation
@@ -220,6 +339,12 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
         )]
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
 async def generate_sora_video_mcp(
     prompt: str = None,
     seconds: str = "4",
@@ -227,13 +352,15 @@ async def generate_sora_video_mcp(
     filename: str = "video.mp4",
     input_reference: str = None,
     auto_analyze_image: bool = False,
-    # NEW UGC parameters:
+    # UGC parameters:
     ugc_style: str = None,
     product_name: str = None,
     platform: str = "tiktok",
     icp: str = None,
     product_features: str = None,
-    video_setting: str = None
+    video_setting: str = None,
+    # Anti-morphing stability control:
+    stability_mode: str = "auto"
 ) -> list[TextContent]:
     """
     Generate video using Sora-2 - MCP native implementation with UGC support
@@ -246,11 +373,17 @@ async def generate_sora_video_mcp(
     - Provide input_reference with path to image file
     - Set auto_analyze_image=True to analyze image with GPT-4o Vision (+$0.01)
 
-    NEW UGC Styles (50 available):
+    UGC Styles (50 available):
     - Provide ugc_style (testimonial, demo, unboxing, lifestyle, etc.)
     - Automatically builds authentic UGC prompt from templates
     - Requires product_name parameter
     - Optional: platform, icp, product_features, video_setting
+
+    Anti-Morphing Stability (stability_mode):
+    - "auto" (default): Detects UGC prompts → authentic mode, else → cinematic mode
+    - "cinematic": Maximum stability — static camera, locked shot, no drift
+    - "authentic": Preserves handheld UGC feel with subtle anti-morph keywords
+    - "off": No enhancement (raw prompt, legacy behavior)
     """
 
     # Validation: If ugc_style provided, product_name is required
@@ -306,9 +439,9 @@ async def generate_sora_video_mcp(
             # Append custom prompt if provided (combine UGC template + custom instructions)
             if custom_prompt_addition:
                 prompt += f"\n\nADDITIONAL INSTRUCTIONS:\n{custom_prompt_addition}\n"
-                print(f"✅ Built UGC prompt from '{ugc_style}' template for {platform} + custom additions", file=sys.stderr)
+                logger.success(f"Built UGC prompt from '{ugc_style}' template for {platform} + custom additions")
             else:
-                print(f"✅ Built UGC prompt from '{ugc_style}' template for {platform}", file=sys.stderr)
+                logger.success(f"Built UGC prompt from '{ugc_style}' template for {platform}")
 
         except Exception as e:
             return [TextContent(type="text", text=f"❌ Error building UGC prompt: {str(e)}")]
@@ -364,7 +497,7 @@ async def generate_sora_video_mcp(
                     text=f"❌ Error: Image file not found: {input_reference}"
                 )]
 
-            print(f"🔍 Analyzing image with GPT-4o Vision for better consistency...", file=sys.stderr)
+            logger.info("Analyzing image with GPT-4o Vision for better consistency...")
             try:
                 # Read and encode image as base64
                 with open(image_path, 'rb') as f:
@@ -399,18 +532,21 @@ async def generate_sora_video_mcp(
                 )
 
                 image_description = vision_response.choices[0].message.content.strip()
-                print(f"✅ Image analysis complete (+$0.01)", file=sys.stderr)
-                print(f"📝 Description: {image_description[:100]}...", file=sys.stderr)
+                logger.success("Image analysis complete (+$0.01)")
+                logger.debug(f"Description: {image_description[:100]}...")
 
                 # Enhance prompt with image description
                 prompt = f"{prompt}\n\nVisual reference: {image_description}"
                 analysis_cost = 0.01
 
             except Exception as e:
-                print(f"⚠️  Image analysis failed: {str(e)}, continuing with original prompt", file=sys.stderr)
+                logger.warning(f"Image analysis failed: {str(e)}, continuing with original prompt")
+
+        # Apply anti-morphing prompt enhancement
+        prompt = enhance_prompt_for_stability(prompt, stability_mode, duration_int)
 
         # Make direct HTTP API call to Sora
-        async with httpx.AsyncClient(timeout=300.0) as http_client:
+        async with httpx.AsyncClient(timeout=1200.0) as http_client:
             # Step 1: Create video generation request
             if input_reference:
                 # Image-to-video: Use multipart/form-data
@@ -554,6 +690,12 @@ async def generate_sora_video_mcp(
 # mcp__google-workspace__create_drive_file
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
 async def analyze_ugc_image_mcp(image_url: str) -> list[TextContent]:
     """
     Analyze a generated UGC image with GPT-4o Vision to extract details for consistent video generation.
@@ -641,6 +783,12 @@ async def analyze_ugc_image_mcp(image_url: str) -> list[TextContent]:
         )]
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
 async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filename: str, image_size: str = "2K") -> list[TextContent]:
     """
     Generate product image optimized for Veo 3.1 UGC video conversion using Gemini 3 Pro Image Preview.
@@ -690,15 +838,15 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
         client = genai.Client(api_key=api_key)
 
         # Generate image
-        # SDK v1.56.0 uses camelCase: aspectRatio, imageSize
-        print(f"🎨 Generating Nano Banana Pro image ({aspect_ratio}, {image_size})...", file=sys.stderr)
+        # SDK uses snake_case: aspect_ratio, image_size
+        logger.info(f"Generating Nano Banana Pro image ({aspect_ratio}, {image_size})...")
 
         response = client.models.generate_content(
             model="gemini-3-pro-image-preview",
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_modalities=["IMAGE"],
-                image_config=types.ImageConfig(aspectRatio=aspect_ratio, imageSize=image_size)
+                image_config=types.ImageConfig(aspect_ratio=aspect_ratio)
             )
         )
 
@@ -707,7 +855,7 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
 
         # Also save to disk for user reference
         image_data = image_part.inline_data.data
-        output_dir = Path("outputs/images")
+        output_dir = Path(__file__).parent.parent / "outputs" / "images"
         output_dir.mkdir(parents=True, exist_ok=True)
 
         if not filename.endswith('.png'):
@@ -752,6 +900,223 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
         )]
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
+async def generate_nano_banana_2_image_mcp(
+    prompt: str,
+    aspect_ratio: str,
+    filename: str,
+    image_size: str = "2K",
+    thinking_level: str = "none"
+) -> list[TextContent]:
+    """
+    Generate image using Nano Banana 2 (Gemini 3.1 Flash Image Preview) - Google's latest image model.
+
+    Use this tool when user requests:
+    - "Nano Banana 2 image"
+    - "Best quality Google image generation"
+    - High-resolution images up to 4K
+    - Images grounded with Google Search (real-time info)
+    - Complex multi-reference compositions (up to 14 images)
+
+    Model: gemini-3.1-flash-image-preview (Nano Banana 2)
+    Pricing: ~$0.045/image (0.5K), ~$0.067/image (1K), ~$0.101/image (2K), ~$0.151/image (4K)
+
+    Key advantages over Nano Banana Pro:
+    - Up to 14 reference images (vs 5 for Pro)
+    - Google Image Search grounding (new)
+    - Extra aspect ratios: 1:4, 4:1, 1:8, 8:1
+    - Controllable thinking levels
+    - Best all-around performance-to-cost ratio
+
+    Args:
+        prompt: Natural language image description
+        aspect_ratio: "9:16" (default), "16:9", "1:1", "1:4", "4:1", "1:8", "8:1", etc.
+        filename: Output filename (without extension, .png added automatically)
+        image_size: Resolution - "0.5K", "1K", "2K" (default), or "4K"
+        thinking_level: Reasoning depth - "none" (default), "minimal", "low", "medium", "high"
+
+    Returns:
+        Image saved to outputs/images/, also cached for Veo 3.1 UGC video generation
+    """
+
+    if not GOOGLE_GENAI_AVAILABLE:
+        return [TextContent(
+            type="text",
+            text="❌ Error: google-genai package not installed.\n\nRun: pip install google-genai"
+        )]
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="❌ Error: GEMINI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file."
+        )]
+
+    try:
+        client = genai.Client(api_key=api_key)
+
+        logger.info(f"Generating Nano Banana 2 image ({aspect_ratio}, {image_size}, thinking={thinking_level})...")
+
+        # Build config
+        config_kwargs = {
+            "response_modalities": ["IMAGE"],
+            "image_config": types.ImageConfig(aspect_ratio=aspect_ratio),
+        }
+
+        # Add image_size for resolution control
+        if image_size and image_size != "1K":
+            config_kwargs["image_config"] = types.ImageConfig(
+                aspect_ratio=aspect_ratio,
+                image_size=image_size
+            )
+
+        # Add thinking level if specified
+        if thinking_level and thinking_level != "none":
+            config_kwargs["thinking_config"] = types.ThinkingConfig(
+                thinking_level=thinking_level.upper()
+            )
+
+        response = client.models.generate_content(
+            model="gemini-3.1-flash-image-preview",
+            contents=prompt,
+            config=types.GenerateContentConfig(**config_kwargs)
+        )
+
+        # Extract the image from response
+        image_part = response.candidates[0].content.parts[0]
+
+        # Save to disk
+        image_data = image_part.inline_data.data
+        output_dir = Path(__file__).parent.parent / "outputs" / "images"
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not filename.endswith('.png'):
+            filename = f"{filename}.png"
+        output_path = output_dir / filename
+
+        if isinstance(image_data, str):
+            image_bytes = base64.b64decode(image_data)
+        else:
+            image_bytes = image_data
+
+        with open(output_path, "wb") as f:
+            f.write(image_bytes)
+
+        # Cache for Veo 3.1 pipeline
+        global _last_generated_image
+        _last_generated_image = image_part
+
+        # Cost estimate
+        cost_map = {"0.5K": "~$0.045", "1K": "~$0.067", "2K": "~$0.101", "4K": "~$0.151"}
+        cost = cost_map.get(image_size, "~$0.067")
+
+        result_text = (
+            f"✅ Nano Banana 2 Image Generated!\n\n"
+            f"**Model:** gemini-3.1-flash-image-preview (Nano Banana 2)\n"
+            f"**Resolution:** {image_size}\n"
+            f"**Aspect ratio:** {aspect_ratio}\n"
+            f"**Thinking:** {thinking_level}\n"
+            f"**Cost:** {cost}\n\n"
+            f"**Saved to:** {str(output_path)}\n\n"
+            f"✨ Image cached in memory for immediate Veo 3.1 use.\n"
+            f"✨ Supports up to 14 reference images and Google Image Search grounding.\n\n"
+            f"**Next step:** Use generate_veo_ugc_from_image to create UGC ad video"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error generating Nano Banana 2 image: {str(e)}"
+        )]
+
+
+# Fallback chain uses loguru logger configured above
+
+
+async def generate_image_with_fallback(
+    prompt: str,
+    aspect_ratio: str,
+    filename: str,
+    image_size: str = "2K",
+) -> list[TextContent]:
+    """Generate image with automatic fallback chain: Nano Banana 2 -> Nano Banana Pro -> GPT-4o"""
+
+    providers = [
+        ("Nano Banana 2", lambda: generate_nano_banana_2_image_mcp(prompt, aspect_ratio, filename, image_size=image_size)),
+        ("Nano Banana Pro", lambda: generate_nano_banana_image_mcp(prompt, aspect_ratio, filename, image_size=image_size)),
+        ("GPT-4o", lambda: generate_gpt4o_image_mcp(prompt, aspect_ratio, "high", filename)),
+    ]
+
+    last_error = None
+    for provider_name, provider_fn in providers:
+        try:
+            logger.info(f"Trying {provider_name} for image generation...")
+            result = await provider_fn()
+            logger.success(f"Image generated successfully with {provider_name}")
+            return result
+        except Exception as e:
+            logger.warning(f"{provider_name} failed: {e}, trying next provider...")
+            last_error = e
+            continue
+
+    raise last_error or Exception("All image generation providers failed")
+
+
+async def generate_video_with_fallback(
+    prompt: str,
+    seconds: str = "8",
+    orientation: str = "landscape",
+    filename: str = "video.mp4",
+    stability_mode: str = "auto",
+) -> list[TextContent]:
+    """Generate video with automatic fallback chain: Sora 2 (primary) -> Veo 3.1 (backup)"""
+
+    providers = [
+        ("Sora 2", lambda: generate_sora_video_mcp(
+            prompt=prompt,
+            seconds=seconds,
+            orientation=orientation,
+            filename=filename,
+            stability_mode=stability_mode,
+        )),
+        ("Veo 3.1", lambda: generate_veo_text_to_video_mcp(
+            prompt=prompt,
+            seconds=seconds,
+            orientation=orientation,
+            resolution="720p",
+            filename=filename,
+            stability_mode=stability_mode,
+        )),
+    ]
+
+    last_error = None
+    for provider_name, provider_fn in providers:
+        try:
+            logger.info(f"Trying {provider_name} for video generation...")
+            result = await provider_fn()
+            logger.success(f"Video generated successfully with {provider_name}")
+            return result
+        except Exception as e:
+            logger.warning(f"{provider_name} failed: {e}, trying next provider...")
+            last_error = e
+            continue
+
+    raise last_error or Exception("All video generation providers failed")
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
 async def generate_veo_text_to_video_mcp(
     prompt: str,
     seconds: str,
@@ -761,7 +1126,8 @@ async def generate_veo_text_to_video_mcp(
     negative_prompt: str = None,
     icp: str = None,
     product_features: str = None,
-    video_setting: str = None
+    video_setting: str = None,
+    stability_mode: str = "auto"
 ) -> list[TextContent]:
     """
     Generate video from text prompt using Veo 3.1 text-to-video with native audio.
@@ -828,8 +1194,8 @@ async def generate_veo_text_to_video_mcp(
         # Initialize Gemini client
         client = genai.Client(api_key=api_key)
 
-        print(f"🎬 Starting Veo 3.1 text-to-video generation...", file=sys.stderr)
-        print(f"   Duration: {seconds}s | Resolution: {resolution} | Aspect: {aspect_ratio}", file=sys.stderr)
+        logger.info("Starting Veo 3.1 text-to-video generation...")
+        logger.debug(f"Duration: {seconds}s | Resolution: {resolution} | Aspect: {aspect_ratio}")
 
         # Build config
         config = types.GenerateVideosConfig(
@@ -838,6 +1204,18 @@ async def generate_veo_text_to_video_mcp(
             duration_seconds=int(seconds),
             person_generation="allow_all"  # For text-to-video
         )
+
+        # Build negative prompt with anti-morphing defaults
+        if stability_mode != "off":
+            anti_morph_negatives = (
+                "morphing, warping, flickering, jittery motion, face drift, "
+                "geometry changes, inconsistent lighting, color shifting, "
+                "blurry transitions, unstable horizon, visual artifacts"
+            )
+            if negative_prompt:
+                negative_prompt = f"{negative_prompt}, {anti_morph_negatives}"
+            else:
+                negative_prompt = anti_morph_negatives
 
         if negative_prompt:
             config.negative_prompt = negative_prompt
@@ -855,7 +1233,10 @@ async def generate_veo_text_to_video_mcp(
 
             enhanced_section = ". ".join(enhancements)
             enhanced_prompt = f"{prompt}\n\nProduction details: {enhanced_section}"
-            print(f"   ✨ Using enhanced parameters for targeted messaging", file=sys.stderr)
+            logger.info("Using enhanced parameters for targeted messaging")
+
+        # Apply anti-morphing prompt enhancement
+        enhanced_prompt = enhance_prompt_for_stability(enhanced_prompt, stability_mode, int(seconds))
 
         # Start generation
         operation = client.models.generate_videos(
@@ -865,7 +1246,7 @@ async def generate_veo_text_to_video_mcp(
         )
 
         # Poll for completion
-        print("⏳ Video generating (this takes 11s - 6 minutes)...", file=sys.stderr)
+        logger.info("Video generating (this takes 11s - 6 minutes)...")
         poll_count = 0
 
         while not operation.done:
@@ -873,7 +1254,7 @@ async def generate_veo_text_to_video_mcp(
             operation = client.operations.get(operation)
             poll_count += 1
             if poll_count % 6 == 0:
-                print(f"   Still generating... ({poll_count * 10}s elapsed)", file=sys.stderr)
+                logger.debug(f"Still generating... ({poll_count * 10}s elapsed)")
 
         # Check if blocked by safety
         if not hasattr(operation.response, 'generated_videos') or not operation.response.generated_videos:
@@ -919,6 +1300,12 @@ async def generate_veo_text_to_video_mcp(
         )]
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
 async def generate_veo_ugc_from_image_mcp(
     image_path: str,
     ugc_style: str,
@@ -991,10 +1378,10 @@ async def generate_veo_ugc_from_image_mcp(
     # Priority: LOADED_UGC_TEMPLATES (from JSON) → Hardcoded UGC_TEMPLATES (fallback)
     if LOADED_UGC_TEMPLATES:
         UGC_TEMPLATES = LOADED_UGC_TEMPLATES
-        print(f"   Using {len(UGC_TEMPLATES)} UGC styles from memory/ugc_prompt_templates.json", file=sys.stderr)
+        logger.debug(f"Using {len(UGC_TEMPLATES)} UGC styles from memory/ugc_prompt_templates.json")
     else:
         # FALLBACK: Hardcoded templates if JSON loading failed
-        print(f"   Using hardcoded UGC templates (JSON load failed)", file=sys.stderr)
+        logger.debug("Using hardcoded UGC templates (JSON load failed)")
         UGC_TEMPLATES = {
         # ===== ORIGINAL 4 CORE STYLES =====
         "testimonial": {
@@ -1506,7 +1893,7 @@ savings celebration.""",
         client = genai.Client(api_key=api_key)
 
         # Upload image file to get File object (required for reference images from disk)
-        print(f"🖼️  Uploading reference image: {image_path}", file=sys.stderr)
+        logger.info(f"Uploading reference image: {image_path}")
 
         # Determine mime type
         mime_type, _ = mimetypes.guess_type(image_path)
@@ -1517,11 +1904,11 @@ savings celebration.""",
         with open(image_path, "rb") as f:
             image_bytes = f.read()
 
-        print(f"✅ Image loaded ({len(image_bytes)} bytes)", file=sys.stderr)
+        logger.success(f"Image loaded ({len(image_bytes)} bytes)")
 
         # Automatic image analysis if not provided and enabled
         if reference_image_description is None and auto_analyze_image:
-            print(f"🔍 Automatically analyzing image for visual consistency...", file=sys.stderr)
+            logger.info("Automatically analyzing image for visual consistency...")
             try:
                 analysis_result = await analyze_ugc_image_mcp(image_path)
                 # Extract description from TextContent response
@@ -1530,10 +1917,10 @@ savings celebration.""",
                     # Parse description after "**Description:**\n"
                     if "**Description:**" in result_text:
                         reference_image_description = result_text.split("**Description:**\n")[1].split("\n\n")[0]
-                        print(f"✅ Image analysis complete (+$0.01)", file=sys.stderr)
-                        print(f"📝 Extracted description: {reference_image_description[:100]}...", file=sys.stderr)
+                        logger.success("Image analysis complete (+$0.01)")
+                        logger.debug(f"Extracted description: {reference_image_description[:100]}...")
             except Exception as e:
-                print(f"⚠️  Image analysis failed, continuing without: {str(e)}", file=sys.stderr)
+                logger.warning(f"Image analysis failed, continuing without: {str(e)}")
                 # Continue without description (graceful degradation)
 
         # Build comprehensive N8n-style prompt with enhanced parameters
@@ -1647,10 +2034,10 @@ savings celebration.""",
 
             return comprehensive_prompt
 
-        print(f"🎬 Starting Veo 3.1 image-to-video UGC generation...", file=sys.stderr)
-        print(f"   Style: {ugc_style} | Platform: {platform} | Duration: {seconds}s", file=sys.stderr)
+        logger.info("Starting Veo 3.1 image-to-video UGC generation...")
+        logger.debug(f"Style: {ugc_style} | Platform: {platform} | Duration: {seconds}s")
         if any([icp, product_features, video_setting, reference_image_description]):
-            print(f"   ✨ Using enhanced N8n-style comprehensive prompts", file=sys.stderr)
+            logger.info("Using enhanced N8n-style comprehensive prompts")
 
         # Create image parameter using correct Google GenAI format (imageBytes in camelCase)
         image_param = types.Image(
@@ -1668,7 +2055,7 @@ savings celebration.""",
             final_prompt = build_comprehensive_prompt(retry_attempt)
 
             if retry_attempt > 0:
-                print(f"\n🔄 Retry attempt {retry_attempt + 1}/{max_retries} with modified prompt...", file=sys.stderr)
+                logger.info(f"Retry attempt {retry_attempt + 1}/{max_retries} with modified prompt...")
 
             # Generate video with image as first frame (image-to-video animation)
             operation = client.models.generate_videos(
@@ -1684,7 +2071,7 @@ savings celebration.""",
             )
 
             # Poll for completion
-            print("⏳ Video generating (1-6 minutes for image-to-video)...", file=sys.stderr)
+            logger.info("Video generating (1-6 minutes for image-to-video)...")
             poll_count = 0
 
             while not operation.done:
@@ -1692,18 +2079,18 @@ savings celebration.""",
                 operation = client.operations.get(operation)
                 poll_count += 1
                 if poll_count % 6 == 0:
-                    print(f"   Still generating... ({poll_count * 10}s elapsed)", file=sys.stderr)
+                    logger.debug(f"Still generating... ({poll_count * 10}s elapsed)")
 
             # Check result
             if hasattr(operation.response, 'generated_videos') and operation.response.generated_videos:
                 # SUCCESS! Video generated
                 if retry_attempt > 0:
-                    print(f"✅ Success on retry attempt {retry_attempt + 1}", file=sys.stderr)
+                    logger.success(f"Success on retry attempt {retry_attempt + 1}")
                 break
             else:
                 # BLOCKED by safety filters
                 if retry_attempt < max_retries - 1:
-                    print(f"⚠️  Attempt {retry_attempt + 1} blocked by safety filters, retrying with variation...", file=sys.stderr)
+                    logger.warning(f"Attempt {retry_attempt + 1} blocked by safety filters, retrying with variation...")
                 else:
                     # Final attempt failed
                     return [TextContent(
@@ -1853,7 +2240,7 @@ async def generate_veo_ugc_from_nano_banana(
 
         # Start generation - Veo 3.1 requires uploading the image as a File first
         # The Part object from Nano Banana needs to be uploaded to Google's servers
-        print("📤 Uploading image to Google's servers for Veo 3.1...", file=sys.stderr)
+        logger.info("Uploading image to Google's servers for Veo 3.1...")
 
         # Extract image data from the cached Part object
         image_data = _last_generated_image.inline_data.data
@@ -1865,7 +2252,7 @@ async def generate_veo_ugc_from_nano_banana(
         else:
             image_bytes = image_data
 
-        print(f"✅ Using cached image from Nano Banana ({len(image_bytes)} bytes)", file=sys.stderr)
+        logger.success(f"Using cached image from Nano Banana ({len(image_bytes)} bytes)")
 
         # Use the cached Part object directly from Nano Banana
         # The SDK should accept Part objects for image-to-video
@@ -1877,7 +2264,7 @@ async def generate_veo_ugc_from_nano_banana(
         )
 
         # Poll for completion (same pattern as text-to-video)
-        print("⏳ UGC video generating (this takes 11s - 6 minutes)...", file=sys.stderr)
+        logger.info("UGC video generating (this takes 11s - 6 minutes)...")
         poll_count = 0
 
         while not operation.done:
@@ -1885,7 +2272,7 @@ async def generate_veo_ugc_from_nano_banana(
             operation = client.operations.get(operation)
             poll_count += 1
             if poll_count % 6 == 0:
-                print(f"   Still generating... ({poll_count * 10}s elapsed)", file=sys.stderr)
+                logger.debug(f"Still generating... ({poll_count * 10}s elapsed)")
 
         # Check if blocked by safety
         if not hasattr(operation.response, 'generated_videos') or not operation.response.generated_videos:
@@ -2105,6 +2492,101 @@ async def list_tools() -> list[Tool]:
             }
         ),
         Tool(
+            name="generate_nano_banana_2_image",
+            description="Generate image using Nano Banana 2 (Gemini 3.1 Flash Image Preview) - Google's LATEST and best all-around image model. ~$0.067/1K, ~$0.101/2K, ~$0.151/4K. Supports 14 reference images, thinking mode, Google Image Search grounding, and extra aspect ratios (1:4, 4:1, 1:8, 8:1). Use this as the default for new image generation.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Image generation prompt with natural language description"
+                    },
+                    "aspect_ratio": {
+                        "type": "string",
+                        "description": "Aspect ratio: 1:1, 16:9, 9:16, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 21:9, 1:4, 4:1, 1:8, 8:1",
+                        "enum": ["1:1", "16:9", "9:16", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "21:9", "1:4", "4:1", "1:8", "8:1"],
+                        "default": "9:16"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .png will be added)"
+                    },
+                    "image_size": {
+                        "type": "string",
+                        "description": "Output resolution: 0.5K, 1K, 2K (default), or 4K (MUST use uppercase K)",
+                        "enum": ["0.5K", "1K", "2K", "4K"],
+                        "default": "2K"
+                    },
+                    "thinking_level": {
+                        "type": "string",
+                        "description": "Reasoning depth for complex prompts: none (default/fastest), minimal, low, medium, high (best quality but slower)",
+                        "enum": ["none", "minimal", "low", "medium", "high"],
+                        "default": "none"
+                    }
+                },
+                "required": ["prompt", "filename"]
+            }
+        ),
+        Tool(
+            name="generate_image_with_fallback",
+            description="Generate image with automatic fallback chain (Nano Banana 2 -> Pro -> GPT-4o). Use this for maximum reliability.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Image generation prompt"
+                    },
+                    "aspect_ratio": {
+                        "type": "string",
+                        "enum": ["1:1", "9:16", "16:9", "3:4", "4:3"],
+                        "description": "Aspect ratio"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename"
+                    },
+                    "image_size": {
+                        "type": "string",
+                        "enum": ["1K", "2K"],
+                        "default": "2K",
+                        "description": "Image resolution"
+                    }
+                },
+                "required": ["prompt", "aspect_ratio", "filename"]
+            }
+        ),
+        Tool(
+            name="generate_video_with_fallback",
+            description="Generate video with automatic fallback chain (Sora 2 primary -> Veo 3.1 backup). Use this for maximum reliability.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Video generation prompt with scene details"
+                    },
+                    "seconds": {
+                        "type": "string",
+                        "enum": ["4", "6", "8"],
+                        "default": "8",
+                        "description": "Video duration in seconds"
+                    },
+                    "orientation": {
+                        "type": "string",
+                        "enum": ["landscape", "portrait"],
+                        "default": "landscape",
+                        "description": "Video orientation"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename"
+                    }
+                },
+                "required": ["prompt", "filename"]
+            }
+        ),
+        Tool(
             name="analyze_ugc_image",
             description="Analyze UGC image with GPT-4o Vision for consistent Veo video generation - ~$0.01/analysis",
             inputSchema={
@@ -2276,6 +2758,31 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
                 image_size=arguments.get("image_size", "2K")
             )
 
+        elif name == "generate_nano_banana_2_image":
+            return await generate_nano_banana_2_image_mcp(
+                prompt=arguments["prompt"],
+                aspect_ratio=arguments.get("aspect_ratio", "9:16"),
+                filename=arguments["filename"],
+                image_size=arguments.get("image_size", "2K"),
+                thinking_level=arguments.get("thinking_level", "none")
+            )
+
+        elif name == "generate_image_with_fallback":
+            return await generate_image_with_fallback(
+                prompt=arguments["prompt"],
+                aspect_ratio=arguments.get("aspect_ratio", "16:9"),
+                filename=arguments["filename"],
+                image_size=arguments.get("image_size", "2K"),
+            )
+
+        elif name == "generate_video_with_fallback":
+            return await generate_video_with_fallback(
+                prompt=arguments["prompt"],
+                seconds=arguments.get("seconds", "8"),
+                orientation=arguments.get("orientation", "landscape"),
+                filename=arguments["filename"],
+            )
+
         elif name == "analyze_ugc_image":
             return await analyze_ugc_image_mcp(
                 image_url=arguments["image_url"]
@@ -2334,11 +2841,10 @@ async def main():
 
 
 if __name__ == "__main__":
-    print("🚀 Marketing Tools MCP Server starting...", file=sys.stderr)
-    print(f"   Environment loaded from: {env_path}", file=sys.stderr)
-    print(f"   OpenAI API Key: {'✓ Found' if os.getenv('OPENAI_API_KEY') else '✗ Missing'}", file=sys.stderr)
-    print(f"   Gemini API Key: {'✓ Found' if os.getenv('GEMINI_API_KEY') else '✗ Missing'}", file=sys.stderr)
-    print(f"   Google GenAI: {'✓ Available' if GOOGLE_GENAI_AVAILABLE else '✗ Not installed'}", file=sys.stderr)
-    print(f"   Google Drive: {'✓ Available' if GOOGLE_DRIVE_AVAILABLE else '✗ Not installed'}", file=sys.stderr)
-    print("", file=sys.stderr)
+    logger.info("Marketing Tools MCP Server starting...")
+    logger.debug(f"Environment loaded from: {env_path}")
+    logger.info(f"OpenAI API Key: {'Found' if os.getenv('OPENAI_API_KEY') else 'Missing'}")
+    logger.info(f"Gemini API Key: {'Found' if os.getenv('GEMINI_API_KEY') else 'Missing'}")
+    logger.info(f"Google GenAI: {'Available' if GOOGLE_GENAI_AVAILABLE else 'Not installed'}")
+    logger.info(f"Google Drive: {'Available' if GOOGLE_DRIVE_AVAILABLE else 'Not installed'}")
     asyncio.run(main())
