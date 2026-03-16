@@ -19,7 +19,7 @@ tools:
   - mcp__google-workspace__create_spreadsheet
   - mcp__bright-data__search_engine
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__get_doc_content
   - mcp__google-workspace__search_drive_files
 skills:
@@ -426,7 +426,7 @@ Pillar 4: Support
 
 **Before writing any proposal:**
 
-1. **Perplexity Research** — Use `mcp__perplexity__perplexity_research` to:
+1. **Perplexity Research** — Use `mcp__perplexity__perplexity_reason` to:
    - Validate the client's industry challenges with current data and citations
    - Find competitor pricing benchmarks to make pricing defensible
    - Source recent analyst reports to strengthen ROI claims

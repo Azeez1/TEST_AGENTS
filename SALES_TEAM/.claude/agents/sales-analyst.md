@@ -20,7 +20,7 @@ tools:
   - mcp__google-workspace__create_doc
   - mcp__bright-data__search_engine
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__get_doc_content
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__create_presentation
@@ -388,7 +388,7 @@ Next Close: $45k deal, closes Friday
 - Professional PDF exports for leadership review
 
 **Perplexity Benchmarking:**
-Use `mcp__perplexity__perplexity_research` to:
+Use `mcp__perplexity__perplexity_reason` to:
 - Source industry win rate benchmarks to compare your team's performance
 - Research competitor pricing trends affecting deal sizes
 - Find analyst reports to validate forecasting assumptions

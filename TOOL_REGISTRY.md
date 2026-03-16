@@ -23,9 +23,9 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 | **Image Analysis (UGC Consistency)** ⭐ **NEW** | N/A | `mcp__marketing-tools__analyze_ugc_image` | N/A | 1. MCP only (GPT-4o Vision) | visual-designer, video-producer | ✅ Active |
 | **Design-Focused Graphics** | `canvas-design` (50+ fonts, PNG/PDF) | N/A | N/A | 1. Skill only | visual-designer (PRIMARY), pdf-specialist, social-media-manager, presentation-designer | ✅ Active |
 | **Algorithmic Art** | `algorithmic-art` (p5.js, generative) | N/A | N/A | 1. Skill only | visual-designer, social-media-manager | ✅ Active |
-| **Video Generation (General)** | N/A | `mcp__marketing-tools__generate_sora_video` | `sora_video.py` | 1. MCP → 2. Custom Tool (multi-clip stitching) | video-producer | ✅ Active |
+| **Video Generation (General + UGC)** | N/A | `mcp__marketing-tools__generate_sora_video` | `sora_video.py` | 1. MCP → 2. Custom Tool (multi-clip stitching) | video-producer (PRIMARY for UGC + general) | ✅ Active |
 | **Video Generation (Text-to-Video)** | N/A | `mcp__marketing-tools__generate_veo_text_to_video` | N/A | 1. MCP only (Veo 3.1) | video-producer | ✅ Active |
-| **Video Generation (Image-to-Video UGC)** | N/A | `mcp__marketing-tools__generate_veo_ugc_from_image` | N/A | 1. MCP only (Veo 3.1 + reference image) | video-producer (PRIMARY for UGC) | ✅ Active |
+| **Video Generation (Image-to-Video UGC Backup)** | N/A | `mcp__marketing-tools__generate_veo_ugc_from_image` | N/A | 1. MCP only (Veo 3.1 + reference image) | video-producer (BACKUP for UGC) | ✅ Active |
 | **Slack GIFs** | `slack-gif-creator` (animated GIFs) | N/A | N/A | 1. Skill only | social-media-manager | ✅ Active |
 | **System Diagrams** | `flow-diagram` (Mermaid, interactive HTML) | N/A | N/A | 1. Skill only | system-architect, technical-writer | ✅ Active |
 | **Themed Artifacts** | `theme-factory` (10 pre-set themes) | N/A | N/A | 1. Skill only | presentation-designer, landing-page-specialist | ✅ Active |
@@ -33,7 +33,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 **Usage Notes:**
 - **canvas-design ownership:** visual-designer is PRIMARY owner; others use for specialized cases only
 - **Video stitching:** sora_video.py custom tool handles multi-clip workflows MCP can't do
-- ⭐ **UGC Workflow (3 Options):** Nano Banana (visual-designer) creates product images → Optional: analyze_ugc_image for consistency → Veo 3.1 (video-producer) converts to UGC video ads
+- ⭐ **UGC Workflow:** Sora 2 is PRIMARY for UGC video generation (50 styles, $0.10/sec). Veo 3.1 is BACKUP (use when Sora fails or native audio is required)
 
 **UGC Workflow Options:**
 
@@ -47,7 +47,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
   - **Enhanced Parameters (Optional):** icp, product_features, video_setting, reference_image_description - For targeted messaging and better quality
   - **50+ UGC Styles:** demo (recommended), tutorial, how_to, before_after, first_time, morning_routine, product_showcase, problem_solving, hack, haul, honest_review, asmr, pov, satisfying, luxury, budget_friendly, and 34+ more - See [ugc_prompt_templates.json](MARKETING_TEAM/memory/ugc_prompt_templates.json) for complete list
   - **3 Platforms:** TikTok (9:16, 6-8s), Instagram (9:16, 8s), Facebook (16:9, 8s)
-  - **Veo 3.1 is REQUIRED:** Only model supporting image-to-video for UGC (not Sora)
+  - **Sora 2 is PRIMARY:** Use Sora 2 first for all UGC (50 styles, 7.5x cheaper). Veo 3.1 is backup when Sora fails or native audio is needed
 
 **Expert-Optimized Workflow (Agent Handoff):**
   1. **visual-designer** creates product image via Nano Banana ($0.039)

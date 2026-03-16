@@ -18,7 +18,7 @@ tools:
   - path_validator
   - mcp__perplexity__perplexity_ask
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__bright-data__scrape_as_markdown
   - mcp__bright-data__search_engine
   - mcp__google-workspace__create_doc

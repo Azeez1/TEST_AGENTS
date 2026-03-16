@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "framework": "LLAR_1_12",
-  "last_updated": "2025-12-14",
-  "description": "Layered Language Agent Reasoning governance framework for 59-agent multi-team system",
+  "last_updated": "2026-03-15",
+  "description": "Layered Language Agent Reasoning governance framework for 63-agent multi-team system",
 
   "routing": {
     "direct_llm": {
@@ -47,7 +47,8 @@
       "groundedness": "All claims traceable to source material",
       "uniqueness": "No duplicate outputs",
       "format": "Output matches expected schema/format",
-      "hallucination": "No fabricated facts or citations"
+      "hallucination": "No fabricated facts or citations",
+      "error_transparency": "All errors logged to open_issues with structured error schema — no silent suppression"
     },
     "retry_limit": 2,
     "fallback_required": true,
@@ -76,6 +77,40 @@
       "update_trigger": "Task completion with learnings",
       "retention": "Indefinite for preferences/goals, 90 days for strategies"
     }
+  },
+
+  "case_facts": {
+    "enabled": true,
+    "schema": {
+      "required_fields": ["workflow_id", "workflow_type", "current_stage", "completed_stages", "transactional_data", "open_issues", "constraints"],
+      "transactional_data_fields": ["amounts", "dates", "identifiers", "counts"],
+      "checkpoint_triggers": ["stage_completion", "agent_handoff", "error_recovery"]
+    },
+    "persistence": {
+      "location": "{TEAM}/memory/active_workflows/{workflow_id}_case_facts.json",
+      "survives_compaction": true,
+      "cleanup_after_days": 30
+    },
+    "placement_rule": "Case facts block MUST be placed at the TOP of context (after agent definition), never in the middle. This counters the 'lost in the middle' effect."
+  },
+
+  "structured_errors": {
+    "enabled": true,
+    "schema": {
+      "required_fields": ["error_id", "timestamp", "workflow_id", "source", "failure_type", "attempted_action", "partial_results", "alternatives", "escalation_level"],
+      "failure_types": ["tool_failure", "validation_failure", "timeout", "hallucination_detected", "missing_input", "boundary_violation", "circuit_breaker_tripped"],
+      "escalation_levels": ["team_orchestrator", "supervisor", "user"]
+    },
+    "logging": {
+      "team_log": "{TEAM}/memory/error_log.json",
+      "supervisor_log": ".claude/memory/supervisor_error_log.json",
+      "max_entries": 50
+    },
+    "anti_patterns": [
+      "NEVER use sentiment analysis as an escalation trigger",
+      "NEVER use self-reported confidence scores for decisions",
+      "NEVER silently suppress errors — always log to open_issues"
+    ]
   },
 
   "evaluation": {
@@ -170,6 +205,10 @@
   "escalation_paths": {
     "intra_team": "Team orchestrator handles",
     "cross_team": "Supervisor adjudicates",
-    "unresolved": "Escalate to user"
+    "unresolved": "Escalate to user",
+    "triggers": {
+      "transactional_data_drift": "Escalate when financial amounts change between stages without explicit justification in key_decisions",
+      "coverage_regression": "Escalate when addressed requirement count decreases between pipeline stages"
+    }
   }
 }

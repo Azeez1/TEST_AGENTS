@@ -20,7 +20,7 @@ tools:
   - mcp__bright-data__search_engine
   - mcp__bright-data__scrape_as_markdown
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__read_sheet_values
 skills:
@@ -498,7 +498,7 @@ Use `mcp__perplexity__perplexity_search` to:
 - Find current competitive messaging to differentiate against
 - Identify trending objections so scripts can pre-empt them
 
-Use `mcp__perplexity__perplexity_research` for deeper campaign intelligence:
+Use `mcp__perplexity__perplexity_reason` for deeper campaign intelligence:
 - Full industry landscape analysis before a new vertical push
 - Competitive weakness research to feed into differentiation messaging
 - Buyer persona research for new ICP segments

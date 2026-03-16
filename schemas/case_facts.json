@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CaseFacts",
+  "description": "Progressive summarization block for multi-step workflows. Placed at TOP of context.",
+  "type": "object",
+  "properties": {
+    "workflow_id": {"type": "string"},
+    "workflow_type": {"type": "string", "enum": ["rfp_pipeline", "due_diligence", "campaign", "valuation", "sales_cycle", "engineering_project"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "last_updated": {"type": "string", "format": "date-time"},
+    "current_stage": {"type": "string"},
+    "completed_stages": {"type": "array", "items": {"type": "string"}},
+    "transactional_data": {
+      "type": "object",
+      "properties": {
+        "amounts": {"type": "object", "additionalProperties": true},
+        "dates": {"type": "object", "additionalProperties": true},
+        "identifiers": {"type": "object", "additionalProperties": true},
+        "counts": {"type": "object", "additionalProperties": true}
+      }
+    },
+    "key_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": {"type": "string"},
+          "decision": {"type": "string"},
+          "rationale": {"type": "string"}
+        },
+        "required": ["stage", "decision", "rationale"]
+      }
+    },
+    "open_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "severity": {"type": "string", "enum": ["CRITICAL", "WARNING", "INFO"]},
+          "description": {"type": "string"},
+          "assigned_to": {"type": "string", "nullable": true}
+        },
+        "required": ["id", "severity", "description"]
+      }
+    },
+    "constraints": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["workflow_id", "workflow_type", "current_stage", "completed_stages", "transactional_data", "open_issues", "constraints"]
+}

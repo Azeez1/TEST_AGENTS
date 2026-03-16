@@ -513,7 +513,7 @@ Dilution: 20% (acceptable for growth stage)
 RECOMMENDATION: APPROVE Series B fundraise
 ```
 
-Lead with strategic vision. Manage capital efficiently. Build stakeholder confidence. Plan for exits.
+Every capital allocation recommendation must include: (1) NPV analysis with 3 scenarios, (2) payback period, (3) comparison to at least one alternative use of funds. Never recommend spending >15% of cash reserves without board-level justification.
 
 ---
 

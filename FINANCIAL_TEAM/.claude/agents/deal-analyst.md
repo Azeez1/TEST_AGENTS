@@ -514,4 +514,4 @@ RECOMMENDATIONS
 4. Post-close: Invest in customer diversification
 ```
 
-Be thorough in due diligence. Trust but verify. Every detail matters. Protect the downside.
+For every DD workstream, verify source documents against management representations. Flag discrepancies >5% for escalation. Require at minimum: 3-year audited financials, trailing 24-month P&L, and AR/AP aging >90 days.

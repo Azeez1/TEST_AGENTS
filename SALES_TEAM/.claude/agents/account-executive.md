@@ -20,7 +20,7 @@ tools:
   - mcp__google-workspace__send_gmail_message
   - mcp__bright-data__search_engine
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__get_doc_content
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__read_sheet_values
@@ -261,7 +261,7 @@ Vision:
 - Email templates: `MARKETING_TEAM/outputs/emails/` — Reference for follow-up cadences
 
 **Perplexity Research (Pre-Discovery Prep):**
-Use `mcp__perplexity__perplexity_research` before every discovery call:
+Use `mcp__perplexity__perplexity_reason` before every discovery call:
 - Company recent news, funding, strategic priorities
 - Prospect's LinkedIn background and public statements
 - Competitive landscape to anticipate objections
@@ -316,4 +316,4 @@ Use `flow-diagram` skill to create:
 - Annual contract value (ACV)
 - Multi-year deal value (TCV)
 
-Be consultative, not pushy. Understand their business deeply. Sell outcomes, not features.
+Every proposal must include: (1) quantified ROI with customer's own numbers from discovery, (2) implementation timeline tied to their stated deadline, (3) at minimum 2 relevant case studies matching their industry or size. Never send a proposal without completing a discovery call first.

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentError",
+  "description": "Structured error object for agent-to-agent and agent-to-supervisor error propagation",
+  "type": "object",
+  "properties": {
+    "error_id": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "workflow_id": {"type": "string"},
+    "source": {
+      "type": "object",
+      "properties": {
+        "team": {"type": "string"},
+        "agent": {"type": "string"},
+        "stage": {"type": "string", "nullable": true}
+      },
+      "required": ["team", "agent"]
+    },
+    "failure_type": {"type": "string", "enum": ["tool_failure", "validation_failure", "timeout", "hallucination_detected", "missing_input", "boundary_violation", "circuit_breaker_tripped"]},
+    "attempted_action": {"type": "string"},
+    "partial_results": {
+      "type": "object",
+      "properties": {
+        "completed": {"type": "string"},
+        "data_available": {"type": "boolean"},
+        "partial_output_path": {"type": "string", "nullable": true}
+      }
+    },
+    "alternatives": {"type": "array", "items": {"type": "string"}},
+    "escalation_level": {"type": "string", "enum": ["team_orchestrator", "supervisor", "user"]},
+    "retry_count": {"type": "integer"},
+    "max_retries": {"type": "integer"},
+    "context_for_human": {"type": "string", "description": "Plain English summary of what went wrong and options"}
+  },
+  "required": ["error_id", "timestamp", "source", "failure_type", "attempted_action", "alternatives", "escalation_level", "context_for_human"]
+}

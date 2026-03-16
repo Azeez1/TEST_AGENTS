@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VideoGenerationResult",
+  "description": "Standard output schema for all video generation MCP tools",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["success", "error"]},
+    "model": {"type": "string", "description": "Model used (sora-2, veo-3.1)"},
+    "video_path": {"type": "string", "nullable": true},
+    "prompt": {"type": "string"},
+    "duration_seconds": {"type": "integer"},
+    "resolution": {"type": "string"},
+    "orientation": {"type": "string", "enum": ["portrait", "landscape"]},
+    "has_audio": {"type": "boolean"},
+    "cost_usd": {"type": "number"},
+    "stability_mode": {"type": "string", "nullable": true},
+    "error_message": {"type": "string", "nullable": true},
+    "message": {"type": "string"}
+  },
+  "required": ["status", "model", "cost_usd", "message"]
+}

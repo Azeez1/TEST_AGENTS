@@ -19,7 +19,7 @@ tools:
   - mcp__bright-data__search_engine_batch
   - mcp__perplexity__perplexity_ask
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__create_drive_file
 skills:

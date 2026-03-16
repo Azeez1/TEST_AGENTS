@@ -117,6 +117,9 @@ temp_*
 tmpclaude-*
 tmpclaude-*-cwd
 
+# Hook audit logs
+.claude/hooks/logs/
+
 # Test artifacts
 test.txt
 _ul

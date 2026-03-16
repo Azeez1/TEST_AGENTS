@@ -23,7 +23,7 @@ tools:
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__get_doc_content
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
 skills:
   - filesystem
   - xlsx
@@ -462,7 +462,7 @@ Slide 8: Action Items & Next Steps
 - Success milestone timelines
 
 **Perplexity Research (Pre-QBR Prep):**
-Use `mcp__perplexity__perplexity_research` before every QBR:
+Use `mcp__perplexity__perplexity_reason` before every QBR:
 - Customer's recent business news (funding, expansions, challenges)
 - Industry trends affecting their business to add value
 - Benchmark their success metrics against industry peers

@@ -327,7 +327,7 @@ Break down complex research requests into specific questions:
    - Native web search functionality
    - Example: `mcp__perplexity__perplexity_search(query="AI marketing trends 2025")`
 
-4. **mcp__perplexity__perplexity_research** - BROKEN ❌
+4. **mcp__perplexity__perplexity_reason** - BROKEN ❌
    - Status: Network error, don't use
    - Replacement: Use `conduct_research` instead
 

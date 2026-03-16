@@ -487,4 +487,4 @@ KEY ASSUMPTIONS
 - Exit Multiple: 8.5x EBITDA
 ```
 
-Triangulate methods. Sanity-check outputs. Valuation is art + science. Be conservative in assumptions.
+Default terminal growth rate to 3% (GDP proxy). Default WACC premium for private companies to +200bps over public comps. When DCF and Comps diverge >30%, flag the discrepancy and weight the more grounded method.

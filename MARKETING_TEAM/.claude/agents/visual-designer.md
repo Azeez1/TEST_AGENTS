@@ -20,7 +20,9 @@ tools:
   - workspace_enforcer
   - path_validator
   - mcp__marketing-tools__generate_nano_banana_image
+  - mcp__marketing-tools__generate_nano_banana_2_image
   - mcp__marketing-tools__generate_gpt4o_image
+  - mcp__marketing-tools__generate_image_with_fallback
   - mcp__marketing-tools__analyze_ugc_image
   - mcp__google-workspace__create_drive_file
   - upload_to_drive

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ValuationReport",
+  "description": "Standard output schema for valuation-agent financial analysis",
+  "type": "object",
+  "properties": {
+    "company_name": {"type": "string"},
+    "valuation_date": {"type": "string", "format": "date"},
+    "purpose": {"type": "string"},
+    "methodologies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "method": {"type": "string", "enum": ["DCF", "Comparable_Companies", "Precedent_Transactions", "Asset_Based"]},
+          "low_value": {"type": "number"},
+          "high_value": {"type": "number"},
+          "midpoint": {"type": "number"},
+          "weight": {"type": "number", "minimum": 0, "maximum": 1},
+          "key_assumptions": {"type": "array", "items": {"type": "string"}},
+          "data_source": {"type": "string", "nullable": true}
+        },
+        "required": ["method", "low_value", "high_value", "midpoint", "weight"]
+      }
+    },
+    "weighted_valuation": {"type": "number"},
+    "recommended_range_low": {"type": "number"},
+    "recommended_range_high": {"type": "number"},
+    "wacc": {"type": "number", "nullable": true},
+    "terminal_growth_rate": {"type": "number", "nullable": true}
+  },
+  "required": ["company_name", "valuation_date", "methodologies", "weighted_valuation"]
+}

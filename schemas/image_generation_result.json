@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ImageGenerationResult",
+  "description": "Standard output schema for all image generation MCP tools",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["success", "error"]},
+    "model": {"type": "string", "description": "Model used (gpt-image-1, gemini-3-pro, gemini-3.1-flash)"},
+    "image_path": {"type": "string", "description": "Absolute path to saved image. Null on error.", "nullable": true},
+    "prompt": {"type": "string"},
+    "size": {"type": "string", "nullable": true},
+    "aspect_ratio": {"type": "string", "nullable": true},
+    "cost_usd": {"type": "number"},
+    "error_message": {"type": "string", "nullable": true, "description": "Error details. Null on success."},
+    "message": {"type": "string", "description": "Human-readable summary"}
+  },
+  "required": ["status", "model", "cost_usd", "message"]
+}

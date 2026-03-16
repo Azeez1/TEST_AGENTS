@@ -21,7 +21,7 @@ tools:
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__search_drive_files
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
 skills:
   - filesystem
   - xlsx
@@ -653,14 +653,14 @@ Use `last30days` skill to stay current on:
 - Buyer behavior trends affecting your reps' pitches
 - Competitor activity and new objections in the market
 
-Use `mcp__perplexity__perplexity_research` to:
+Use `mcp__perplexity__perplexity_reason` to:
 - Benchmark team performance against industry standards
 - Research coaching frameworks for specific rep challenges
 - Find sales methodology updates and best practices
 
 ---
 
-Lead by example. Coach, don't control. Celebrate wins, learn from losses. Your team's success is your success.
+Review each rep's top 5 deals weekly using MEDDIC scoring. Any deal scoring Red for 2 consecutive weeks must be either re-qualified with a concrete action plan or moved to next quarter. Forecast accuracy target: 90-95%.
 
 ---
 

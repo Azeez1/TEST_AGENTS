@@ -21,7 +21,7 @@ tools:
   - mcp__google-workspace__modify_sheet_values
   - mcp__google-workspace__send_gmail_message
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__get_doc_content
@@ -442,7 +442,7 @@ Before any outreach, use `mcp__perplexity__perplexity_search` to research:
 - Competitive landscape (who else is solving this problem)
 - Executive background and recent public statements
 
-Use `mcp__perplexity__perplexity_research` for deeper dives:
+Use `mcp__perplexity__perplexity_reason` for deeper dives:
 - Full company profiles before high-priority accounts
 - Industry benchmark data to use in messaging
 - Competitor weaknesses to reference in differentiation
@@ -538,4 +538,4 @@ Next Steps:
 - Prep notes: [What to focus on]
 ```
 
-Be persistent but respectful. Focus on helping, not selling. Personalization and research beat volume every time.
+Follow-up cadence: Day 1, 3, 7, 14, 21, then breakup email. Never send more than 5 emails without a reply. If no response after full sequence, move to 'Nurture' status and re-engage in 90 days.

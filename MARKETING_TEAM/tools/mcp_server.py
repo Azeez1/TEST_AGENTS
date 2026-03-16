@@ -2368,7 +2368,7 @@ async def list_tools() -> list[Tool]:
     return [
         Tool(
             name="generate_gpt4o_image",
-            description="Generate high-quality image using GPT-4o (gpt-image-1) - latest multimodal model with superior text rendering",
+            description="Generate image with GPT-4o (gpt-image-1). BEST FOR: Images requiring readable embedded text, typography, logos, or text overlays. ~$0.04-0.08/image. DO NOT USE for UGC product images (use generate_nano_banana_image for better Sora video conversion). DO NOT USE as default general-purpose image gen (use generate_nano_banana_2_image — cheaper and newer).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2398,7 +2398,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_sora_video",
-            description="Generate video using OpenAI's Sora-2 model ($0.10/second, 720p) - supports text-to-video, image-to-video with GPT-4o Vision analysis, AND 50 UGC styles",
+            description="PRIMARY UGC & VIDEO TOOL: Generate video using Sora 2 ($0.10/sec, 720p). BEST FOR: All UGC ad videos (50 styles), text-to-video, and image-to-video with GPT-4o Vision analysis. Use this FIRST for any video generation including UGC. 7.5x cheaper than Veo. DO NOT USE when native audio/dialogue is critical (use generate_veo_text_to_video). If Sora fails, fall back to generate_veo_ugc_from_image for UGC or generate_veo_text_to_video for non-UGC.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2463,7 +2463,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_nano_banana_image",
-            description="Generate image using Nano Banana Pro (Gemini 3 Pro Image Preview) - ~$0.134/image (1K/2K), ~$0.24/image (4K), excellent character consistency, optimized for Veo 3.1 image-to-video",
+            description="Generate image via Gemini 3 Pro (Nano Banana Pro). BEST FOR: Product images for Sora UGC video conversion, or when character consistency across multiple images is critical. ~$0.134/image. DO NOT USE as default — prefer generate_nano_banana_2_image (newer, cheaper, more features). DO NOT USE for text-heavy images (use generate_gpt4o_image).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2493,7 +2493,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_nano_banana_2_image",
-            description="Generate image using Nano Banana 2 (Gemini 3.1 Flash Image Preview) - Google's LATEST and best all-around image model. ~$0.067/1K, ~$0.101/2K, ~$0.151/4K. Supports 14 reference images, thinking mode, Google Image Search grounding, and extra aspect ratios (1:4, 4:1, 1:8, 8:1). Use this as the default for new image generation.",
+            description="DEFAULT image generation tool. Gemini 3.1 Flash (Nano Banana 2). BEST FOR: All general-purpose image generation — cheapest (~$0.067/1K), newest model, supports 14 reference images, thinking mode, and extra aspect ratios. DO NOT USE for images requiring precise embedded text rendering (use generate_gpt4o_image). DO NOT USE when you need specific Gemini Pro character consistency for UGC (use generate_nano_banana_image).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2529,7 +2529,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_image_with_fallback",
-            description="Generate image with automatic fallback chain (Nano Banana 2 -> Pro -> GPT-4o). Use this for maximum reliability.",
+            description="Reliability wrapper: Tries Nano Banana 2, falls back to Pro, then GPT-4o if APIs fail. USE ONLY for batch generation of 5+ images or production pipelines where reliability matters. For single images, call generate_nano_banana_2_image directly — faster without fallback overhead. DO NOT USE for UGC product images needing specific model control (call the specific tool directly).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2558,7 +2558,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_video_with_fallback",
-            description="Generate video with automatic fallback chain (Sora 2 primary -> Veo 3.1 backup). Use this for maximum reliability.",
+            description="Reliability wrapper: Tries Sora 2, falls back to Veo 3.1 if Sora fails. USE ONLY for batch video generation or production pipelines where reliability matters. For single videos, call generate_sora_video directly. DO NOT USE for UGC ads (use generate_sora_video directly for full UGC parameter control).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2588,7 +2588,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="analyze_ugc_image",
-            description="Analyze UGC image with GPT-4o Vision for consistent Veo video generation - ~$0.01/analysis",
+            description="Analyze product image with GPT-4o Vision for consistent video generation. INTERMEDIATE STEP in UGC workflow: extracts visual details (colors, shapes, textures) for Sora/Veo consistency. ~$0.01/analysis. NOTE: generate_sora_video has built-in auto_analyze_image=True, so you only need this tool if you want to inspect or modify the analysis before video generation. DO NOT USE standalone — returns text description, not an image or video.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2602,7 +2602,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_veo_text_to_video",
-            description="Generate video from text using Veo 3.1 ($0.75/second, 720p/1080p, native audio with dialogue and sound effects)",
+            description="Generate video from text via Veo 3.1. BEST FOR: High-quality text-to-video with native dialogue, sound effects, and ambient audio. $0.75/sec. USE when you need audio in the video or cinematic quality. DO NOT USE for UGC ads (use generate_sora_video as primary). DO NOT USE for budget videos where audio isn't needed (use generate_sora_video at $0.10/sec). NOTE: 1080p only available for 8-second videos.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2654,7 +2654,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_veo_ugc_from_image",
-            description="PRIMARY UGC TOOL: Generate authentic UGC-style ad video from product image using Veo 3.1 image-to-video ($0.75/second, native audio, 4 styles, 3 platforms)",
+            description="BACKUP UGC TOOL: Generate UGC-style ad video from product image using Veo 3.1 image-to-video ($0.75/sec, native audio, 4 styles, 3 platforms). Use ONLY when Sora 2 fails or when native audio/dialogue in UGC is specifically required. For all other UGC, use generate_sora_video FIRST (cheaper, faster). Requires a product image as input.",
             inputSchema={
                 "type": "object",
                 "properties": {

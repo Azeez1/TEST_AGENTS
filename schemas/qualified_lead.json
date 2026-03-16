@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QualifiedLead",
+  "description": "Standard schema for SDR to AE lead handoff",
+  "type": "object",
+  "properties": {
+    "company_name": {"type": "string"},
+    "contact_name": {"type": "string"},
+    "contact_title": {"type": "string"},
+    "contact_email": {"type": "string", "nullable": true},
+    "contact_phone": {"type": "string", "nullable": true},
+    "company_size": {"type": "string", "nullable": true},
+    "industry": {"type": "string", "nullable": true},
+    "qualification_framework": {"type": "string", "enum": ["BANT", "MEDDIC", "CHAMP"]},
+    "budget": {"type": "string", "nullable": true, "description": "Often unknown early in process"},
+    "authority": {"type": "string", "nullable": true},
+    "need": {"type": "string"},
+    "timeline": {"type": "string", "nullable": true},
+    "pain_points": {"type": "array", "items": {"type": "string"}},
+    "competitor_mentions": {"type": "array", "items": {"type": "string"}, "nullable": true},
+    "lead_score": {"type": "integer", "minimum": 1, "maximum": 100},
+    "source": {"type": "string", "description": "How the lead was generated"},
+    "next_steps": {"type": "string"}
+  },
+  "required": ["company_name", "contact_name", "qualification_framework", "need", "lead_score", "source", "next_steps"]
+}

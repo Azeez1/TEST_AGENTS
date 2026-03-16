@@ -20,7 +20,7 @@ tools:
   - mcp__google-workspace__create_doc
   - mcp__google-workspace__send_gmail_message
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_research
+  - mcp__perplexity__perplexity_reason
   - mcp__bright-data__scrape_as_markdown
   - mcp__claude-in-chrome__navigate
   - mcp__claude-in-chrome__read_page

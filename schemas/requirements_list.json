@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RequirementsList",
+  "description": "Standard output schema for rfp-agent requirement extraction",
+  "type": "object",
+  "properties": {
+    "rfp_title": {"type": "string"},
+    "total_requirements": {"type": "integer"},
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "description": "e.g., R-001, SOO 3.1.1"},
+          "text": {"type": "string", "description": "VERBATIM from RFP"},
+          "priority": {"type": "string", "enum": ["MUST", "SHALL", "SHOULD", "MAY", "OPTIONAL"]},
+          "category": {"type": "string"},
+          "page_citation": {"type": "integer", "nullable": true},
+          "section_l_mapping": {"type": "string", "nullable": true},
+          "section_m_mapping": {"type": "string", "nullable": true},
+          "section_c_mapping": {"type": "string", "nullable": true}
+        },
+        "required": ["id", "text", "priority", "category"]
+      }
+    }
+  },
+  "required": ["rfp_title", "total_requirements", "requirements"]
+}
