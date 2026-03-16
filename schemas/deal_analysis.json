@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DealAnalysis",
+  "description": "Deal-analyst to cfo-agent handoff. Contains due diligence findings, EBITDA adjustments, working capital analysis, LBO model, and red flags.",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["completed", "in_progress", "blocked"]},
+    "target_company": {"type": "string"},
+    "industry": {"type": "string"},
+    "analysis_date": {"type": "string", "format": "date"},
+    "ebitda_analysis": {
+      "type": "object",
+      "properties": {
+        "reported_ebitda": {"type": "number"},
+        "adjustments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": {"type": "string"},
+              "amount": {"type": "number"},
+              "type": {"type": "string", "enum": ["add_back", "remove", "normalize"]},
+              "rationale": {"type": "string"}
+            },
+            "required": ["item", "amount", "type", "rationale"]
+          }
+        },
+        "adjusted_ebitda": {"type": "number"}
+      },
+      "required": ["reported_ebitda", "adjustments", "adjusted_ebitda"]
+    },
+    "working_capital": {
+      "type": "object",
+      "properties": {
+        "historical_average": {"type": "number"},
+        "current": {"type": "number"},
+        "target": {"type": "number"},
+        "adjustment_required": {"type": "number"}
+      },
+      "required": ["historical_average", "current", "target"]
+    },
+    "revenue_quality": {
+      "type": "object",
+      "properties": {
+        "recurring_percentage": {"type": "number", "minimum": 0, "maximum": 100},
+        "customer_concentration_top5": {"type": "number", "minimum": 0, "maximum": 100, "description": "Revenue % from top 5 customers. >50% = concentration risk"},
+        "churn_rate": {"type": "number", "nullable": true},
+        "growth_rate_3yr_cagr": {"type": "number", "nullable": true}
+      },
+      "required": ["recurring_percentage", "customer_concentration_top5"]
+    },
+    "lbo_model": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "purchase_price": {"type": "number"},
+        "debt_financing": {"type": "number"},
+        "equity_required": {"type": "number"},
+        "exit_value_year_5": {"type": "number"},
+        "moic": {"type": "number", "description": "Multiple on Invested Capital"},
+        "irr": {"type": "number", "description": "Internal Rate of Return as decimal (0.25 = 25%)"}
+      },
+      "required": ["purchase_price", "equity_required", "moic", "irr"]
+    },
+    "red_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "issue": {"type": "string"},
+          "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+          "financial_impact": {"type": "string"},
+          "mitigation": {"type": "string", "nullable": true}
+        },
+        "required": ["issue", "severity", "financial_impact"]
+      }
+    },
+    "recommendation": {"type": "string", "enum": ["proceed", "proceed_with_conditions", "pass", "needs_more_data"]},
+    "recommendation_rationale": {"type": "string"},
+    "files_generated": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file_path": {"type": "string"},
+          "type": {"type": "string", "enum": ["spreadsheet", "presentation", "report", "model"]}
+        },
+        "required": ["file_path", "type"]
+      }
+    }
+  },
+  "required": ["status", "target_company", "industry", "analysis_date", "ebitda_analysis", "revenue_quality", "red_flags", "recommendation", "recommendation_rationale"]
+}

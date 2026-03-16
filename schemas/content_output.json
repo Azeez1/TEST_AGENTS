@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContentOutput",
+  "description": "Copywriter to editor handoff. Contains the created content and metadata for review.",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["completed", "draft", "requires_input"]},
+    "title": {"type": "string"},
+    "body": {"type": "string", "description": "Full content in markdown"},
+    "file_path": {"type": "string", "description": "Where the content was saved"},
+    "google_doc_link": {"type": "string", "nullable": true},
+    "word_count": {"type": "integer"},
+    "seo_metadata": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "meta_description": {"type": "string"},
+        "focus_keywords": {"type": "array", "items": {"type": "string"}},
+        "reading_time_minutes": {"type": "number"}
+      }
+    },
+    "brand_voice_self_score": {"type": "number", "minimum": 0, "maximum": 10, "nullable": true},
+    "requires_editor_review": {"type": "boolean"},
+    "notes_for_editor": {"type": "string", "nullable": true}
+  },
+  "required": ["status", "title", "file_path", "word_count", "requires_editor_review"]
+}

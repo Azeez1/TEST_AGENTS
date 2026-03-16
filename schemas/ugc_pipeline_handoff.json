@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UGCPipelineHandoff",
+  "description": "Visual-designer to video-producer handoff. Contains the product image and metadata needed for Sora/Veo UGC video generation.",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["ready_for_video", "image_failed"]},
+    "product_image": {
+      "type": "object",
+      "properties": {
+        "file_path": {"type": "string", "description": "Absolute path to the generated product image"},
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "width": {"type": "integer"},
+            "height": {"type": "integer"}
+          },
+          "required": ["width", "height"]
+        },
+        "generator_used": {"type": "string", "enum": ["nano_banana_pro", "nano_banana_2", "gpt4o", "fallback"]}
+      },
+      "required": ["file_path", "generator_used"]
+    },
+    "image_analysis": {
+      "type": "object",
+      "nullable": true,
+      "description": "GPT-4o Vision analysis if auto_analyze_image was used",
+      "properties": {
+        "description": {"type": "string", "description": "Visual description of the product for video consistency"},
+        "dominant_colors": {"type": "array", "items": {"type": "string"}, "nullable": true},
+        "product_category": {"type": "string", "nullable": true}
+      },
+      "required": ["description"]
+    },
+    "video_instructions": {
+      "type": "object",
+      "properties": {
+        "product_name": {"type": "string"},
+        "ugc_style": {"type": "string", "description": "One of 50+ UGC styles (testimonial, demo, unboxing, etc.)"},
+        "platform": {"type": "string", "enum": ["tiktok", "instagram", "facebook"]},
+        "duration_seconds": {"type": "integer", "enum": [4, 6, 8, 12]},
+        "product_features": {"type": "array", "items": {"type": "string"}, "nullable": true},
+        "target_audience": {"type": "string", "nullable": true},
+        "video_setting": {"type": "string", "nullable": true, "description": "Environment description (kitchen, outdoor, gym, etc.)"}
+      },
+      "required": ["product_name", "ugc_style", "platform", "duration_seconds"]
+    },
+    "preferred_generator": {"type": "string", "enum": ["sora_2", "veo_3_1"], "default": "sora_2", "description": "Sora 2 is PRIMARY for UGC. Veo 3.1 is backup."}
+  },
+  "required": ["status", "product_image", "video_instructions"]
+}

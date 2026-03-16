@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContentBrief",
+  "description": "Router-agent to copywriter handoff. Defines what content to create, for whom, and in what format.",
+  "type": "object",
+  "properties": {
+    "task_type": {"type": "string", "enum": ["blog_post", "email", "ad_copy", "social_media", "landing_page", "newsletter", "internal_comm"]},
+    "topic": {"type": "string"},
+    "target_audience": {"type": "string"},
+    "tone": {"type": "string", "enum": ["professional", "casual", "thought_leadership", "technical", "conversational"]},
+    "word_count": {"type": "integer", "minimum": 50},
+    "format": {"type": "string", "enum": ["markdown", "docx", "google_doc", "html"]},
+    "seo_keywords": {"type": "array", "items": {"type": "string"}, "nullable": true},
+    "research_data": {"type": "string", "nullable": true, "description": "Pre-researched data from research-agent, if available"},
+    "reference_files": {"type": "array", "items": {"type": "string"}, "nullable": true, "description": "Paths to reference materials"},
+    "output_path": {"type": "string", "description": "Target path in MARKETING_TEAM/outputs/"},
+    "upload_to_drive": {"type": "boolean", "default": false},
+    "deadline": {"type": "string", "format": "date-time", "nullable": true}
+  },
+  "required": ["task_type", "topic", "target_audience", "tone", "word_count", "output_path"]
+}

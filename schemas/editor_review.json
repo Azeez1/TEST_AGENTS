@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EditorReview",
+  "description": "Editor to router-agent handoff. QA verdict on content quality and brand voice compliance.",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["approved", "requires_revision", "rejected"]},
+    "content_file_path": {"type": "string", "description": "Path to the content that was reviewed"},
+    "brand_voice_score": {"type": "number", "minimum": 0, "maximum": 10},
+    "quality_metrics": {
+      "type": "object",
+      "properties": {
+        "grammar_errors": {"type": "integer"},
+        "tone_alignment": {"type": "number", "minimum": 0, "maximum": 10},
+        "readability_score": {"type": "number", "minimum": 0, "maximum": 100},
+        "seo_score": {"type": "number", "minimum": 0, "maximum": 10, "nullable": true}
+      },
+      "required": ["grammar_errors", "tone_alignment", "readability_score"]
+    },
+    "issues_found": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {"type": "string", "enum": ["grammar", "tone", "seo", "factual", "formatting", "brand_voice"]},
+          "severity": {"type": "string", "enum": ["critical", "major", "minor"]},
+          "location": {"type": "string", "description": "Where in the content the issue is"},
+          "description": {"type": "string"},
+          "suggested_fix": {"type": "string"}
+        },
+        "required": ["type", "severity", "description"]
+      }
+    },
+    "revisions_required": {"type": "array", "items": {"type": "string"}, "nullable": true},
+    "approved_for_publication": {"type": "boolean"}
+  },
+  "required": ["status", "content_file_path", "brand_voice_score", "quality_metrics", "issues_found", "approved_for_publication"]
+}

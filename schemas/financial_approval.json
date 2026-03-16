@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FinancialApproval",
+  "description": "CFO-agent to SALES_TEAM account-executive. Cross-team handoff for deal pricing approval, discount authority, and financial terms review.",
+  "type": "object",
+  "properties": {
+    "status": {"type": "string", "enum": ["approved", "approved_with_conditions", "rejected", "needs_revision"]},
+    "deal_reference": {
+      "type": "object",
+      "properties": {
+        "prospect_name": {"type": "string"},
+        "deal_value": {"type": "number"},
+        "contract_term_months": {"type": "integer"}
+      },
+      "required": ["prospect_name", "deal_value"]
+    },
+    "approval_details": {
+      "type": "object",
+      "properties": {
+        "approved_discount_percentage": {"type": "number", "minimum": 0, "maximum": 100, "nullable": true},
+        "approved_deal_value": {"type": "number"},
+        "approved_payment_terms": {"type": "string", "nullable": true},
+        "margin_impact_percentage": {"type": "number", "description": "How this deal affects overall margin"},
+        "lifetime_value_estimate": {"type": "number", "nullable": true}
+      },
+      "required": ["approved_deal_value", "margin_impact_percentage"]
+    },
+    "conditions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "nullable": true,
+      "description": "Conditions that must be met for approval to hold"
+    },
+    "authority_level": {"type": "string", "enum": ["account_executive", "sales_manager", "cfo", "board"], "description": "Who had to approve this"},
+    "decision_rationale": {"type": "string"},
+    "effective_date": {"type": "string", "format": "date"},
+    "expiry_date": {"type": "string", "format": "date", "nullable": true, "description": "When this approval expires if deal doesn't close"}
+  },
+  "required": ["status", "deal_reference", "approval_details", "authority_level", "decision_rationale", "effective_date"]
+}

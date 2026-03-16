@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CFOTaskRequest",
+  "description": "CFO-agent to any financial specialist. Defines what analysis to run, with what assumptions, and what deliverables are expected.",
+  "type": "object",
+  "properties": {
+    "task_type": {"type": "string", "enum": ["due_diligence", "valuation", "deal_structuring", "lbo_analysis", "forecasting", "budget_review", "capital_allocation", "tax_analysis", "treasury_management", "investor_reporting"]},
+    "assigned_to": {"type": "string", "description": "Target agent name (deal-analyst, valuation-agent, etc.)"},
+    "priority": {"type": "string", "enum": ["urgent", "high", "standard", "low"]},
+    "company_data": {
+      "type": "object",
+      "properties": {
+        "company_name": {"type": "string"},
+        "industry": {"type": "string"},
+        "revenue": {"type": "number", "nullable": true},
+        "ebitda": {"type": "number", "nullable": true},
+        "financial_data_paths": {"type": "array", "items": {"type": "string"}, "nullable": true, "description": "Paths to financial reports/spreadsheets"}
+      },
+      "required": ["company_name"]
+    },
+    "assumptions": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "revenue_growth_rates": {"type": "array", "items": {"type": "number"}, "nullable": true},
+        "terminal_growth_rate": {"type": "number", "nullable": true},
+        "wacc": {"type": "number", "nullable": true},
+        "projection_years": {"type": "integer", "nullable": true},
+        "discount_rate": {"type": "number", "nullable": true},
+        "custom_assumptions": {"type": "object", "additionalProperties": true, "nullable": true}
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["dd_report", "valuation_model", "lbo_model", "ic_memo", "sensitivity_analysis", "forecast_model", "budget_variance", "capital_plan", "tax_structure", "investor_deck"]},
+      "description": "List of expected output deliverables"
+    },
+    "deadline": {"type": "string", "format": "date-time", "nullable": true},
+    "context": {"type": "string", "nullable": true, "description": "Additional context or special instructions"}
+  },
+  "required": ["task_type", "assigned_to", "priority", "company_data", "deliverables"]
+}
