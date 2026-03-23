@@ -1,6 +1,7 @@
 ---
 name: canvas-design
-description: Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.
+description: Create static visual designs as .png and .pdf files — posters, social media graphics, certificates, banners, business cards, and print-ready layouts. Outputs downloadable image files, NOT interactive web pages. Use for any visual that will be downloaded, printed, or posted as an image. For interactive web pages use frontend-design, for code-generated generative art use algorithmic-art, for data visualizations use infographic-creator.
+allowed-tools: Read, Write, Bash, Glob
 license: Complete terms in LICENSE.txt
 ---
 

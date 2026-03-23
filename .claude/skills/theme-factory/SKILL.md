@@ -1,6 +1,8 @@
 ---
 name: theme-factory
-description: Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.
+description: Apply a visual theme (colors, fonts, spacing) to any existing artifact — slides, docs, reports, HTML pages. Offers 10 pre-set themes or generates custom themes on-the-fly. This is a styling overlay skill like brand-guidelines, but for general themes rather than Anthropic-specific branding. Use AFTER another skill creates the content, to restyle it. Does not create content from scratch.
+model: sonnet
+allowed-tools: Read, Grep, Glob, Write
 license: Complete terms in LICENSE.txt
 ---
 

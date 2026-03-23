@@ -1,6 +1,7 @@
 ---
 name: frontend-design
-description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.
+description: Build production-grade standalone web pages, dashboards, landing pages, and web applications as .html files with embedded CSS/JS. Outputs polished, deployable frontend code with distinctive design. Use when the user wants a real web page or interactive web UI — NOT for claude.ai artifacts (use artifacts-builder), NOT for static .png/.pdf images (use canvas-design), NOT for diagrams (use flow-diagram or excalidraw-diagrams).
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 license: Complete terms in LICENSE.txt
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: brand-guidelines
-description: Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.
+description: Apply Anthropic's official brand colors, typography, and visual identity to any artifact. This is a styling overlay skill — it modifies existing outputs from other skills (canvas-design, frontend-design, artifacts-builder) to match Anthropic brand standards. Use when the user mentions "Anthropic brand", "brand colors", or "brand guidelines". Does not create content from scratch — pair with a creation skill.
+model: sonnet
+allowed-tools: Read, Grep, Glob, Write
 license: Complete terms in LICENSE.txt
 ---
 

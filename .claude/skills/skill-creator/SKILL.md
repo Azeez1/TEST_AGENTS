@@ -1,6 +1,7 @@
 ---
 name: skill-creator
-description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.
+description: Guide for creating or updating Claude Code skills — SKILL.md files with YAML frontmatter, bundled scripts, references, and assets. Use when the user wants to BUILD a new skill or IMPROVE an existing skill's definition. NOT for using skills (just invoke them directly) — this is the meta-skill for skill development itself.
+allowed-tools: Read, Write, Edit, Grep, Glob
 license: Complete terms in LICENSE.txt
 ---
 

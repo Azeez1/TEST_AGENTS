@@ -1,6 +1,7 @@
 ---
 name: infographic-creator
-description: Create stunning static, animated, and interactive infographics optimized for social media, presentations, and marketing campaigns. Features AI-powered design intelligence, brand customization, 7 infographic types, advanced animations, and seamless integration with flow-diagram, canvas-design, and theme-factory skills.
+description: Create data-driven infographics as .html or .png files — statistics layouts, comparison charts, timelines, process flows, and data storytelling optimized for social media and presentations. Use when the content is primarily DATA or STATISTICS that needs visual presentation. For general static designs without data focus use canvas-design, for technical system diagrams use flow-diagram, for editable diagrams use excalidraw-diagrams.
+allowed-tools: Read, Write, Bash, Glob, Edit
 license: Apache 2.0
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: internal-comms
-description: A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).
+description: Write internal company communications using standardized templates — status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, and project updates. Use when the user asks to draft any internal-facing written communication. Does NOT create external marketing content (use content agents), visual designs (use canvas-design), or presentations (use frontend-design for HTML slides).
+model: sonnet
+allowed-tools: Read, Grep, Glob, Write
 license: Complete terms in LICENSE.txt
 ---
 

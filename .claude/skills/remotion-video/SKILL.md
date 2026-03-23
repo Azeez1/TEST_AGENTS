@@ -1,8 +1,7 @@
 ---
 name: remotion-video
-description: Create programmatic videos with React using Remotion. Use for motion graphics,
-  animated text, branded intros/outros, caption overlays, data visualizations, and
-  post-production editing of AI-generated clips. Complements Sora/Veo for complete video pipeline.
+description: Create programmatic .mp4 videos with React using Remotion — motion graphics, animated text, branded intros/outros, caption overlays, data visualizations, and post-production editing of AI-generated clips (Sora 2, Veo). Outputs rendered video files. Use when the final output is a VIDEO, not a GIF (use slack-gif-creator) or static image (use canvas-design). See gotchas.md for critical Sora/Veo integration fixes.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 license: Apache 2.0
 ---
 

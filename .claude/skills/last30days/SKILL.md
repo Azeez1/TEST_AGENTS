@@ -1,6 +1,6 @@
 ---
 name: last30days
-description: Research a topic from the last 30 days on Reddit + X + Web, become an expert, and write copy-paste-ready prompts for the user's target tool.
+description: Research trending topics from the last 30 days across Reddit, X/Twitter, and the web. Outputs expert-level synthesis with engagement metrics, community sentiment, and copy-paste-ready prompts. Use for real-time trend research, competitive intelligence, content inspiration, or understanding what a community is saying about a topic RIGHT NOW. Not for historical research or general web search (use perplexity MCP for that).
 argument-hint: "[topic] for [tool]" or "[topic]"
 context: fork
 agent: Explore

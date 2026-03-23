@@ -1,6 +1,7 @@
 ---
 name: flow-diagram
-description: Create EYE-POPPING, attention-grabbing flow diagrams with multiple stunning visual styles (glassmorphism, neon, hand-drawn, animated) optimized for LinkedIn and social media. Generate interactive diagrams, carousels, animations, and professional visualizations that stop the scroll. Supports Mermaid, D3.js, Excalidraw-style, with exports to HTML, PNG, GIF, MP4, and LinkedIn carousels.
+description: Create styled flow diagrams, system architecture diagrams, flowcharts, and sequence diagrams as interactive .html files with visual flair (glassmorphism, neon, hand-drawn styles). Exports to HTML, PNG, GIF, MP4, and LinkedIn carousels using Mermaid, D3.js, or custom SVG. Use when the output should be a visually impressive READ-ONLY diagram for sharing — for editable diagrams the user can modify later, use excalidraw-diagrams instead.
+allowed-tools: Read, Write, Bash, Glob, Edit
 license: Apache 2.0
 ---
 
