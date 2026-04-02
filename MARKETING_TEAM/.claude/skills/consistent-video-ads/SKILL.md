@@ -1,6 +1,8 @@
 ---
 name: consistent-video-ads
 description: Create consistent 15-30 second video ads with character and story continuity using Sora API. This skill should be used when generating multi-clip video ads, ensuring character consistency across scenes, or creating longer-format video content (15-30+ seconds) that requires visual coherence. Works for ANY product.
+model: sonnet
+allowed-tools: Read, Write, Bash, Glob
 ---
 
 # Consistent Video Ads

@@ -1,12 +1,12 @@
 # FINANCIAL_TEAM
 
-A hybrid Private Equity / M&A + General Finance team with 13 specialized agents covering deal analysis, financial modeling, portfolio management, and corporate accounting.
+A hybrid Private Equity / M&A + General Finance team with 14 specialized agents covering deal analysis, financial modeling, portfolio management, corporate accounting, and trading strategy optimization.
 
 ## Team Overview
 
 FINANCIAL_TEAM combines **PE/M&A capabilities** (due diligence, LBO modeling, valuations) with **general finance operations** (FP&A, accounting, tax) to support private equity investors, business owners, and CFOs.
 
-## Agents (13)
+## Agents (14)
 
 ### PE/M&A Focused Agents
 
@@ -77,12 +77,17 @@ FINANCIAL_TEAM combines **PE/M&A capabilities** (due diligence, LBO modeling, va
 - **Capabilities**: LP quarterly updates, fund performance attribution (IRR, TVPI, DPI), fundraising pitch decks, capital call notices, data room management
 - **Use Cases**: LP reporting, fundraising campaigns, annual meetings, co-investment memos
 
+#### 14. **Trading Optimizer**
+- **Focus**: ICT strategy autoresearch optimizer — iteratively modifies Pine Script parameters, reads TradingView backtest results via Chrome MCP, and tracks performance against Funding Pips risk constraints
+- **Capabilities**: Pine Script parameter optimization, Chrome MCP backtesting integration, Funding Pips guard rails (5% daily loss, 10% max drawdown), autoresearch loop with performance tracking
+- **Use Cases**: ICT MXMM strategy optimization, backtest comparison (Track A vs Track B), live webhook pipeline setup, prop firm risk compliance
+
 ## Directory Structure
 
 ```
 FINANCIAL_TEAM/
 ├── .claude/
-│   ├── agents/              # 13 financial agent definitions
+│   ├── agents/              # 14 financial agent definitions
 │   ├── commands/            # Custom slash commands
 │   ├── skills/              # Custom skills
 │   └── settings.json        # Team configuration

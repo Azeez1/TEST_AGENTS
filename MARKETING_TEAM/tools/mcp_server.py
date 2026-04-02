@@ -1076,13 +1076,35 @@ async def generate_video_with_fallback(
     filename: str = "video.mp4",
     stability_mode: str = "auto",
 ) -> list[TextContent]:
-    """Generate video with automatic fallback chain: Sora 2 (primary) -> Veo 3.1 (backup)"""
+    """Generate video with automatic fallback chain: Sora 2 -> SeedDance 2.0 -> Kling 3.0 -> Veo 3.1"""
+
+    # Map orientation to aspect ratio for PiAPI models
+    aspect_ratio = "9:16" if orientation == "portrait" else "16:9"
+
+    # Map seconds string to closest valid duration for each model
+    secs_int = int(seconds)
+    seedance_duration = 5 if secs_int <= 5 else (10 if secs_int <= 10 else 15)
+    kling_duration = 5 if secs_int <= 7 else 10
 
     providers = [
         ("Sora 2", lambda: generate_sora_video_mcp(
             prompt=prompt,
             seconds=seconds,
             orientation=orientation,
+            filename=filename,
+            stability_mode=stability_mode,
+        )),
+        ("SeedDance 2.0", lambda: generate_seedance_video_mcp(
+            prompt=prompt,
+            duration=seedance_duration,
+            aspect_ratio=aspect_ratio,
+            filename=filename,
+            stability_mode=stability_mode,
+        )),
+        ("Kling 3.0", lambda: generate_kling_video_mcp(
+            prompt=prompt,
+            duration=kling_duration,
+            aspect_ratio=aspect_ratio,
             filename=filename,
             stability_mode=stability_mode,
         )),
@@ -2359,6 +2381,496 @@ async def _poll_for_video_completion(http_client, headers, video_id, max_wait=30
 
 
 # ============================================================================
+# PIAPI SHARED HELPER: Poll task + download video
+# ============================================================================
+
+async def _poll_piapi_task(task_id: str, model_name: str, max_wait: int = 600) -> dict:
+    """
+    Poll PiAPI GET /api/v1/task/{task_id} until completion.
+    Returns the full task response dict on success.
+    Raises on failure or timeout.
+    """
+    import time
+    api_key = os.getenv("PIAPI_API_KEY")
+    if not api_key:
+        raise Exception("PIAPI_API_KEY not found in environment variables. Add it to MARKETING_TEAM/.env")
+
+    headers = {
+        "X-API-Key": api_key,
+        "Content-Type": "application/json"
+    }
+    start_time = time.time()
+
+    async with httpx.AsyncClient(timeout=60.0) as http_client:
+        while True:
+            elapsed = time.time() - start_time
+            if elapsed > max_wait:
+                raise TimeoutError(f"{model_name} video generation timed out after {max_wait}s (task: {task_id})")
+
+            response = await http_client.get(
+                f"https://api.piapi.ai/api/v1/task/{task_id}",
+                headers=headers
+            )
+
+            if response.status_code != 200:
+                raise Exception(f"PiAPI poll failed ({response.status_code}): {response.text}")
+
+            result = response.json()
+            status = result.get("data", {}).get("status", "").lower()
+
+            if status == "completed":
+                logger.success(f"{model_name} task {task_id} completed")
+                return result
+
+            elif status == "failed":
+                error = result.get("data", {}).get("error", {})
+                raise Exception(f"{model_name} generation failed: {error.get('message', 'Unknown error')}")
+
+            logger.debug(f"{model_name} task {task_id} status: {status} ({int(elapsed)}s elapsed)")
+            await asyncio.sleep(5)
+
+
+async def _download_piapi_video(video_url: str, output_path: Path, model_name: str) -> None:
+    """Download a video from PiAPI's storage URL to local path."""
+    async with httpx.AsyncClient(timeout=300.0) as http_client:
+        logger.info(f"Downloading {model_name} video from PiAPI storage...")
+        response = await http_client.get(video_url)
+        if response.status_code != 200:
+            raise Exception(f"Failed to download {model_name} video: HTTP {response.status_code}")
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_bytes(response.content)
+        logger.success(f"{model_name} video saved to {output_path} ({len(response.content) / 1024 / 1024:.1f} MB)")
+
+
+def _extract_piapi_video_url(result: dict, model_name: str) -> str:
+    """Extract video URL from PiAPI task response (handles model-specific output formats)."""
+    data = result.get("data", {})
+    output = data.get("output", {})
+
+    # Kling: output.video or output.works[0].video.resource_without_watermark
+    if model_name == "Kling":
+        video_url = output.get("video")
+        if not video_url:
+            works = output.get("works", [])
+            if works:
+                video_obj = works[0].get("video", {})
+                video_url = video_obj.get("resource_without_watermark") or video_obj.get("resource")
+        if video_url:
+            return video_url
+
+    # SeedDance: output.video or output.video_url
+    if model_name == "SeedDance":
+        video_url = output.get("video") or output.get("video_url")
+        if video_url:
+            return video_url
+
+    # Generic fallback: try common keys
+    for key in ["video", "video_url", "url"]:
+        if key in output:
+            return output[key]
+
+    raise Exception(f"Could not find video URL in {model_name} response: {json.dumps(output, indent=2)}")
+
+
+# ============================================================================
+# SEEDANCE 2.0 VIDEO GENERATION (via PiAPI)
+# ============================================================================
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
+async def generate_seedance_video_mcp(
+    prompt: str,
+    duration: int = 5,
+    aspect_ratio: str = "16:9",
+    filename: str = "video.mp4",
+    image_urls: list = None,
+    video_url: str = None,
+    speed_mode: str = "standard",
+    stability_mode: str = "auto"
+) -> list[TextContent]:
+    """
+    Generate video using SeedDance 2.0 via PiAPI.
+
+    Model: seedance (ByteDance)
+    Pricing: $0.15/sec (standard) or $0.08/sec (fast)
+
+    Key advantages:
+    - Multi-reference I2V: Up to 9 reference images (@image1-@image9 in prompt)
+    - Video editing: Modify existing videos with text prompts
+    - Native audio: Synchronized sound generation
+    - 2K resolution (2048x1080)
+
+    Args:
+        prompt: Video description. Use @image1, @image2 etc. to reference images.
+        duration: 5, 10, or 15 seconds
+        aspect_ratio: "16:9", "9:16", "4:3", or "3:4"
+        filename: Output filename
+        image_urls: List of reference image URLs (max 9, referenced as @image1-@image9 in prompt)
+        video_url: URL of existing video for video editing mode
+        speed_mode: "standard" ($0.15/sec) or "fast" ($0.08/sec, lower quality)
+        stability_mode: Anti-morphing mode (auto/cinematic/authentic/off)
+
+    Returns:
+        Video saved to outputs/videos/, cost summary
+    """
+
+    api_key = os.getenv("PIAPI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="❌ Error: PIAPI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file.\nGet your key at: https://piapi.ai"
+        )]
+
+    # Validate duration
+    valid_durations = [5, 10, 15]
+    if duration not in valid_durations:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: duration must be one of {valid_durations}. Got: {duration}"
+        )]
+
+    # Validate aspect ratio
+    valid_ratios = ["16:9", "9:16", "4:3", "3:4"]
+    if aspect_ratio not in valid_ratios:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: aspect_ratio must be one of {valid_ratios}. Got: {aspect_ratio}"
+        )]
+
+    # Map speed mode to task type
+    task_type = "seedance-2-fast-preview" if speed_mode == "fast" else "seedance-2-preview"
+    cost_per_sec = 0.08 if speed_mode == "fast" else 0.15
+    estimated_cost = duration * cost_per_sec
+
+    # Apply anti-morphing stability enhancement
+    enhanced_prompt = enhance_prompt_for_stability(prompt, stability_mode, duration)
+
+    # SeedDance-specific prompt hardening:
+    # 1. ByteDance model defaults to Chinese — force English explicitly
+    # 2. Extra limbs/hands are common artifacts — add anatomical constraints
+    # 3. Aspect ratio of reference image overrides the aspect_ratio param (PiAPI known issue)
+    seedance_suffix = (
+        "\n\nLANGUAGE: All speech, text, and audio MUST be in English. "
+        "ANATOMY: Exactly two hands, five fingers per hand, correct human proportions throughout. "
+        "No extra limbs, no duplicate body parts, no fused fingers. "
+        "Maintain consistent subject identity from first frame to last frame."
+    )
+    enhanced_prompt = enhanced_prompt + seedance_suffix
+
+    # Build request payload
+    input_data = {
+        "prompt": enhanced_prompt,
+        "duration": duration,
+        "aspect_ratio": aspect_ratio
+    }
+
+    if image_urls:
+        input_data["image_urls"] = image_urls[:9]  # Max 9 references
+
+    if video_url:
+        input_data["video_urls"] = [video_url]
+
+    payload = {
+        "model": "seedance",
+        "task_type": task_type,
+        "input": input_data
+    }
+
+    headers = {
+        "X-API-Key": api_key,
+        "Content-Type": "application/json"
+    }
+
+    try:
+        logger.info(f"Starting SeedDance 2.0 video generation ({task_type})...")
+        logger.debug(f"Duration: {duration}s | Aspect: {aspect_ratio} | Cost: ${estimated_cost:.2f}")
+
+        # Step 1: Create task
+        async with httpx.AsyncClient(timeout=60.0) as http_client:
+            response = await http_client.post(
+                "https://api.piapi.ai/api/v1/task",
+                headers=headers,
+                json=payload
+            )
+
+            if response.status_code != 200:
+                error_detail = response.text
+                try:
+                    error_detail = json.dumps(response.json(), indent=2)
+                except Exception:
+                    pass
+                return [TextContent(
+                    type="text",
+                    text=f"❌ PiAPI Error ({response.status_code}):\n\n{error_detail}"
+                )]
+
+            result = response.json()
+            task_id = result.get("data", {}).get("task_id")
+
+            if not task_id:
+                return [TextContent(
+                    type="text",
+                    text=f"⚠️ No task_id in PiAPI response:\n\n{json.dumps(result, indent=2)}"
+                )]
+
+        # Step 2: Poll for completion
+        completed_result = await _poll_piapi_task(task_id, "SeedDance", max_wait=600)
+
+        # Step 3: Extract video URL and download
+        video_download_url = _extract_piapi_video_url(completed_result, "SeedDance")
+
+        if not filename.endswith('.mp4'):
+            filename = f"{filename}.mp4"
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
+        output_path = output_dir / filename
+
+        await _download_piapi_video(video_download_url, output_path, "SeedDance")
+
+        # Build result
+        generation_type = "Video edit" if video_url else ("Image-to-video" if image_urls else "Text-to-video")
+        ref_count = len(image_urls) if image_urls else 0
+
+        result_text = (
+            f"✅ Video generated successfully!\n\n"
+            f"**Model:** SeedDance 2.0 (via PiAPI)\n"
+            f"**Type:** {generation_type}\n"
+            f"**Task Type:** {task_type}\n"
+            f"**Prompt:** {prompt}\n"
+            f"**Duration:** {duration}s\n"
+            f"**Aspect Ratio:** {aspect_ratio}\n"
+            f"**Speed Mode:** {speed_mode}\n"
+            f"**Cost:** ${estimated_cost:.2f} (${cost_per_sec}/sec)\n"
+        )
+
+        if ref_count > 0:
+            result_text += f"**Reference Images:** {ref_count} (use @image1-@image{ref_count} in prompt)\n"
+        if video_url:
+            result_text += f"**Source Video:** {video_url}\n"
+
+        result_text += (
+            f"\n**Saved to:** {output_path}\n"
+            f"**Task ID:** {task_id}"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except TimeoutError as e:
+        return [TextContent(type="text", text=f"❌ Timeout: {str(e)}")]
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error generating SeedDance video: {str(e)}\n\nCheck your PIAPI_API_KEY."
+        )]
+
+
+# ============================================================================
+# KLING 3.0 VIDEO GENERATION (via PiAPI)
+# ============================================================================
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
+async def generate_kling_video_mcp(
+    prompt: str,
+    duration: int = 5,
+    aspect_ratio: str = "16:9",
+    filename: str = "video.mp4",
+    image_url: str = None,
+    mode: str = "std",
+    version: str = "3.0",
+    cfg_scale: str = "0.5",
+    negative_prompt: str = None,
+    enable_audio: bool = True,
+    stability_mode: str = "auto"
+) -> list[TextContent]:
+    """
+    Generate video using Kling 3.0 via PiAPI.
+
+    Model: kling (Kuaishou)
+    Pricing: $0.20/5sec (std) or $0.33/5sec (pro) for v2.5+
+
+    Key advantages:
+    - Up to 2-minute clips (longest in class)
+    - Native audio generation
+    - Image-to-video with end-frame control
+    - Camera control, motion brush
+    - No US legal restrictions (Kuaishou, not ByteDance)
+
+    Args:
+        prompt: Video description (max 2500 chars)
+        duration: 5 or 10 seconds
+        aspect_ratio: "16:9", "9:16", or "1:1"
+        filename: Output filename
+        image_url: Optional image URL for image-to-video (max 10MB, min 300px)
+        mode: "std" (standard, cheaper) or "pro" (higher quality)
+        version: Kling model version ("2.6" or "3.0", default "3.0")
+        cfg_scale: Creativity vs prompt adherence (0-1, default "0.5")
+        negative_prompt: Elements to exclude
+        enable_audio: Generate synchronized audio (default True)
+        stability_mode: Anti-morphing mode (auto/cinematic/authentic/off)
+
+    Returns:
+        Video saved to outputs/videos/, cost summary
+    """
+
+    api_key = os.getenv("PIAPI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="❌ Error: PIAPI_API_KEY not found in environment variables.\n\nPlease add it to MARKETING_TEAM/.env file.\nGet your key at: https://piapi.ai"
+        )]
+
+    # Validate duration
+    valid_durations = [5, 10]
+    if duration not in valid_durations:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: duration must be one of {valid_durations}. Got: {duration}"
+        )]
+
+    # Validate aspect ratio
+    valid_ratios = ["16:9", "9:16", "1:1"]
+    if aspect_ratio not in valid_ratios:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: aspect_ratio must be one of {valid_ratios}. Got: {aspect_ratio}"
+        )]
+
+    # Validate mode
+    if mode not in ["std", "pro"]:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error: mode must be 'std' or 'pro'. Got: {mode}"
+        )]
+
+    # Cost calculation (v2.5+ pricing)
+    cost_map = {"std": 0.20, "pro": 0.33}  # per 5 seconds
+    cost_per_5s = cost_map[mode]
+    estimated_cost = (duration / 5) * cost_per_5s
+
+    # Apply anti-morphing stability enhancement
+    enhanced_prompt = enhance_prompt_for_stability(prompt, stability_mode, duration)
+
+    # Build request payload
+    input_data = {
+        "prompt": enhanced_prompt,
+        "duration": duration,
+        "aspect_ratio": aspect_ratio,
+        "mode": mode,
+        "version": version,
+        "cfg_scale": cfg_scale,
+    }
+
+    if image_url:
+        input_data["image_url"] = image_url
+
+    if negative_prompt:
+        input_data["negative_prompt"] = negative_prompt
+
+    if enable_audio:
+        input_data["enable_audio"] = True
+
+    payload = {
+        "model": "kling",
+        "task_type": "video_generation",
+        "input": input_data
+    }
+
+    headers = {
+        "X-API-Key": api_key,
+        "Content-Type": "application/json"
+    }
+
+    try:
+        logger.info(f"Starting Kling {version} video generation ({mode} mode)...")
+        logger.debug(f"Duration: {duration}s | Aspect: {aspect_ratio} | Cost: ${estimated_cost:.2f}")
+
+        # Step 1: Create task
+        async with httpx.AsyncClient(timeout=60.0) as http_client:
+            response = await http_client.post(
+                "https://api.piapi.ai/api/v1/task",
+                headers=headers,
+                json=payload
+            )
+
+            if response.status_code != 200:
+                error_detail = response.text
+                try:
+                    error_detail = json.dumps(response.json(), indent=2)
+                except Exception:
+                    pass
+                return [TextContent(
+                    type="text",
+                    text=f"❌ PiAPI Error ({response.status_code}):\n\n{error_detail}"
+                )]
+
+            result = response.json()
+            task_id = result.get("data", {}).get("task_id")
+
+            if not task_id:
+                return [TextContent(
+                    type="text",
+                    text=f"⚠️ No task_id in PiAPI response:\n\n{json.dumps(result, indent=2)}"
+                )]
+
+        # Step 2: Poll for completion
+        completed_result = await _poll_piapi_task(task_id, "Kling", max_wait=600)
+
+        # Step 3: Extract video URL and download
+        video_download_url = _extract_piapi_video_url(completed_result, "Kling")
+
+        if not filename.endswith('.mp4'):
+            filename = f"{filename}.mp4"
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
+        output_path = output_dir / filename
+
+        await _download_piapi_video(video_download_url, output_path, "Kling")
+
+        # Build result
+        generation_type = "Image-to-video" if image_url else "Text-to-video"
+
+        result_text = (
+            f"✅ Video generated successfully!\n\n"
+            f"**Model:** Kling {version} (via PiAPI)\n"
+            f"**Type:** {generation_type}\n"
+            f"**Mode:** {mode}\n"
+            f"**Prompt:** {prompt}\n"
+            f"**Duration:** {duration}s\n"
+            f"**Aspect Ratio:** {aspect_ratio}\n"
+            f"**CFG Scale:** {cfg_scale}\n"
+            f"**Audio:** {'Enabled' if enable_audio else 'Disabled'}\n"
+            f"**Cost:** ${estimated_cost:.2f} (${cost_per_5s}/5sec {mode})\n"
+        )
+
+        if image_url:
+            result_text += f"**Reference Image:** {image_url}\n"
+        if negative_prompt:
+            result_text += f"**Negative Prompt:** {negative_prompt}\n"
+
+        result_text += (
+            f"\n**Saved to:** {output_path}\n"
+            f"**Task ID:** {task_id}"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except TimeoutError as e:
+        return [TextContent(type="text", text=f"❌ Timeout: {str(e)}")]
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"❌ Error generating Kling video: {str(e)}\n\nCheck your PIAPI_API_KEY."
+        )]
+
+
+# ============================================================================
 # MCP SERVER TOOL REGISTRATION
 # ============================================================================
 
@@ -2558,7 +3070,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_video_with_fallback",
-            description="Reliability wrapper: Tries Sora 2, falls back to Veo 3.1 if Sora fails. USE ONLY for batch video generation or production pipelines where reliability matters. For single videos, call generate_sora_video directly. DO NOT USE for UGC ads (use generate_sora_video directly for full UGC parameter control).",
+            description="Reliability wrapper: Tries Sora 2 -> SeedDance 2.0 -> Kling 3.0 -> Veo 3.1 (4-tier fallback). USE ONLY for batch video generation or production pipelines where reliability matters. For single videos, call the specific model tool directly. DO NOT USE for UGC ads (use generate_sora_video directly for full UGC parameter control).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2717,6 +3229,111 @@ async def list_tools() -> list[Tool]:
                 "required": ["image_path", "ugc_style", "platform", "product_name", "filename"]
             }
         ),
+        Tool(
+            name="generate_seedance_video",
+            description="Generate video using SeedDance 2.0 via PiAPI ($0.15/sec standard, $0.08/sec fast). BEST FOR: Multi-reference image-to-video (up to 9 images with @image1-@image9 in prompt), video editing (modify existing clips), and character consistency across scenes. Native audio + 2K resolution. Use as SECOND choice after Sora for general video, or FIRST choice when you need multi-image references or video editing. DO NOT USE when Sora works fine for simple T2V.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Video description. Use @image1, @image2 etc. to reference images from image_urls list."
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "description": "Video duration in seconds",
+                        "enum": [5, 10, 15],
+                        "default": 5
+                    },
+                    "aspect_ratio": {
+                        "type": "string",
+                        "description": "Video aspect ratio",
+                        "enum": ["16:9", "9:16", "4:3", "3:4"],
+                        "default": "16:9"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .mp4 will be added)"
+                    },
+                    "image_urls": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional: Up to 9 reference image URLs. Reference in prompt as @image1, @image2, etc."
+                    },
+                    "video_url": {
+                        "type": "string",
+                        "description": "Optional: URL of existing video for video editing mode"
+                    },
+                    "speed_mode": {
+                        "type": "string",
+                        "description": "Generation speed: 'standard' ($0.15/sec, best quality) or 'fast' ($0.08/sec, faster but lower quality)",
+                        "enum": ["standard", "fast"],
+                        "default": "standard"
+                    }
+                },
+                "required": ["prompt", "filename"]
+            }
+        ),
+        Tool(
+            name="generate_kling_video",
+            description="Generate video using Kling 3.0 via PiAPI ($0.20/5sec std, $0.33/5sec pro). BEST FOR: Longer clips, budget generation, and when SeedDance/Sora are unavailable. Native audio, I2V support, camera control. No US legal restrictions (Kuaishou, not ByteDance). Use as THIRD choice after Sora and SeedDance for general video.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Video description (max 2500 chars)"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "description": "Video duration in seconds",
+                        "enum": [5, 10],
+                        "default": 5
+                    },
+                    "aspect_ratio": {
+                        "type": "string",
+                        "description": "Video aspect ratio",
+                        "enum": ["16:9", "9:16", "1:1"],
+                        "default": "16:9"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .mp4 will be added)"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "description": "Optional: Image URL for image-to-video (max 10MB, min 300px per side)"
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "Quality mode: 'std' (standard, cheaper) or 'pro' (higher quality)",
+                        "enum": ["std", "pro"],
+                        "default": "std"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Kling model version",
+                        "enum": ["2.6", "3.0"],
+                        "default": "3.0"
+                    },
+                    "cfg_scale": {
+                        "type": "string",
+                        "description": "Creativity vs prompt adherence (0-1, default 0.5). Lower = more creative, higher = stricter.",
+                        "default": "0.5"
+                    },
+                    "negative_prompt": {
+                        "type": "string",
+                        "description": "Optional: Elements to exclude from generation"
+                    },
+                    "enable_audio": {
+                        "type": "boolean",
+                        "description": "Generate synchronized audio (default: true)",
+                        "default": True
+                    }
+                },
+                "required": ["prompt", "filename"]
+            }
+        ),
     ]
 
 
@@ -2817,6 +3434,33 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
                 auto_analyze_image=arguments.get("auto_analyze_image", True)
             )
 
+        elif name == "generate_seedance_video":
+            return await generate_seedance_video_mcp(
+                prompt=arguments["prompt"],
+                duration=arguments.get("duration", 5),
+                aspect_ratio=arguments.get("aspect_ratio", "16:9"),
+                filename=arguments["filename"],
+                image_urls=arguments.get("image_urls"),
+                video_url=arguments.get("video_url"),
+                speed_mode=arguments.get("speed_mode", "standard"),
+                stability_mode=arguments.get("stability_mode", "auto")
+            )
+
+        elif name == "generate_kling_video":
+            return await generate_kling_video_mcp(
+                prompt=arguments["prompt"],
+                duration=arguments.get("duration", 5),
+                aspect_ratio=arguments.get("aspect_ratio", "16:9"),
+                filename=arguments["filename"],
+                image_url=arguments.get("image_url"),
+                mode=arguments.get("mode", "std"),
+                version=arguments.get("version", "3.0"),
+                cfg_scale=arguments.get("cfg_scale", "0.5"),
+                negative_prompt=arguments.get("negative_prompt"),
+                enable_audio=arguments.get("enable_audio", True),
+                stability_mode=arguments.get("stability_mode", "auto")
+            )
+
         else:
             return [TextContent(
                 type="text",
@@ -2845,6 +3489,7 @@ if __name__ == "__main__":
     logger.debug(f"Environment loaded from: {env_path}")
     logger.info(f"OpenAI API Key: {'Found' if os.getenv('OPENAI_API_KEY') else 'Missing'}")
     logger.info(f"Gemini API Key: {'Found' if os.getenv('GEMINI_API_KEY') else 'Missing'}")
+    logger.info(f"PiAPI API Key: {'Found' if os.getenv('PIAPI_API_KEY') else 'Missing (SeedDance + Kling disabled)'}")
     logger.info(f"Google GenAI: {'Available' if GOOGLE_GENAI_AVAILABLE else 'Not installed'}")
     logger.info(f"Google Drive: {'Available' if GOOGLE_DRIVE_AVAILABLE else 'Not installed'}")
     asyncio.run(main())

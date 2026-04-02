@@ -2,7 +2,7 @@
 
 ## The Simple Truth
 
-**You have 62 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 63 perfectly defined AI agents ready to use RIGHT NOW.**
 
 This includes a **root-level Supervisor Agent** for quality assurance across all 6 teams.
 
@@ -24,7 +24,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 62 Agents
+### You Have 63 Agents
 
 **MARKETING_TEAM (18 agents):**
 - router-agent - Coordinator
@@ -73,7 +73,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 **PROPOSAL_TEAM (1 agent):**
 - rfp-agent - RFP automation, compliance matrix generation, proposal writing with 30+ compliance frameworks
 
-**FINANCIAL_TEAM (10 agents):** ⭐ NEW
+**FINANCIAL_TEAM (14 agents):**
 - cfo-agent - Strategic finance leadership, capital strategy, fundraising, board relations
 - deal-analyst - Due diligence, deal structuring, LBO modeling, IC memos
 - valuation-agent - DCF analysis, comparable companies, precedent transactions
@@ -84,9 +84,14 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - accountant - Day-to-day accounting, AP/AR, reconciliations
 - controller - Financial reporting, compliance, audit coordination
 - tax-advisor - Tax planning, compliance, entity structuring
+- treasury-agent - Cash management, working capital optimization, FX hedging
+- financial-data-analyst - SQL analytics, dashboard creation, data quality, ETL pipelines
+- investor-relations-agent - LP communications, fund reporting, fundraising materials
+- trading-optimizer - ICT strategy autoresearch optimizer (Pine Script optimization, Chrome MCP backtesting, Funding Pips risk constraints)
 
-**SALES_TEAM (8 agents):** ⭐ NEW
+**SALES_TEAM (9 agents):**
 - sales-manager - Team coaching, pipeline management, forecasting
+- pe-outreach-agent - PE investor outreach, LP prospecting
 - sdr-agent - Prospecting, cold outreach, lead qualification
 - account-executive - Full-cycle sales, discovery, demos, negotiations
 - sales-operations - CRM admin, process optimization, territory planning
@@ -116,7 +121,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ## 🏢 Agent Workspace Assignments
 
-All 62 agents are organized into 6 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+All 63 agents are organized into 6 team workspaces with strict folder boundaries and **automatic workspace awareness**:
 
 ### MARKETING_TEAM (18 agents)
 **Location:** `MARKETING_TEAM/.claude/agents/`
@@ -155,20 +160,20 @@ All 62 agents are organized into 6 team workspaces with strict folder boundaries
 **Key capabilities:** RFP parsing, compliance matrix generation, proposal writing
 **Workspace enforcement:** ✅ ENABLED
 
-### FINANCIAL_TEAM (10 agents) ⭐ NEW
+### FINANCIAL_TEAM (14 agents)
 **Location:** `FINANCIAL_TEAM/.claude/agents/`
 **Memory:** `FINANCIAL_TEAM/memory/` (financial assumptions, historical data, chart of accounts)
 **Output:** `FINANCIAL_TEAM/outputs/` (models, reports, memos)
-**Agents:** cfo-agent, deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor
+**Agents:** cfo-agent, deal-analyst, valuation-agent, portfolio-manager, financial-analyst, forecasting-agent, fpna-agent, accountant, controller, tax-advisor, treasury-agent, financial-data-analyst, investor-relations-agent, trading-optimizer
 
 **Key capabilities:** PE/M&A (due diligence, LBO models, valuations), Corporate Finance (FP&A, budgeting, forecasting, month-end close)
 **Workspace enforcement:** ✅ ENABLED
 
-### SALES_TEAM (8 agents) ⭐ NEW
+### SALES_TEAM (9 agents)
 **Location:** `SALES_TEAM/.claude/agents/`
 **Memory:** `SALES_TEAM/memory/` (CRM configs, outreach templates, target lists)
 **Output:** `SALES_TEAM/outputs/` (proposals, sequences, reports)
-**Agents:** sales-manager, sdr-agent, account-executive, sales-operations, sales-analyst, proposal-specialist, customer-success-manager, outbound-specialist
+**Agents:** sales-manager, pe-outreach-agent, sdr-agent, account-executive, sales-operations, sales-analyst, proposal-specialist, customer-success-manager, outbound-specialist
 
 **Key capabilities:** Full sales lifecycle (prospecting, closing, retention, analytics)
 **Workspace enforcement:** ✅ ENABLED
@@ -460,6 +465,17 @@ The authentication feature is production-ready!
 **fixture-agent** - Use when: Creating test data
 ```
 "Use fixture-agent to create pytest fixtures for database tests"
+```
+
+### FINANCIAL_TEAM Agent — Trading Optimizer
+
+**trading-optimizer** - Use when: Optimizing ICT trading strategies, Pine Script parameter tuning, backtest analysis
+- **Model:** claude-opus-4-6
+- **Key Capabilities:** Pine Script parameter optimization, Chrome MCP backtesting (reads TradingView results), Funding Pips guard rails (5% daily loss, 10% max drawdown), autoresearch loop with performance tracking
+```
+"Use trading-optimizer to optimize ICT strategy on EURUSD 15m"
+"Use trading-optimizer to compare Track A vs Track B results"
+"Use trading-optimizer to set up the live webhook pipeline"
 ```
 
 ### ROOT SUPERVISOR Agent
@@ -849,8 +865,8 @@ ls MARKETING_TEAM/.claude/agents/    # Should show 18 .md files
 ls QA_TEAM/.claude/agents/           # Should show 5 .md files
 ls ENGINEERING_TEAM/.claude/agents/  # Should show 15 .md files
 ls PROPOSAL_TEAM/.claude/agents/     # Should show 1 .md file
-ls FINANCIAL_TEAM/.claude/agents/    # Should show 10 .md files
-ls SALES_TEAM/.claude/agents/        # Should show 8 .md files
+ls FINANCIAL_TEAM/.claude/agents/    # Should show 14 .md files
+ls SALES_TEAM/.claude/agents/        # Should show 9 .md files
 ```
 
 ✅ **Try your first agent:**
@@ -874,14 +890,14 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 62 agents perfectly defined across 6 teams
-  - 18 MARKETING + 5 QA + 15 ENGINEERING + 1 PROPOSAL + 10 FINANCIAL + 8 SALES + 1 ROOT SUPERVISOR
+- ✅ 63 agents perfectly defined across 6 teams
+  - 18 MARKETING + 5 QA + 15 ENGINEERING + 1 PROPOSAL + 14 FINANCIAL + 9 SALES + 1 ROOT SUPERVISOR
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run
 - ✅ Just talk to Claude Code
-- ✨ NEW: **FINANCIAL_TEAM** (10 agents) - PE/M&A + General Finance
-- ✨ NEW: **SALES_TEAM** (8 agents) - Full sales lifecycle
+- ✨ **FINANCIAL_TEAM** (14 agents) - PE/M&A + General Finance + Trading Optimization
+- ✨ **SALES_TEAM** (9 agents) - Full sales lifecycle
 - ✨ NEW: **Supervisor Agent** - Root-level quality assurance for verifying task completion
 - ✨ NEW: System architect with professional flow diagrams
 - ✨ NEW: Lead generation with Bright Data (5,000 free requests/month)
