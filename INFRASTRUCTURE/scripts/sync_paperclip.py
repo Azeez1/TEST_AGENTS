@@ -9,11 +9,10 @@ Usage:
     python sync_paperclip.py sales        # Sync SALES_TEAM only
     python sync_paperclip.py qa           # Sync QA_TEAM only
     python sync_paperclip.py proposal     # Sync PROPOSAL_TEAM only
+    python sync_paperclip.py root          # Sync ROOT (supervisor) only
 """
 
 import json
-import os
-import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -60,6 +59,12 @@ TEAM_MAP = {
         "team_label": "PROPOSAL_TEAM",
         "memory_dir": "PROPOSAL_TEAM/memory",
         "outputs_dir": "PROPOSAL_TEAM/outputs",
+    },
+    "ROOT": {
+        "agents_dir": TEST_AGENTS_ROOT / ".claude" / "agents",
+        "team_label": "ROOT",
+        "memory_dir": ".claude/memory",
+        "outputs_dir": "",
     },
 }
 
@@ -133,6 +138,8 @@ NAME_TO_FILE = {
     "Fixture Agent": "fixture-agent.md",
     # PROPOSAL
     "VP Proposals": "rfp-agent.md",
+    # ROOT
+    "Supervisor": "supervisor.md",
 }
 
 # Which team each agent belongs to
@@ -146,8 +153,22 @@ for team_key, team_info in TEAM_MAP.items():
                     NAME_TO_TEAM[name] = team_key
 
 
+def _strip_yaml_quotes(val: str) -> str:
+    """Strip surrounding quotes from a YAML value."""
+    if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
+        return val[1:-1]
+    return val
+
+
 def parse_yaml_frontmatter(content: str) -> tuple[dict, str]:
-    """Extract YAML frontmatter and body from an agent definition."""
+    """Extract YAML frontmatter and body from an agent definition.
+
+    Handles:
+    - Single-line key: value pairs
+    - Quoted string values (strips surrounding quotes)
+    - List items (- value) under a key
+    - Missing frontmatter (returns empty dict and full content as body)
+    """
     frontmatter = {}
     body = content
     if content.startswith("---"):
@@ -155,18 +176,23 @@ def parse_yaml_frontmatter(content: str) -> tuple[dict, str]:
         if len(parts) >= 3:
             yaml_text = parts[1].strip()
             body = parts[2].strip()
+            last_key = None
             for line in yaml_text.split("\n"):
-                line = line.strip()
-                if ":" in line and not line.startswith("-"):
-                    key, val = line.split(":", 1)
-                    frontmatter[key.strip()] = val.strip()
-                elif line.startswith("- "):
-                    last_key = list(frontmatter.keys())[-1] if frontmatter else None
-                    if last_key:
-                        if isinstance(frontmatter[last_key], list):
-                            frontmatter[last_key].append(line[2:].strip())
-                        else:
-                            frontmatter[last_key] = [line[2:].strip()]
+                stripped = line.strip()
+                if not stripped or stripped.startswith("#"):
+                    continue
+                if ":" in stripped and not stripped.startswith("-"):
+                    key, val = stripped.split(":", 1)
+                    key = key.strip()
+                    val = _strip_yaml_quotes(val.strip())
+                    frontmatter[key] = val
+                    last_key = key
+                elif stripped.startswith("- ") and last_key is not None:
+                    item = _strip_yaml_quotes(stripped[2:].strip())
+                    if isinstance(frontmatter.get(last_key), list):
+                        frontmatter[last_key].append(item)
+                    else:
+                        frontmatter[last_key] = [item]
     return frontmatter, body
 
 
@@ -293,26 +319,33 @@ def generate_instruction(agent_name: str, definition_content: str, team_key: str
             lines.append("")
 
     # Config files
-    lines.append(f"## Configuration Files (READ BEFORE EVERY TASK)")
-    lines.append("")
-    lines.append(f"Read relevant configs from `{team_info['memory_dir']}/` before starting work:")
-    lines.append("- `output_paths.json` -- Valid output directories")
-    if team_key == "MARKETING_TEAM":
-        lines.append("- `brand_voice.json` -- Tone, style, keywords")
-        lines.append("- `email_config.json` -- Email defaults")
-        lines.append("- `google_drive_config.json` -- Drive folder IDs")
-        lines.append("- `visual_guidelines.json` -- Brand colors and design standards")
-    lines.append("")
+    if team_info["memory_dir"]:
+        lines.append(f"## Configuration Files (READ BEFORE EVERY TASK)")
+        lines.append("")
+        lines.append(f"Read relevant configs from `{team_info['memory_dir']}/` before starting work:")
+        lines.append("- `output_paths.json` -- Valid output directories")
+        if team_key == "MARKETING_TEAM":
+            lines.append("- `brand_voice.json` -- Tone, style, keywords")
+            lines.append("- `email_config.json` -- Email defaults")
+            lines.append("- `google_drive_config.json` -- Drive folder IDs")
+            lines.append("- `visual_guidelines.json` -- Brand colors and design standards")
+        lines.append("")
 
     # Memory block
     lines.append(MEMORY_BLOCK)
     lines.append("")
 
     # Output
-    lines.append("## Output")
-    lines.append("")
-    lines.append(f"All outputs saved to `{team_info['outputs_dir']}/`. Never save to repo root or wrong team folder.")
-    lines.append("")
+    if team_info["outputs_dir"]:
+        lines.append("## Output")
+        lines.append("")
+        lines.append(f"All outputs saved to `{team_info['outputs_dir']}/`. Never save to repo root or wrong team folder.")
+        lines.append("")
+    else:
+        lines.append("## Output")
+        lines.append("")
+        lines.append("As the root supervisor, you have cross-team read/write authority. Follow workspace boundary rules from CLAUDE.md.")
+        lines.append("")
 
     # Rules
     lines.append(RULES_FOOTER)
@@ -344,6 +377,7 @@ def sync_team(team_filter: str = None):
         "sales": "SALES_TEAM",
         "qa": "QA_TEAM",
         "proposal": "PROPOSAL_TEAM",
+        "root": "ROOT",
     }
 
     target_team = None
@@ -398,12 +432,13 @@ def sync_team(team_filter: str = None):
 
         # Write to Paperclip
         instruction_path = get_instruction_path(agent_id, company_id)
-        if instruction_path.exists():
+        try:
+            instruction_path.parent.mkdir(parents=True, exist_ok=True)
             instruction_path.write_text(instruction, encoding="utf-8")
             print(f"  OK: {name} ({team_key})")
             updated += 1
-        else:
-            print(f"  ERROR: {name} -- instruction path not found: {instruction_path}")
+        except OSError as e:
+            print(f"  ERROR: {name} -- failed to write {instruction_path}: {e}")
             errors += 1
 
     print(f"\nDone: {updated} updated, {skipped} skipped, {errors} errors")

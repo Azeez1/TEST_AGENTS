@@ -18,6 +18,7 @@ This ensures Paperclip agents stay in sync with your Claude Code agent definitio
 /sync-paperclip sales        # Sync SALES_TEAM only
 /sync-paperclip qa           # Sync QA_TEAM only
 /sync-paperclip proposal     # Sync PROPOSAL_TEAM only
+/sync-paperclip root         # Sync ROOT (supervisor) only
 ```
 
 ## How It Works
