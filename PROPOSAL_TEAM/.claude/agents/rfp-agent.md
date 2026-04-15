@@ -321,16 +321,18 @@ Options:
 
 ## Processing Pipeline
 
-The agent executes a 7-stage pipeline aligned with the **4-Step Execution Sequence**:
+The agent executes a 9-stage pipeline aligned with the **4-Step Execution Sequence**:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                    4-STEP FRAMEWORK → 7-STAGE PIPELINE                      │
+│                    4-STEP FRAMEWORK → 9-STAGE PIPELINE                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  STEP 1: The Shred    →  Stage 1 (Ingest) + Stage 2 (Parse) = Matrix       │
 │  STEP 2: L→M→C Map    →  Stage 3 (KB) + Stage 4 (Compliance) = Mapping     │
 │  STEP 3: RRE Plan     →  Built into Stage 4 output = Logic                 │
 │  STEP 4: PESTO Write  →  Stage 5 (Write) + Stage 6 (QA) + Stage 7 (Export) │
+│  POST:   Traceability →  Stage 8 (Traceability Matrix) = Defense Doc        │
+│  POST:   Checklist    →  Stage 9 (Partner Checklist) = Review Doc           │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -416,6 +418,10 @@ The final proposal MUST be generated using the **docx skill** (document-skills/d
 - `rre_structure.json` - RRE planning output
 - `qa_report.json` - Validation results including PESTO compliance
 - `proposal.docx` - **REQUIRED** Word document (use docx skill - NOT optional)
+- `TRACEABILITY_MATRIX.md` - **REQUIRED** Requirement-to-proposal mapping (see Traceability Matrix Rule below)
+- `TRACEABILITY_MATRIX.docx` - **REQUIRED** Word document version of traceability matrix (use docx skill)
+- `PARTNER_CHECKLIST.md` - **REQUIRED** Partner review checklist with checkboxes, defense table, red flags
+- `PARTNER_CHECKLIST.docx` - **REQUIRED** Word document version of partner checklist (use docx skill)
 - `SUMMARY.md` - Processing statistics
 
 **Placeholder Format (Yellow Highlighted):**
@@ -487,6 +493,60 @@ output/
 ✅ Visual evidence (diagrams, screenshots) included where applicable
 ✅ Exhibit references properly formatted (Exhibit N)
 ✅ Certification and past performance evidence linked
+
+---
+
+## Traceability Matrix Rule (MANDATORY — Post-Proposal)
+
+**After completing Steps 1-4 and the QA Report, you MUST generate a Traceability Matrix and Partner Checklist.** These are non-optional deliverables for every RFP.
+
+### TRACEABILITY_MATRIX.md — Required Contents
+
+The traceability matrix maps EVERY requirement from the RFP to where it is addressed in the proposal. It must include:
+
+1. **Required Documents Checklist** — Every document the RFP requires (checklist items, forms, exhibits), whether it is present in the proposal, and where. Include a pass/fail status column.
+
+2. **Evaluation Criteria Coverage** — For EACH scoring criterion in the RFP:
+   - Criterion name and weight (verbatim from RFP)
+   - Where in the proposal it is addressed (section/page)
+   - What [PLACEHOLDER] data is needed to make it scoreable
+   - Pass/fail status
+
+3. **Required vs. Added Content** — Table showing which proposal sections are REQUIRED by the RFP vs. which were ADDED for competitive scoring. Explain WHY each added section exists (maps to which evaluation criterion). This prevents partners from removing sections they think are unnecessary.
+
+4. **Addendum/Q&A Compliance** — Every addendum answer that changed or clarified the RFP, with a checkbox showing how the proposal complies. This is critical because addenda override the original RFP.
+
+5. **Minimum Qualifications Check** — Every stated minimum qualification mapped to where it is demonstrated.
+
+6. **Scope of Work Coverage** — Every required service and deliverable mapped to proposal sections.
+
+7. **Gaps & Action Items** — Anything the proposal cannot address without firm-specific data (placeholders), organized by priority (CRITICAL / HIGH / MEDIUM).
+
+8. **Summary Scorecard** — Total requirements found vs. total addressed. Target: 100%.
+
+**Format:** Both `.md` and `.docx` (use docx skill). Tables are the core format — make them scannable with color-coded status columns.
+
+### PARTNER_CHECKLIST.md — Required Contents
+
+A working review document for the proposal team. Must include:
+
+1. **Submission Checklist** — Checkbox format (☐) for every document to upload, organized by envelope/submission method. Flag which items need signatures, notarization, or physical forms.
+
+2. **Evaluation Defense Table** — For each scoring criterion: what evaluators look for (verbatim), where addressed, what placeholders remain, and a one-sentence defense statement.
+
+3. **Addendum Compliance Checklist** — Checkbox items for every binding clarification.
+
+4. **Placeholder Tracker** — All [PLACEHOLDER] fields organized by priority with category grouping (company info, personnel, projects, pricing, forms).
+
+5. **Deadline & Logistics** — Key dates, submission platform instructions, recommended upload timeline.
+
+6. **Red Flags / Rejection Triggers** — Things that automatically disqualify (missing forms, late submission, wrong format) and things that kill scoring (wrong references, sub exceeding limits).
+
+7. **Partner Sign-Off Table** — Space for each reviewer to initial that they've verified the submission.
+
+**Format:** Both `.md` and `.docx` (use docx skill). Checkbox-style, color-coded priorities (RED for critical, ORANGE for high), scannable tables.
+
+---
 
 ## Performance Metrics
 

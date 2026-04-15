@@ -123,3 +123,25 @@ tmpclaude-*-cwd
 # Test artifacts
 test.txt
 _ul
+_ul-*
+
+# Scratch scripts (leading underscore convention)
+/_*.py
+
+# Work-in-progress analysis folders
+/_usps_analysis/
+/tmp/
+
+# Audit artifacts (point-in-time, kept local)
+/AUDIT_REPORT.md
+/AUDIT_REPORT.docx
+/AUDIT_RESULTS_TASK_3.md
+
+# Runtime logs
+MARKETING_TEAM/logs/*.log
+
+# Misplaced outputs (belong in team outputs folders)
+/cigna_faq.py
+/daily_tweets_*.md
+/nigeria-oil-*.html
+/nextshiftiq-website.md

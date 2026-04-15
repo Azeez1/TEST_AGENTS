@@ -968,12 +968,10 @@ async def generate_nano_banana_2_image_mcp(
             "image_config": types.ImageConfig(aspect_ratio=aspect_ratio),
         }
 
-        # Add image_size for resolution control
+        # Note: image_size is not supported by ImageConfig in current google-genai SDK
+        # Resolution is controlled by the model automatically based on aspect ratio
         if image_size and image_size != "1K":
-            config_kwargs["image_config"] = types.ImageConfig(
-                aspect_ratio=aspect_ratio,
-                image_size=image_size
-            )
+            logger.info(f"image_size={image_size} requested (not supported by SDK ImageConfig, using default resolution)")
 
         # Add thinking level if specified
         if thinking_level and thinking_level != "none":

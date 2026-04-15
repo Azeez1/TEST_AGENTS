@@ -271,7 +271,7 @@ export function CompanyRail() {
     <div className="flex flex-col items-center w-[72px] shrink-0 h-full bg-background border-r border-border">
       {/* Dux Machina OS logo */}
       <div className="flex items-center justify-center h-12 w-full shrink-0">
-        <img src="/dux-machina-logo.png" alt="Dux Machina OS" className="h-7 w-7 rounded" />
+        <img src="/dux-machina-logo.png" alt="Dux Machina OS" className="h-10 w-10 rounded" />
       </div>
 
       {/* Company list */}
