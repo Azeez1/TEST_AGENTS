@@ -14,6 +14,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./telemetry": "./src/telemetry/index.ts",
     "./*": "./src/*.ts"
   },
   "publishConfig": {
@@ -22,6 +23,10 @@
       ".": {
         "types": "./dist/index.d.ts",
         "import": "./dist/index.js"
+      },
+      "./telemetry": {
+        "types": "./dist/telemetry/index.d.ts",
+        "import": "./dist/telemetry/index.js"
       },
       "./*": {
         "types": "./dist/*.d.ts",
@@ -36,7 +41,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "clean": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
+    "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

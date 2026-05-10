@@ -76,7 +76,7 @@ export function CliAuthPage() {
         <div className="rounded-lg border border-border bg-card p-6">
           <h1 className="text-xl font-semibold">CLI access approved</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            The Dux Machina OS CLI can now finish authentication on the requesting machine.
+            The Paperclip CLI can now finish authentication on the requesting machine.
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
             Command: <span className="font-mono text-foreground">{challenge.command}</span>
@@ -120,9 +120,9 @@ export function CliAuthPage() {
   return (
     <div className="mx-auto max-w-xl py-10">
       <div className="rounded-lg border border-border bg-card p-6">
-        <h1 className="text-xl font-semibold">Approve Dux Machina OS CLI access</h1>
+        <h1 className="text-xl font-semibold">Approve Paperclip CLI access</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          A local Dux Machina OS CLI process is requesting board access to this instance.
+          A local Paperclip CLI process is requesting board access to this instance.
         </p>
 
         <div className="mt-5 space-y-3 text-sm">
@@ -132,7 +132,7 @@ export function CliAuthPage() {
           </div>
           <div>
             <div className="text-muted-foreground">Client</div>
-            <div className="text-foreground">{challenge.clientName ?? "Dux Machina OS CLI"}</div>
+            <div className="text-foreground">{challenge.clientName ?? "paperclipai cli"}</div>
           </div>
           <div>
             <div className="text-muted-foreground">Requested access</div>
