@@ -1,4 +1,4 @@
-# analyze-skill-usage.ps1
+﻿# analyze-skill-usage.ps1
 # Reads skill-usage.jsonl and produces usage analytics
 
 $log_path = Join-Path $PSScriptRoot "skill-usage.jsonl"

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Field Manual N° 01 — Agentic Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Newsreader:opsz,ital,wght@6..72,0,200..800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #e8e4d6;
+    --ink-dim: #9e9a8c;
+    --ink-faint: #595549;
+    --bg: #0d0c09;
+    --bg-raised: #14130f;
+    --bg-card: #1a1814;
+    --rule: #2a2620;
+    --rule-soft: #1f1c17;
+    --gold: #c9a961;
+    --gold-bright: #e8c98b;
+    --gold-dim: #8a7548;
+    --oxide: #b86a4a;
+    --moss: #6a8a5a;
+    --shadow: 0 1px 0 rgba(255,255,255,0.03), 0 30px 60px -30px rgba(0,0,0,0.7);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 32px; }
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% -10%, rgba(201,169,97,0.06), transparent 40%),
+      radial-gradient(circle at 95% 110%, rgba(184,106,74,0.04), transparent 50%);
+    color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 380;
+    font-size: 17px;
+    line-height: 1.65;
+    letter-spacing: 0.005em;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.9, 0 0 0 0 0.85, 0 0 0 0 0.7, 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: 'ss01','ss02'; }
+  .serif-display { font-family: 'Fraunces', 'Times New Roman', serif; font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1; }
+  .shell {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  /* ─── SIDEBAR ─── */
+  aside {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 40px 28px 24px;
+    border-right: 1px solid var(--rule);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+  aside::-webkit-scrollbar { width: 4px; }
+  aside::-webkit-scrollbar-thumb { background: var(--rule); }
+  .sigil {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sigil-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 320, 'SOFT' 100;
+    font-size: 22px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 36px;
+    font-style: italic;
+  }
+  .progress-shell {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .progress-label span:last-child { color: var(--gold); }
+  .progress-bar {
+    height: 2px;
+    background: var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: var(--p, 0%);
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+    transition: width 0.6s cubic-bezier(.2,.8,.2,1);
+  }
+  nav ol { list-style: none; counter-reset: lsn; }
+  nav li {
+    counter-increment: lsn;
+    position: relative;
+    padding: 7px 0 7px 38px;
+    cursor: pointer;
+    transition: color 0.25s;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--ink-dim);
+    border-left: 1px solid transparent;
+    margin-left: -1px;
+  }
+  nav li::before {
+    content: counter(lsn, decimal-leading-zero);
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+    transition: color 0.25s;
+  }
+  nav li:hover { color: var(--ink); }
+  nav li:hover::before { color: var(--gold); }
+  nav li.done { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--gold-dim); text-decoration-thickness: 1px; }
+  nav li.done::before { color: var(--moss); }
+  nav li.priority::after {
+    content: '★';
+    color: var(--gold);
+    margin-left: 6px;
+    font-size: 11px;
+  }
+  /* ─── MAIN ─── */
+  main { padding: 56px 64px 120px; max-width: 940px; }
+  .hero {
+    padding-bottom: 56px;
+    margin-bottom: 56px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .hero-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+  .hero-meta span::before {
+    content: '◆';
+    margin-right: 8px;
+    color: var(--gold-dim);
+    font-size: 7px;
+    vertical-align: middle;
+  }
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 280, 'SOFT' 50, 'WONK' 1;
+    font-size: clamp(48px, 7vw, 92px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin-bottom: 28px;
+    color: var(--ink);
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--gold-bright);
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'SOFT' 100, 'WONK' 1;
+  }
+  .hero-sub {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    max-width: 620px;
+    font-weight: 320;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 400;
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-value span { color: var(--gold); font-size: 16px; vertical-align: top; margin-left: 4px; }
+
+  /* ─── SECTION HEADER ─── */
+  .section-marker {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin: 88px 0 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-marker .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+  }
+  .section-marker h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 320, 'SOFT' 80;
+    font-size: 32px;
+    color: var(--ink);
+    font-style: italic;
+    font-weight: 320;
+  }
+
+  /* ─── INTRO BLOCKS ─── */
+  .pull-quote {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 280, 'SOFT' 100;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--ink);
+    padding: 32px 0 32px 32px;
+    border-left: 2px solid var(--gold);
+    margin: 40px 0;
+    max-width: 700px;
+  }
+  .pull-quote::before {
+    content: '"';
+    font-size: 60px;
+    color: var(--gold);
+    line-height: 0;
+    vertical-align: -20px;
+    margin-right: 4px;
+  }
+
+  /* ─── PREREQ TABLE ─── */
+  .prereq-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  .prereq-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 12px 16px 12px 0;
+    border-bottom: 1px solid var(--rule);
+    font-weight: 500;
+  }
+  .prereq-table td {
+    padding: 14px 16px 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    color: var(--ink-dim);
+    vertical-align: top;
+  }
+  .prereq-table td:first-child { color: var(--ink); }
+  .chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .chip.met { color: var(--moss); border-color: var(--moss); background: rgba(106,138,90,0.06); }
+  .chip.gap { color: var(--oxide); border-color: var(--oxide); background: rgba(184,106,74,0.06); }
+  .chip.partial { color: var(--gold); border-color: var(--gold-dim); background: rgba(201,169,97,0.06); }
+
+  /* ─── DEPENDENCY MAP ─── */
+  .dep-map {
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    margin: 40px 0;
+    overflow-x: auto;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .dep-map::before {
+    content: 'DEPENDENCY GRAPH / DAG';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+  }
+  .dep-map pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink-dim);
+    white-space: pre;
+  }
+  .dep-map pre b { color: var(--gold-bright); font-weight: 500; }
+
+  /* ─── LESSON CARD ─── */
+  .lesson {
+    margin: 56px 0;
+    padding: 40px 36px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    position: relative;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.7,.2,1);
+  }
+  .lesson.visible { opacity: 1; transform: translateY(0); }
+  .lesson::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .lesson:hover::before { opacity: 1; }
+  .lesson-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: baseline;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .lesson-num {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 250;
+    font-size: 56px;
+    line-height: 0.85;
+    color: var(--gold);
+    font-style: italic;
+  }
+  .lesson-title-wrap h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 340, 'SOFT' 50;
+    font-size: 28px;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-weight: 340;
+  }
+  .lesson-title-wrap h3 em {
+    color: var(--gold-bright);
+    font-style: italic;
+  }
+  .lesson-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .lesson-meta .pri { color: var(--gold); margin-right: 12px; }
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+  }
+  .check:hover { color: var(--ink); }
+  .check input {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--ink-faint);
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .check input:checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .check input:checked::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    color: var(--bg);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 14px;
+  }
+  .check input:checked ~ .check-label { color: var(--gold); }
+  .lesson.done { opacity: 0.55; }
+  .lesson.done .lesson-title-wrap h3 { text-decoration: line-through; text-decoration-color: var(--gold-dim); }
+
+  .field {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .field:last-of-type { border-bottom: none; }
+  .field-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 4px;
+  }
+  .field-body {
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-dim);
+  }
+  .field-body strong { color: var(--ink); font-weight: 500; }
+  .field-body em { color: var(--gold-bright); font-style: italic; }
+  .field-body ul, .field-body ol {
+    margin: 8px 0 8px 20px;
+    color: var(--ink-dim);
+  }
+  .field-body ul li, .field-body ol li { margin-bottom: 4px; }
+  .field-body code, .field-body .code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: rgba(201,169,97,0.08);
+    color: var(--gold-bright);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+  .codeblock {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 14px 18px;
+    margin: 12px 0;
+    border-left: 2px solid var(--gold);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .codeblock .c { color: var(--ink-faint); font-style: italic; }
+  .codeblock .k { color: var(--gold-bright); }
+
+  /* ─── CTA / FOOTER ─── */
+  .cta-block {
+    margin: 80px 0 0;
+    padding: 56px 40px;
+    background: var(--bg-raised);
+    border: 1px solid var(--gold-dim);
+    position: relative;
+  }
+  .cta-block::before {
+    content: 'N° 14 / CAPSTONE / OPS DIRECTIVE';
+    position: absolute;
+    top: -10px;
+    left: 32px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+  }
+  .cta-block h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'wght' 300, 'SOFT' 100, 'WONK' 1;
+    font-style: italic;
+    font-size: 42px;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .cta-block h2 em { color: var(--gold-bright); }
+  .cta-block p {
+    color: var(--ink-dim);
+    font-size: 17px;
+    line-height: 1.65;
+    max-width: 620px;
+    margin-bottom: 12px;
+  }
+
+  footer {
+    margin-top: 96px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  footer .gold { color: var(--gold); }
+
+  /* ─── INSIGHT CALLOUT ─── */
+  .insight {
+    margin: 24px 0;
+    padding: 20px 24px;
+    background: rgba(201,169,97,0.04);
+    border: 1px dashed var(--gold-dim);
+    color: var(--ink-dim);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.6;
+    position: relative;
+  }
+  .insight::before {
+    content: '★ INSIGHT';
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    background: var(--bg);
+    padding: 0 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--rule); }
+    main { padding: 32px 24px 80px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .lesson-head { grid-template-columns: 1fr; gap: 8px; }
+    .lesson-num { font-size: 40px; }
+    .field { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<aside>
+  <div class="sigil">FIELD MANUAL — N° 01</div>
+  <div class="sigil-title">Agentic<br/>Engineering</div>
+
+  <div class="progress-shell">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="pcount">0 / 14</span>
+    </div>
+    <div class="progress-bar" id="pbar"></div>
+  </div>
+
+  <nav>
+    <ol id="navlist"></ol>
+  </nav>
+</aside>
+
+<main>
+
+<section class="hero">
+  <div class="hero-meta">
+    <span>Self-Study</span>
+    <span>Dux Machina</span>
+    <span>Rev. 2026.05</span>
+  </div>
+  <h1 class="title">From <em>scattered</em><br/>to <em>system</em>.</h1>
+  <p class="hero-sub">
+    Fourteen tactical lessons, reverse-engineered and adapted for the
+    TEST_AGENTS repo. Pick any order. Each lesson finishes with a measurable
+    proof, not a participation trophy.
+  </p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-label">Time Budget</div>
+      <div class="stat-value">12–15<span>hrs</span></div>
+    </div>
+    <div>
+      <div class="stat-label">Lessons</div>
+      <div class="stat-value">14</div>
+    </div>
+    <div>
+      <div class="stat-label">Cost</div>
+      <div class="stat-value">0<span>USD</span></div>
+    </div>
+    <div>
+      <div class="stat-label">Course Replaced</div>
+      <div class="stat-value">599<span>USD</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── OPERATING NOTES ───────────── -->
+<div class="section-marker">
+  <span class="num">§ 00</span>
+  <h2>Operating notes</h2>
+</div>
+
+<p style="color:var(--ink-dim); max-width:680px; margin-bottom:24px;">
+  Each lesson follows the same shape:
+  <span class="chip met" style="margin: 0 2px;">Concept</span>
+  <span class="chip met" style="margin: 0 2px;">Why</span>
+  <span class="chip met" style="margin: 0 2px;">Sources</span>
+  <span class="chip met" style="margin: 0 2px;">Hands-On</span>
+  <span class="chip met" style="margin: 0 2px;">Done When</span>
+  <span class="chip met" style="margin: 0 2px;">Time</span>
+</p>
+
+<div class="pull-quote">
+  Skip lessons whose <em>Done&nbsp;When</em> criteria you already meet.
+  The point isn't completion — it's <em>installation</em> of patterns
+  into the repo you actually ship from.
+</div>
+
+<!-- ───────────── PREREQS ───────────── -->
+<div class="section-marker">
+  <span class="num">§ 01</span>
+  <h2>Prerequisite audit</h2>
+</div>
+
+<table class="prereq-table">
+  <thead>
+    <tr><th>Capability</th><th>Status</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>64 agents / 6 teams</td><td><span class="chip met">Met</span></td><td>Lessons 6, 11, 12 partially complete</td></tr>
+    <tr><td>7 MCP servers integrated</td><td><span class="chip met">Met</span></td><td>Lesson 2 — leverage point #6 in use</td></tr>
+    <tr><td>28 skills installed</td><td><span class="chip met">Met</span></td><td>Lesson 13 substrate already built</td></tr>
+    <tr><td>One production hook</td><td><span class="chip partial">Partial</span></td><td>PE validation gate — pattern, not platform</td></tr>
+    <tr><td>Closed-loop prompts</td><td><span class="chip gap">Gap</span></td><td>No self-correcting loops in production</td></tr>
+    <tr><td>Reviewer subagents</td><td><span class="chip gap">Gap</span></td><td>Implementers exist; reviewers do not</td></tr>
+    <tr><td>Eval infrastructure</td><td><span class="chip gap">Gap</span></td><td>Quality is faith-based today</td></tr>
+    <tr><td>Observability layer</td><td><span class="chip gap">Gap</span></td><td>Distributed system, black box outputs</td></tr>
+  </tbody>
+</table>
+
+<!-- ───────────── DEPENDENCY MAP ───────────── -->
+<div class="section-marker">
+  <span class="num">§ 02</span>
+  <h2>Dependency map</h2>
+</div>
+
+<div class="dep-map">
+<pre>  <b>1</b> Core Four ─────┬──► <b>2</b> Leverage ──┬──► <b>3</b> Plan ──► <b>4</b> PITER ──► <b>5</b> Closed Loop
+                  │               │
+                  └──► <b>9</b> Context ────┘                       │
+                                                              ▼
+                                  <b>6</b> Reviewers ──► <b>7</b> ZTE ──► <b>8</b> Agentic Layer
+
+  <b>10</b> Prompt Levels ──► <b>11</b> Domain ──► <b>12</b> Orchestration ──► <b>13</b> Skills ──► <b>14</b> Capstone
+</pre>
+</div>
+
+<div class="insight">
+  Recommended path: <strong style="color:var(--gold-bright)">1 → 5 → 6 → 9 → 4 → 10 → 13 → rest</strong>.
+  Front-loads hooks &amp; evals — your two biggest structural gaps. The marketing-vocabulary
+  lessons (8, 14) crystallize last, after the substrate is real.
+</div>
+
+<!-- ───────────── LESSONS ───────────── -->
+<div class="section-marker">
+  <span class="num">§ 03</span>
+  <h2>The fourteen</h2>
+</div>
+
+<!-- LESSON TEMPLATE BUILT BY JS -->
+<div id="lessons"></div>
+
+<!-- ───────────── CAPSTONE CTA ───────────── -->
+<div class="cta-block">
+  <h2>This week, do <em>only three</em>.</h2>
+  <p>
+    Lesson 5 (closed loop) + Lesson 6 (reviewer subagent) + Lesson 9 (context audit).
+    Together they are the structural upgrade from <em>scattered</em> to <em>system</em>.
+    Everything else compounds off these.
+  </p>
+  <p style="color:var(--gold-bright); font-style:italic; margin-top:24px;">
+    A working ZTE pipeline running 30 days untouched is the demo Dux Machina sells to PE prospects.
+    The course buys vocabulary. The capstone buys a sales asset.
+  </p>
+</div>
+
+<footer>
+  <span>Compiled 2026.05.11 · <span class="gold">Dux Machina</span></span>
+  <span id="liveCount">0 of 14 complete</span>
+</footer>
+
+</main>
+</div>
+
+<script>
+const lessons = [
+  {
+    n: 1, title: "The Core Four", em: "",
+    priority: false, time: "1h",
+    concept: "Every AI coding result = function of <strong>Context + Model + Prompt + Tools</strong>. When output is bad, one of these four is the cause. Tune one lever at a time.<ul><li><strong>Context</strong> — what the model can see (files, prior messages, system prompt, memory)</li><li><strong>Model</strong> — which model + which params (Opus vs Sonnet, temperature)</li><li><strong>Prompt</strong> — the instruction itself</li><li><strong>Tools</strong> — what the model can do (Read, Write, Bash, MCP, subagents)</li></ul>",
+    why: "You debug agents by tweaking prompts. <em>80% of the time the real fix is context (wrong files loaded) or tools (missing capability)</em>. Wrong lever = hours wasted.",
+    sources: "IndyDevDan YouTube — 'Big Three' / 'Principled AI Coding'. Anthropic docs → Prompt engineering overview + Context window.",
+    handson: "Pick one of your agents that produced bad output recently. Write a one-page diagnosis: which of the four was wrong? File at <code>LEARNING/diagnoses/01-core-four.md</code>.",
+    done: "You name the four levers without thinking, and your next debug starts with 'context or tools?' not 'let me rewrite the prompt.'"
+  },
+  {
+    n: 2, title: "The 12 Leverage Points", em: "",
+    priority: false, time: "1h",
+    concept: "Specific places to inject signal into agents:<ol><li>CLAUDE.md files (project, user, team)</li><li>Agent definition YAML</li><li>Slash commands</li><li>Skills</li><li>Subagents</li><li>MCP servers</li><li>Hooks</li><li>Tool permissions</li><li>Output routing</li><li>Type systems / schemas</li><li>Tests / validators</li><li>Stdout / logs</li></ol>",
+    why: "Your repo uses 1-6 and 8-9. You barely use <em>7 (one hook), 10-12 (no schemas, no validators)</em>. The unused points are your highest-ROI work.",
+    sources: "Claude Code docs → Hooks, Slash commands, Subagents, Skills. Your own <code>.claude/</code> directory — audit what's there.",
+    handson: "Make a table: for each of the 12 points, mark used / unused / partial. File at <code>LEARNING/audits/12-leverage-audit.md</code>. For each 'unused,' write one sentence on what you'd use it for.",
+    done: "Prioritized list of which leverage points to add next."
+  },
+  {
+    n: 3, title: "Plan First, Execute Second", em: "",
+    priority: false, time: "1.5h",
+    concept: "Spec-driven development. Before asking an agent to <em>do</em>, ask it to <em>plan</em>. The plan goes in a file. The agent then executes the plan, ticking off steps.",
+    why: "Your PE diagnosis pipeline, LinkedIn workflow, and lead-gen all do multi-step work. <em>Without explicit plans, deviations are silent.</em> With plans, deviations are visible.",
+    sources: "Anthropic docs → Extended thinking + Plan mode. IndyDevDan YouTube — 'spec prompt' videos. GitHub spec-kit.",
+    handson: "Take your <code>comment-leads</code> skill. Add a step zero: agent writes <code>PLAN.md</code> listing target accounts before running. You approve, then it executes. Time it before / after.",
+    done: "Three of your skills now do plan-then-execute instead of execute-blind."
+  },
+  {
+    n: 4, title: "PITER / AFK Agents", em: "",
+    priority: false, time: "2-3h",
+    concept: "Pipeline pattern: <strong>P</strong>lan → <strong>I</strong>mplement → <strong>T</strong>est → <strong>E</strong>valuate → <strong>R</strong>eview. Each phase has a gate. You walk away. Implementation = a bash/Python wrapper running <code>claude -p</code> in sequence with eval gates between phases.",
+    why: "Your 17-episode YouTube backlog is the ideal PITER candidate. Each episode: Plan (script) → Implement (HeyGen render) → Test (preview) → Evaluate (length/quality) → Review (your approval).",
+    sources: "IndyDevDan YouTube — 'AFK agents' / 'Agentic Developer Workflow'. <code>github.com/disler/indydevtools</code> — actual PITER implementation.",
+    handson: "Write a single PITER script for ONE weekly workflow. Each phase = one Claude call. Save at <code>LEARNING/piter/youtube-episode.sh</code>.",
+    done: "You run <code>./piter/youtube-episode.sh \"topic\"</code> and walk away for 30 min while it produces a script + storyboard."
+  },
+  {
+    n: 5, title: "Closed Loop Prompts", em: "★",
+    priority: true, time: "2h",
+    concept: "Self-correcting loop. Agent runs, reads its own output (test failures, lint errors, validator output), patches, re-runs until green.",
+    why: "<em>You identified this gap.</em> Your PE validation gate is half of a closed loop. The other half is auto-fix-and-retry instead of human intervention.",
+    sources: "Claude Code docs → Hooks (Stop, PostToolUse). IndyDevDan YouTube — 'closed loop' videos. Anthropic engineering blog → 'Claude Code best practices'.",
+    handson: "Add a closed loop to your PE diagnosis pipeline. Validator exists. Add a <code>Stop</code> hook running it. If it fails, hook returns 'continue with fix' instead of letting agent exit. Loop max 3 attempts, then page Telegram.",
+    done: "A PE diagnosis can fail validation up to 3 times and still produce a valid PDF without your involvement.",
+    block: '<div class="codeblock"><span class="c"># minimum viable closed loop</span>\nwhile ! <span class="k">validator.sh</span>; do\n  <span class="k">claude -p</span> "fix what validator.sh just complained about, then exit"\ndone</div>'
+  },
+  {
+    n: 6, title: "Specialized Subagents", em: "★",
+    priority: true, time: "2-3h",
+    concept: "The agent that <em>writes</em> code should not be the agent that <em>reviews</em> it. Same model, different context, different prompt, different success criteria. Three roles every pipeline needs:<ul><li><strong>Implementer</strong> — writes the thing</li><li><strong>Reviewer</strong> — reads, finds problems, doesn't touch code</li><li><strong>Documenter</strong> — writes how-to-use docs in separate context</li></ul>",
+    why: "Your team agents implement. None of them have dedicated reviewer subagents. <em>Cross-agent review is the highest-leverage QA play you're missing.</em>",
+    sources: "Claude Code docs → Subagents. Your existing <code>.claude/agents/*.md</code> — extend the pattern. Anthropic engineering blog → 'Multi-agent research system'.",
+    handson: "Create three subagents:<ol><li><code>linkedin-reviewer</code> — brand voice rules, hashtag count, length</li><li><code>pe-diagnosis-reviewer</code> — qualitative pass on top of your validator</li><li><code>code-reviewer</code> — generic, reviews any code change before commit</li></ol>None can call Write or Edit — review only.",
+    done: "Top-3 most-used pipelines all spawn a reviewer subagent before declaring done."
+  },
+  {
+    n: 7, title: "ZTE — Zero Touch Engineering", em: "",
+    priority: false, time: "3h",
+    concept: "Spectrum: <strong>in-loop</strong> (you babysit) → <strong>out-loop</strong> (you check in) → <strong>ZTE</strong> (codebase ships from issue → PR with zero human touches). Requires: GitHub Actions + Claude Code in CI + closed-loop validators + reviewer subagents + auto-rollback.",
+    why: "You don't need full ZTE on everything. But your <em>LinkedIn cadence</em> and <em>PE outbound</em> are ripe — repeatable, low-risk, daily. ZTE them.",
+    sources: "Anthropic docs → 'Claude Code GitHub Actions'. Your repo's <code>.claude/skills/lead-gen-*</code> — already halfway to ZTE.",
+    handson: "Push ONE workflow to ZTE. Recommend <code>lead-gen-cleaning</code>: cron trigger → run skill → reviewer subagent → append to sheet → Telegram summary. No human in chain.",
+    done: "A lead-gen run happens at 9am Monday without you launching it. Telegram ping at 9:15am with results."
+  },
+  {
+    n: 8, title: "The Agentic Layer", em: "",
+    priority: false, time: "2h",
+    concept: "Treat agents as a <em>runtime layer</em> between intent and execution. Build infrastructure around them: logging, observability, fallbacks, retries, cost tracking.",
+    why: "Once you have 64 agents + hooks + evals + closed loops, you have a <em>distributed system</em>. Distributed systems need observability or they're black boxes.",
+    sources: "Anthropic engineering blog → 'Building effective agents'. Concepts: structured logging (JSON), trace IDs, cost-per-task.",
+    handson: "Add a single JSONL log line per agent invocation: <code>{ts, agent, prompt_tokens, completion_tokens, cost, status, trace_id}</code>. Dump to <code>LOGS/agent-runs.jsonl</code>. Build a script summarizing weekly cost / failure rate per agent.",
+    done: "You can answer 'which agent costs me the most per week?' in one query."
+  },
+  {
+    n: 9, title: "Context Engineering", em: "★",
+    priority: true, time: "2h",
+    concept: "<strong>R</strong>etrieve only what's needed + <strong>D</strong>iscard aggressively. Big context = slow, expensive, dumber. Engineer context like you engineer memory. Glob > full reads. Skills load only when invoked. Subagent boundary = fresh context (use it on purpose). MCP tool list filtered per task.",
+    why: "Your CLAUDE.md is big. Your MEMORY.md is bigger. Every prompt loads all of it. <em>Cost and dumbness compound.</em>",
+    sources: "Anthropic blog → 'Effective context engineering for agents' (Sep 2025). IndyDevDan YouTube — recent 'context' videos.",
+    handson: "Audit MEMORY.md. Move stale entries (resolved bugs, completed projects) to <code>MEMORY-archive.md</code>. Target: cut active memory by 40%. Re-test agent behavior after — should be faster and no worse.",
+    done: "MEMORY.md under 4KB with a weekly archiving rhythm."
+  },
+  {
+    n: 10, title: "The 7 Prompt Levels", em: "",
+    priority: false, time: "2h",
+    concept: "Sophistication ladder:<ol><li>Plain prompt</li><li>Structured (role + task + constraints + output format)</li><li>Few-shot (2-3 examples)</li><li>Templated (variables filled by code)</li><li>Chained (output of A feeds B)</li><li>Meta-prompt (a prompt that writes prompts)</li><li>Self-improving meta-prompt (updates based on evals)</li></ol>",
+    why: "Most of your skills are level 2-3. Slash commands level 4. Almost nothing is level 5+. <em>The meta-prompt level is where 10x productivity lives.</em>",
+    sources: "Anthropic prompt engineering docs. IndyDevDan YouTube — 'meta prompt' videos.",
+    handson: "Pick one skill (e.g. <code>comment-engine</code>) and build it at three levels. Compare outputs. Save all three in <code>LEARNING/prompt-levels/</code>.",
+    done: "One production meta-prompt that generates other prompts you actually use."
+  },
+  {
+    n: 11, title: "Domain-Specific Agents", em: "",
+    priority: false, time: "2h",
+    concept: "Specialized agents with deep domain context outperform generalists on narrow tasks. You already do this — formalize the pattern. Template: strict scope, domain glossary, domain-specific examples, validation rules linked to a hook, output schema.",
+    why: "Your 6 teams are domain agents at the team level. But within teams, agents overlap. <em>MARKETING has 18 agents — which owns which type of post?</em>",
+    sources: "Your own <code>.claude/agents/</code> — already the pattern. Anthropic → Agent specialization examples.",
+    handson: "Audit MARKETING_TEAM. For each agent write one line: 'owns X, does not do Y.' File at <code>LEARNING/audits/marketing-agent-scope.md</code>. Eliminate or merge overlap.",
+    done: "Each MARKETING agent has a non-overlapping domain stated in one sentence."
+  },
+  {
+    n: 12, title: "Multi-Agent Orchestration", em: "",
+    priority: false, time: "3h",
+    concept: "One orchestrator receives a complex task, decomposes it, dispatches subtasks to specialists in parallel, aggregates results. Components: orchestrator + specialists + coordination layer (shared state) + observability.",
+    why: "Your <code>router-agent</code>, <code>cto</code>, <code>cfo-agent</code>, <code>sales-manager</code> are orchestrators in name. Are they orchestrators in behavior? <em>Probably not yet</em> — most workflows still run single-agent.",
+    sources: "Anthropic engineering blog → 'Building a multi-agent research system'. Claude Code docs → Task tool + subagents.",
+    handson: "Pick one cross-team workflow (e.g. 'produce + publish LinkedIn post including image'). Currently one agent. Rewrite as: orchestrator dispatches to (a) copywriter, (b) visual-designer, (c) brand-reviewer, (d) publisher. Parallel where possible.",
+    done: "One real workflow runs as ≥3 parallel subagents instead of one sequential agent."
+  },
+  {
+    n: 13, title: "Skills as Learned Behavior", em: "",
+    priority: false, time: "2h",
+    concept: "Agents forget. Skills are persistent memorized procedures — markdown the agent loads when needed. <strong>Act-Learn-Reuse</strong>: agent acts, captures pattern as skill, reuses next time instead of re-discovering.",
+    why: "You have 28 skills. Most were hand-built. The missing pattern: <em>agent writes its own skills after a successful complex task.</em>",
+    sources: "Claude Code skills documentation. Your existing <code>.claude/skills/*/SKILL.md</code> — the pattern works.",
+    handson: "Build a meta-skill: <code>capture-as-skill</code>. After any successful complex task, run it: agent reflects on what worked, drafts a SKILL.md, you approve, it goes live.",
+    done: "Captured ≥2 new skills from real work (not designed in advance) in 30 days."
+  },
+  {
+    n: 14, title: "Capstone — Codebase Singularity", em: "",
+    priority: false, time: "4-8h build + 30d validate",
+    concept: "Combine everything. A codebase that maintains and extends itself with minimal touch.",
+    why: "This is <em>Dux Machina's delivery moat</em>. Anyone can sell agentic consulting. Almost nobody can demo a codebase that ships features while the founder sleeps.",
+    sources: "Everything above. No new material.",
+    handson: "Pick ONE end-to-end Dux Machina workflow and make it fully ZTE for 30 days. Recommended: <strong>PE Outreach pipeline</strong>. Cron-triggered weekly → pulls new firms → researches each via Perplexity → drafts 7-touch sequence → reviewer QAs → logs (lesson 8) → runs evals → pages Telegram on failure → updates Sheet conditional formatting.",
+    done: "Live screen recording of the pipeline running with zero human input — that becomes the Dux Machina pitch deck slide."
+  }
+];
+
+const lessonsEl = document.getElementById('lessons');
+const navlistEl = document.getElementById('navlist');
+
+const STORE_KEY = 'agentic-course-progress';
+const progress = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+
+function buildLesson(l) {
+  const isDone = !!progress[l.n];
+  const numLabel = String(l.n).padStart(2, '0');
+  const html = `
+    <article class="lesson ${isDone ? 'done' : ''}" id="lesson-${l.n}" data-n="${l.n}">
+      <div class="lesson-head">
+        <div class="lesson-num">${numLabel}</div>
+        <div class="lesson-title-wrap">
+          <h3>${l.title}${l.em ? ' <em>' + l.em + '</em>' : ''}</h3>
+          <div class="lesson-meta">
+            ${l.priority ? '<span class="pri">★ PRIORITY</span>' : ''}
+            <span>${l.time}</span>
+          </div>
+        </div>
+        <label class="check">
+          <input type="checkbox" data-n="${l.n}" ${isDone ? 'checked' : ''}/>
+          <span class="check-label">Done</span>
+        </label>
+      </div>
+
+      <div class="field"><div class="field-label">Concept</div><div class="field-body">${l.concept}</div></div>
+      <div class="field"><div class="field-label">Why for you</div><div class="field-body">${l.why}</div></div>
+      <div class="field"><div class="field-label">Free sources</div><div class="field-body">${l.sources}</div></div>
+      <div class="field"><div class="field-label">Hands-on</div><div class="field-body">${l.handson}${l.block || ''}</div></div>
+      <div class="field"><div class="field-label">Done when</div><div class="field-body">${l.done}</div></div>
+    </article>
+  `;
+  return html;
+}
+
+lessonsEl.innerHTML = lessons.map(buildLesson).join('');
+
+// Build nav
+navlistEl.innerHTML = lessons.map(l => `
+  <li data-n="${l.n}" class="${progress[l.n] ? 'done' : ''} ${l.priority ? 'priority' : ''}">${l.title}</li>
+`).join('');
+
+// Click nav → scroll
+navlistEl.querySelectorAll('li').forEach(li => {
+  li.addEventListener('click', () => {
+    const n = li.dataset.n;
+    document.getElementById('lesson-' + n).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Checkbox handlers
+function refreshProgress() {
+  const total = lessons.length;
+  const done = Object.values(progress).filter(Boolean).length;
+  document.getElementById('pcount').textContent = `${done} / ${total}`;
+  document.getElementById('liveCount').textContent = `${done} of ${total} complete`;
+  document.getElementById('pbar').style.setProperty('--p', (done / total * 100) + '%');
+  // sync nav
+  navlistEl.querySelectorAll('li').forEach(li => {
+    li.classList.toggle('done', !!progress[li.dataset.n]);
+  });
+}
+
+document.querySelectorAll('.check input').forEach(cb => {
+  cb.addEventListener('change', e => {
+    const n = e.target.dataset.n;
+    progress[n] = e.target.checked;
+    localStorage.setItem(STORE_KEY, JSON.stringify(progress));
+    document.getElementById('lesson-' + n).classList.toggle('done', e.target.checked);
+    refreshProgress();
+  });
+});
+
+refreshProgress();
+
+// Stagger reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.lesson').forEach(el => io.observe(el));
+
+</script>
+</body>
+</html>

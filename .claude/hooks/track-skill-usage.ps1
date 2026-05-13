@@ -1,6 +1,6 @@
-# track-skill-usage.ps1
+﻿# track-skill-usage.ps1
 # PreToolUse hook that logs skill invocations to JSONL
-# Always approves — this is a logging-only hook, never blocks
+# Always approves - this is a logging-only hook, never blocks
 
 $input_data = [Console]::In.ReadToEnd()
 
@@ -29,7 +29,7 @@ try {
         Add-Content -Path $log_path -Value $log_entry -Encoding UTF8
     }
 } catch {
-    # Silently ignore errors — never block the tool
+    # Silently ignore errors - never block the tool
 }
 
 Write-Output '{"decision":"approve"}'

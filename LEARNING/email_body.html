@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html><body style="margin:0;padding:0;background:#ffffff;font-family:Georgia,'Times New Roman',serif;color:#1a1a1a;line-height:1.55;">
+<div style="max-width:680px;margin:0 auto;padding:32px 24px;">
+
+<!-- COVER -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;">FIELD MANUAL · N° 01</div>
+<h1 style="font-family:Georgia,serif;font-size:42px;line-height:1.05;color:#1a1a1a;margin:8px 0 12px 0;font-weight:normal;">Agentic Engineering<br><em style="color:#a08040;">From scattered to system.</em></h1>
+<p style="color:#666666;font-style:italic;font-size:15px;margin:0 0 24px 0;">Reverse-engineered from IndyDevDan's Tactical Agentic Coding curriculum — personalized to the TEST_AGENTS repo. Replaces $599 of info-product content.</p>
+<hr style="border:none;border-top:1px solid #cccccc;margin:24px 0;">
+
+<!-- META -->
+<table cellpadding="6" cellspacing="0" style="font-family:'Courier New',monospace;font-size:10px;width:100%;margin-bottom:24px;">
+<tr><td style="color:#a08040;letter-spacing:0.15em;font-weight:bold;width:130px;">PREPARED FOR</td><td>Azeez Saba · Dux Machina</td></tr>
+<tr><td style="color:#a08040;letter-spacing:0.15em;font-weight:bold;">COMPILED</td><td>2026-05-11</td></tr>
+<tr><td style="color:#a08040;letter-spacing:0.15em;font-weight:bold;">STATUS</td><td>Conceptual sweep complete · Implementation pending</td></tr>
+</table>
+
+<!-- ═══════ § 01 PREREQ AUDIT ═══════ -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;margin-top:36px;">§ 01</div>
+<h2 style="font-family:Georgia,serif;font-size:24px;color:#1a1a1a;margin:4px 0 16px 0;font-weight:normal;font-style:italic;">Prerequisite audit</h2>
+
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr style="background:#fafaf7;"><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">CAPABILITY</th><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">STATUS</th></tr>
+<tr><td style="border-bottom:1px solid #eee;">64+ agents across 6 teams</td><td style="border-bottom:1px solid #eee;color:#3a6a3a;">MET</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">7 MCP servers integrated</td><td style="border-bottom:1px solid #eee;color:#3a6a3a;">MET</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">28 skills installed</td><td style="border-bottom:1px solid #eee;color:#3a6a3a;">MET</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Production hooks</td><td style="border-bottom:1px solid #eee;color:#a08040;">PARTIAL (1 hook)</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Closed-loop prompts</td><td style="border-bottom:1px solid #eee;color:#8a3a2a;">GAP</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Reviewer subagents (Write-restricted)</td><td style="border-bottom:1px solid #eee;color:#8a3a2a;">GAP</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Observability / logs</td><td style="border-bottom:1px solid #eee;color:#8a3a2a;">GAP</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Orchestrator-capable agents</td><td style="border-bottom:1px solid #eee;color:#8a3a2a;">2 of 65</td></tr>
+</table>
+
+<div style="margin:20px 0; padding:14px 16px; background:#fafaf7; border-left:3px solid #a08040; font-style:italic; color:#666666; font-size:13px;">
+<strong style="color:#a08040;font-style:normal;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;">★ BIGGEST FINDING — </strong>
+63 of 65 agents are leaves — they cannot autonomously delegate. Most 'multi-agent workflows' were single-agent with future-tense narration ('I'll hand this off to...') that never fired a real Task call.
+</div>
+
+<!-- ═══════ § 02 FRAMEWORKS ═══════ -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;margin-top:40px;">§ 02</div>
+<h2 style="font-family:Georgia,serif;font-size:24px;color:#1a1a1a;margin:4px 0 16px 0;font-weight:normal;font-style:italic;">The three core frameworks</h2>
+<p style="font-size:14px;color:#666666;font-style:italic;">One produces. One refines. One protects.</p>
+
+<!-- Core 4 -->
+<h3 style="font-family:Georgia,serif;font-size:18px;color:#1a1a1a;margin:24px 0 8px 0;font-weight:normal;">Framework 1 — The Core Four</h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr><td style="width:90px;font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">Context</td><td style="border-bottom:1px solid #eee;">What the model can SEE — files, memory, prior messages</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">Model</td><td style="border-bottom:1px solid #eee;">Which Claude + reasoning depth (Opus / Sonnet / Haiku)</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">Prompt</td><td style="border-bottom:1px solid #eee;">The instruction — slash commands, agent definitions, chat</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">Tools</td><td style="border-bottom:1px solid #eee;">What the model can DO — Read/Write/Bash, MCP, subagents</td></tr>
+</table>
+<div style="margin:12px 0; padding:12px 14px; background:#fafaf7; border-left:3px solid #a08040; font-size:12px; color:#666666; font-style:italic;">
+<strong style="color:#a08040;font-style:normal;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;">DIAGNOSTIC ORDER — </strong>
+Tools first (did agent say can't?) → Context second (missing info?) → Prompt third (solved wrong problem?) → Model last (shallow output?). Most engineers do this in reverse.
+</div>
+
+<!-- 12 Leverage -->
+<h3 style="font-family:Georgia,serif;font-size:18px;color:#1a1a1a;margin:24px 0 8px 0;font-weight:normal;">Framework 2 — The 12 Leverage Points (6 Clusters)</h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr><td style="width:170px;font-weight:bold;color:#a08040;border-bottom:1px solid #eee;vertical-align:top;">A · Knowledge Layer</td><td style="border-bottom:1px solid #eee;">CLAUDE.md · Agent YAML</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;vertical-align:top;">B · Invocation Layer</td><td style="border-bottom:1px solid #eee;">Slash commands · Skills</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;vertical-align:top;">C · Delegation Layer</td><td style="border-bottom:1px solid #eee;">Subagents (Task tool)</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;vertical-align:top;">D · Capability Layer</td><td style="border-bottom:1px solid #eee;">MCP servers · Tool permissions</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;vertical-align:top;">E · Enforcement Layer</td><td style="border-bottom:1px solid #eee;">Hooks · Output routing</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;vertical-align:top;">F · Quality Layer</td><td style="border-bottom:1px solid #eee;">Schemas · Validators · Stdout logs</td></tr>
+</table>
+<p style="font-size:12px;color:#666666;margin:10px 0 0 0;"><strong>Your cluster strength:</strong> A/B/D strong · C/E/F weak. <em>Knowledge-layer-heavy, enforcement-and-quality-layer-light.</em></p>
+
+<!-- 7 Guardrails -->
+<h3 style="font-family:Georgia,serif;font-size:18px;color:#1a1a1a;margin:24px 0 8px 0;font-weight:normal;">Framework 3 — The 7 Guardrails <span style="color:#a08040;font-size:13px;font-style:italic;">(your synthesis)</span></h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr><td style="width:170px;font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">1. Input validation</td><td style="border-bottom:1px solid #eee;">Validate what comes INTO the agent</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">2. Output validation</td><td style="border-bottom:1px solid #eee;">Validate what comes OUT before downstream use</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">3. Resource limits</td><td style="border-bottom:1px solid #eee;">Cost / time / token caps</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">4. Output routing</td><td style="border-bottom:1px solid #eee;">Map output to filesystem location</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">5. Hooks</td><td style="border-bottom:1px solid #eee;">Deterministic gates</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">6. Tool permissions</td><td style="border-bottom:1px solid #eee;">Allow / deny / ask rules per tool</td></tr>
+<tr><td style="font-weight:bold;color:#a08040;border-bottom:1px solid #eee;">7. Sandbox</td><td style="border-bottom:1px solid #eee;">Execution isolation (Docker, restricted FS)</td></tr>
+</table>
+<div style="margin:12px 0; padding:12px 14px; background:#fafaf7; border-left:3px solid #a08040; font-size:12px; color:#666666; font-style:italic;">
+<strong style="color:#a08040;font-style:normal;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;">WHY THIS FRAMEWORK MATTERS — </strong>
+Demos prevent embarrassment. Guardrails prevent bankruptcy. Resource limits are the guardrail every demo skips. Yours is the first framework to elevate them as a distinct concept.
+</div>
+
+<!-- ═══════ § 03 THE 14 LESSONS ═══════ -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;margin-top:40px;">§ 03</div>
+<h2 style="font-family:Georgia,serif;font-size:24px;color:#1a1a1a;margin:4px 0 16px 0;font-weight:normal;font-style:italic;">The fourteen lessons</h2>
+
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 01 · 1H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">The Core Four</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Every AI output = Context + Model + Prompt + Tools. When output is bad, one of these four is the cause.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">80% of engineers reach for the prompt. The real fix is usually Context (wrong files loaded) or Tools (missing capability).</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Your next debug starts with 'context or tools?' not 'let me rewrite the prompt.'</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 02 · 1H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">The 12 Leverage Points</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">12 places to inject signal: CLAUDE.md, agent YAML, slash commands, skills, subagents, MCP, hooks, permissions, output routing, schemas, validators, stdout. Group into 6 clusters.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">You use 1-6 and 8-9 actively. Barely use 7 (one hook), 10-12 (no schemas, no validators). Unused points = highest-ROI work.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Prioritized list of which leverage points to add next.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 03 · 1.5H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Plan First, Execute Second</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Before asking an agent to DO, ask it to PLAN. Plan goes in a file. You review (5 min). Agent executes against it.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Multi-step work without explicit plans = silent deviations. Plans are exception detectors that catch issues at the cheapest possible time.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Three of your skills do plan-then-execute instead of execute-blind.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 04 · 2–3H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">PITER / AFK Agents</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Pipeline pattern: Plan → Implement → Test → Evaluate → Review. Each phase has a gate. You walk away.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Your 17-episode YouTube backlog is the ideal PITER candidate. Each episode follows the same 5-phase shape.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">You run a PITER script for one weekly workflow and walk away for 30 min while it produces a script + storyboard.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 05 · 2H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Closed Loop Prompts <span style="color:#a08040">★</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Self-correcting loop. Agent runs → validator checks → if fail, agent reads the failure and patches → re-validate → loop up to N retries → escalate.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Your PE validation gate is half a closed loop. The other half is auto-fix-and-retry instead of human intervention. Stop being the manual retry button.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">A PE diagnosis can fail validation up to 3 times and still produce a valid PDF without your involvement.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 06 · 2–3H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Specialized Subagents <span style="color:#a08040">★</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">The agent that WRITES should not be the agent that REVIEWS. Three roles: Implementer, Reviewer (Write/Edit excluded), Documenter. The tool restriction IS the separation.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Zero pure reviewer subagents today. Cross-agent review is the highest-leverage QA play you're missing.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Top-3 most-used pipelines all spawn a reviewer subagent (Write/Edit-restricted) before declaring done.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 07 · 3H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">ZTE — Zero Touch Engineering</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Spectrum: in-loop → out-loop → ZTE. ZTE = pipeline ships from trigger → final output with zero human touches. Requires closed loops + reviewers + cron + escalation + audit log.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">lead-gen-cleaning is the cleanest first target. Trigger ready (slash command), sink ready (Sheet), quality bar clear, failure recoverable.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">A lead-gen run happens at 9am Monday without you launching it. Telegram ping at 9:15am. Repeats next Monday. And next.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 08 · 2H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">The Agentic Layer</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Many agents + hooks + closed loops = distributed system. Distributed systems need infrastructure: structured logs, trace IDs, cost tracking, failure rates, fallback policies.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">You operate 65 agents blind today. Can't answer 'which agent costs me most this week?' That's the operator mindset gap.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">You can answer 'which agent costs me most this week?' in one query against your own JSONL data.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 09 · 2H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Context Engineering (R+D)</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Retrieve only what's needed + Discard aggressively. Big context costs money, slows down, makes the model dumber. 12 techniques: lazy load, glob over read, ephemeral working files, fresh-context subagents, MCP filtering, memory curation.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Your CLAUDE.md is big. MEMORY.md is bigger. Half is stale. Every prompt loads all of it. Cost AND quality compound negatively.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">MEMORY.md under 4KB with a weekly archiving rhythm.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 10 · 2H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">The 7 Prompt Levels</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Sophistication ladder: plain → structured → few-shot → templated → chained → meta-prompt → self-improving meta-prompt. Each level abstracts the layer below.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Most of your skills are level 2-3. Slash commands level 4. Nothing is 5+. Meta-prompts (level 6) are where 10× productivity lives.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">One production meta-prompt that generates other prompts you actually use.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 11 · 2H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Domain-Specific Agents</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Specialists outperform generalists on narrow tasks. Encode domain knowledge into the agent. Strict scope, glossary, examples, validation rules, output schema.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Your 6 teams are domain agents at team level. Within teams, agents overlap. MARKETING has 18 agents — you can't state in one sentence what each one owns.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Each MARKETING agent has a non-overlapping domain stated in one sentence.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 12 · 3H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Multi-Agent Orchestration</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">One orchestrator agent receives complex task, decomposes it, dispatches in parallel where possible, aggregates results. Components: orchestrator + specialists + coordination + observability.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">Verified: only 2 of 65 agents have Task in tools. router-agent, cto, cfo-agent, sales-manager, rfp-agent are orchestrators in name only.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">One real workflow runs as ≥3 parallel subagents instead of one sequential agent.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 13 · 2H</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Skills as Learned Behavior</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Agents forget. Skills are persistent procedures the agent loads when needed. Act-Learn-Reuse: agent acts, captures pattern as skill, reuses next time.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">28 skills, all hand-built. Missing pattern: agent writes its OWN skills from successful runs. Library grows as a side effect of operations.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Captured ≥2 new skills from real work (not designed in advance) within 30 days.</span></div>
+</div>
+
+<div style="margin:24px 0 28px 0; padding:16px 18px; border-left:3px solid #a08040; background:#fafaf7; font-family:Georgia,serif;">
+  <div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.2em;margin-bottom:4px;">LESSON 14 · 4–8H + 30D</div>
+  <div style="font-size:18px;font-weight:bold;color:#1a1a1a;margin-bottom:10px;">Capstone — Codebase Singularity</div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">CONCEPT</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;">Synthesis. Pick one workflow. Apply every lesson (1-13). Run it untouched for 30 days. Prove the system works.</span></div>
+  <div style="margin:8px 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#a08040;font-weight:bold;letter-spacing:0.15em;">WHY FOR YOU</span><br>
+    <span style="color:#666666;font-size:14px;line-height:1.5;font-style:italic;">This is Dux Machina's delivery moat. Anyone can sell agentic consulting. Almost nobody can demo a codebase that ships features while the founder sleeps.</span></div>
+  <div style="margin:8px 0 0 0;"><span style="font-family:'Courier New',monospace;font-size:9px;color:#3a6a3a;font-weight:bold;letter-spacing:0.15em;">DONE WHEN</span><br>
+    <span style="color:#1a1a1a;font-size:14px;line-height:1.5;font-weight:bold;">Live screen recording of pipeline running with zero human input for 30 days. That becomes the Dux Machina pitch deck slide.</span></div>
+</div>
+
+
+<!-- ═══════ § 04 KEY CONCEPTS ═══════ -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;margin-top:40px;">§ 04</div>
+<h2 style="font-family:Georgia,serif;font-size:24px;color:#1a1a1a;margin:4px 0 16px 0;font-weight:normal;font-style:italic;">Key concepts surfaced beyond the curriculum</h2>
+
+<h3 style="font-family:Georgia,serif;font-size:17px;color:#1a1a1a;margin:20px 0 8px 0;font-weight:normal;">Runtime layer — the kitchen metaphor</h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr style="background:#fafaf7;"><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">COOKS ONLY (CURRENT)</th><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">KITCHEN (RUNTIME LAYER)</th></tr>
+<tr><td style="border-bottom:1px solid #eee;">You invoke each agent manually</td><td style="border-bottom:1px solid #eee;">Workflows fire agents through standard channels</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Each call is ad-hoc</td><td style="border-bottom:1px solid #eee;">Every call goes through the same plumbing</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">You orchestrate by hand</td><td style="border-bottom:1px solid #eee;">The layer orchestrates itself</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Removing an agent = nothing breaks</td><td style="border-bottom:1px solid #eee;">Other parts assume the layer is there</td></tr>
+</table>
+<p style="font-size:12px;color:#666666;margin:10px 0 0 0;font-style:italic;"><strong>Test:</strong> if you stopped working today, would anything still fire? Today: no. After implementation: yes (cron + ZTE). <em>Presence-without-you is what runtime layer means.</em></p>
+
+<h3 style="font-family:Georgia,serif;font-size:17px;color:#1a1a1a;margin:24px 0 8px 0;font-weight:normal;">The Boring Parts — your positioning keystone</h3>
+<p style="font-size:14px;color:#1a1a1a;margin:0 0 10px 0;">"The boring parts are what people aren't teaching, and if you understand the boring parts, you can handle the output."</p>
+<p style="font-size:13px;color:#666666;margin:0;"><strong>Why CFOs care:</strong> Boring = predictable cost. Boring = no 3am pages. Boring = the antidote to AI hype. <em>You sell the boring parts. Everyone else sells the demo.</em></p>
+<p style="font-size:13px;color:#666666;margin:10px 0 0 0;"><strong>Candidate lines for sales:</strong></p>
+<ul style="font-size:13px;color:#1a1a1a;margin:6px 0 0 0;padding-left:18px;">
+<li>"Most AI consultancies sell you the wallpaper. I install the boring parts that hold the building up."</li>
+<li>"Demos win clicks. Boring parts win contracts."</li>
+<li>"Boring parts compound. Demos depreciate."</li>
+</ul>
+
+<h3 style="font-family:Georgia,serif;font-size:17px;color:#1a1a1a;margin:24px 0 8px 0;font-weight:normal;">Where shipping all 14 puts you</h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr style="background:#fafaf7;"><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">CATEGORY</th><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">POPULATION</th></tr>
+<tr><td style="border-bottom:1px solid #eee;">AI consumers</td><td style="border-bottom:1px solid #eee;">~600M</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">AI builders (devs)</td><td style="border-bottom:1px solid #eee;">~5–10M</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Multi-agent system builders</td><td style="border-bottom:1px solid #eee;">~50–100K</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Production agentic engineers</td><td style="border-bottom:1px solid #eee;">~1–5K</td></tr>
+<tr style="background:#fafaf7;"><td style="border-bottom:1px solid #eee;font-weight:bold;color:#a08040;">Commercial ZTE operators</td><td style="border-bottom:1px solid #eee;font-weight:bold;color:#a08040;">~100–500</td></tr>
+</table>
+<p style="font-size:12px;color:#666666;margin:10px 0 0 0;font-style:italic;">After shipping all 14 + 60 days operating: top 0.0001% of AI users globally. <strong>Commercial operator</strong> category. <em>Most peers got there from sales side and lack technical depth — you'd be the engineer in the room.</em></p>
+
+<!-- ═══════ § 05 IMPLEMENTATION BACKLOG ═══════ -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;margin-top:40px;">§ 05</div>
+<h2 style="font-family:Georgia,serif;font-size:24px;color:#1a1a1a;margin:4px 0 16px 0;font-weight:normal;font-style:italic;">Implementation backlog</h2>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:16px 0 6px 0;font-weight:normal;">Tier 1 — Structural upgrade (ship first, ~6–10h)</h3>
+<ol style="font-size:13px;color:#1a1a1a;margin:0;padding-left:22px;">
+<li>PreToolUse hook for output path enforcement</li>
+<li><strong>Upgrade pe_validation_gate.ps1: block + re-invoke up to 3 + escalate on 4th</strong></li>
+<li>Build pe-diagnosis-visual-reviewer subagent (Write/Edit EXCLUDED)</li>
+<li>Build linkedin-brand-reviewer subagent (Write/Edit EXCLUDED)</li>
+<li>JSONL agent run log + 50-line query script</li>
+<li>Curate MEMORY.md → archive 60% to MEMORY-archive.md</li>
+</ol>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:16px 0 6px 0;font-weight:normal;">Tier 2 — Orchestration (~3h)</h3>
+<ol start="7" style="font-size:13px;color:#1a1a1a;margin:0;padding-left:22px;">
+<li>Promote router-agent, cto, cfo-agent, sales-manager, rfp-agent to real orchestrators (add Task to tools)</li>
+<li>Train orchestrator prompts to batch Task calls for parallelism</li>
+</ol>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:16px 0 6px 0;font-weight:normal;">Tier 3 — Quality + Scale (~6h)</h3>
+<ol start="9" style="font-size:13px;color:#1a1a1a;margin:0;padding-left:22px;">
+<li>Draft schemas/leads.schema.json</li>
+<li>Per-team scope audit (marketing-agent-scope.md)</li>
+<li>First meta-prompt (level 6) — slash command generator</li>
+<li>capture-as-skill meta-skill</li>
+</ol>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:16px 0 6px 0;font-weight:normal;">Tier 4 — Capstone (4–8h build + 30 days run)</h3>
+<ol start="13" style="font-size:13px;color:#1a1a1a;margin:0;padding-left:22px;">
+<li>PE Outreach ZTE pipeline — combines all of the above</li>
+<li>Run 30 days untouched → screen recording → Dux Machina pitch slide</li>
+</ol>
+
+<!-- ═══════ § 06 STRATEGIC POSITIONING ═══════ -->
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;margin-top:40px;">§ 06</div>
+<h2 style="font-family:Georgia,serif;font-size:24px;color:#1a1a1a;margin:4px 0 16px 0;font-weight:normal;font-style:italic;">Strategic positioning — Dux Machina</h2>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:16px 0 8px 0;font-weight:normal;">The one-line offering</h3>
+<p style="font-size:14px;color:#1a1a1a;font-style:italic;background:#fafaf7;padding:12px 14px;border-left:3px solid #a08040;margin:0 0 16px 0;">
+"Dux Machina installs the boring parts of AI that no one wants to build — hooks, validators, observability, closed loops — so your operating costs don't depend on your operations team."
+</p>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:16px 0 8px 0;font-weight:normal;">CFO-language vs CTO-language</h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr style="background:#fafaf7;"><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">CTO LANGUAGE (OTHERS)</th><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">CFO LANGUAGE (YOU)</th></tr>
+<tr><td style="border-bottom:1px solid #eee;">Multi-agent orchestration</td><td style="border-bottom:1px solid #eee;">Replace contractor hours with capped-cost systems</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">RAG pipelines</td><td style="border-bottom:1px solid #eee;">Eliminate $200/hr research overhead</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Agentic workflows</td><td style="border-bottom:1px solid #eee;">Boring infrastructure that runs while you sleep</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Latest LLM capabilities</td><td style="border-bottom:1px solid #eee;">30-day demo of zero-touch operation</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Cutting-edge AI</td><td style="border-bottom:1px solid #eee;">Predictable monthly spend with hard caps</td></tr>
+</table>
+
+<h3 style="font-family:Georgia,serif;font-size:16px;color:#1a1a1a;margin:20px 0 8px 0;font-weight:normal;">Pricing tiers (post-capstone)</h3>
+<table cellpadding="8" cellspacing="0" style="width:100%;font-size:13px;border-collapse:collapse;">
+<tr style="background:#fafaf7;"><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">TIER</th><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">DELIVERABLE</th><th align="left" style="color:#a08040;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;border-bottom:1px solid #cccccc;">PRICE</th></tr>
+<tr><td style="border-bottom:1px solid #eee;">Diagnosis</td><td style="border-bottom:1px solid #eee;">1-page PE-style firm diagnosis</td><td style="border-bottom:1px solid #eee;">$0–500</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Discovery + plan</td><td style="border-bottom:1px solid #eee;">Audit + 14-leverage scan + ZTE roadmap</td><td style="border-bottom:1px solid #eee;">$5K–15K</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">First pipeline install</td><td style="border-bottom:1px solid #eee;">One ZTE pipeline + 30 days operation + handoff</td><td style="border-bottom:1px solid #eee;">$25K–50K</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Quarterly retainer</td><td style="border-bottom:1px solid #eee;">Ongoing operations + new pipelines</td><td style="border-bottom:1px solid #eee;">$10K–25K/mo</td></tr>
+<tr><td style="border-bottom:1px solid #eee;">Fractional CTO</td><td style="border-bottom:1px solid #eee;">Strategic + tactical agentic ownership</td><td style="border-bottom:1px solid #eee;">$15K–35K/mo</td></tr>
+</table>
+
+<!-- ═══════ CLOSING ═══════ -->
+<hr style="border:none;border-top:1px solid #cccccc;margin:36px 0 20px 0;">
+
+<div style="background:#fafaf7;padding:20px 22px;border-left:3px solid #a08040;margin:24px 0;">
+<div style="font-family:'Courier New',monospace;font-size:10px;color:#a08040;letter-spacing:0.3em;font-weight:bold;">SINGLE NEXT ACTION</div>
+<p style="font-size:15px;color:#1a1a1a;margin:8px 0 0 0;line-height:1.55;">
+Open <code style="background:#fff;padding:1px 5px;border:1px solid #cccccc;font-size:13px;">LEARNING/sweep-complete.md</code>. Ship Tier 1 item #2 — upgrade <code style="background:#fff;padding:1px 5px;border:1px solid #cccccc;font-size:13px;">pe_validation_gate.ps1</code> from "block + page" to "block + re-invoke + escalate." <strong>~30 minutes of focused work.</strong> After that, you have one production closed loop and Lesson 5 is genuinely Done.
+</p>
+</div>
+
+<p style="font-size:12px;color:#666666;font-style:italic;margin:24px 0 0 0;">Compiled 2026-05-11 · Dux Machina · Field Manual N° 01 · Reverse-engineered + personalized</p>
+
+</div></body></html>
