@@ -45,6 +45,25 @@ Row 1 Headers (18 columns):
 
 ## Process (MUST FOLLOW EXACTLY)
 
+### Step 0: Plan First, Execute Second (Lesson 3)
+
+**BEFORE invoking any tool or searching anything**, write a one-page plan to `tmp/plans/comment-leads-{YYYY-MM-DD-HHmm}.md` containing:
+
+1. **Target count** — how many leads (default 50, from $ARGUMENTS)
+2. **Industry mix goal** — rough split across healthcare / dental / restaurant / agency / service / real estate / other (sum to total)
+3. **Geographic mix** — Houston-Texas priority %, other US %
+4. **Query themes you'll use** — 5-8 specific Bright Data queries from the lists below (don't just pick all of them — pick the ones that match this batch's intent)
+5. **Score distribution expected** — rough split of Hot 9-10 / Warm 7-8 / Cool 5-6
+6. **Failure modes to watch for** — non-US slip-ins, image-only posts, dead profiles, duplicates with existing sheet
+
+Then **STOP** and present the plan to the user with: "Plan ready at `tmp/plans/comment-leads-{ts}.md` — approve to execute, or push back on the mix?"
+
+**DO NOT proceed to Step 1 until the user explicitly approves the plan.**
+
+If the user pushes back (e.g., "shift more to dental this time"), update the plan, present again, wait for approval. Only on explicit approval do you execute Steps 1-6 below.
+
+**Rationale (Lesson 3):** without a plan, deviations are silent. With a plan, deviations get caught at the cheapest possible time — before any search tokens are spent.
+
 ### Step 1: Read Sheet & Build Deduplication Set (CRITICAL)
 
 Use Google Workspace MCP to:

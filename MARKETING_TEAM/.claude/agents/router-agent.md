@@ -9,6 +9,7 @@ capabilities:
   - Multi-turn dialogue
   - Clarification questions
 tools:
+  - Task
   - workspace_enforcer
   - path_validator
   - mcp__sequential-thinking__sequentialthinking
