@@ -3,6 +3,25 @@
 > Codex context file for OpenAI Codex CLI operating within this repository.
 > Claude Code has its own parallel system via `CLAUDE.md` and `.claude/agents/*.md`.
 
+## Codex Agent Routing
+
+When a user request maps to a specialist agent, Codex should route through the
+Codex sidecar layer instead of reading `.claude/agents/` directly.
+
+Default workflow:
+1. Inspect `.codex/manifest.json` to find candidate agents by team, name,
+   description, tools, skills, and capabilities.
+2. Load the best matching `.codex/agents/<TEAM>/<agent>.md` instruction file
+   before doing the work.
+3. If multiple agents match, pick the narrowest specialist. Use team
+   orchestrators only for broad or ambiguous requests.
+4. Read team memory/config files referenced by that agent before creating
+   deliverables.
+5. Save outputs to that team's `outputs/` folder, following
+   `MARKETING_TEAM/memory/output_paths.json` when working on marketing tasks.
+
+Use `$test-agents-router` when the right specialist is unclear.
+
 ## Project Overview
 
 This is a **62-agent multi-team AI system** built on the Claude Agent SDK, organized into 6 autonomous teams plus a root supervisor. The system is orchestrated through Claude Code — no Python orchestrators.

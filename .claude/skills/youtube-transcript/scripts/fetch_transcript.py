@@ -38,7 +38,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "lib"))
 from youtube_api import extract_video_id, fetch_video_metadata, fetch_transcript, estimate_duration
 from formatter import build_full_note
 from obsidian import save_to_vault, DEFAULT_SUBFOLDER
-from playlist import is_playlist_or_channel, extract_video_ids_from_playlist
+from playlist import (
+    is_playlist_or_channel,
+    extract_video_ids_from_playlist,
+    extract_videos_with_metadata,
+    select_videos,
+)
 
 
 def process_video(
@@ -48,6 +53,7 @@ def process_video(
     subfolder: str = DEFAULT_SUBFOLDER,
     extra_tags: list = None,
     use_whisper: bool = True,
+    cookies_file: str = None,
 ) -> dict:
     """Process a single YouTube video: fetch transcript → format → save."""
     result = {
@@ -75,7 +81,7 @@ def process_video(
     result["channel"] = metadata["channel"]
 
     # Step 3: Fetch transcript (Tier 1: captions)
-    transcript_data = fetch_transcript(video_id, lang=lang)
+    transcript_data = fetch_transcript(video_id, lang=lang, cookies_file=cookies_file)
 
     # Step 4: Whisper fallback (Tier 2) if captions failed
     if (transcript_data["error"] or not transcript_data["segments"]) and use_whisper:
@@ -142,15 +148,44 @@ def process_video(
     return result
 
 
-def expand_urls(urls: list, max_playlist: int = 50) -> list:
-    """Expand playlist/channel URLs into individual video URLs."""
+def expand_urls(
+    urls: list,
+    max_playlist: int = 50,
+    top: int = 0,
+    recent: int = 0,
+    longest: int = 0,
+    min_duration_sec: int = 0,
+) -> list:
+    """Expand playlist/channel URLs into individual video IDs.
+
+    When any of top/recent/longest are set, uses metadata-rich extraction
+    and smart selection. Otherwise falls back to the lightweight path
+    (first `max_playlist` videos in channel order).
+    """
+    smart_mode = any([top, recent, longest, min_duration_sec])
     expanded = []
     for url in urls:
         if is_playlist_or_channel(url):
             print(f"Expanding playlist/channel: {url}", file=sys.stderr)
             try:
-                videos = extract_video_ids_from_playlist(url, max_videos=max_playlist)
-                print(f"  ↳ Found {len(videos)} videos", file=sys.stderr)
+                if smart_mode:
+                    # Pull a generous pool so selection has something to rank against
+                    pool_size = max(max_playlist, (top + recent + longest) * 4, 500)
+                    print(f"  ↳ Fetching metadata for up to {pool_size} videos...", file=sys.stderr)
+                    pool = extract_videos_with_metadata(url, max_videos=pool_size)
+                    print(f"  ↳ Channel pool: {len(pool)} videos", file=sys.stderr)
+                    videos = select_videos(
+                        pool,
+                        top=top,
+                        recent=recent,
+                        longest=longest,
+                        min_duration_sec=min_duration_sec,
+                    )
+                    print(f"  ↳ Selected {len(videos)} (top={top}, recent={recent}, longest={longest}, min_dur={min_duration_sec}s)", file=sys.stderr)
+                else:
+                    videos = extract_video_ids_from_playlist(url, max_videos=max_playlist)
+                    print(f"  ↳ Found {len(videos)} videos", file=sys.stderr)
+
                 for v in videos:
                     expanded.append(v["id"])
             except RuntimeError as e:
@@ -170,14 +205,40 @@ def main():
     parser.add_argument("--no-whisper", action="store_true", help="Disable Whisper fallback")
     parser.add_argument("--max-playlist", type=int, default=50, help="Max videos from playlist (default: 50)")
 
+    # Smart channel selection (all optional — single videos and default channel mode ignore these)
+    parser.add_argument("--top", type=int, default=0, help="Channel only: pick N most-viewed videos")
+    parser.add_argument("--recent", type=int, default=0, help="Channel only: pick N most recent videos")
+    parser.add_argument("--longest", type=int, default=0, help="Channel only: pick N longest videos")
+    parser.add_argument("--smart-150", action="store_true", help="Channel only: preset = top 50 + recent 50 + longest 50 (deduped)")
+    parser.add_argument("--min-duration", type=int, default=0, help="Channel only: skip videos shorter than N minutes (filters Shorts)")
+    parser.add_argument("--cookies-file", default=None, help="Path to Netscape-format cookies.txt (bypasses YouTube rate-limiting)")
+
     args = parser.parse_args()
+
+    # --smart-150 is just a preset that sets top/recent/longest all to 50
+    if args.smart_150:
+        if not args.top:
+            args.top = 50
+        if not args.recent:
+            args.recent = 50
+        if not args.longest:
+            args.longest = 50
+
+    min_duration_sec = args.min_duration * 60
 
     extra_tags = [t.strip() for t in args.tags.split(",") if t.strip()] if args.tags else None
     include_timestamps = not args.no_timestamps
     use_whisper = not args.no_whisper
 
     # Expand playlists/channels to individual video IDs
-    all_urls = expand_urls(args.urls, max_playlist=args.max_playlist)
+    all_urls = expand_urls(
+        args.urls,
+        max_playlist=args.max_playlist,
+        top=args.top,
+        recent=args.recent,
+        longest=args.longest,
+        min_duration_sec=min_duration_sec,
+    )
 
     if not all_urls:
         print("No videos found to process.", file=sys.stderr)
@@ -200,6 +261,7 @@ def main():
             subfolder=args.folder,
             extra_tags=extra_tags,
             use_whisper=use_whisper,
+            cookies_file=args.cookies_file,
         )
         results.append(result)
 

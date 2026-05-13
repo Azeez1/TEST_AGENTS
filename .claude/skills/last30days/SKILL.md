@@ -4,7 +4,7 @@ description: Research trending topics from the last 30 days across Reddit, X/Twi
 argument-hint: "[topic] for [tool]" or "[topic]"
 context: fork
 agent: Explore
-disable-model-invocation: true
+disable-model-invocation: false
 allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
 ---
 

@@ -169,5 +169,18 @@
   },
   "enabledPlugins": {
     "telegram@claude-plugins-official": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.claude\\hooks\\session_start_time.ps1\""
+          }
+        ]
+      }
+    ]
   }
 }
