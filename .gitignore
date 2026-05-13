@@ -77,6 +77,10 @@ credentials.json
 .claude.json
 .claude.json.full-backup
 .mcp.json
+.codex/secrets.local.env
+.codex/runtime.local.json
+.codex/config.toml
+.codex/mcp.generated.toml
 *.backup
 .mcp.test-*.json
 nul
@@ -145,3 +149,15 @@ MARKETING_TEAM/logs/*.log
 /daily_tweets_*.md
 /nigeria-oil-*.html
 /nextshiftiq-website.md
+*.validation_pass
+*.validation_fail
+
+# Local cleanup + working artifacts (never commit)
+.trash/
+.agents/
+.backups/
+.cache/
+.claude/scheduled_tasks.lock
+*.proposed
+**/MEMORY.md.OLD
+**/.pe_retry_state/
