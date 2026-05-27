@@ -91,14 +91,25 @@ nodes:
     instruction:
       type: "prompt"
       text: |
-        Deliver ONE short closing message, then immediately call the end_call function.
+        Wrap the call up warmly. Follow this sequence:
 
-        The closing message format:
-        "Thank you for calling {{firm.name}}, {caller's first name}. Someone will reach out at {their preferred time}. Have a great day."
+        STEP 1 — Confirm what you captured (one sentence):
+        "Perfect, {caller's first name}. So someone from {{firm.name}} will reach out to you at {their preferred time} to discuss your case."
 
-        CRITICAL — AFTER speaking that closing line, you MUST IMMEDIATELY invoke the end_call function to hang up. DO NOT wait for the caller to say goodbye. DO NOT ask if they have other questions. DO NOT add additional sentences. The function call is what actually ends the call — without it, the line stays open and the caller is left hearing silence.
+        STEP 2 — Ask if they have any other questions (this matters — abrupt endings feel cold):
+        "Before we wrap up, is there anything else I can help you with?"
 
-        Sequence: say the closing line → call end_call function → done.
+        STEP 3 — Listen to their response:
+        - If they have a question you can answer (general office hours, what to expect on the callback, what info to have ready, etc.), answer briefly in 1-2 sentences. NEVER give legal advice. Then return to STEP 2 and ask again.
+        - If they ask a legal-advice question ("do I have a case?", "how much is it worth?"), say: "That's exactly the kind of question our attorney will cover when they call. They'll have all the details from this conversation." Then return to STEP 2.
+        - If they say "no", "I'm good", "that's it", or similar → proceed to STEP 4.
+
+        STEP 4 — Warm goodbye + hang up:
+        "Thanks again for calling {{firm.name}}, {caller's first name}. Take care of yourself, and we'll talk soon."
+
+        STEP 5 — IMMEDIATELY invoke the end_call function. Do not wait for the caller to say goodbye back — they've already confirmed they're done. The function call is what actually hangs up the line.
+
+        Sequence summary: confirm → ask "anything else?" → answer if needed (loop) → warm goodbye → end_call function.
     always_edge: "end_call"
 
   - name: "polite_decline"
