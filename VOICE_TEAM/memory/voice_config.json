@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "description": "VOICE_TEAM factory-wide defaults. Read by deploy_retell_agent.py and all VOICE_TEAM agents at startup.",
+    "created": "2026-05-27",
+    "owner": "VOICE_TEAM",
+    "purpose": "Single source of truth for Retell API config, default models, default voices, and platform-wide settings. Per-firm overrides live in firm.yml files."
+  },
+  "retell": {
+    "api_base": "https://api.retellai.com",
+    "api_key_env_var": "RETELL_API_KEY",
+    "api_key_location": "MARKETING_TEAM/.env",
+    "default_model": "gpt-realtime-1.5",
+    "fallback_model": "gpt-4.1",
+    "fast_tier_default": true,
+    "post_call_analysis_model": "gpt-4.1",
+    "max_call_duration_ms": 1800000,
+    "stt_mode": "accurate",
+    "denoising_mode": "noise-and-background-speech-cancellation",
+    "interruption_sensitivity": 0.9,
+    "normalize_for_speech": true
+  },
+  "voice": {
+    "default_voice_id": "11labs-Adrian",
+    "fallback_voice_id": "retell-Cimo",
+    "s2s_default_voice_id": "openai-Marin",
+    "voice_provider_default": "elevenlabs",
+    "voice_speed": 1.0,
+    "voice_temperature": 1.0,
+    "s2s_voice_constraint_note": "Realtime models (s2s_model) only support Retell-preset OpenAI voices or OpenAI native voices. Do NOT use 11labs-* voice IDs for s2s deploys."
+  },
+  "handbook_defaults": {
+    "ai_disclosure": true,
+    "scope_boundaries": true,
+    "speech_normalization": true,
+    "default_personality": true,
+    "echo_verification": false,
+    "natural_filler_words": false,
+    "nato_phonetic_alphabet": false,
+    "high_empathy": true,
+    "smart_matching": true
+  },
+  "compliance": {
+    "data_storage_setting": "everything",
+    "pii_redaction_mode": "post_call",
+    "recording_disclosure_required": true,
+    "ai_disclosure_required": true,
+    "retention_days_default": 90
+  },
+  "google_calendar": {
+    "default_event_duration_min": 30,
+    "default_buffer_min": 15,
+    "default_calendar_id": "primary",
+    "default_timezone": "America/New_York"
+  },
+  "factory": {
+    "current_demo_firm_slug": "sterling_legal",
+    "demo_phone_number": "+13363238344",
+    "production_phone_pool": []
+  }
+}

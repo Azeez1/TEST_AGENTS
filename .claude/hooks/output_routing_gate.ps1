@@ -79,16 +79,21 @@ function Get-Verdict($rel) {
         return @{ v = "ALLOW"; r = "" }
     }
 
-    # CASE 3: not in MARKETING_TEAM or PROPOSAL_TEAM - out of scope this pass
-    if ($top -ne "MARKETING_TEAM" -and $top -ne "PROPOSAL_TEAM") {
+    # CASE 3: not in MARKETING_TEAM, PROPOSAL_TEAM, or VOICE_TEAM - out of scope
+    if ($top -ne "MARKETING_TEAM" -and $top -ne "PROPOSAL_TEAM" -and $top -ne "VOICE_TEAM") {
         return @{ v = "ALLOW"; r = "" }
     }
 
-    # CASE 3: MARKETING_TEAM and PROPOSAL_TEAM enforcement
+    # CASE 3: MARKETING_TEAM, PROPOSAL_TEAM, and VOICE_TEAM enforcement
     $section = $parts[1]
 
-    # 3a - bare file in TEAM/ root (e.g. MARKETING_TEAM/blog.md)
+    # 3a - bare file in TEAM/ root (e.g. MARKETING_TEAM/blog.md, VOICE_TEAM/something.json)
+    # README.md and DEMO_RUNBOOK.md are explicitly allowed at the team root.
+    $TEAM_ROOT_ALLOWED = @("README.md", "DEMO_RUNBOOK.md", "AGENTS.md")
     if ($parts.Length -eq 2 -and $CONTENT_EXTS -contains $ext) {
+        if ($TEAM_ROOT_ALLOWED -contains $parts[1]) {
+            return @{ v = "ALLOW"; r = "" }
+        }
         return @{ v = "WARN"; r = "$top requires output to be inside outputs/<subfolder>/, not bare at team root" }
     }
 
@@ -98,7 +103,7 @@ function Get-Verdict($rel) {
         if ($parts.Length -eq 3 -and $CONTENT_EXTS -contains $ext) {
             return @{ v = "WARN"; r = "$top/outputs/ requires a subfolder. Got bare file: $rel" }
         }
-        # outputs/<subfolder>/... - ALLOW (any subfolder)
+        # outputs/<subfolder>/... - ALLOW (any subfolder, including _dumps/ for VOICE_TEAM debug artifacts)
         return @{ v = "ALLOW"; r = "" }
     }
 

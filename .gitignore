@@ -1,6 +1,9 @@
 # Python
 __pycache__/
 *.py[cod]
+
+# HEDGE_FUND — account-specific values stay local
+HEDGE_FUND/memory/account_config.json
 *$py.class
 *.so
 .Python

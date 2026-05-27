@@ -1,0 +1,129 @@
+# Declarative conversation flow definition.
+# deploy_retell_agent.py reads this + the firm.yml + global_prompt_template.md,
+# builds a Retell Conversation Flow JSON, and POSTs to create-conversation-flow.
+#
+# Variables: {{firm.X}} expansions come from firm.yml.
+# Edges reference nodes by `name` (the script resolves to Retell-assigned node IDs).
+
+nodes:
+
+  - name: "welcome"
+    type: "conversation"
+    start_speaker: "agent"
+    instruction:
+      type: "static_text"
+      text: "Hi, thank you for calling {{firm.name}}. I'm the AI assistant — your call may be recorded. How can I help you today?"
+    always_edge: "initial_inquiry"
+
+  - name: "initial_inquiry"
+    type: "conversation"
+    instruction:
+      type: "prompt"
+      text: |
+        Listen to the caller. Your job in this node is to determine ONE of three things:
+        (1) The caller's issue sounds like a {{firm.practice_area_display}} case → transition to "qualifying"
+        (2) The caller's issue is NOT a {{firm.practice_area_display}} matter → transition to "polite_decline"
+        (3) The caller mentions an active emergency, ongoing crime, or someone needing immediate medical attention → transition to "emergency_redirect"
+
+        Ask 1-2 clarifying questions if needed. Don't make the caller repeat their whole story in detail — just enough to determine the category. Be warm but efficient.
+    edges:
+      - to: "qualifying"
+        condition: "Caller's situation is clearly within {{firm.practice_area_display}} scope (car accident, slip and fall, dog bite, injury, etc. for PI). Even if they're upset or unclear on details, if the case category matches, proceed."
+      - to: "polite_decline"
+        condition: "Caller's issue is clearly outside {{firm.practice_area_display}} — e.g., they need a divorce attorney, criminal defense, immigration help, or something unrelated to {{firm.practice_area_display}}."
+      - to: "emergency_redirect"
+        condition: "Caller mentions an active emergency: someone is currently injured and needs medical care, a crime is in progress, or there is immediate danger."
+
+  - name: "qualifying"
+    type: "conversation"
+    instruction:
+      type: "prompt"
+      text: |
+        Capture the following from the caller (ask questions naturally, one or two at a time — don't interrogate):
+        1. What happened? (incident summary)
+        2. When did it happen? (date or relative time)
+        3. Are they currently injured / receiving medical care?
+        4. From their perspective, who was at fault?
+        5. Was a police or incident report filed?
+        6. Have they spoken to insurance companies yet?
+
+        Be empathetic. If they're upset, acknowledge it briefly. If they don't know an answer, say "that's okay, we can sort that out later" and move on.
+
+        Once you have a clear picture, transition to "contact_capture".
+    always_edge: "contact_capture"
+
+  - name: "contact_capture"
+    type: "conversation"
+    instruction:
+      type: "prompt"
+      text: |
+        Capture the caller's full name and best callback phone number.
+
+        CRITICAL NAME RULE: When the caller says their name, ALWAYS spell it back to them letter-by-letter and ask them to confirm. Example:
+          Caller: "My name is Azeez Saba"
+          You: "Got it — let me confirm the spelling. That's A-Z-E-E-Z, S-A-B-A, correct?"
+
+        If the caller spells their name out loud letter-by-letter, echo each letter back as you hear it ("A... Z... E... E... Z...") then confirm the full spelling at the end. NEVER guess a name. If you're not 100% certain of the spelling, ask the caller to spell it for you.
+
+        For the phone number: repeat it back digit-by-digit: "Just to confirm, that's three-zero-one, four-four-eight, nine-nine-four-one, correct?"
+
+        Only move to the next phase AFTER both name spelling and phone number have been confirmed by the caller.
+    always_edge: "preferred_slot"
+
+  - name: "preferred_slot"
+    type: "conversation"
+    instruction:
+      type: "prompt"
+      text: |
+        Ask the caller: "When's a good time for our attorney to call you back?"
+
+        Capture:
+        - Preferred day (Monday, Tuesday, tomorrow, this Friday, specific date)
+        - Preferred time (morning, 2pm, after 5pm, etc.)
+        - Urgency (emergency, this_week, this_month, flexible)
+
+        Once you have those, call the function `capture_preferred_slot` with the captured values. After the function call, transition to "wrap_up".
+    tool_ids: ["capture_preferred_slot"]
+    always_edge: "wrap_up"
+
+  - name: "wrap_up"
+    type: "conversation"
+    instruction:
+      type: "prompt"
+      text: |
+        Thank the caller by name. Confirm:
+        - Someone from {{firm.name}} will reach out at the time they requested
+        - If anything urgent comes up before then, they can call back
+
+        Then end the call politely. Example: "Thank you for calling {{firm.name}}, {their name}. Someone will reach out at {their preferred time}. Have a great day."
+    always_edge: "end_call"
+
+  - name: "polite_decline"
+    type: "conversation"
+    instruction:
+      type: "prompt"
+      text: |
+        Politely tell the caller that {{firm.name}} focuses on {{firm.practice_area_display}} cases and their situation seems to be outside that scope. Offer to take their info if they'd like a referral to a colleague who handles that area.
+
+        If they say yes, capture name + phone + brief description.
+        If they say no, wish them well and end.
+
+        Either way, transition to "wrap_up_decline" when done.
+    always_edge: "wrap_up_decline"
+
+  - name: "wrap_up_decline"
+    type: "conversation"
+    instruction:
+      type: "static_text"
+      text: "Thank you for calling {{firm.name}}. I hope you find the right help for your situation. Have a great day."
+    always_edge: "end_call"
+
+  - name: "emergency_redirect"
+    type: "conversation"
+    instruction:
+      type: "static_text"
+      text: "If this is an active emergency, please hang up and dial 911 immediately. {{firm.name}} can't help with active emergencies — call 911 first, and you can call us back after. Goodbye."
+    always_edge: "end_call"
+
+  - name: "end_call"
+    type: "end"

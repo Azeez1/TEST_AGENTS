@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "description": "VOICE_TEAM output routing config. All agents MUST read this file before writing any output. Never write to repo root or other team folders.",
+    "created": "2026-05-27",
+    "owner": "VOICE_TEAM"
+  },
+  "note": "All paths are absolute. Agents validate workspace boundary against VOICE_TEAM/ prefix.",
+  "paths": {
+    "deployments": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\outputs\\deployments",
+    "call_logs": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\outputs\\call_logs",
+    "summaries": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\outputs\\summaries",
+    "bookings": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\outputs\\bookings",
+    "emails": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\outputs\\emails",
+    "dumps": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\outputs\\_dumps",
+    "firm_configs": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\memory\\firms",
+    "kb_root": "C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\VOICE_TEAM\\kb"
+  },
+  "usage_guide": {
+    "deployments": "One JSON per deployed firm. Contains agent_id, conversation_flow_id, phone_number, deployed_at, last_modified.",
+    "call_logs": "Raw call transcripts pulled from Retell API. One JSON per call_id (canonical name: call_<id>.json).",
+    "summaries": "Post-call analysis output. One JSON per call_id with structured fields (caller name, slot, urgency, etc).",
+    "bookings": "Booking outcomes from book_pending_consults.py runs. One JSON per booking attempt with success/failure.",
+    "emails": "Email summary intents. One JSON per call_id. Consumed by Claude Code to dispatch via mcp__google-workspace__send_gmail_message.",
+    "dumps": "Debug artifacts and one-off snapshots — template flow dumps, plan archives, codex reviews, ad-hoc inspections. Safe to delete; not load-bearing.",
+    "firm_configs": "Per-firm YAML configs (firm.yml). One per onboarded firm. Source of truth for deployments.",
+    "kb_root": "Knowledge base docs per firm in <firm_slug>/ subdirectories. Uploaded to Retell KB during deployment."
+  }
+}

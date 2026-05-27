@@ -1,0 +1,2 @@
+# Firm configs are copied here at deploy time so the webhook can resolve phone → firm.
+# Run: Copy-Item ../memory/firms/*.yml . -Recurse

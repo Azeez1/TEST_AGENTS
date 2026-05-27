@@ -181,6 +181,26 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__google-workspace__send_gmail_message",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.claude\\hooks\\voice_email_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.claude\\hooks\\output_routing_gate.ps1\""
+          }
+        ]
+      }
     ]
   }
 }

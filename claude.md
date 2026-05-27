@@ -1,6 +1,6 @@
 # TEST_AGENTS - AI Multi-Agent System
 
-64 agents across 6 teams + 28 skills + 7 MCP servers. Pure Claude Code conversation — no Python orchestrators.
+67 agents across 8 teams + 28 skills + 7 MCP servers. Pure Claude Code conversation — no Python orchestrators.
 
 | Team | Agents | Orchestrator |
 |------|--------|-------------|
@@ -9,7 +9,9 @@
 | FINANCIAL_TEAM | 14 | cfo-agent |
 | SALES_TEAM | 9 | sales-manager |
 | QA_TEAM | 5 | test-orchestrator |
+| VOICE_TEAM | 2 | voice-deployer + voice-onboarder |
 | PROPOSAL_TEAM | 1 | rfp-agent |
+| HEDGE_FUND | 1 | ict-trader |
 | ROOT | 2 | supervisor + oracle |
 
 Reference docs: [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) | [CLAUDE_REFERENCE.md](CLAUDE_REFERENCE.md) | [MCP_SETUP.md](MCP_SETUP.md)

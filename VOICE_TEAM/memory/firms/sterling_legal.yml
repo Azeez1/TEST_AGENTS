@@ -1,0 +1,160 @@
+# Sterling Legal Services — Demo Firm Configuration
+# Practice: Personal Injury
+# Status: Demo (Steven partnership pilot, 2026-05-27)
+
+firm:
+  slug: "sterling_legal"
+  name: "Sterling Legal Services"
+  practice_area: "personal_injury"
+  practice_area_display: "Personal Injury"
+  state: "NC"
+  hours: "Mon-Fri 9am-6pm Eastern"
+  phone_main: "+13363238344"
+  website: ""
+  partners:
+    - "Attorney Sterling"
+  brand_tone: "warm, calm, professional — like a senior receptionist at a top boutique firm"
+  case_value_min_usd: 5000
+  geographic_focus: "North Carolina (statewide)"
+
+retell:
+  phone_number: "+13363238344"
+  model: "gpt-realtime-1.5"
+  s2s_model: "gpt-realtime-2"
+  fast_tier: true
+  llm_temperature: 0.3
+  voice_id: "11labs-Adrian"        # used by cascading deploy
+  s2s_voice_id: "openai-Marin"     # used by s2s deploy (must be openai-* or retell-*)
+  language: "en-US"
+  interruption_sensitivity: 0.65   # was 0.9 — lowered to reduce mid-sentence cutoffs
+
+intake:
+  greeting_style: "warm-professional"
+  opening_question: "How can I help you today?"
+  questions:
+    - id: "incident_summary"
+      prompt: "Can you tell me what happened?"
+      required: true
+    - id: "incident_date"
+      prompt: "When did this happen?"
+      required: true
+    - id: "injuries"
+      prompt: "Are you currently injured? Have you seen a doctor or gone to the hospital?"
+      required: true
+    - id: "fault"
+      prompt: "From your perspective, who do you think was at fault?"
+      required: false
+    - id: "police_report"
+      prompt: "Was a police or incident report filed?"
+      required: false
+    - id: "insurance_contact"
+      prompt: "Have you spoken to any insurance companies yet?"
+      required: false
+    - id: "callback_name"
+      prompt: "What's your full name?"
+      required: true
+    - id: "callback_phone"
+      prompt: "What's the best phone number for our attorney to reach you?"
+      required: true
+    - id: "preferred_slot"
+      prompt: "When's a good time for our attorney to call you back?"
+      required: true
+  escalation_rules:
+    - condition: "caller mentions active emergency, 911, ongoing crime, or injury requiring immediate medical attention"
+      action: "instruct_caller_to_call_911"
+    - condition: "caller asks for legal advice (e.g., 'should I sue?', 'do I have a case?')"
+      action: "decline_politely_and_redirect_to_attorney_callback"
+    - condition: "caller is verbally abusive, threatening, or clearly soliciting/spam"
+      action: "end_call_politely"
+    - condition: "caller describes a case outside personal injury (e.g., divorce, criminal defense, immigration)"
+      action: "polite_decline_with_referral_suggestion"
+
+calendar:
+  google_calendar_id: "primary"
+  event_template: "Sterling Legal — Free Consultation"
+  event_duration_min: 30
+  buffer_min: 15
+  send_invites: true
+
+knowledge_base:
+  enabled: true
+  docs_dir: "sterling_legal"
+
+intake_functions:
+  - name: "capture_preferred_slot"
+    description: "Call when the caller has stated a preferred day and time for the attorney callback."
+    speak_after_execution: true
+    parameters:
+      preferred_day:
+        type: string
+        description: "Caller's preferred callback day. e.g., Monday, Tuesday, tomorrow, this Friday, specific date"
+        required: true
+      preferred_time:
+        type: string
+        description: "Caller's preferred time. e.g., morning, 2pm, after 5pm, before noon"
+        required: true
+      urgency:
+        type: string
+        enum: ["emergency", "this_week", "this_month", "flexible"]
+        description: "How urgent is the callback?"
+        required: true
+      notes:
+        type: string
+        description: "Any additional context from the caller"
+        required: false
+
+post_call_analysis:
+  - name: "Caller Full Name"
+    type: string
+    description: "The caller's full name as they stated it"
+  - name: "Callback Phone Number"
+    type: string
+    description: "Best phone number to reach the caller"
+  - name: "Incident Type"
+    type: string
+    description: "Brief description of the incident (car accident, slip & fall, dog bite, etc.)"
+  - name: "Incident Date"
+    type: string
+    description: "When the incident occurred (date or relative description)"
+  - name: "Currently Injured"
+    type: enum
+    choices: ["Yes - receiving medical care", "Yes - not yet seen doctor", "No", "Unclear"]
+    description: "Caller's current injury status"
+  - name: "Fault Assessment"
+    type: string
+    description: "Who the caller believes was at fault"
+  - name: "Police Report Filed"
+    type: enum
+    choices: ["Yes", "No", "Unsure"]
+    description: "Whether an incident report was filed"
+  - name: "Insurance Contact"
+    type: enum
+    choices: ["Already spoke to insurance", "Has not spoken to insurance", "Unsure"]
+    description: "Whether caller has had contact with insurance"
+  - name: "Preferred Callback Day"
+    type: string
+  - name: "Preferred Callback Time"
+    type: string
+  - name: "Urgency Level"
+    type: enum
+    choices: ["emergency", "this_week", "this_month", "flexible"]
+  - name: "Case Quality"
+    type: enum
+    choices: ["strong", "moderate", "weak", "not_a_fit"]
+    description: "Strength assessment based on intake: severity of injuries, fault clarity, recency, statute of limitations."
+  - name: "Case Outside Practice Area"
+    type: boolean
+    description: "True if caller's issue is NOT personal injury (and we politely declined)"
+
+compliance:
+  recording_disclosure: true
+  ai_disclosure: true
+  pii_redaction: true
+  retention_days: 90
+
+deployment:
+  agent_id: ""
+  conversation_flow_id: ""
+  deployed_at: ""
+  last_modified: ""
+  status: "pending"

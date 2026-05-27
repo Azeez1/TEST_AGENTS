@@ -1,0 +1,141 @@
+# VOICE_TEAM Firm Configuration Schema
+#
+# This is the canonical schema for per-firm voice agent deployments.
+# Copy this file to memory/firms/<firm_slug>.yml and fill in firm-specific values.
+# The deploy_retell_agent.py script reads this file + renders templates + POSTs to Retell.
+#
+# Fields marked REQUIRED must be filled or the deploy will fail validation.
+# Fields marked OPTIONAL can be omitted (factory defaults from voice_config.json apply).
+
+firm:
+  slug: ""                           # REQUIRED — kebab-case, unique. e.g., "sterling_legal"
+  name: ""                           # REQUIRED — display name. e.g., "Sterling Legal Services"
+  practice_area: ""                  # REQUIRED — one of: personal_injury | family | criminal | immigration | workers_comp | traffic | estate | other
+  state: ""                          # REQUIRED — 2-letter state. e.g., "NC"
+  hours: "Mon-Fri 9am-5pm ET"        # OPTIONAL — for "office is closed" handling
+  phone_main: ""                     # OPTIONAL — firm's main line (for callback reference)
+  website: ""                        # OPTIONAL — for "you can also visit our site"
+  partners: []                       # OPTIONAL — list of attorney names for escalation routing
+
+# Retell platform configuration
+retell:
+  phone_number: ""                   # REQUIRED — E.164 format. e.g., "+13363238344"
+  model: "gpt-realtime-1.5"          # OPTIONAL — falls back to voice_config.json default
+  fast_tier: true                    # OPTIONAL — toggle Fast Tier for lower latency
+  llm_temperature: 0.3               # OPTIONAL — 0.0-1.0, lower = more deterministic
+  voice_id: ""                       # OPTIONAL — Retell voice ID. Falls back to voice_config.json default
+  language: "en-US"                  # OPTIONAL — "en-US" | "multi" | "es-ES" etc.
+  interruption_sensitivity: 0.9      # OPTIONAL — 0.0-1.0
+
+# Intake configuration — drives conversation flow nodes
+intake:
+  greeting_style: "warm-professional"  # warm-professional | clinical | casual
+  opening_question: ""               # OPTIONAL — override default opening. e.g., "How can I help you today?"
+  questions:                         # REQUIRED — ordered list of intake questions
+    - id: "incident_type"
+      prompt: "What happened?"
+      required: true
+    - id: "incident_date"
+      prompt: "When did this happen?"
+      required: true
+    - id: "injuries"
+      prompt: "Are you currently injured or receiving medical care?"
+      required: true
+    - id: "callback_name"
+      prompt: "What's your full name?"
+      required: true
+    - id: "callback_phone"
+      prompt: "What's the best phone number to reach you?"
+      required: true
+    - id: "preferred_slot"
+      prompt: "When's a good time for an attorney to call you back?"
+      required: true
+  escalation_rules:
+    - condition: "caller mentions emergency, 911, or active threat"
+      action: "instruct_caller_to_call_911"
+    - condition: "caller asks for legal advice"
+      action: "decline_politely_and_redirect"
+    - condition: "caller is hostile or abusive"
+      action: "end_call_politely"
+
+# Calendar booking config (post-call, via google-workspace MCP)
+calendar:
+  google_calendar_id: "primary"      # OPTIONAL — "primary" or specific calendar ID
+  event_template: "Sterling Legal — Free Consultation"
+  event_duration_min: 30
+  buffer_min: 15
+  send_invites: true
+
+# Knowledge base (uploaded to Retell during deploy)
+knowledge_base:
+  enabled: true
+  docs_dir: ""                       # OPTIONAL — relative to VOICE_TEAM/kb/. Defaults to <firm.slug>/
+
+# Custom functions exposed to the voice agent
+intake_functions:
+  - name: "capture_preferred_slot"
+    description: "Call when the caller has stated a preferred day/time for a callback."
+    speak_after_execution: true
+    parameters:
+      preferred_day:
+        type: string
+        description: "e.g., Monday, Tuesday, or a specific date"
+        required: true
+      preferred_time:
+        type: string
+        description: "e.g., morning, 2pm, after 5pm"
+        required: true
+      urgency:
+        type: string
+        enum: ["emergency", "this_week", "this_month", "flexible"]
+        required: true
+      notes:
+        type: string
+        description: "Any additional context from caller"
+        required: false
+
+# Post-call analysis fields (Retell extracts these from transcript after call ends)
+post_call_analysis:
+  - name: "Caller Full Name"
+    type: string
+    description: "The caller's full name as they stated it"
+  - name: "Callback Phone Number"
+    type: string
+    description: "Best phone number to reach the caller"
+  - name: "Incident Type"
+    type: string
+    description: "Brief description of the incident or legal need"
+  - name: "Incident Date"
+    type: string
+    description: "When the incident occurred"
+  - name: "Currently Injured"
+    type: enum
+    choices: ["Yes - receiving medical care", "Yes - not yet seen doctor", "No", "Unclear"]
+  - name: "Preferred Callback Day"
+    type: string
+    description: "Caller's stated preferred day for callback"
+  - name: "Preferred Callback Time"
+    type: string
+    description: "Caller's stated preferred time for callback"
+  - name: "Urgency Level"
+    type: enum
+    choices: ["emergency", "this_week", "this_month", "flexible"]
+  - name: "Case Quality"
+    type: enum
+    choices: ["strong", "moderate", "weak", "not_a_fit"]
+    description: "Based on intake answers, how strong is this case? Factor in: severity of injuries, fault clarity, statute of limitations."
+
+# Compliance overrides (factory defaults from voice_config.json otherwise)
+compliance:
+  recording_disclosure: true
+  ai_disclosure: true
+  pii_redaction: true
+  retention_days: 90
+
+# Deployment tracking (filled in by deploy_retell_agent.py — do not edit manually)
+deployment:
+  agent_id: ""                       # populated after deploy
+  conversation_flow_id: ""           # populated after deploy
+  deployed_at: ""                    # ISO timestamp
+  last_modified: ""                  # ISO timestamp
+  status: ""                         # pending | deployed | failed | retired

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sterling Legal Services — Voice Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    body { background: #0a0a0a; color: #e5e5e5; min-height: 100vh; padding: 40px 20px; }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 48px; }
+    h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .subtitle { color: #888; font-size: 14px; }
+    .card { background: #141414; border: 1px solid #262626; border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+    .call-btn { display: block; width: 100%; padding: 18px; background: #16a34a; color: #fff; border: 0; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .call-btn:hover { background: #15803d; }
+    .call-btn.active { background: #dc2626; }
+    .call-btn.active:hover { background: #b91c1c; }
+    .call-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+    .status { margin-top: 16px; padding: 12px 16px; border-radius: 6px; background: #1a1a1a; font-size: 13px; color: #888; min-height: 44px; }
+    .status.connected { background: #052e16; color: #22c55e; }
+    .status.error { background: #2e0505; color: #ef4444; }
+    .transcript { background: #0f0f0f; border: 1px solid #1f1f1f; border-radius: 8px; padding: 16px; min-height: 240px; max-height: 320px; overflow-y: auto; font-size: 14px; line-height: 1.6; }
+    .turn { margin-bottom: 12px; padding: 8px 12px; border-radius: 6px; }
+    .turn.user { background: #1e293b; color: #93c5fd; }
+    .turn.agent { background: #1a1a2e; color: #c4b5fd; }
+    .turn-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-bottom: 4px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+    .metric { background: #141414; padding: 12px; border-radius: 6px; text-align: center; border: 1px solid #262626; }
+    .metric-value { font-size: 22px; font-weight: 600; color: #22c55e; }
+    .metric-label { font-size: 11px; color: #666; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    footer { text-align: center; margin-top: 32px; font-size: 11px; color: #555; }
+    code { background: #1a1a1a; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Sterling Legal Services</h1>
+      <div class="subtitle">AI Voice Receptionist — Demo</div>
+    </header>
+
+    <div class="card">
+      <button id="callBtn" class="call-btn">📞 Start Call</button>
+      <div id="status" class="status">Click to call the AI receptionist. You'll be asked for microphone access.</div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size: 14px; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">Live Transcript</h2>
+      <div id="transcript" class="transcript"><div style="color: #444; font-style: italic;">Transcript will appear here once the call starts...</div></div>
+      <div class="metrics">
+        <div class="metric">
+          <div id="metricDuration" class="metric-value">0s</div>
+          <div class="metric-label">Duration</div>
+        </div>
+        <div class="metric">
+          <div id="metricLatency" class="metric-value">—</div>
+          <div class="metric-label">Last Latency</div>
+        </div>
+        <div class="metric">
+          <div id="metricTurns" class="metric-value">0</div>
+          <div class="metric-label">Turns</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Powered by Retell AI • agent <code>agent_046ea303e87fa84eb156c48ff4</code> • +1 (336) 323-8344
+    </footer>
+  </div>
+
+  <!-- Retell Web Client SDK (CDN) -->
+  <script type="module">
+    import { RetellWebClient } from "https://esm.sh/retell-client-js-sdk@latest";
+
+    // ──────────────────────────────────────────────────────────────────────
+    // CONFIG — replace AGENT_ID if redeploying; ACCESS_TOKEN_URL must point
+    // at a backend that returns a Retell access token. For Day 1 we hardcode
+    // a backend stub — replace with your own.
+    //
+    // To generate a token, POST to https://api.retellai.com/v2/create-web-call
+    // with { agent_id: "agent_..." } and your Retell API key. Returns
+    // { access_token, call_id }. Put that in a backend route to avoid
+    // exposing the API key in the browser.
+    //
+    // For LOCAL demo only, you can paste an access_token directly here.
+    // ──────────────────────────────────────────────────────────────────────
+    const AGENT_ID = "agent_046ea303e87fa84eb156c48ff4";
+    const ACCESS_TOKEN_URL = null; // e.g. "https://your-backend.example.com/retell/token"
+    const HARDCODED_ACCESS_TOKEN = null; // for ad-hoc demos only
+
+    const client = new RetellWebClient();
+    const callBtn = document.getElementById("callBtn");
+    const statusEl = document.getElementById("status");
+    const transcriptEl = document.getElementById("transcript");
+    const metricDuration = document.getElementById("metricDuration");
+    const metricLatency = document.getElementById("metricLatency");
+    const metricTurns = document.getElementById("metricTurns");
+
+    let callActive = false;
+    let callStart = 0;
+    let durationTimer = null;
+    let turnCount = 0;
+    let lastTurnStart = null;
+
+    function setStatus(msg, type) {
+      statusEl.textContent = msg;
+      statusEl.className = "status" + (type ? " " + type : "");
+    }
+    function appendTurn(role, text) {
+      if (!transcriptEl.firstChild || transcriptEl.firstChild.style?.fontStyle === "italic") {
+        transcriptEl.innerHTML = "";
+      }
+      const t = document.createElement("div");
+      t.className = "turn " + role;
+      t.innerHTML = `<div class="turn-label">${role}</div><div>${text}</div>`;
+      transcriptEl.appendChild(t);
+      transcriptEl.scrollTop = transcriptEl.scrollHeight;
+    }
+
+    async function getAccessToken() {
+      if (HARDCODED_ACCESS_TOKEN) return HARDCODED_ACCESS_TOKEN;
+      if (ACCESS_TOKEN_URL) {
+        const r = await fetch(ACCESS_TOKEN_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ agent_id: AGENT_ID }) });
+        const j = await r.json();
+        return j.access_token;
+      }
+      throw new Error("No access token source configured. Set ACCESS_TOKEN_URL or HARDCODED_ACCESS_TOKEN.");
+    }
+
+    callBtn.addEventListener("click", async () => {
+      if (callActive) {
+        await client.stopCall();
+        return;
+      }
+      try {
+        setStatus("Requesting access token...");
+        const token = await getAccessToken();
+        setStatus("Connecting to agent...");
+        await client.startCall({ accessToken: token });
+        callActive = true;
+        callStart = Date.now();
+        turnCount = 0;
+        callBtn.textContent = "🛑 End Call";
+        callBtn.classList.add("active");
+        setStatus("Connected — speak naturally", "connected");
+        durationTimer = setInterval(() => {
+          metricDuration.textContent = Math.floor((Date.now() - callStart) / 1000) + "s";
+        }, 250);
+      } catch (e) {
+        setStatus("Error: " + e.message, "error");
+        console.error(e);
+      }
+    });
+
+    client.on("call_started", () => setStatus("Call active", "connected"));
+    client.on("call_ended", () => {
+      callActive = false;
+      callBtn.textContent = "📞 Start Call";
+      callBtn.classList.remove("active");
+      setStatus("Call ended");
+      if (durationTimer) clearInterval(durationTimer);
+    });
+    client.on("error", (err) => setStatus("Error: " + (err?.message || JSON.stringify(err)), "error"));
+    client.on("update", (update) => {
+      if (update.transcript && update.transcript.length) {
+        const last = update.transcript[update.transcript.length - 1];
+        if (last && last.content && last.role) {
+          // Only re-render if this turn is new
+          const turns = transcriptEl.querySelectorAll(".turn");
+          if (turns.length < update.transcript.length) {
+            transcriptEl.innerHTML = "";
+            update.transcript.forEach((t) => appendTurn(t.role, t.content));
+            turnCount = update.transcript.length;
+            metricTurns.textContent = turnCount;
+            if (lastTurnStart && last.role === "agent") {
+              const lat = Date.now() - lastTurnStart;
+              metricLatency.textContent = lat + "ms";
+            }
+            if (last.role === "user") lastTurnStart = Date.now();
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
