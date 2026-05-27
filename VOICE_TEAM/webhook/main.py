@@ -198,18 +198,48 @@ def extract_fields(call: dict) -> dict[str, Any]:
 # --- Slot parsing ----------------------------------------------------------
 
 def parse_slot(day_str: str, time_str: str, tz_name: str = "America/New_York") -> datetime | None:
+    """Parse a caller-stated 'day + time' into a timezone-aware datetime.
+
+    Robust against:
+      - Time strings with trailing timezone hints ("3 PM Eastern", "5pm ET", "2pm CT")
+      - Vague time labels ("morning", "afternoon", "evening", "noon")
+      - Common 24h and 12h formats
+    """
     if not day_str:
+        log.warning("parse_slot: day_str empty")
         return None
-    time_norm = (time_str or "10am").lower()
-    vague_map = {"morning": "10am", "afternoon": "2pm", "evening": "6pm", "noon": "12pm"}
+
+    time_norm = (time_str or "10am").lower().strip()
+
+    # Strip common US-timezone suffixes — we apply timezone via settings, not as text.
+    tz_suffixes = [
+        " eastern time", " pacific time", " central time", " mountain time",
+        " eastern", " pacific", " central", " mountain",
+        " est", " edt", " pst", " pdt", " cst", " cdt", " mst", " mdt",
+        " et", " pt", " ct", " mt",
+    ]
+    for suf in tz_suffixes:
+        if time_norm.endswith(suf):
+            time_norm = time_norm[: -len(suf)].strip()
+            break
+
+    # Vague labels → concrete times (if no digit present)
+    vague_map = {"morning": "10am", "afternoon": "2pm", "evening": "6pm", "noon": "12pm", "midday": "12pm"}
     for k, v in vague_map.items():
         if k in time_norm and not any(d in time_norm for d in "0123456789"):
             time_norm = v
             break
-    return dateparser.parse(
-        f"{day_str} {time_norm}",
+
+    combined = f"{day_str} {time_norm}"
+    result = dateparser.parse(
+        combined,
         settings={"PREFER_DATES_FROM": "future", "TIMEZONE": tz_name, "RETURN_AS_TIMEZONE_AWARE": True},
     )
+    if result is None:
+        log.warning("parse_slot: dateparser returned None for input %r", combined)
+    else:
+        log.info("parse_slot: parsed %r -> %s", combined, result.isoformat())
+    return result
 
 
 # --- Firm config -----------------------------------------------------------
@@ -356,8 +386,10 @@ async def retell_webhook(req: Request):
     tz_name = (firm_doc.get("calendar") or {}).get("timezone") or "America/New_York"
     slot_dt = parse_slot(fields["preferred_day"], fields["preferred_time"], tz_name)
 
-    # 1) Calendar event
+    # 1) Calendar event — surface errors in the response (not just logs) so we can diagnose.
     booked = None
+    calendar_status = "skipped_no_slot"
+    calendar_error = None
     if slot_dt:
         duration = (firm_doc.get("calendar") or {}).get("event_duration_min", 30)
         end_dt = slot_dt + timedelta(minutes=duration)
@@ -373,10 +405,21 @@ async def retell_webhook(req: Request):
             f"Recording: {fields.get('recording_url','')}\n\n"
             f"AI summary:\n{fields.get('call_summary','')}"
         )
+        log.info(
+            "Calendar attempt: cal_id=%s start=%s end=%s tz=%s",
+            cal_id, slot_dt.isoformat(), end_dt.isoformat(), tz_name,
+        )
         try:
             booked = create_calendar_event(cal_id, cal_summary, cal_desc, slot_dt.isoformat(), end_dt.isoformat(), tz_name)
+            calendar_status = "ok"
             log.info("Calendar event created: %s", booked.get("id"))
+        except httpx.HTTPStatusError as e:
+            calendar_status = f"http_error_{e.response.status_code}"
+            calendar_error = f"{e.response.status_code}: {e.response.text[:500]}"
+            log.error("Calendar HTTP error: %s body=%s", e.response.status_code, e.response.text)
         except Exception as e:
+            calendar_status = "exception"
+            calendar_error = f"{type(e).__name__}: {e}"
             log.exception("Calendar event failed: %s", e)
 
     # 2) Email summary
@@ -398,6 +441,11 @@ async def retell_webhook(req: Request):
         "status": "ok",
         "call_id": call_id,
         "firm": firm["slug"],
+        "calendar_status": calendar_status,
         "calendar_event_id": (booked or {}).get("id"),
+        "calendar_error": calendar_error,
+        "slot_preferred_day": fields.get("preferred_day"),
+        "slot_preferred_time": fields.get("preferred_time"),
+        "slot_parsed_iso": slot_dt.isoformat() if slot_dt else None,
         "email_to": notify_to,
     }

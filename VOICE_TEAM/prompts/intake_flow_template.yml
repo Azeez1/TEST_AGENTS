@@ -91,11 +91,14 @@ nodes:
     instruction:
       type: "prompt"
       text: |
-        Thank the caller by name. Confirm:
-        - Someone from {{firm.name}} will reach out at the time they requested
-        - If anything urgent comes up before then, they can call back
+        Deliver ONE short closing message, then immediately call the end_call function.
 
-        Then end the call politely. Example: "Thank you for calling {{firm.name}}, {their name}. Someone will reach out at {their preferred time}. Have a great day."
+        The closing message format:
+        "Thank you for calling {{firm.name}}, {caller's first name}. Someone will reach out at {their preferred time}. Have a great day."
+
+        CRITICAL — AFTER speaking that closing line, you MUST IMMEDIATELY invoke the end_call function to hang up. DO NOT wait for the caller to say goodbye. DO NOT ask if they have other questions. DO NOT add additional sentences. The function call is what actually ends the call — without it, the line stays open and the caller is left hearing silence.
+
+        Sequence: say the closing line → call end_call function → done.
     always_edge: "end_call"
 
   - name: "polite_decline"
@@ -114,15 +117,23 @@ nodes:
   - name: "wrap_up_decline"
     type: "conversation"
     instruction:
-      type: "static_text"
-      text: "Thank you for calling {{firm.name}}. I hope you find the right help for your situation. Have a great day."
+      type: "prompt"
+      text: |
+        Say this exact line, then IMMEDIATELY invoke the end_call function:
+        "Thank you for calling {{firm.name}}. I hope you find the right help for your situation. Have a great day."
+
+        After speaking, call end_call to hang up. Do not wait for the caller to respond.
     always_edge: "end_call"
 
   - name: "emergency_redirect"
     type: "conversation"
     instruction:
-      type: "static_text"
-      text: "If this is an active emergency, please hang up and dial 911 immediately. {{firm.name}} can't help with active emergencies — call 911 first, and you can call us back after. Goodbye."
+      type: "prompt"
+      text: |
+        Say this exact line, then IMMEDIATELY invoke the end_call function:
+        "If this is an active emergency, please hang up and dial 911 immediately. {{firm.name}} can't help with active emergencies — call 911 first, and you can call us back after. Goodbye."
+
+        After speaking, call end_call to hang up. The caller needs to dial 911 — keeping our line open delays that.
     always_edge: "end_call"
 
   - name: "end_call"

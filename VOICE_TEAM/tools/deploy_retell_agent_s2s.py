@@ -130,7 +130,13 @@ def build_states(intake_template: dict, firm: dict) -> list[dict]:
             state_tools.append({
                 "type": "end_call",
                 "name": f"end_call_from_{n['name']}",
-                "description": "End the call politely once the wrap-up message has been delivered.",
+                "description": (
+                    "Hang up the call. CALL THIS IMMEDIATELY after you deliver your "
+                    "closing line in this state. Do NOT wait for the caller to say "
+                    "goodbye. Do NOT add additional sentences. Calling this function "
+                    "is the ONLY way to actually end the call — without it the line "
+                    "stays open and the caller hears silence."
+                ),
             })
 
         state: dict[str, Any] = {
