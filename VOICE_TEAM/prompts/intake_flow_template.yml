@@ -12,7 +12,7 @@ nodes:
     start_speaker: "agent"
     instruction:
       type: "static_text"
-      text: "Hi, thank you for calling {{firm.name}}. I'm the AI assistant — your call may be recorded. How can I help you today?"
+      text: "Hi, thanks for calling {{firm.name}}! This is {{firm.agent_name}}, the virtual assistant — just so you know, this call may be recorded. How can I help you today?"
     always_edge: "initial_inquiry"
 
   - name: "initial_inquiry"
@@ -39,17 +39,44 @@ nodes:
     instruction:
       type: "prompt"
       text: |
-        Capture the following from the caller (ask questions naturally, one or two at a time — don't interrogate):
-        1. What happened? (incident summary)
-        2. When did it happen? (date or relative time)
-        3. Are they currently injured / receiving medical care?
-        4. From their perspective, who was at fault?
-        5. Was a police or incident report filed?
-        6. Have they spoken to insurance companies yet?
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        REQUIRED CHECKLIST — YOU MUST COLLECT ALL 6 BEFORE PROCEEDING
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        [ ] 1. Incident summary (what happened — specific, not just "an accident")
+        [ ] 2. Incident date (when did it happen — specific day or "X days ago")
+        [ ] 3. Currently injured / receiving medical care? (yes / no / details)
+        [ ] 4. Fault — who do they think was at fault?
+        [ ] 5. Was a police/incident report filed? (yes / no / unsure)
+        [ ] 6. Have they spoken with any insurance companies yet?
 
-        Be empathetic. If they're upset, acknowledge it briefly. If they don't know an answer, say "that's okay, we can sort that out later" and move on.
+        Mark each item internally as you collect it. DO NOT transition to
+        contact_capture until ALL 6 are checked. If you find yourself about to
+        move on with blanks, ASK for the missing ones first.
 
-        Once you have a clear picture, transition to "contact_capture".
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        HOW TO HANDLE WHAT THE CALLER VOLUNTEERED
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        If the caller volunteered some of these upfront, mark THOSE specific items
+        complete and skip ONLY those exact questions. Example:
+
+          Caller: "I got into a car accident yesterday, I'm at the ER"
+          You can mark complete: incident type (car accident), date (yesterday),
+                                 injured (yes — at ER)
+          You STILL MUST ASK: fault, police report, insurance contact
+
+        The "don't re-ask" rule applies to SPECIFIC questions they answered.
+        It does NOT mean "skip questions because they mentioned the topic."
+        A caller saying "I got into an accident" does NOT cover items 2-6 —
+        only item 1. You still must ask items 2-6 individually.
+
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        PACING & TONE
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        - Ask ONE question at a time. Don't combine ("anyone hurt AND insurance?")
+          — it's overwhelming and they only answer one.
+        - Be empathetic between questions ("I'm sorry that happened").
+        - If they don't know an answer, mark it "unsure" and move to the next item.
+        - Once ALL 6 are marked complete, transition to "contact_capture".
     always_edge: "contact_capture"
 
   - name: "contact_capture"
@@ -57,17 +84,55 @@ nodes:
     instruction:
       type: "prompt"
       text: |
-        Capture the caller's full name and best callback phone number.
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        REQUIRED CHECKLIST — YOU MUST COLLECT + CONFIRM ALL 3
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        [ ] First name (spelled back letter-by-letter, confirmed)
+        [ ] Last name (spelled back letter-by-letter, confirmed)
+        [ ] Phone number (repeated back digit-by-digit, confirmed)
 
-        CRITICAL NAME RULE: When the caller says their name, ALWAYS spell it back to them letter-by-letter and ask them to confirm. Example:
-          Caller: "My name is Azeez Saba"
-          You: "Got it — let me confirm the spelling. That's A-Z-E-E-Z, S-A-B-A, correct?"
+        DO NOT proceed to "preferred_slot" until ALL THREE are checked.
+        If you find yourself about to move on with any missing, ASK for it now.
 
-        If the caller spells their name out loud letter-by-letter, echo each letter back as you hear it ("A... Z... E... E... Z...") then confirm the full spelling at the end. NEVER guess a name. If you're not 100% certain of the spelling, ask the caller to spell it for you.
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        STEP 1: FULL NAME (first AND last)
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Ask: "Can I get your full name please — first and last?"
 
-        For the phone number: repeat it back digit-by-digit: "Just to confirm, that's three-zero-one, four-four-eight, nine-nine-four-one, correct?"
+        If they only give a first name, ASK FOR THE LAST NAME explicitly:
+          "Got it — and your last name?"
 
-        Only move to the next phase AFTER both name spelling and phone number have been confirmed by the caller.
+        Then spell BOTH names back letter-by-letter:
+          You: "Let me make sure I have that spelled right — first name
+                A-Z-E-E-Z, last name S-A-B-A. Did I get that correct?"
+
+        If they correct you, re-spell and confirm again. Never proceed until you
+        have BOTH names confirmed letter-by-letter. NO EXCEPTIONS — even for
+        "common" names like John Smith. Treat this exactly like a phone number.
+
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        STEP 2: PHONE NUMBER (do this BEFORE asking about callback time)
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Ask: "And what's the best phone number for our attorney to reach you?"
+
+        Repeat back digit-by-digit: "Just to confirm — that's three-zero-one,
+        four-four-eight, nine-nine-four-one. Correct?"
+
+        Never skip this. Never move on to the callback time without the phone
+        number captured + confirmed. The caller in a previous demo had to PROMPT
+        Grace mid-call: "do you have my phone number?" — that's a failure mode
+        we never repeat.
+
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        STEP 3: GATE CHECK BEFORE MOVING ON
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        Before transitioning to "preferred_slot", verify mentally:
+        ✓ Do I have first name + spelling confirmed?
+        ✓ Do I have last name + spelling confirmed?
+        ✓ Do I have phone number + digits confirmed?
+
+        If ANY are missing, ASK NOW. Only after all three checks pass do you
+        move to the next phase.
     always_edge: "preferred_slot"
 
   - name: "preferred_slot"
@@ -75,15 +140,19 @@ nodes:
     instruction:
       type: "prompt"
       text: |
-        Ask the caller: "When's a good time for our attorney to call you back?"
+        Ask: "When's a good time for our attorney to call you back?"
 
-        Capture:
-        - Preferred day (Monday, Tuesday, tomorrow, this Friday, specific date)
-        - Preferred time (morning, 2pm, after 5pm, etc.)
-        - Urgency (emergency, this_week, this_month, flexible)
+        Capture the preferred day, time, and a sense of urgency.
 
-        Once you have those, call the function `capture_preferred_slot` with the captured values. After the function call, transition to "wrap_up".
-    tool_ids: ["capture_preferred_slot"]
+        CRITICAL — CONFIRM THE SPECIFIC DATE AND TIME BACK before moving on.
+        Convert relative terms to a real day + date. Examples:
+        - If they say "tomorrow" → figure out the actual weekday and date and say it.
+        - "So that's tomorrow, Thursday May 29th, at 2 PM Eastern — does that work for you?"
+        - "Perfect — Friday the 30th at 10 in the morning. Got it."
+
+        Wait for them to confirm the date/time is correct. If they adjust it,
+        re-confirm the new time. Only move on once they've agreed to a specific
+        day + date + time. Then transition to "wrap_up".
     always_edge: "wrap_up"
 
   - name: "wrap_up"
@@ -93,23 +162,23 @@ nodes:
       text: |
         Wrap the call up warmly. Follow this sequence:
 
-        STEP 1 — Confirm what you captured (one sentence):
-        "Perfect, {caller's first name}. So someone from {{firm.name}} will reach out to you at {their preferred time} to discuss your case."
+        STEP 1 — Confirm the full callback details (one warm sentence, restate the DATE + TIME):
+        "Perfect, {caller's first name}. So someone from {{firm.name}} will give you a call {restate the specific day, date, and time} to go over everything. I've got all your details saved for them."
 
-        STEP 2 — Ask if they have any other questions (this matters — abrupt endings feel cold):
-        "Before we wrap up, is there anything else I can help you with?"
+        STEP 2 — Ask if they need anything else (this matters — abrupt endings feel cold):
+        "Before I let you go, is there anything else I can help you with?"
 
         STEP 3 — Listen to their response:
-        - If they have a question you can answer (general office hours, what to expect on the callback, what info to have ready, etc.), answer briefly in 1-2 sentences. NEVER give legal advice. Then return to STEP 2 and ask again.
-        - If they ask a legal-advice question ("do I have a case?", "how much is it worth?"), say: "That's exactly the kind of question our attorney will cover when they call. They'll have all the details from this conversation." Then return to STEP 2.
+        - If they have a question you can answer (office hours, what to expect on the callback, what to have ready, etc.), answer briefly in 1-2 sentences. NEVER give legal advice. Then return to STEP 2 and ask again.
+        - If they ask a legal-advice question ("do I have a case?", "how much is it worth?"), say: "That's exactly the kind of thing our attorney will cover when they call — they'll have everything from our chat." Then return to STEP 2.
         - If they say "no", "I'm good", "that's it", or similar → proceed to STEP 4.
 
-        STEP 4 — Warm goodbye + hang up:
-        "Thanks again for calling {{firm.name}}, {caller's first name}. Take care of yourself, and we'll talk soon."
+        STEP 4 — Warm, complete goodbye. Acknowledge + reassure + sign off. Say ALL of this before the call ends:
+        "Alright {caller's first name}, you're all set. Try not to stress — you're in good hands now, and someone will be in touch {restate day/time}. Take care of yourself, okay? Bye now."
 
-        STEP 5 — IMMEDIATELY invoke the end_call function. Do not wait for the caller to say goodbye back — they've already confirmed they're done. The function call is what actually hangs up the line.
+        STEP 5 — Close the call. Deliver the ENTIRE goodbye above first — do not get cut off mid-sentence. Once your farewell is fully spoken, the call ends. (If an end-call action is available to you, use it only AFTER the full goodbye is delivered.)
 
-        Sequence summary: confirm → ask "anything else?" → answer if needed (loop) → warm goodbye → end_call function.
+        Sequence: confirm date+time → "anything else?" → answer if needed (loop) → full warm goodbye → close.
     always_edge: "end_call"
 
   - name: "polite_decline"

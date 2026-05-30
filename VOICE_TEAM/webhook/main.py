@@ -197,19 +197,44 @@ def extract_fields(call: dict) -> dict[str, Any]:
 
 # --- Slot parsing ----------------------------------------------------------
 
+_ORDINAL_WORDS = {
+    "first": "1", "second": "2", "third": "3", "fourth": "4", "fifth": "5",
+    "sixth": "6", "seventh": "7", "eighth": "8", "ninth": "9", "tenth": "10",
+    "eleventh": "11", "twelfth": "12", "thirteenth": "13", "fourteenth": "14",
+    "fifteenth": "15", "sixteenth": "16", "seventeenth": "17", "eighteenth": "18",
+    "nineteenth": "19", "twentieth": "20", "twenty-first": "21", "twenty-second": "22",
+    "twenty-third": "23", "twenty-fourth": "24", "twenty-fifth": "25",
+    "twenty-sixth": "26", "twenty-seventh": "27", "twenty-eighth": "28",
+    "twenty-ninth": "29", "thirtieth": "30", "thirty-first": "31",
+}
+
+
+def _normalize_ordinals(text: str) -> str:
+    """Convert word ordinals ('thirtieth') to digits ('30') so dateparser handles them."""
+    out = text.lower()
+    # longer phrases first to avoid partial matches (twenty-first before first)
+    for word in sorted(_ORDINAL_WORDS.keys(), key=len, reverse=True):
+        # word boundary on both sides — replace twenty-first but not "firstly"
+        out = re.sub(rf"\b{re.escape(word)}\b", _ORDINAL_WORDS[word], out)
+    return out
+
+
 def parse_slot(day_str: str, time_str: str, tz_name: str = "America/New_York") -> datetime | None:
     """Parse a caller-stated 'day + time' into a timezone-aware datetime.
 
     Robust against:
       - Time strings with trailing timezone hints ("3 PM Eastern", "5pm ET", "2pm CT")
       - Vague time labels ("morning", "afternoon", "evening", "noon")
+      - Word ordinals ("May thirtieth" -> "May 30")
       - Common 24h and 12h formats
     """
     if not day_str:
         log.warning("parse_slot: day_str empty")
         return None
 
-    time_norm = (time_str or "10am").lower().strip()
+    # Normalize word ordinals in BOTH day and time strings
+    day_str = _normalize_ordinals(day_str)
+    time_norm = _normalize_ordinals((time_str or "10am").lower().strip())
 
     # Strip common US-timezone suffixes — we apply timezone via settings, not as text.
     tz_suffixes = [

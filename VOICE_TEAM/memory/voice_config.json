@@ -17,7 +17,8 @@
     "stt_mode": "accurate",
     "denoising_mode": "noise-and-background-speech-cancellation",
     "interruption_sensitivity": 0.9,
-    "normalize_for_speech": true
+    "normalize_for_speech": true,
+    "webhook_url": "https://test-agents-ny8d.onrender.com/retell/webhook"
   },
   "voice": {
     "default_voice_id": "11labs-Adrian",

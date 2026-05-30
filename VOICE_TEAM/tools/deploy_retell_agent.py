@@ -100,11 +100,13 @@ def build_conversation_flow_nodes(intake_template: dict, firm: dict) -> list[dic
     x_position = 100
     for idx, n in enumerate(intake_template["nodes"]):
         if n["type"] == "end":
-            # Retell's end node is implicit — we represent it as a real "end" type node.
+            # speak_during_execution=true lets the agent finish its goodbye line
+            # BEFORE the call terminates — without it the hang-up is abrupt.
             nodes_out.append({
                 "id": name_to_id[n["name"]],
                 "type": "end",
                 "name": n["name"],
+                "speak_during_execution": True,
                 "display_position": {"x": x_position + idx * 300, "y": 600},
             })
             continue
@@ -222,9 +224,7 @@ def deploy(firm_yml_path: Path) -> dict[str, Any]:
     # Custom functions are a v2 add-on for mid-call booking integrations.
     print("  Skipping custom functions for v1 (post_call_analysis handles slot capture).")
 
-    # 4. POST conversation flow
-    # Use safe defaults for v1 deploy. Realtime model upgrade is a v2 follow-up
-    # once the cascading path is proven.
+    # 4. POST or PATCH conversation flow (idempotent — uses existing IDs if artifact exists)
     flow_model = retell_cfg.get("flow_model", "gpt-4.1")
     flow_body = {
         "global_prompt": global_prompt,
@@ -238,13 +238,30 @@ def deploy(firm_yml_path: Path) -> dict[str, Any]:
         },
         "tool_call_strict_mode": True,
     }
-    print("  Creating conversation flow on Retell...")
-    flow_resp = _api("POST", "/create-conversation-flow", flow_body)
-    flow_id = flow_resp["conversation_flow_id"]
-    print(f"  ✓ Flow created: {flow_id}")
+
+    # Check for existing deployment artifact — if present, PATCH; else POST
+    artifact_path = Path(PATHS["deployments"]) / f"{firm['slug']}.json"
+    existing = None
+    if artifact_path.exists():
+        try:
+            existing = json.loads(artifact_path.read_text(encoding="utf-8"))
+        except Exception:
+            existing = None
+
+    if existing and existing.get("conversation_flow_id"):
+        flow_id = existing["conversation_flow_id"]
+        print(f"  Existing flow found — PATCHing: {flow_id}")
+        _api("PATCH", f"/update-conversation-flow/{flow_id}", flow_body)
+        print(f"  ✓ Flow updated: {flow_id}")
+    else:
+        print("  Creating new conversation flow on Retell...")
+        flow_resp = _api("POST", "/create-conversation-flow", flow_body)
+        flow_id = flow_resp["conversation_flow_id"]
+        print(f"  ✓ Flow created: {flow_id}")
 
     # 5. Build agent body
     handbook = VOICE_CFG["handbook_defaults"].copy()
+    webhook_url = retell_cfg.get("webhook_url") or VOICE_CFG.get("retell", {}).get("webhook_url", "")
     agent_body: dict[str, Any] = {
         "response_engine": {
             "type": "conversation-flow",
@@ -267,16 +284,24 @@ def deploy(firm_yml_path: Path) -> dict[str, Any]:
         "pii_config": {"mode": VOICE_CFG["compliance"]["pii_redaction_mode"], "categories": []},
         "timezone": VOICE_CFG["google_calendar"]["default_timezone"],
     }
+    if webhook_url:
+        agent_body["webhook_url"] = webhook_url
 
-    print("  Creating agent on Retell...")
-    agent_resp = _api("POST", "/create-agent", agent_body)
-    agent_id = agent_resp["agent_id"]
-    print(f"  ✓ Agent created: {agent_id}")
+    # POST or PATCH agent (idempotent)
+    if existing and existing.get("agent_id"):
+        agent_id = existing["agent_id"]
+        print(f"  Existing agent found — PATCHing: {agent_id}")
+        _api("PATCH", f"/update-agent/{agent_id}", agent_body)
+        print(f"  ✓ Agent updated: {agent_id}")
+    else:
+        print("  Creating new agent on Retell...")
+        agent_resp = _api("POST", "/create-agent", agent_body)
+        agent_id = agent_resp["agent_id"]
+        print(f"  ✓ Agent created: {agent_id}")
 
-    # 6. Attach phone number
+    # 6. Attach phone number (PATCH is naturally idempotent)
     phone = retell_cfg.get("phone_number") or firm_doc.get("retell", {}).get("phone_number")
     if phone:
-        print(f"  Attaching phone {phone} to agent...")
         _api("PATCH", f"/update-phone-number/{phone}", {"inbound_agent_id": agent_id})
         print(f"  ✓ Phone {phone} → agent {agent_id}")
 
