@@ -212,6 +212,75 @@ def check_piter_script():
            piter.exists(), "" if piter.exists() else "missing")
 
 
+def check_orchestrator_consistency():
+    """L12: agents whose prompts use Task(X) syntax 2+ times must have a clean
+    `- Task` entry in their tools list. Otherwise the prompt narrates
+    delegation the runtime cannot actually perform (the 'future-tense
+    delegation' false-orchestrator pattern).
+    """
+    agent_dirs = [
+        REPO_ROOT / '.claude' / 'agents',
+        REPO_ROOT / 'MARKETING_TEAM' / '.claude' / 'agents',
+        REPO_ROOT / 'ENGINEERING_TEAM' / '.claude' / 'agents',
+        REPO_ROOT / 'FINANCIAL_TEAM' / '.claude' / 'agents',
+        REPO_ROOT / 'SALES_TEAM' / '.claude' / 'agents',
+        REPO_ROOT / 'QA_TEAM' / '.claude' / 'agents',
+        REPO_ROOT / 'PROPOSAL_TEAM' / '.claude' / 'agents',
+    ]
+    flagged = 0
+    for d in agent_dirs:
+        if not d.exists():
+            continue
+        for agent_file in sorted(d.glob('*.md')):
+            try:
+                with open(agent_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+            except Exception:
+                continue
+
+            # Split frontmatter and body
+            fm_match = re.search(
+                r'^---\s*\n(.*?)\n---\s*\n(.*)$',
+                content, re.DOTALL | re.MULTILINE,
+            )
+            if not fm_match:
+                continue
+            frontmatter, body = fm_match.group(1), fm_match.group(2)
+
+            # Does body use Task(name) syntax 2+ times? (orchestration claim)
+            task_calls = re.findall(r'Task\s*\(\s*[\w\-]+', body)
+            if len(task_calls) < 2:
+                continue  # Not a clear orchestrator-claim
+
+            # Does tools: block have a clean `- Task` entry?
+            tools_match = re.search(
+                r'^tools:\s*\n((?:\s+-\s+.*\n?)+)',
+                frontmatter, re.MULTILINE,
+            )
+            if not tools_match:
+                # No tools block; can't verify
+                continue
+            tools_text = tools_match.group(1)
+            has_clean_task = bool(
+                re.search(r'^\s+-\s+Task\s*$', tools_text, re.MULTILINE)
+            )
+
+            rel_path = agent_file.relative_to(REPO_ROOT).as_posix()
+            label = f"Orchestrator-Task consistency: {rel_path}"
+            if has_clean_task:
+                record(label, "orchestration", True)
+            else:
+                flagged += 1
+                record(label, "orchestration", False,
+                       f"prompt uses Task() {len(task_calls)}x but tools list "
+                       f"lacks clean '- Task' entry (L12 false-orchestrator)")
+
+    if flagged == 0:
+        # Optional: confirm nothing was found if nothing was flagged
+        # (only show in verbose mode — see main output logic)
+        pass
+
+
 CHECKS = [
     check_hooks_exist,
     check_hook_encoding,
@@ -222,6 +291,7 @@ CHECKS = [
     check_governance_docs,
     check_skills_installed,
     check_piter_script,
+    check_orchestrator_consistency,
 ]
 
 

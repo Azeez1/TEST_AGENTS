@@ -72,7 +72,9 @@ Ground truth check via grep on `tools:` frontmatter:
 
 | Total agents | Agents with `Task` in tools | % capable of orchestrating |
 |---|---|---|
-| 65 | 2 (`supervisor`, `test-orchestrator`) | 3% |
+| 65 | 0-1 at audit time, 1 confirmed as of 2026-05-13 | ~1.5% |
+
+**Correction note (2026-05-13):** The original "2 (`supervisor`, `test-orchestrator`)" was a grep false positive. The substring "task" matched on `verify_task_completion` in supervisor's tools. Independent verification confirmed supervisor does NOT have the actual `Task` tool. `test-orchestrator` has `- Task (for subagents)` — annotation may not parse cleanly. After 2026-05-13 promotion of `router-agent`, that agent is the first verified clean-`Task` orchestrator.
 
 **Implication:** 63 of 65 agents are leaves — they cannot autonomously spawn or delegate to other agents. The remaining orchestration happens via:
 - **Main-session orchestration:** I (user, in chat) call Task multiple times sequentially. Linear by default.

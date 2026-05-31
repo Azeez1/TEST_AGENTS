@@ -1,0 +1,62 @@
+{
+  "description": "HEDGE_FUND settings - ICT trading agent workspace. Read-only access to FINANCIAL_TEAM (portfolio context). Write isolated to HEDGE_FUND.",
+  "mcpServers": "inherit",
+  "tools": {
+    "allowed": [
+      "bash",
+      "read",
+      "write",
+      "edit",
+      "glob",
+      "grep",
+      "task"
+    ]
+  },
+  "skills": {
+    "allowed": [
+      "document-skills/xlsx",
+      "document-skills/pdf",
+      "flow-diagram",
+      "infographic-creator",
+      "frontend-design"
+    ],
+    "comment": "Skills the agent may invoke. xlsx for trade journal, pdf for setup reports, flow-diagram for HTF-to-LTF visualization, infographic-creator for setup cards, frontend-design for any live dashboards.",
+    "xlsx": { "enabled": true, "path": "document-skills/xlsx", "comment": "Trade journal + backtest results" },
+    "pdf":  { "enabled": true, "path": "document-skills/pdf",  "comment": "Setup PDFs for review" },
+    "flow-diagram": { "enabled": true, "path": "flow-diagram", "comment": "HTF -> MTF -> LTF cascade diagrams" },
+    "infographic-creator": { "enabled": true, "path": "infographic-creator", "comment": "Setup cards for social-ready alerts" },
+    "frontend-design": { "enabled": true, "path": "frontend-design", "comment": "Optional live trade dashboard" }
+  },
+  "workspace_access": {
+    "description": "HEDGE_FUND writes only to HEDGE_FUND/. Read-only access to FINANCIAL_TEAM/memory for portfolio context (account size, open exposure).",
+    "read_paths": [
+      "FINANCIAL_TEAM/memory"
+    ],
+    "write_paths": [
+      "HEDGE_FUND"
+    ],
+    "permissions": "read_financial_write_own"
+  },
+  "agents": {
+    "ict-trader": {
+      "description": "ICT methodology trader. Identifies FVG, Order Blocks, MMXM, liquidity sweeps. Analyzes + alerts only in v1.",
+      "definition": ".claude/agents/ict-trader.md",
+      "capabilities": [
+        "HTF bias generation (D1/H4)",
+        "LTF entry identification (M15/M5/M1)",
+        "FVG / IFVG / BPR detection rules",
+        "Order block + breaker + mitigation logic",
+        "MMXM 6-phase model (accumulation/manipulation/distribution)",
+        "Liquidity mapping (BSL/SSL/equal highs/lows)",
+        "Killzone-aware setup scoring",
+        "Risk-rules-enforced setup output (R:R, % risk)",
+        "Trade journal write-back to outputs/journal/"
+      ],
+      "auto_activate_triggers": [
+        "ict", "fvg", "order block", "mmxm", "killzone", "liquidity sweep",
+        "smt divergence", "ote", "premium discount", "judas swing", "silver bullet",
+        "bias on", "scan for", "trade setup", "htf bias"
+      ]
+    }
+  }
+}

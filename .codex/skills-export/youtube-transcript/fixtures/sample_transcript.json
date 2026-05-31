@@ -1,0 +1,21 @@
+{
+  "video_id": "test123abc",
+  "metadata": {
+    "title": "Sample Video Title",
+    "channel": "Test Channel",
+    "channel_url": "https://www.youtube.com/@TestChannel"
+  },
+  "transcript": {
+    "segments": [
+      {"text": "Welcome to today's video.", "start": 0.0, "duration": 2.5},
+      {"text": "We're going to talk about automation.", "start": 2.5, "duration": 3.0},
+      {"text": "Let's dive right in.", "start": 5.5, "duration": 1.8},
+      {"text": "The first thing you need to understand is how APIs work.", "start": 10.0, "duration": 4.2},
+      {"text": "An API is an application programming interface.", "start": 14.2, "duration": 3.5},
+      {"text": "It allows different software to communicate.", "start": 17.7, "duration": 2.8},
+      {"text": "Thank you for watching!", "start": 25.0, "duration": 2.0}
+    ],
+    "language": "en",
+    "is_generated": false
+  }
+}

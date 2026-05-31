@@ -1,12 +1,12 @@
-# PITER pipeline for PE Diagnosis generation (Lesson 4)
+﻿# PITER pipeline for PE Diagnosis generation (Lesson 4)
 #
 # Five-phase pipeline with gates between phases. You walk away after approving the plan.
 #
-#   P → Plan        — agent researches firm, drafts PLAN.md (you review)
-#   I → Implement   — agent generates diagnosis HTML + PDF from approved plan
-#   T → Test        — pe-diagnosis-validator subagent runs 7-rule framework check
-#   E → Evaluate    — pe-diagnosis-visual-reviewer subagent scores 1-5 on visual+quality
-#   R → Review      — you review the final artifact before shipping
+#   P -> Plan        - agent researches firm, drafts PLAN.md (you review)
+#   I -> Implement   - agent generates diagnosis HTML + PDF from approved plan
+#   T -> Test        - pe-diagnosis-validator subagent runs 7-rule framework check
+#   E -> Evaluate    - pe-diagnosis-visual-reviewer subagent scores 1-5 on visual+quality
+#   R -> Review      - you review the final artifact before shipping
 #
 # Usage:
 #   powershell -File tools/piter/pe-diagnosis.ps1 -FirmName "Kainos Capital"
@@ -28,12 +28,12 @@ param(
     [string]$FirmName,
 
     [Parameter(Mandatory=$false)]
-    [switch]$SkipPlanApproval  # for testing / re-runs only — skips the human gate after Phase P
+    [switch]$SkipPlanApproval  # for testing / re-runs only - skips the human gate after Phase P
 )
 
 $ErrorActionPreference = "Stop"
 
-# ─── Setup ──────────────────────────────────────────────────────────────
+# --- Setup --------------------------------------------------------------
 $REPO_ROOT = (Resolve-Path "$PSScriptRoot\..\..").Path
 Set-Location $REPO_ROOT
 
@@ -45,6 +45,11 @@ $DIAG_HTML = "MARKETING_TEAM\outputs\reports\${SAFE_NAME}_diagnosis.html"
 $DIAG_PDF  = "MARKETING_TEAM\outputs\reports\${SAFE_NAME}_diagnosis.pdf"
 $LOG_PATH  = "$WORK_DIR\piter.log"
 
+# Programmatic Claude invocations are logged via wrapper for spend tracking
+# (helps size the June 15 2026 Anthropic programmatic credit transition).
+$CLAUDE_P_WRAPPER    = Join-Path $REPO_ROOT "tools\claude_p_logged.ps1"
+$env:CLAUDE_P_CALLER = "pe-diagnosis.ps1"
+
 New-Item -ItemType Directory -Path $WORK_DIR -Force | Out-Null
 
 function Log($msg) {
@@ -55,20 +60,20 @@ function Log($msg) {
 
 function Phase($letter, $name) {
     Write-Host ""
-    Write-Host "═══════════════════════════════════════════════"
-    Write-Host "  PHASE $letter — $name"
-    Write-Host "═══════════════════════════════════════════════"
+    Write-Host "==============================================="
+    Write-Host "  PHASE $letter - $name"
+    Write-Host "==============================================="
     Log "Phase $letter started: $name"
 }
 
 function Abort($msg) {
     Write-Host ""
-    Write-Host "❌ PITER ABORTED: $msg" -ForegroundColor Red
+    Write-Host "[FAIL] PITER ABORTED: $msg" -ForegroundColor Red
     Log "ABORT: $msg"
     exit 1
 }
 
-# ─── Verify claude CLI is available ─────────────────────────────────────
+# --- Verify claude CLI is available -------------------------------------
 $claude = Get-Command claude -ErrorAction SilentlyContinue
 if ($null -eq $claude) {
     Abort "claude CLI not found on PATH. Install Claude Code first."
@@ -79,7 +84,7 @@ Log "Work dir: $WORK_DIR"
 Log "Target HTML: $DIAG_HTML"
 Log "Target PDF:  $DIAG_PDF"
 
-# ═══ PHASE P — PLAN ═════════════════════════════════════════════════════
+# === PHASE P - PLAN =====================================================
 Phase "P" "Plan (research + hypothesize)"
 
 $planPrompt = @"
@@ -97,7 +102,7 @@ Then draft a 1-page plan at: $PLAN_PATH
 The plan must contain:
 1. Firm summary (3-5 lines)
 2. 3-5 hypothesized pain points, each with a one-sentence evidence basis
-3. Recommended framework angle (DBAC / 5-Move / Bottleneck — pick one)
+3. Recommended framework angle (DBAC / 5-Move / Bottleneck - pick one)
 4. Risk factors (claims that need verification, unknowable specifics to avoid)
 5. Estimated tone: calm-power, stoic-precision (Dux Machina default)
 
@@ -107,7 +112,7 @@ End your response with: 'PLAN.md ready for approval at $PLAN_PATH.'
 "@
 
 Log "Invoking claude for Phase P..."
-claude -p $planPrompt
+& $CLAUDE_P_WRAPPER $planPrompt
 if ($LASTEXITCODE -ne 0) {
     Abort "Phase P (Plan) failed with exit code $LASTEXITCODE"
 }
@@ -118,10 +123,10 @@ if (-not (Test-Path $PLAN_PATH)) {
 
 Log "Phase P complete. Plan at $PLAN_PATH"
 
-# ─── Gate: human approves the plan ──────────────────────────────────────
+# --- Gate: human approves the plan --------------------------------------
 if (-not $SkipPlanApproval) {
     Write-Host ""
-    Write-Host "─── GATE: Human review of plan ───"
+    Write-Host "--- GATE: Human review of plan ---"
     Write-Host "Open and review: $PLAN_PATH"
     Write-Host ""
     $approval = Read-Host "Approve plan and proceed to Phase I (Implement)? [y/N]"
@@ -133,7 +138,7 @@ if (-not $SkipPlanApproval) {
     Log "Plan approval skipped (--SkipPlanApproval flag)."
 }
 
-# ═══ PHASE I — IMPLEMENT ════════════════════════════════════════════════
+# === PHASE I - IMPLEMENT ================================================
 Phase "I" "Implement (generate diagnosis from approved plan)"
 
 $implementPrompt = @"
@@ -157,7 +162,7 @@ After rendering, output the absolute paths to both files.
 "@
 
 Log "Invoking claude for Phase I..."
-claude -p $implementPrompt
+& $CLAUDE_P_WRAPPER $implementPrompt
 if ($LASTEXITCODE -ne 0) {
     Abort "Phase I (Implement) failed with exit code $LASTEXITCODE"
 }
@@ -171,7 +176,7 @@ if (-not (Test-Path $DIAG_PDF)) {
 
 Log "Phase I complete. HTML + PDF generated."
 
-# ═══ PHASE T — TEST (closed-loop structural validator) ══════════════════
+# === PHASE T - TEST (closed-loop structural validator) ==================
 Phase "T" "Test (7-rule validator + closed-loop retry)"
 
 $testPrompt = @"
@@ -185,7 +190,7 @@ When the validator reports PASS, return: 'TEST PHASE PASS' followed by a one-lin
 "@
 
 Log "Invoking claude for Phase T..."
-claude -p $testPrompt
+& $CLAUDE_P_WRAPPER $testPrompt
 if ($LASTEXITCODE -ne 0) {
     Abort "Phase T (Test) failed with exit code $LASTEXITCODE. Check $DIAG_PDF and the .validation_pass/.validation_fail files."
 }
@@ -198,7 +203,7 @@ if (-not (Test-Path $passFile)) {
 
 Log "Phase T complete. .validation_pass file exists."
 
-# ═══ PHASE E — EVALUATE (visual + quality reviewer) ═════════════════════
+# === PHASE E - EVALUATE (visual + quality reviewer) =====================
 Phase "E" "Evaluate (visual fidelity + content quality)"
 
 $evalPrompt = @"
@@ -213,22 +218,22 @@ Capture the verdict and the three scores.
 
 If any score is below 4, the diagnosis needs another pass. Identify specific corrections from the subagent's report, fix the HTML, re-render the PDF, re-run Phase T, then re-run this Phase E.
 
-When all three scores are 4 or higher, return: 'EVAL PHASE PASS — scores A/B/C' with the actual numbers.
+When all three scores are 4 or higher, return: 'EVAL PHASE PASS - scores A/B/C' with the actual numbers.
 "@
 
 Log "Invoking claude for Phase E..."
-claude -p $evalPrompt
+& $CLAUDE_P_WRAPPER $evalPrompt
 if ($LASTEXITCODE -ne 0) {
     Abort "Phase E (Evaluate) failed with exit code $LASTEXITCODE"
 }
 
 Log "Phase E complete."
 
-# ═══ PHASE R — REVIEW (human) ═══════════════════════════════════════════
+# === PHASE R - REVIEW (human) ===========================================
 Phase "R" "Review (you approve the final artifact)"
 
 Write-Host ""
-Write-Host "✅ All automated phases passed."
+Write-Host "[OK] All automated phases passed."
 Write-Host ""
 Write-Host "Final artifacts:"
 Write-Host "  HTML:  $DIAG_HTML"
@@ -239,7 +244,7 @@ Write-Host ""
 Write-Host "Next step: open the PDF, review, and if approved run the upload command."
 Write-Host "  python tools/upload_to_drive.py $DIAG_PDF"
 Write-Host ""
-Write-Host "The pe_validation_gate.ps1 hook will re-check on upload — guaranteed footer-cutoff detection."
+Write-Host "The pe_validation_gate.ps1 hook will re-check on upload - guaranteed footer-cutoff detection."
 
 Log "PITER pipeline complete. Awaiting human review of final artifact."
 

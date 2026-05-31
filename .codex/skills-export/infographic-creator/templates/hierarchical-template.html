@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} - Hierarchical Infographic</title>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: {{BODY_FONT}}, sans-serif;
+            background: {{BACKGROUND_COLOR}};
+            color: {{TEXT_COLOR}};
+            padding: 40px 20px;
+        }
+        .infographic-container {
+            max-width: {{CANVAS_WIDTH}}px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .title {
+            font-family: {{HEADLINE_FONT}}, sans-serif;
+            font-size: {{TITLE_SIZE}}px;
+            font-weight: bold;
+            color: {{PRIMARY_COLOR}};
+            opacity: 0;
+        }
+        .pyramid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .pyramid-level {
+            width: 100%;
+            background: {{CARD_BACKGROUND}};
+            padding: 25px 40px;
+            border-radius: {{BORDER_RADIUS}}px;
+            text-align: center;
+            box-shadow: {{CARD_SHADOW}};
+            opacity: 0;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        .pyramid-level:hover {
+            transform: scale(1.02);
+        }
+        .pyramid-level:nth-child(1) {
+            width: 100%;
+            background: linear-gradient(135deg, {{COLOR_1_START}}, {{COLOR_1_END}});
+            color: white;
+        }
+        .pyramid-level:nth-child(2) {
+            width: 85%;
+            background: linear-gradient(135deg, {{COLOR_2_START}}, {{COLOR_2_END}});
+            color: white;
+        }
+        .pyramid-level:nth-child(3) {
+            width: 70%;
+            background: linear-gradient(135deg, {{COLOR_3_START}}, {{COLOR_3_END}});
+            color: white;
+        }
+        .pyramid-level:nth-child(4) {
+            width: 55%;
+            background: linear-gradient(135deg, {{COLOR_4_START}}, {{COLOR_4_END}});
+            color: white;
+        }
+        .pyramid-level:nth-child(5) {
+            width: 40%;
+            background: linear-gradient(135deg, {{COLOR_5_START}}, {{COLOR_5_END}});
+            color: white;
+        }
+        .level-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .level-description {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        .level-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .title { font-size: calc({{TITLE_SIZE}}px * 0.7); }
+            .pyramid-level { width: 100% !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="infographic-container">
+        <div class="header">
+            <h1 class="title">{{TITLE}}</h1>
+        </div>
+        <div class="pyramid">
+            {{#each HIERARCHY_LEVELS}}
+            <div class="pyramid-level">
+                {{#if icon}}<div class="level-icon">{{icon}}</div>{{/if}}
+                <div class="level-title">{{title}}</div>
+                <div class="level-description">{{description}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            anime({ targets: '.title', opacity: [0, 1], translateY: [-20, 0], duration: 1000, easing: 'easeOutExpo' });
+            anime({
+                targets: '.pyramid-level',
+                opacity: [0, 1],
+                scale: [0.9, 1],
+                duration: 800,
+                delay: anime.stagger(150, {start: 400}),
+                easing: 'easeOutExpo'
+            });
+        });
+    </script>
+</body>
+</html>

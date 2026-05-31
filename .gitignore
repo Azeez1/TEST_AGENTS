@@ -95,6 +95,10 @@ archive/
 memory/
 **/memory/
 
+# Exception: VOICE_TEAM/memory/ contains FACTORY CONFIGS (not secrets) — needed for repo + Render deploy
+!VOICE_TEAM/memory/
+!VOICE_TEAM/memory/**
+
 # Voice interface data
 memory/voice_*.json
 outputs/voice_*.mp3
@@ -164,3 +168,24 @@ MARKETING_TEAM/logs/*.log
 *.proposed
 **/MEMORY.md.OLD
 **/.pe_retry_state/
+
+# Scratch / temp dirs (tmp_ prefix — note: temp_ already covered above)
+tmp_*/
+tmp_*
+.tmp_setup_eval/
+
+# Per-machine local settings (settings.local.json already ignored above)
+.claude/settings.local-*.json
+
+# Point-in-time cleanup/audit reports (kept local)
+.cleanup_reports/
+
+# Runtime logs
+LOGS/*.log
+
+# Excluded project (not for GitHub)
+ekomi/
+
+# Stray working files
+Userssabaacodex_review_voice_plan.txt
+gmail_check_report_*.md

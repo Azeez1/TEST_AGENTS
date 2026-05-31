@@ -22,9 +22,16 @@ Default workflow:
 
 Use `$test-agents-router` when the right specialist is unclear.
 
+For Codex infrastructure work, route through `CODEX_TEAM`. Its source agents
+live under `CODEX_TEAM/.codex/agents/` and export to
+`.codex/agents/CODEX_TEAM/`. This team may edit Codex-facing files such as
+`.codex/`, `CODEX_TEAM/`, and `scripts/export_codex_layer.py`, but must not
+modify `.claude/`, Claude agent definitions, or `.mcp.json` unless explicitly
+asked.
+
 ## Project Overview
 
-This is a **62-agent multi-team AI system** built on the Claude Agent SDK, organized into 6 autonomous teams plus a root supervisor. The system is orchestrated through Claude Code — no Python orchestrators.
+This is a **62-agent multi-team AI system** built on the Claude Agent SDK, organized into 6 autonomous teams plus a root supervisor. Codex also has a Codex-native `CODEX_TEAM` for maintaining the local Codex sidecar. The Claude system is orchestrated through Claude Code — no Python orchestrators.
 
 **Owner:** Dux Machina (duxmachina.com) — Hybrid AI consultancy
 **Primary operator:** Azeez (@EZdaArchitect)
@@ -69,6 +76,10 @@ TEST_AGENTS/
 ├── tools/                       ← Shared production tools (Python)
 ├── scripts/                     ← One-off utilities and test scripts
 ├── tests/                       ← Pytest test suites
+├── CODEX_TEAM/                  ← Codex-native sidecar maintenance team
+│   ├── .codex/agents/           ← Source definitions for Codex-only agents
+│   ├── docs/                    ← Codex coverage plans and architecture notes
+│   └── outputs/                 ← Codex audits and implementation reports
 └── outputs/                     ← Root-level outputs (gitignored)
 ```
 
@@ -96,7 +107,7 @@ skills:
 
 **Important:** The `tools:` and `skills:` in YAML frontmatter are **Claude Code runtime bindings**. When Codex reads these files, treat them as documentation of what the agent can do — not as executable tool declarations.
 
-## Team Roster (62 Agents)
+## Team Roster (62 Claude Agents + 6 Codex-Native Agents)
 
 ### ROOT (1)
 - **supervisor** — Cross-team quality assurance, conflict resolution
@@ -173,6 +184,14 @@ skills:
 - **customer-success-manager** — Client retention, upsells
 - **outbound-specialist** — Cold outreach, sequences
 - **pe-outreach-agent** — PE investor outreach campaigns
+
+### CODEX_TEAM (6, Codex-native)
+- **codex-team-manager** — Codex sidecar orchestrator and L1-L13 roadmap owner
+- **codex-layer-architect** — Exporter, manifest, commands, and sidecar architecture
+- **codex-agent-editor** — Codex agent scope, instructions, and routing quality
+- **codex-skill-engineer** — Codex skills, skill mirroring, and learned behavior capture
+- **codex-mcp-hooks-engineer** — Codex MCP setup, hooks, automation, and runtime validation
+- **codex-leverage-auditor** — Evidence-backed L1-L13 Codex coverage audits
 
 ## Working Agreements
 

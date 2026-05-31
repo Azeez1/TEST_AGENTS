@@ -98,7 +98,35 @@
         "Multi-format export (MD, JSON, CSV, DOCX)"
       ],
       "command": "/rfp-process",
-      "auto_activate_triggers": ["rfp", "proposal", "bid", "tender", "procurement", "solicitation"]
+      "auto_activate_triggers": ["rfp", "proposal", "bid", "tender", "procurement", "solicitation", "sbir", "sttr", "baa", "dsip", "phase i", "phase ii", "phase iii", "d2p2", "dp2", "direct to phase ii", "topic", "dod sbir", "dow sbir"]
+    },
+    "sbir-validator": {
+      "description": "Independent reviewer subagent that validates SBIR proposals against Layer 1 (BAA Preface) and Layer 2 (component-specific) rules. Returns structured PASS/CONDITIONAL_PASS/FAIL verdict and writes a marker file. Read-only against proposal content. Invoked by rfp-agent as Step 5 of SBIR Mode workflow, or manually after a hand-written draft.",
+      "definition": ".claude/agents/sbir-validator.md",
+      "capabilities": [
+        "Layer 1 universal rule validation (15 checks)",
+        "Layer 2 component-specific rule validation (11 checks, dynamic per component)",
+        "Cross-layer consistency checks (5 checks)",
+        "Marker file gating (.sbir_validation_pass / _conditional / _fail)",
+        "Structured verdict returned for programmatic consumption by rfp-agent"
+      ],
+      "invocation": "Invoked by rfp-agent via Agent tool with subagent_type='sbir-validator', OR manually by user after hand-written drafts.",
+      "tools_restricted": "Read, Grep, Glob, Write (marker + report only), Bash — NO Edit (cannot modify proposal content)"
+    },
+    "proposal-tracker": {
+      "description": "Cross-proposal open-item tracker. Scans every PROPOSAL_TEAM/outputs/<topic_id>/ folder, extracts open items from PARTNER_CHECKLIST.md + sbir_validation_report.md + [USER VERIFY] / [PLACEHOLDER] markers, and maintains PROPOSAL_TEAM/outputs/PROPOSAL_TRACKER.xlsx (4-sheet workbook: Master / By Owner / By Topic / Summary). Source of truth is the .md files; Excel is a derived view. Also handles Q&A queries about open items across all proposals.",
+      "definition": ".claude/agents/proposal-tracker.md",
+      "capabilities": [
+        "Scans all output topic folders matching SBIR topic-ID pattern",
+        "Extracts open items from 4 source types (checklist / validator report / placeholders / lookup)",
+        "Heuristic categorization by owner (Rasheed / EZ / Cyber SME / Bola / Breion / joint)",
+        "Priority inference (CRITICAL / HIGH / WARNING / MEDIUM / INFO)",
+        "4-sheet color-coded Excel via openpyxl",
+        "Q&A over the tracker (e.g. 'what's open on NV004?', 'what does Rasheed owe?')",
+        "Auto-fires via .claude/hooks/proposal_tracker_trigger.ps1 on validator marker writes"
+      ],
+      "invocation": "Manually: 'update the tracker' / 'what's open on X?' / 'what does <owner> owe?'. Automatically: PostToolUse hook fires the underlying tools/proposal_tracker.py script on any .sbir_validation_* marker write.",
+      "auto_activate_triggers": ["tracker", "proposal tracker", "what's open", "what does rasheed owe", "what does ez owe", "proposal status", "open items", "refresh tracker", "update tracker"]
     }
   },
   "mcpServers": "inherit"

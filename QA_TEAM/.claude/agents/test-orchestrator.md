@@ -16,7 +16,7 @@ tools:
   - classify_test_intent
   - list_test_agents
   - extract_target_path
-  - Task (for subagents)
+  - Task
 skills: []
 ---
 

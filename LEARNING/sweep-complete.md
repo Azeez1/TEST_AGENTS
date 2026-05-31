@@ -96,7 +96,7 @@ When you come back and say "implementation mode," we:
 
 ## Major calibrations made this session
 
-1. **63 of 65 agents are leaves.** Only supervisor and test-orchestrator can autonomously delegate.
+1. **64 of 65 agents are leaves** (corrected 2026-05-13). Initial grep showed "2 of 65" but that was a false positive — `verify_task_completion` substring-matched `task` in supervisor's tools. Independent verification confirms only `test-orchestrator` had `- Task (for subagents)` at audit time (annotation may not parse). As of 2026-05-13, `router-agent` is the first cleanly-promoted orchestrator.
 2. **"Multi-agent" workflows were actually single-agent + narration.** Future-tense delegation = no delegation.
 3. **Sink = output routing.** Vocabulary collapse spotted.
 4. **Validators have a scope problem, not a count problem.** A passing validator doesn't mean quality.

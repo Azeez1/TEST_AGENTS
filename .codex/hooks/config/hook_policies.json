@@ -1,0 +1,22 @@
+{
+  "workspace_boundary": {
+    "enabled": true,
+    "cross_team_write_allowed": ["ENGINEERING_TEAM"],
+    "root_write_allowed": ["supervisor"],
+    "block_mode": "hard"
+  },
+  "secret_exposure": {
+    "enabled": true,
+    "block_mode": "hard"
+  },
+  "brand_voice": {
+    "enabled": true,
+    "min_blog_words": 500,
+    "block_mode": "warn"
+  },
+  "audit_logger": {
+    "enabled": true,
+    "log_dir": ".claude/hooks/logs/",
+    "retention_days": 30
+  }
+}

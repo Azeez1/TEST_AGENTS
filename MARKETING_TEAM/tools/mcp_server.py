@@ -63,8 +63,12 @@ from mcp.types import Tool, TextContent
 from loguru import logger
 logger.remove()  # Remove default handler
 logger.add(sys.stderr, level="INFO", format="<level>{level:<7}</level> | {message}")
+# Log file MUST be off OneDrive — cloud-placeholder reparse-points stall loguru's
+# rotation/retention checks (observed: 6-minute hangs, [Errno 22] on flush).
+_log_dir = Path(os.environ.get("LOCALAPPDATA", Path.home() / ".local" / "share")) / "marketing-tools" / "logs"
+_log_dir.mkdir(parents=True, exist_ok=True)
 logger.add(
-    str(Path(__file__).parent.parent / "logs" / "mcp_server.log"),
+    str(_log_dir / "mcp_server.log"),
     rotation="10 MB",
     retention="7 days",
     level="DEBUG",
@@ -249,12 +253,12 @@ def enhance_prompt_for_stability(prompt: str, stability_mode: str = "auto", dura
 )
 async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, filename: str) -> list[TextContent]:
     """
-    Generate image using GPT-4o (gpt-image-1) - MCP native implementation
+    Generate image using OpenAI gpt-image-2 (released 2026-04-21) - MCP native implementation
 
-    Advantages over DALL-E 3:
-    - Better text rendering
-    - Superior prompt understanding
-    - Higher resolution support (up to 4096x4096)
+    Advantages over gpt-image-1:
+    - Stronger editing, better layouts, more reliable instruction-following
+    - Improved text rendering (print-ready typography, multilingual labels)
+    - Flexible sizes up to 3840px edge; native quality tiers via `quality` param
     """
 
     # Map aspect ratio to size
@@ -265,13 +269,28 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
     }
     size = size_map.get(aspect_ratio, "1024x1024")
 
-    # Cost calculation
-    cost_map = {
-        "1024x1024": 0.04,
-        "1024x1536": 0.06,
-        "1536x1024": 0.06
+    # Map detail -> gpt-image-2 quality tier
+    quality_map = {
+        "low": "low",
+        "medium": "medium",
+        "high": "high",
     }
-    cost = cost_map.get(size, 0.04)
+    quality = quality_map.get(detail, "high")
+
+    # Approximate cost (gpt-image-2 pricing varies by quality + size; check OpenAI calculator for exact)
+    # Rough estimates: low ~$0.01-0.02, medium ~$0.04-0.08, high ~$0.08-0.17 at 1024-1536 sizes
+    cost_table = {
+        ("1024x1024", "low"): 0.02,
+        ("1024x1024", "medium"): 0.04,
+        ("1024x1024", "high"): 0.08,
+        ("1024x1536", "low"): 0.03,
+        ("1024x1536", "medium"): 0.06,
+        ("1024x1536", "high"): 0.12,
+        ("1536x1024", "low"): 0.03,
+        ("1536x1024", "medium"): 0.06,
+        ("1536x1024", "high"): 0.12,
+    }
+    cost = cost_table.get((size, quality), 0.08)
 
     try:
         # Initialize OpenAI client (inside function, not at module level)
@@ -284,21 +303,22 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
 
         client = AsyncOpenAI(api_key=api_key)
 
-        # Call GPT-4o image generation
+        # Call gpt-image-2 image generation
         response = await client.images.generate(
-            model="gpt-image-1",
+            model="gpt-image-2",
             prompt=prompt,
             size=size,
+            quality=quality,
             n=1
         )
 
-        # GPT-4o returns base64-encoded images
+        # gpt-image-2 returns base64-encoded images
         image_b64 = response.data[0].b64_json
 
         if image_b64:
             # Decode base64 image data
             image_data = base64.b64decode(image_b64)
-            image_url = "Generated via base64 (GPT-4o)"
+            image_url = "Generated via base64 (gpt-image-2)"
         else:
             # Fallback to URL if provided
             image_url = response.data[0].url
@@ -317,7 +337,7 @@ async def generate_gpt4o_image_mcp(prompt: str, aspect_ratio: str, detail: str, 
         # Prepare result
         result = {
             "status": "success",
-            "model": "gpt-image-1 (GPT-4o)",
+            "model": "gpt-image-2",
             "image_path": str(output_path),
             "prompt": prompt,
             "size": size,
@@ -1044,12 +1064,12 @@ async def generate_image_with_fallback(
     filename: str,
     image_size: str = "2K",
 ) -> list[TextContent]:
-    """Generate image with automatic fallback chain: Nano Banana 2 -> Nano Banana Pro -> GPT-4o"""
+    """Generate image with automatic fallback chain: Nano Banana 2 -> Nano Banana Pro -> gpt-image-2"""
 
     providers = [
         ("Nano Banana 2", lambda: generate_nano_banana_2_image_mcp(prompt, aspect_ratio, filename, image_size=image_size)),
         ("Nano Banana Pro", lambda: generate_nano_banana_image_mcp(prompt, aspect_ratio, filename, image_size=image_size)),
-        ("GPT-4o", lambda: generate_gpt4o_image_mcp(prompt, aspect_ratio, "high", filename)),
+        ("gpt-image-2", lambda: generate_gpt4o_image_mcp(prompt, aspect_ratio, "high", filename)),
     ]
 
     last_error = None
@@ -2878,7 +2898,7 @@ async def list_tools() -> list[Tool]:
     return [
         Tool(
             name="generate_gpt4o_image",
-            description="Generate image with GPT-4o (gpt-image-1). BEST FOR: Images requiring readable embedded text, typography, logos, or text overlays. ~$0.04-0.08/image. DO NOT USE for UGC product images (use generate_nano_banana_image for better Sora video conversion). DO NOT USE as default general-purpose image gen (use generate_nano_banana_2_image — cheaper and newer).",
+            description="Generate image with OpenAI gpt-image-2 (released 2026-04-21). BEST FOR: Images requiring readable embedded text, typography, logos, multilingual labels, or text overlays — significantly improved over gpt-image-1. ~$0.02-0.17/image depending on quality tier. DO NOT USE for UGC product images (use generate_nano_banana_image for better Sora video conversion). DO NOT USE as default general-purpose image gen (use generate_nano_banana_2_image — cheaper).",
             inputSchema={
                 "type": "object",
                 "properties": {

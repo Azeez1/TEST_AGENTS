@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{DIAGRAM_TITLE}}</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#fff9db',
+                primaryTextColor: '#1f1f1f',
+                primaryBorderColor: '#1f1f1f',
+                lineColor: '#1f1f1f',
+                secondaryColor: '#ffc9c9',
+                tertiaryColor: '#b8e6ff',
+                background: '#ffffff',
+                mainBkg: '#fff9db',
+                secondBkg: '#ffc9c9',
+                tertiaryBkg: '#b8e6ff',
+                nodeBorder: '#1f1f1f',
+                clusterBkg: '#e8f5e9',
+                clusterBorder: '#1f1f1f',
+                fontSize: '17px',
+                fontFamily: 'Virgil, Segoe UI Emoji'
+            },
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 30,           // Condensed padding
+                nodeSpacing: 70,       // Tighter horizontal spacing
+                rankSpacing: 80        // Tighter vertical spacing
+            }
+        });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Virgil';
+            src: url('https://excalidraw.com/Virgil.woff2') format('woff2');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Virgil', 'Caveat', 'Comic Sans MS', cursive;
+            background: #fafaf8;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Paper texture effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image:
+                radial-gradient(circle at 20% 50%, transparent 0%, transparent 50%, rgba(0,0,0,0.1) 50.5%, transparent 51%),
+                radial-gradient(circle at 80% 20%, transparent 0%, transparent 50%, rgba(0,0,0,0.1) 50.5%, transparent 51%);
+            pointer-events: none;
+        }
+
+        .sketch-box {
+            background: #ffffff;
+            border: 3px solid #1f1f1f;
+            border-radius: 5px;
+            box-shadow:
+                3px 3px 0px #1f1f1f,
+                6px 6px 0px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Hand-drawn border effect */
+        .sketch-box::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border: 2px solid #1f1f1f;
+            border-radius: 5px;
+            opacity: 0.3;
+        }
+
+        #controls {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            padding: 18px;
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 3px solid #1f1f1f;
+            border-radius: 4px;
+            background: #fff9db;
+            color: #1f1f1f;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Virgil', 'Caveat', cursive;
+            transition: all 0.2s ease;
+            box-shadow:
+                3px 3px 0px #1f1f1f,
+                4px 4px 0px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid #1f1f1f;
+            border-radius: 4px;
+            opacity: 0.2;
+        }
+
+        button:hover {
+            background: #ffeb3b;
+            transform: translate(1px, 1px);
+            box-shadow:
+                2px 2px 0px #1f1f1f,
+                3px 3px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translate(3px, 3px);
+            box-shadow: none;
+        }
+
+        #diagram-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            overflow: hidden;
+        }
+
+        #diagram-container.panning {
+            cursor: grabbing;
+        }
+
+        #diagram-wrapper {
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
+            padding: 40px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 4px solid #1f1f1f;
+            box-shadow:
+                5px 5px 0px #1f1f1f,
+                10px 10px 0px rgba(0, 0, 0, 0.05),
+                15px 15px 0px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        /* Rough paper edges */
+        #diagram-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 3px solid #1f1f1f;
+            border-radius: 10px;
+            opacity: 0.2;
+        }
+
+        .mermaid {
+            display: inline-block;
+        }
+
+        /* Hand-drawn style for diagram elements */
+        .mermaid svg {
+            filter: none;
+        }
+
+        .mermaid .node rect,
+        .mermaid .node circle,
+        .mermaid .node ellipse,
+        .mermaid .node polygon {
+            stroke-width: 2.5px;
+            stroke-dasharray: none;
+            fill-opacity: 0.95;
+        }
+
+        /* Simulate hand-drawn edges */
+        .mermaid .edgePath .path {
+            stroke-width: 3px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .mermaid .edgeLabel {
+            background: #ffffff !important;
+            border: 2px solid #1f1f1f !important;
+            border-radius: 3px;
+            padding: 6px 12px;
+            font-weight: 700;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+            font-family: 'Virgil', 'Caveat', cursive;
+        }
+
+        .mermaid text {
+            font-family: 'Virgil', 'Caveat', cursive !important;
+            font-weight: 600 !important;
+        }
+
+        #info {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            padding: 14px 20px;
+            font-size: 14px;
+            color: #1f1f1f;
+            font-weight: 700;
+        }
+
+        .export-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .export-group label {
+            font-size: 13px;
+            color: #1f1f1f;
+            font-weight: 700;
+        }
+
+        #title {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 20px 30px;
+            z-index: 999;
+            transform: rotate(-1deg);
+        }
+
+        #title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f1f1f;
+            margin: 0;
+            font-family: 'Caveat', cursive;
+            transform: rotate(0.5deg);
+        }
+
+        /* Doodle decorations */
+        .doodle {
+            position: fixed;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .doodle svg {
+            stroke: #1f1f1f;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Wiggle animation for playful effect */
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-0.5deg); }
+            50% { transform: rotate(0.5deg); }
+        }
+
+        #diagram-wrapper:hover {
+            animation: wiggle 0.3s ease-in-out 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="title" class="sketch-box">
+        <h1>{{DIAGRAM_TITLE}}</h1>
+    </div>
+
+    <div id="controls" class="sketch-box">
+        <div class="control-group">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="resetView()">Reset</button>
+        </div>
+        <div class="export-group">
+            <label>Export</label>
+            <div class="control-group">
+                <button onclick="exportSVG()">SVG</button>
+                <button onclick="exportPNG()">PNG</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="diagram-container">
+        <div id="diagram-wrapper">
+            <div class="mermaid">
+{{MERMAID_CODE}}
+            </div>
+        </div>
+    </div>
+
+    <div id="info" class="sketch-box">
+        Hand-drawn style • Scroll to zoom • Drag to pan
+    </div>
+
+    <!-- Decorative doodles -->
+    <div class="doodle" style="top: 10%; left: 5%; width: 80px; height: 80px;">
+        <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" />
+            <line x1="20" y1="40" x2="40" y2="40" />
+            <line x1="60" y1="40" x2="80" y2="40" />
+            <path d="M 30 65 Q 50 75 70 65" />
+        </svg>
+    </div>
+
+    <div class="doodle" style="bottom: 8%; right: 5%; width: 60px; height: 60px;">
+        <svg viewBox="0 0 100 100">
+            <path d="M 10 50 L 30 20 L 50 50 L 70 30 L 90 50" />
+            <circle cx="50" cy="70" r="15" />
+        </svg>
+    </div>
+
+    <script>
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let isPanning = false;
+        let startX, startY;
+
+        const container = document.getElementById('diagram-container');
+        const wrapper = document.getElementById('diagram-wrapper');
+
+        function zoomIn() {
+            scale *= 1.2;
+            updateTransform();
+        }
+
+        function zoomOut() {
+            scale /= 1.2;
+            updateTransform();
+        }
+
+        function resetView() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        function updateTransform() {
+            wrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            scale *= delta;
+            updateTransform();
+        });
+
+        container.addEventListener('mousedown', (e) => {
+            isPanning = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+            container.classList.add('panning');
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isPanning) return;
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        });
+
+        container.addEventListener('mouseup', () => {
+            isPanning = false;
+            container.classList.remove('panning');
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isPanning = false;
+            container.classList.remove('panning');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const step = 50;
+            switch(e.key) {
+                case 'ArrowUp': translateY += step; updateTransform(); e.preventDefault(); break;
+                case 'ArrowDown': translateY -= step; updateTransform(); e.preventDefault(); break;
+                case 'ArrowLeft': translateX += step; updateTransform(); e.preventDefault(); break;
+                case 'ArrowRight': translateX -= step; updateTransform(); e.preventDefault(); break;
+                case '+':
+                case '=': zoomIn(); e.preventDefault(); break;
+                case '-': zoomOut(); e.preventDefault(); break;
+                case '0': resetView(); e.preventDefault(); break;
+            }
+        });
+
+        function exportSVG() {
+            const svg = document.querySelector('.mermaid svg');
+            if (!svg) {
+                alert('Diagram not yet rendered. Please wait a moment.');
+                return;
+            }
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'diagram-sketch.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportPNG() {
+            const svg = document.querySelector('.mermaid svg');
+            if (!svg) {
+                alert('Diagram not yet rendered. Please wait a moment.');
+                return;
+            }
+
+            try {
+                // Clone the SVG to avoid modifying the original
+                const svgClone = svg.cloneNode(true);
+
+                // Get computed styles and inline them
+                const allElements = svgClone.querySelectorAll('*');
+                allElements.forEach(element => {
+                    const computedStyle = window.getComputedStyle(svg.querySelector(`[id="${element.id}"]`) || element);
+                    let styleStr = '';
+                    for (let i = 0; i < computedStyle.length; i++) {
+                        const prop = computedStyle[i];
+                        styleStr += `${prop}:${computedStyle.getPropertyValue(prop)};`;
+                    }
+                    element.setAttribute('style', styleStr);
+                });
+
+                const svgData = new XMLSerializer().serializeToString(svgClone);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onerror = function() {
+                    alert('Failed to export PNG. Please try SVG export instead.');
+                };
+
+                img.onload = function() {
+                    canvas.width = img.width * 2; // 2x for high quality
+                    canvas.height = img.height * 2;
+                    ctx.scale(2, 2);
+
+                    // Paper background
+                    ctx.fillStyle = '#fafaf8';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.drawImage(img, 0, 0);
+
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'OBO_MindMap.png';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                            alert('PNG exported successfully!');
+                        } else {
+                            alert('Failed to create PNG. Please try SVG export.');
+                        }
+                    }, 'image/png');
+                };
+
+                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(svgBlob);
+                img.src = url;
+            } catch (error) {
+                console.error('PNG export error:', error);
+                alert('PNG export failed. Please try SVG export instead, or use browser screenshot (Ctrl+Shift+S).');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\session_start_time.ps1\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\claude_boundary_gate.py\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\pe_validation_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\output_routing_gate.ps1\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\log_agent_run.ps1\""
+          }
+        ]
+      }
+    ]
+  }
+}
