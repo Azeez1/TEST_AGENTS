@@ -69,6 +69,9 @@ PHONE_LINE_UPSTREAM_WS_CANDIDATES = [
         PHONE_LINE_UPSTREAM_WS_BASE,
         "ws://hermes-agent-otb8-discovery:8088",
         "ws://srv-d8d3etkm0tmc73dgjimg.own-d8bmchsm0tmc73emg3j0.svc.cluster.local:8088",
+        # Fallback tunnel into the Hermes worker bridge. Keep after private-network
+        # candidates so Render private networking wins when available.
+        "wss://walking-reporting-southampton-invite.trycloudflare.com",
     ]
     if base
 ]
