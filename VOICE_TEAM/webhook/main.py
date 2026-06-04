@@ -30,6 +30,7 @@ Required env vars (set in hosting platform):
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import hashlib
 import hmac
@@ -45,8 +46,9 @@ from typing import Any
 
 import dateparser
 import httpx
+import websockets
 import yaml
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("voice_webhook")
@@ -56,6 +58,20 @@ log = logging.getLogger("voice_webhook")
 RETELL_API_KEY = os.getenv("RETELL_API_KEY", "")
 RETELL_WEBHOOK_SECRET = os.getenv("RETELL_WEBHOOK_SECRET", "")
 RETELL_BASE = os.getenv("RETELL_API_BASE", "https://api.retellai.com")
+
+# Public Render web service can act as the stable WSS front door for the
+# Hermes worker-hosted phone bridge. The worker keeps the real bridge because it
+# has Hermes auth/session state and Telegram delivery configured on /opt/data.
+PHONE_LINE_UPSTREAM_WS_BASE = os.getenv("PHONE_LINE_UPSTREAM_WS_BASE", "")
+PHONE_LINE_UPSTREAM_WS_CANDIDATES = [
+    base.rstrip("/")
+    for base in [
+        PHONE_LINE_UPSTREAM_WS_BASE,
+        "ws://hermes-agent-otb8-discovery:8088",
+        "ws://srv-d8d3etkm0tmc73dgjimg.own-d8bmchsm0tmc73emg3j0.svc.cluster.local:8088",
+    ]
+    if base
+]
 
 GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "")
 GOOGLE_OAUTH_CLIENT_SECRET = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", "")
@@ -356,6 +372,41 @@ def validate_email(subject: str, body: str, to: str) -> list[str]:
     return errors
 
 
+# --- Phone Line websocket proxy --------------------------------------------
+
+async def _connect_phone_line_upstream(call_id: str, token: str):
+    """Connect to the Hermes worker-hosted phone bridge through Render private net."""
+    last_error: Exception | None = None
+    for base in PHONE_LINE_UPSTREAM_WS_CANDIDATES:
+        upstream_url = f"{base}/retell/llm-auth/{token}/{call_id}"
+        try:
+            return await websockets.connect(upstream_url, ping_interval=None)
+        except Exception as e:
+            last_error = e
+            log.warning("Phone Line upstream connect failed base=%s call_id=%s error=%s", base, call_id, e)
+    raise RuntimeError(f"No Phone Line upstream reachable: {last_error}")
+
+
+async def _proxy_ws_client_to_upstream(client_ws: WebSocket, upstream) -> None:
+    while True:
+        msg = await client_ws.receive()
+        if msg.get("type") == "websocket.disconnect":
+            await upstream.close()
+            return
+        if msg.get("text") is not None:
+            await upstream.send(msg["text"])
+        elif msg.get("bytes") is not None:
+            await upstream.send(msg["bytes"])
+
+
+async def _proxy_ws_upstream_to_client(client_ws: WebSocket, upstream) -> None:
+    async for msg in upstream:
+        if isinstance(msg, bytes):
+            await client_ws.send_bytes(msg)
+        else:
+            await client_ws.send_text(msg)
+
+
 # --- Routes ---------------------------------------------------------------
 
 @app.get("/")
@@ -365,7 +416,37 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"ok": True}
+    return {"ok": True, "phone_line_proxy": bool(PHONE_LINE_UPSTREAM_WS_CANDIDATES)}
+
+
+@app.websocket("/retell/llm-auth/{token}/{call_id}")
+async def retell_phone_line_proxy_auth(ws: WebSocket, token: str, call_id: str):
+    """Stable Render WSS front door for Retell custom-LLM phone-line calls."""
+    await ws.accept()
+    upstream = None
+    try:
+        upstream = await _connect_phone_line_upstream(call_id, token)
+        await asyncio.gather(
+            _proxy_ws_client_to_upstream(ws, upstream),
+            _proxy_ws_upstream_to_client(ws, upstream),
+        )
+    except WebSocketDisconnect:
+        return
+    except Exception as e:
+        log.exception("Phone Line proxy failed call_id=%s: %s", call_id, e)
+        try:
+            await ws.close(code=1011, reason="phone line upstream unavailable")
+        except RuntimeError:
+            pass
+    finally:
+        if upstream is not None:
+            await upstream.close()
+
+
+@app.websocket("/retell/llm/{call_id}")
+async def retell_phone_line_proxy_query(ws: WebSocket, call_id: str):
+    token = ws.query_params.get("token") or ""
+    await retell_phone_line_proxy_auth(ws, token, call_id)
 
 
 @app.post("/retell/webhook")
