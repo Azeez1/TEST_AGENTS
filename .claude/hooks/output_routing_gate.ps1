@@ -12,7 +12,10 @@
 $ErrorActionPreference = "Stop"
 
 # --- TOGGLE: flip to $true to enforce ---------------------------------
-$ENFORCE_MODE = $false
+# 2026-06-02: flipped to enforce as part of the system-wide guardrail rollout.
+# Most paths still ALLOW; only genuinely misrouted writes (repo-root content,
+# bare team-root files, non-canonical docs subfolders) now hard-block.
+$ENFORCE_MODE = $true
 
 # --- Paths ------------------------------------------------------------
 $VIOLATIONS_LOG = Join-Path $PSScriptRoot "..\..\LOGS\routing-violations.log"

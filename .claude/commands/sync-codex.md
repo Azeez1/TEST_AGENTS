@@ -9,6 +9,7 @@ Sync Claude Code infrastructure to the Codex layer. This re-runs `scripts/export
 - Slash command mirrors (`.codex/commands/`)
 - MCP server config (`.codex/config.toml` + `.codex/mcp.generated.toml`)
 - Secret env file with real values (`.codex/secrets.local.env` — gitignored)
+- Enforcement hooks (`.codex/hooks/*.ps1` + `.codex/hooks.json`) — the same guardrail gates that run in Claude Code, so Codex enforces secrets/money/destructive/deploy/etc. identically. The Codex-only `claude_boundary_gate.py` is preserved.
 - Updated manifest mapping every source file to its Codex mirror
 
 Run this Bash command:
@@ -22,6 +23,7 @@ Report back from the output:
 - Number of agents exported (e.g., "Exported 64 agents to .codex/agents")
 - Number of skills processed (e.g., "Processed 28 skills into .codex/skills-export")
 - Number of skills installed globally to `~/.codex/skills/`
+- Number of hook scripts synced + Codex hooks wired (e.g., "Synced 18 hook scripts and wired 17 Codex hooks")
 - MCP server names wired into Codex config
 - Any agents or skills that were skipped (with reason if shown)
 - Confirmation that `secrets.local.env` was written without printing secret values
@@ -37,6 +39,7 @@ If anything looks stale or wrong, re-run the same command — the export is idem
 - After adding or modifying any agent in `.claude/agents/` or `{TEAM}/.claude/agents/`
 - After installing a new skill in `.claude/skills/`
 - After editing `.mcp.json` (MCP server changes)
+- After adding or changing any hook/guardrail in `.claude/hooks/` or the hooks block of `.claude/settings.json` / `settings.local.json`
 - After updating any slash command in `.claude/commands/`
 - Routinely (e.g., end of any Claude Code session that touched the agent/skill/MCP layer)
 

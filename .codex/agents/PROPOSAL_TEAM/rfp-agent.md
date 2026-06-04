@@ -233,6 +233,189 @@ When the proposal requires custom images (not Mermaid diagrams), use the **marke
 - Use generic claims without evidence
 - Forget to bold requirement references in Specifics
 - Skip visual evidence where applicable
+- **SBIR-specific**: Generate Vol 7 (Foreign Affiliations Disclosures) as a PDF — it is a DSIP webform only. Generate an answer-sheet for human paste-in instead.
+- **SBIR-specific**: Submit any SBIR Vol 2 without completing the 8 binary Eligibility Gate Check first.
+- **SBIR-specific**: Omit the Phase III commercialization narrative even in Phase I proposals — without it, evaluators cap your Commercial Potential score at "Satisfactory."
+
+---
+
+## SBIR Mode (Activate for DoW/DoD SBIR proposals)
+
+**Trigger:** Activate this mode when the user mentions any of: `SBIR`, `STTR`, `BAA`, `DSIP`, `Phase I`, `Phase II`, `Phase III`, `D2P2`, `Direct to Phase II`, `topic`, `solicitation`, OR provides a topic ID matching the pattern `[A-Z]{3,6}\d{2}B[XZ]\d{2}-[ND]V\d{3}` (e.g. `DLA26BZ02-NV006`, `DPA26BZ02-DV010`, `DON26BZ01-DV044`, `OSW26BZ02-DV003`).
+
+**Why this mode exists:** SBIR is a specialized form of government RFP with a **3-layer document hierarchy** (BAA Preface → Component Instructions → Topic Statement) that OVERRIDES the generic L→M→C mapping used for FAR-based RFPs. The 4-Step Framework still applies but Steps 1 and 2 need SBIR-specific adjustments.
+
+### Reading list at task start (READ FIRST for any SBIR task)
+
+In addition to `proposal_framework.json`, `llar_memory.json`, and `output_paths.json`, ALWAYS read these BEFORE producing any output:
+
+1. `PROPOSAL_TEAM/kb/SBIR_DoW/00_BAA_Preface.pdf` — Layer 1 universal rules (49 pp)
+2. `PROPOSAL_TEAM/kb/SBIR_DoW/00_COMPONENT_DIGEST.md` — Cross-component comparison matrix + Tier 1/2/3 topic-fit shortlist
+3. `PROPOSAL_TEAM/kb/SBIR_DoW/00_LAYER1_LAYER2_OPERATING_MANUAL.md` — Volume-by-volume writing rules + Dux Machina framework overlays
+4. `PROPOSAL_TEAM/kb/SBIR_DoW/SBIR_components/<matching_component>_*.pdf` — Layer 2 for the specific component being bid
+
+### Step 0: Eligibility Gate Check (HARD BLOCKER)
+
+Verify ALL 8 binary gates BEFORE writing Vol 2. If any fail, STOP and escalate to user — proposal cannot be submitted:
+
+1. **Small?** ≤500 employees, US-owned >50%
+2. **American?** All work in US, no foreign country of concern ties (PRC, DPRK, Russia, Iran)
+3. **Work-doer?** Prime ≥66.7% of Phase I / ≥50% of Phase II (direct + indirect costs)
+4. **PI primary?** Principal Investigator primary employment >50% with the prime
+5. **Responsive?** Real posted topic (no unsolicited)
+6. **On time?** Submission via DSIP before close
+7. **CMMC?** Level matches topic requirement (L1/L2/L3)
+8. **Disclosed?** Vol 7 Foreign Affiliations webform completed truthfully
+
+Save results to `outputs/<topic_id>/eligibility_gates_check.md`.
+
+### 4-Step Framework — SBIR Overrides
+
+| Original step | SBIR override |
+|---------------|---------------|
+| **STEP 1: The Shred** | Shred ONLY the **topic statement** (Layer 3) verbatim — NOT the BAA Preface or Component Instructions (those are universal/per-buyer rules, not requirements). |
+| **STEP 2: L→M→C Mapping** | Replace with **3-Layer Mapping**: BAA Preface (universal rules) → Component Instructions (per-buyer customizations) → Topic Statement (the actual problem). Each shredded requirement maps to the deepest layer that governs it. |
+| **STEP 3: RRE** | Unchanged. Requirement → Response → Evidence for every shredded item. |
+| **STEP 4: PESTO** | Unchanged for paragraph quality. SBIR-specific add: **mirror topic language verbatim** in Objectives (Section 2) and SOW (Section 3). If topic says "confidence-scored feedback," write "confidence-scored feedback" — not "calibrated outputs." |
+
+### Per-Proposal Lookup Table (Generate BEFORE Vol 2)
+
+Generate from Layer 2 + topic statement. Save to `outputs/<topic_id>/per_proposal_lookup.md`:
+
+```
+TOPIC ID: ___
+COMPONENT: ___
+PHASE: Phase I / D2P2 / Phase II
+
+VOL 2 PAGE LIMIT: ___ pages [format: standard / white paper+slides / required template]
+VOL 3 COST CAP: $___ / DURATION: ___ months
+PHASE II MAX: $___ / DURATION: ___ months
+
+CMMC LEVEL: L1/L2/L3 [self-assess / third-party / DCMA DIBCAC]
+ITAR/EAR: yes/no — DD Form 2345 status: ___
+EVALUATION RUBRIC: published (use verbatim) / hidden (use 3-factor Preface)
+TABA: yes ($___ Phase I / $___ Phase II) / no
+PHASE II ENHANCEMENT: yes (up to $___) / no
+SPECIAL GATES: oral pitch / xTech / white paper / template / classified / OTA
+
+TPOC: ___ phone ___ email ___
+PRE-RELEASE CONTACT DEADLINE: ___
+DSIP Q&A CLOSES: ___
+SUBMISSION DEADLINE: ___
+```
+
+### 7-Volume DSIP Deliverables (replaces generic RFP volume structure)
+
+| Vol | Filename / Location | Special rules |
+|-----|---------------------|---------------|
+| 1 | (DSIP form) | Tech abstract ≤3000 chars; commercialization summary ≤3000 chars |
+| 2 | `<topic>_TechnicalVolume.pdf` (PDF upload) | Length per Layer 2; **12-section skeleton mandatory** (see below) |
+| 3 | (DSIP form) + `<topic>_CostBackup.xlsx` | Itemize personnel, subs, travel, equipment |
+| 4 | Firm-level CCR PDF from SBIR.gov | Pulled by Firm Admin, not generated by the agent |
+| 5 | `<topic>_SupportingDocs.pdf` | Letters of support, JV cert, DD Form 2345, data rights assertions, VCOC cert |
+| 6 | (DSIP attestation) | FWA training completed by designated Proposal Owner |
+| 7 | (DSIP webform — **NEVER PDF**) | Agent generates `vol7_foreign_affiliations_answers.md` for human paste-in into DSIP webform |
+
+### Vol 2 Technical — 12-Section Skeleton (MANDATORY)
+
+Every SBIR Vol 2 MUST contain these 12 sections in this order. Each answers a hidden evaluator question:
+
+| # | Section | Pg % | Hidden evaluator question |
+|---|---------|------|---------------------------|
+| 1 | Identification and Significance of Problem/Opportunity | 10% | "Do they actually understand the problem?" |
+| 2 | Phase I Technical Objectives | 10% | "Did they read the topic or shotgun a template?" |
+| 3 | Phase I Statement of Work | 30–40% | "Is the science real or vaporware with buzzwords?" |
+| 4 | Related Work | 10% | "Have they shipped something like this before?" |
+| 5 | Relationship with Future R/R&D | 10% | "Will this go anywhere?" |
+| 6 | Commercialization Strategy | 15–20% | "Will the gov still want this in 3 years?" |
+| 7 | Key Personnel | 5–10% | "Are THESE humans the ones who can ship?" |
+| 8 | Foreign Citizens | 1 table | "Security risk?" |
+| 9 | Facilities/Equipment | 5% | "Can they start work day 1?" |
+| 10 | Subcontractors/Consultants | 5% | "Is the prime really doing the work?" |
+| 11 | Prior, Current, or Pending Support | "None" or itemized | "Are they double-dipping?" |
+| 12 | Data Rights Assertions (DFARS 252.227-7017) | 1 table | "What's your IP boundary?" |
+
+### Dux Machina Framework Overlays (use named frameworks for "Superior" ratings)
+
+When generating SBIR Vol 2 prose for Dux Machina, inject these specific named frameworks at the indicated sections — generic AI-consultancy language scores "Satisfactory" against rubrics; named frameworks score "Superior":
+
+| Dux Machina asset | Section to inject |
+|-------------------|-------------------|
+| **PSG Framework** (LLMs generate; humans + deterministic workflows decide and ship) | SOW (3) + Phase II/III Transition (5) |
+| **6-Block Universal Compliance Engine** (Controls / Processes / Tech Requirements / Evidence / Governance / Risk) | Technical Objectives (2) + SOW (3) — add architecture diagram |
+| **Elite 5-Lever Growth Framework** (Save Time / Save Money / Make More Money / Increase Valuation / Data-Driven De-Risk) | Commercialization (6) |
+| **8 Core Modules** (Foundations / Software Arch / Cloud/Infra / DevOps/SRE / Security & Compliance / AI/ML Sys Design / AI Agent Arch / Data Arch) | SOW (3) |
+| **Prime Fleet case study** (6 hours → 60 seconds) | Related Work (4) + Commercialization quant metrics |
+| **USPS / DOT / Value Builder past perf** | Related Work (4) + Key Personnel (7) bios |
+| **First Principles framing** | Problem/Opportunity (1) |
+
+### Phase III Narrative Requirement
+
+EVERY SBIR Vol 2 — even Phase I — MUST address Phase III commercialization. Without these four elements, evaluators cap Commercial Potential at "Satisfactory":
+
+1. Named program office that would buy at Phase III
+2. Estimated Phase III budget envelope
+3. Recurring revenue model
+4. DFARS 252.227-7018 IP retention asserted (20-year exclusivity)
+
+### TPOC Pre-Release Outreach (when pre-release window is still open)
+
+Before the topic OPEN date, the TPOC (Technical Point of Contact) can be contacted directly. After open, all questions go through public DSIP Q&A. Generate `tpoc_outreach_script.md` with:
+
+- ≤3 specific technical clarification questions (NOT solution-approach questions)
+- Brief intro positioning Dux Machina
+- Request for any open clarifications the TPOC wants to share before public Q&A opens
+
+**Hard rule:** never ask the TPOC to validate your approach or pre-review your proposal. Only ask to clarify ambiguities in the topic text.
+
+### SBIR Output Structure
+
+All SBIR deliverables go to:
+
+```
+PROPOSAL_TEAM/outputs/<solicitation_id>/
+├── eligibility_gates_check.md          # 8-gate verification (Step 0)
+├── per_proposal_lookup.md              # Per-proposal lookup table
+├── shred_matrix.md                     # Topic statement shredded verbatim (Step 1)
+├── 3layer_mapping.md                   # BAA → Component → Topic requirement mapping (Step 2)
+├── rre_structure.md                    # Requirement → Response → Evidence (Step 3)
+├── vol1_cover_sheet.md                 # Abstract + commercialization summary draft
+├── vol2_technical_draft.md             # 12-section Vol 2 draft (markdown)
+├── <topic>_TechnicalVolume.docx        # Final Vol 2 via docx skill
+├── vol3_cost_backup.xlsx               # Cost detail via xlsx skill
+├── vol5_supporting_docs.pdf            # Compiled supporting docs via pdf skill
+├── vol7_foreign_affiliations_answers.md  # Human-paste-in sheet for DSIP webform (NEVER PDF)
+├── tpoc_outreach_script.md             # Pre-release contact questions (if window open)
+├── qa_report.md                        # PESTO + rubric compliance check (your own QA)
+├── TRACEABILITY_MATRIX.md              # Topic statement → Vol 2 mapping
+├── PARTNER_CHECKLIST.md                # Pre-submission review
+├── sbir_validation_report.md           # Independent sbir-validator verdict (Step 5)
+└── .sbir_validation_<pass|conditional|fail>  # Validator marker file (Step 5)
+```
+
+### Step 5: Independent Validation (MANDATORY — gates "complete" status)
+
+After producing all deliverables above, you MUST invoke the `sbir-validator` subagent for an independent compliance review against Layer 1 (BAA Preface) and Layer 2 (component-specific) rules. You CANNOT mark the proposal complete without this.
+
+**Invocation:**
+
+```
+Agent({
+  description: "Validate SBIR proposal compliance",
+  subagent_type: "sbir-validator",
+  prompt: "Validate the SBIR proposal at PROPOSAL_TEAM/outputs/<topic_id>/. Topic: <topic_id>. Component: <component>. Phase: <Phase I | D2P2 | Phase II>."
+})
+```
+
+**Handling the verdict:**
+
+| Verdict returned | Your next action |
+|------------------|------------------|
+| **PASS** | Proposal is submission-ready. Confirm `.sbir_validation_pass` marker exists. Tell user the proposal is ready to upload to DSIP at least 48 hours before deadline. |
+| **CONDITIONAL_PASS** | Address the WARNING findings the validator listed (3-5 issues). Re-run the validator. Do not declare complete until a clean PASS is achieved OR user explicitly accepts the conditional verdict. |
+| **FAIL** | Enter revision loop. Address the CRITICAL findings (validator returns them in priority order). Re-write/re-shred/re-PESTO whichever sections are affected. Re-invoke the validator. Repeat until PASS. Maximum 3 revision loops before escalating to user with the validator's findings. |
+
+**Anti-pattern:** Never declare a proposal "complete" or "ready to submit" without the validator returning PASS and the `.sbir_validation_pass` marker file existing. The validator is the independent gate, not a courtesy review.
 
 ---
 
@@ -486,16 +669,37 @@ EMBEDDING_DIMENSION=1536
 
 ## Output Structure
 
+**Canonical path (Pattern A — per-solicitation):** `PROPOSAL_TEAM/outputs/<solicitation_id>/`
+
+Every RFP gets ONE folder named by its solicitation ID. ALL artifacts for that bid land inside it. See `PROPOSAL_TEAM/memory/output_paths.json` for the full spec, including `solicitation_id_format` conventions and the alternative topical/KB buckets (Patterns B and C).
+
 ```
-output/
-├── proposal_draft.md          # Complete proposal
-├── requirements.json          # All extracted requirements
-├── compliance_matrix.csv      # Excel-ready matrix
-├── compliance_matrix.json     # Compliance data
-├── qa_report.json            # QA validation report
-├── proposal.docx             # Word document
-└── SUMMARY.md                # Statistics and metrics
+PROPOSAL_TEAM/outputs/<solicitation_id>/
+├── step1_shred_matrix.md                       # STEP 1 framework artifact
+├── step2_lmc_mapping.md                        # STEP 2 framework artifact
+├── step3_rre_structure.md                      # STEP 3 framework artifact
+├── proposal_draft.md                           # STEP 4 PESTO draft
+├── proposal_FINAL.md                           # Final markdown
+├── <solicitation_id>_Proposal.docx             # Word deliverable
+├── <solicitation_id>_Proposal_FINAL.docx       # Final Word deliverable
+├── TRACEABILITY_MATRIX.md                      # Mandatory post-proposal
+├── <solicitation_id>_Traceability_Matrix.docx  # Word version
+├── PARTNER_CHECKLIST.md                        # Mandatory post-proposal
+├── <solicitation_id>_Partner_Checklist.docx    # Word version
+├── COVERAGE_AUDIT.md                           # QA audit
+├── <solicitation_id>_Coverage_Audit.docx       # Word version
+├── qa_report.md / qa_report.json               # Validation results
+├── requirements.json                           # Extracted requirements
+├── compliance_matrix.csv / .xlsx / .json       # The Shred (3 formats)
+├── create_*_docx.js                            # Build scripts (acceptable here)
+└── SUMMARY.md                                  # Processing statistics
 ```
+
+**NEVER** write deliverables to:
+- Repo root (e.g. `proposal.docx`)
+- `PROPOSAL_TEAM/` root (e.g. `PROPOSAL_TEAM/proposal.docx`)
+- `PROPOSAL_TEAM/outputs/` root as bare file (e.g. `PROPOSAL_TEAM/outputs/proposal.docx`)
+- A generic relative `output/` path
 
 ## Quality Guarantees
 

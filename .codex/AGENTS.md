@@ -84,7 +84,9 @@ This directory is generated from Claude-first sources plus Codex-native sources 
 - `visual-designer`: `.codex/agents/MARKETING_TEAM/visual-designer.md`
 
 ### PROPOSAL_TEAM
+- `proposal-tracker`: `.codex/agents/PROPOSAL_TEAM/proposal-tracker.md`
 - `rfp-agent`: `.codex/agents/PROPOSAL_TEAM/rfp-agent.md`
+- `sbir-validator`: `.codex/agents/PROPOSAL_TEAM/sbir-validator.md`
 
 ### QA_TEAM
 - `edge-case-agent`: `.codex/agents/QA_TEAM/edge-case-agent.md`

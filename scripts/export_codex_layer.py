@@ -46,6 +46,9 @@ CODEX_HOME = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex")))
 GLOBAL_CODEX_SKILLS_DIR = CODEX_HOME / "skills"
 CLAUDE_SKILLS_DIR = ROOT / ".claude" / "skills"
 CLAUDE_SETTINGS_PATH = ROOT / ".claude" / "settings.json"
+CLAUDE_SETTINGS_LOCAL_PATH = ROOT / ".claude" / "settings.local.json"
+CLAUDE_HOOKS_DIR = ROOT / ".claude" / "hooks"
+CODEX_HOOKS_DIR = CODEX_DIR / "hooks"
 MCP_PATH = ROOT / ".mcp.json"
 
 MODEL_MAP = {
@@ -819,6 +822,131 @@ def write_codex_mcp_config() -> list[str]:
     return written_names
 
 
+# --- Hook sync ---------------------------------------------------------------
+# Codex runs the SAME hook schema as Claude Code (.codex/hooks.json mirrors the
+# .claude settings hooks block, and Codex already executes .ps1 gates). So we
+# reuse the IDENTICAL PowerShell gate files instead of maintaining a divergent
+# Python port — Codex enforcement stays byte-for-byte in sync with Claude. The
+# Codex-only claude_boundary_gate.py is preserved and kept first in PreToolUse.
+
+CODEX_BOUNDARY_GATE_ENTRY = {
+    "matcher": "*",
+    "hooks": [
+        {
+            "type": "command",
+            "command": 'python "' + str(CODEX_HOOKS_DIR / "claude_boundary_gate.py") + '"',
+        }
+    ],
+}
+
+# Codex-native consolidation of the Claude guardrail gates. Wired with matcher
+# "*" because Codex names tools differently (command_execution / apply_patch),
+# so Claude's tool-name matchers ("Bash"/"Write") would never fire. This gate
+# classifies the tool itself and blocks with the Codex exit-1 contract. Lives at
+# .codex/hooks/enforcement_gate.py (hand-maintained, like claude_boundary_gate.py;
+# sync copies *.ps1 only, so it is preserved across runs).
+CODEX_ENFORCEMENT_GATE_ENTRY = {
+    "matcher": "*",
+    "hooks": [
+        {
+            "type": "command",
+            "command": 'python "' + str(CODEX_HOOKS_DIR / "enforcement_gate.py") + '"',
+        }
+    ],
+}
+
+
+def rewrite_hook_command(command: str) -> str:
+    """Point a Claude hook command at its Codex mirror copy."""
+    return command.replace(".claude\\hooks", ".codex\\hooks").replace(
+        ".claude/hooks", ".codex/hooks"
+    )
+
+
+def load_hooks_block(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    hooks = data.get("hooks", {})
+    return hooks if isinstance(hooks, dict) else {}
+
+
+def sync_codex_hooks() -> dict[str, int]:
+    """Mirror Claude PowerShell hook scripts + wiring into the Codex layer.
+
+    1. Copy every *.ps1 gate and the config/ dir from .claude/hooks into
+       .codex/hooks (overwrite). The Codex-native claude_boundary_gate.py is
+       left untouched.
+    2. Regenerate .codex/hooks.json from BOTH Claude settings files, rewriting
+       paths to the Codex copies and injecting the boundary gate first.
+    """
+    CODEX_HOOKS_DIR.mkdir(parents=True, exist_ok=True)
+
+    copied = 0
+    if CLAUDE_HOOKS_DIR.exists():
+        for ps1 in sorted(CLAUDE_HOOKS_DIR.glob("*.ps1")):
+            shutil.copy2(ps1, CODEX_HOOKS_DIR / ps1.name)
+            copied += 1
+        claude_config = CLAUDE_HOOKS_DIR / "config"
+        if claude_config.exists():
+            codex_config = CODEX_HOOKS_DIR / "config"
+            codex_config.mkdir(parents=True, exist_ok=True)
+            for cfg in sorted(claude_config.glob("*")):
+                if cfg.is_file():
+                    shutil.copy2(cfg, codex_config / cfg.name)
+        for doc in ("GUARDRAILS.md", "README.md"):
+            src = CLAUDE_HOOKS_DIR / doc
+            if src.exists():
+                shutil.copy2(src, CODEX_HOOKS_DIR / doc)
+
+    merged: dict[str, list[Any]] = {}
+    for settings_path in (CLAUDE_SETTINGS_PATH, CLAUDE_SETTINGS_LOCAL_PATH):
+        for event, entries in load_hooks_block(settings_path).items():
+            if not isinstance(entries, list):
+                continue
+            bucket = merged.setdefault(event, [])
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    continue
+                bucket.append(
+                    {
+                        "matcher": entry.get("matcher", "*"),
+                        "hooks": [
+                            {
+                                "type": h.get("type", "command"),
+                                "command": rewrite_hook_command(str(h.get("command", ""))),
+                            }
+                            for h in entry.get("hooks", [])
+                            if isinstance(h, dict)
+                        ],
+                    }
+                )
+
+    pre = merged.setdefault("PreToolUse", [])
+    pre.insert(0, CODEX_ENFORCEMENT_GATE_ENTRY)
+    pre.insert(0, CODEX_BOUNDARY_GATE_ENTRY)
+
+    # Dedupe identical entries that appear in both settings files.
+    wired = 0
+    for event, entries in merged.items():
+        seen: set[str] = set()
+        unique: list[Any] = []
+        for entry in entries:
+            key = json.dumps(entry, sort_keys=True)
+            if key in seen:
+                continue
+            seen.add(key)
+            unique.append(entry)
+            wired += len(entry.get("hooks", []))
+        merged[event] = unique
+
+    write_text(CODEX_DIR / "hooks.json", json.dumps({"hooks": merged}, indent=2) + "\n")
+    return {"copied": copied, "wired": wired}
+
+
 def write_manifest(agent_exports: list[AgentExport], skill_exports: list[dict[str, Any]]) -> None:
     manifest = {
         "schema": "test-agents/codex-layer/v1",
@@ -898,9 +1026,14 @@ def main() -> None:
     if args.write_codex_mcp_config:
         mcp_names = write_codex_mcp_config()
     installed = install_global_skills(skill_exports) if args.install_global_skills else 0
+    hook_stats = sync_codex_hooks()
     write_manifest(agent_exports, skill_exports)
     print(f"Exported {len(agent_exports)} agents to {rel(CODEX_AGENTS_DIR)}")
     print(f"Processed {len(skill_exports)} skills into {rel(CODEX_SKILLS_EXPORT_DIR)}")
+    print(
+        f"Synced {hook_stats['copied']} hook scripts and wired {hook_stats['wired']} "
+        f"Codex hooks into {rel(CODEX_DIR / 'hooks.json')}"
+    )
     print(f"Wrote {rel(CODEX_DIR / 'manifest.json')}")
     if args.write_local_secrets:
         print("Wrote local Codex secrets env file without printing secret values")

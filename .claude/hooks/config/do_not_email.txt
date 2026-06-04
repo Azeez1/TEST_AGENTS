@@ -1,0 +1,4 @@
+# Do-Not-Email list for team_email_gate.ps1
+# One entry per line. Match is case-insensitive substring against the recipient.
+# Use full addresses (someone@example.com) or bare domains (example.com).
+# Lines starting with # are comments. Add unsubscribes / complaints / competitors here.

@@ -1173,6 +1173,25 @@
       ]
     },
     {
+      "slug": "proposal-tracker",
+      "display_name": "proposal-tracker",
+      "team": "PROPOSAL_TEAM",
+      "source": "PROPOSAL_TEAM/.claude/agents/proposal-tracker.md",
+      "codex_instructions": ".codex/agents/PROPOSAL_TEAM/proposal-tracker.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
       "slug": "rfp-agent",
       "display_name": "rfp-agent",
       "team": "PROPOSAL_TEAM",
@@ -1215,6 +1234,25 @@
         "Visual design with canvas-design and flow-diagram skills",
         "Professional styling with theme-factory and brand-guidelines"
       ]
+    },
+    {
+      "slug": "sbir-validator",
+      "display_name": "sbir-validator",
+      "team": "PROPOSAL_TEAM",
+      "source": "PROPOSAL_TEAM/.claude/agents/sbir-validator.md",
+      "codex_instructions": ".codex/agents/PROPOSAL_TEAM/sbir-validator.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Bash"
+      ],
+      "skills": [],
+      "capabilities": []
     },
     {
       "slug": "accountant",
