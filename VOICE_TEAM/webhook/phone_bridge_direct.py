@@ -432,11 +432,11 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
                 if CALL_AUTHORIZED.get(call_id, False):
                     if passcode_seen and not CALL_AUTH_ACKED.get(call_id, False):
                         CALL_AUTH_ACKED[call_id] = True
-                        reply = "Passcode accepted. Tell me the task, then hang up when you're done."
+                        reply = "You're good. I'm here — talk to me."
                     elif duplicate_latest:
-                        reply = "Got it. I'm listening."
+                        reply = "I'm with you."
                     else:
-                        reply = "Got it. Keep going, or hang up and I'll send the result."
+                        reply = await ask_hermes_async(caller_text, call_id)
                 else:
                     if duplicate_latest:
                         reply = "I'm listening. Leave your message, then hang up when you're done."
