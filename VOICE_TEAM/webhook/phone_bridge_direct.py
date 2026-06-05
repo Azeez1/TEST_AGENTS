@@ -10,6 +10,8 @@ import sys
 import urllib.request
 import urllib.parse
 import shutil
+import html
+import importlib.util
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +32,11 @@ GOOGLE_API_SCRIPT = os.getenv(
     "GOOGLE_API_SCRIPT",
     "/opt/data/skills/productivity/google-workspace/scripts/google_api.py",
 )
+EMAIL_TEMPLATE_RENDERER = os.getenv(
+    "EMAIL_TEMPLATE_RENDERER",
+    str(Path(__file__).resolve().parents[2] / "MARKETING_TEAM" / "tools" / "email_template_renderer.py"),
+)
+PHONE_LINE_VOICEMAIL_EMAIL_TEMPLATE = os.getenv("PHONE_LINE_VOICEMAIL_EMAIL_TEMPLATE", "branded_light")
 CALL_RECORDS_DIR = Path(os.getenv("PHONE_LINE_RECORDS_DIR", "/tmp/phone_line/call_records"))
 PASSCODE_VARIANTS = [
     v.strip() for v in os.getenv("PHONE_LINE_PASSCODE_VARIANTS", "Infamous,in famous,in-famous").split(",") if v.strip()
@@ -502,8 +509,56 @@ async def run_post_call_delivery(call_id: str, utterances: list[str], *, authori
         await asyncio.to_thread(_send_telegram_direct, f"Oshun phone result ({call_id}):\n\n{result}")
 
 
+def _load_email_renderer():
+    renderer_path = Path(EMAIL_TEMPLATE_RENDERER)
+    if not renderer_path.exists():
+        return None
+    try:
+        spec = importlib.util.spec_from_file_location("phone_line_email_template_renderer", renderer_path)
+        if not spec or not spec.loader:
+            return None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+    except Exception:
+        return None
+
+
+def _fallback_voicemail_html(body: str, call_id: str) -> str:
+    escaped_body = html.escape(body).replace("\n", "<br>\n")
+    escaped_call_id = html.escape(call_id)
+    return (
+        '<!doctype html>'
+        '<html><body style="margin:0;background:#f6f4ef;font-family:Arial,Helvetica,sans-serif;color:#1f2933;">'
+        '<div style="max-width:680px;margin:0 auto;padding:28px;">'
+        '<div style="background:#111827;color:#f5c542;padding:18px 22px;border-radius:12px 12px 0 0;">'
+        '<div style="font-size:18px;font-weight:700;letter-spacing:.03em;">Oshun Phone Line</div>'
+        '<div style="font-size:13px;color:#f7e7a6;margin-top:4px;">Unauthenticated voicemail captured safely</div>'
+        '</div>'
+        '<div style="background:#ffffff;border:1px solid #e5e7eb;border-top:0;padding:22px;border-radius:0 0 12px 12px;">'
+        f'<p style="margin-top:0;"><strong>Call ID:</strong> {escaped_call_id}</p>'
+        f'<div style="line-height:1.55;font-size:15px;">{escaped_body}</div>'
+        '<hr style="border:none;border-top:1px solid #e5e7eb;margin:22px 0;">'
+        '<p style="font-size:12px;color:#6b7280;margin-bottom:0;">No actions were executed because the caller did not provide the passcode.</p>'
+        '</div></div></body></html>'
+    )
+
+
+def _render_voicemail_email_html(body: str, call_id: str) -> str:
+    renderer = _load_email_renderer()
+    if renderer and hasattr(renderer, "render_email_html"):
+        try:
+            return renderer.render_email_html(
+                body=body,
+                template=PHONE_LINE_VOICEMAIL_EMAIL_TEMPLATE,
+            )
+        except Exception:
+            pass
+    return _fallback_voicemail_html(body, call_id)
+
+
 def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]) -> str:
-    """Send unauthenticated caller content as voicemail only; never execute it."""
+    """Send unauthenticated caller content as HTML voicemail only; never execute it."""
     subject = f"Phone Line voicemail from unauthenticated caller ({call_id})"
     body = (
         "Unauthenticated phone-line caller left a message.\n\n"
@@ -512,6 +567,7 @@ def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]
         f"{_metadata_text(metadata)}\n\n"
         f"Transcript:\n{transcript}\n"
     )
+    html_body = _render_voicemail_email_html(body, call_id)
 
     # Prefer the Hermes Google Workspace helper because it uses the durable
     # google_token.json OAuth store. The direct env-var path below is kept as a
@@ -533,7 +589,8 @@ def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]
                     "--subject",
                     subject,
                     "--body",
-                    body,
+                    html_body,
+                    "--html",
                 ],
                 text=True,
                 capture_output=True,
@@ -553,11 +610,14 @@ def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]
     try:
         token = _google_access_token()
         import base64
+        from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
-        msg = MIMEText(body)
+        msg = MIMEMultipart("alternative")
         msg["To"] = PHONE_LINE_VOICEMAIL_EMAIL
         msg["From"] = os.getenv("GOOGLE_USER_EMAIL", "sabaazeez12@gmail.com")
         msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain", "utf-8"))
+        msg.attach(MIMEText(html_body, "html", "utf-8"))
         raw = base64.urlsafe_b64encode(msg.as_bytes()).decode("ascii")
         resp = httpx.post(
             "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",

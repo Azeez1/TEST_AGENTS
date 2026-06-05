@@ -1,5 +1,8 @@
+import base64
+from email import message_from_bytes
 import importlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -127,3 +130,37 @@ def test_voicemail_email_uses_google_token_file_when_refresh_env_missing(tmp_pat
 
     assert status == "sent:gmail-message-id"
     assert len(sent_requests) == 1
+    raw_message = base64.urlsafe_b64decode(sent_requests[0][1]["json"]["raw"].encode("ascii"))
+    parsed = message_from_bytes(raw_message)
+    assert parsed.get_content_type() == "multipart/alternative"
+    html_parts = [part for part in parsed.walk() if part.get_content_type() == "text/html"]
+    plain_parts = [part for part in parsed.walk() if part.get_content_type() == "text/plain"]
+    assert html_parts
+    assert plain_parts
+    html_payload = html_parts[0].get_payload(decode=True).decode("utf-8")
+    assert "Please call me back" in html_payload
+    assert "No actions were executed" in html_payload
+
+
+def test_voicemail_email_google_workspace_helper_sends_html(tmp_path, monkeypatch):
+    gapi_script = tmp_path / "google_api.py"
+    gapi_script.write_text("# fake helper", encoding="utf-8")
+    monkeypatch.setattr(bridge, "GOOGLE_API_SCRIPT", str(gapi_script))
+    monkeypatch.setattr(bridge, "PHONE_LINE_VOICEMAIL_EMAIL", "z@example.com")
+
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append((cmd, kwargs))
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps({"id": "gapi-message-id"}), stderr="")
+
+    monkeypatch.setattr(bridge.subprocess, "run", fake_run)
+
+    status = bridge.send_voicemail_email("call_html", "- HTML body please", {"direction": "inbound"})
+
+    assert status == "sent:gapi-message-id"
+    cmd = calls[0][0]
+    assert cmd[-1] == "--html"
+    html_body = cmd[cmd.index("--body") + 1]
+    assert "<html" in html_body.lower()
+    assert "HTML body please" in html_body
