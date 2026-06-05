@@ -97,19 +97,73 @@ def _send_telegram_direct(text: str) -> str:
         return f"telegram_error:{type(e).__name__}:{str(e)[:200]}"
 
 
+def _google_token_file_candidates() -> list[Path]:
+    candidates: list[Path] = []
+    if os.getenv("GOOGLE_TOKEN_FILE"):
+        candidates.append(Path(os.getenv("GOOGLE_TOKEN_FILE", "")))
+    if os.getenv("HERMES_HOME"):
+        candidates.append(Path(os.getenv("HERMES_HOME", "")) / "google_token.json")
+    candidates.extend([Path("/opt/data/google_token.json"), Path.home() / ".hermes" / "google_token.json"])
+    seen: set[str] = set()
+    unique: list[Path] = []
+    for path in candidates:
+        key = str(path)
+        if key and key not in seen:
+            seen.add(key)
+            unique.append(path)
+    return unique
+
+
 def _google_access_token() -> str:
+    client_id = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "")
+    client_secret = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", "")
+    refresh_token = os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN", "")
+    token_path: Path | None = None
+    token_payload: dict[str, Any] = {}
+
+    if not refresh_token:
+        for candidate in _google_token_file_candidates():
+            if candidate.exists():
+                token_path = candidate
+                token_payload = json.loads(candidate.read_text(encoding="utf-8"))
+                client_id = client_id or token_payload.get("client_id", "")
+                client_secret = client_secret or token_payload.get("client_secret", "")
+                refresh_token = refresh_token or token_payload.get("refresh_token", "")
+                access_token = token_payload.get("token", "")
+                expiry = str(token_payload.get("expiry") or "")
+                if access_token and expiry:
+                    # Google token files use e.g. 2026-06-05T20:19:36.413094Z.
+                    try:
+                        from datetime import datetime, timezone
+                        expires_at = datetime.fromisoformat(expiry.replace("Z", "+00:00"))
+                        if expires_at.timestamp() - time.time() > 120:
+                            return access_token
+                    except Exception:
+                        pass
+                break
+
     resp = httpx.post(
         "https://oauth2.googleapis.com/token",
         data={
-            "client_id": os.getenv("GOOGLE_OAUTH_CLIENT_ID", ""),
-            "client_secret": os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", ""),
-            "refresh_token": os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN", ""),
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "refresh_token": refresh_token,
             "grant_type": "refresh_token",
         },
         timeout=15.0,
     )
     resp.raise_for_status()
-    return resp.json()["access_token"]
+    refreshed = resp.json()
+    access_token = refreshed["access_token"]
+    if token_path and token_payload:
+        try:
+            from datetime import datetime, timedelta, timezone
+            token_payload["token"] = access_token
+            token_payload["expiry"] = (datetime.now(timezone.utc) + timedelta(seconds=int(refreshed.get("expires_in", 3600)))).isoformat().replace("+00:00", "Z")
+            token_path.write_text(json.dumps(token_payload, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+    return access_token
 
 
 
@@ -458,6 +512,44 @@ def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]
         f"{_metadata_text(metadata)}\n\n"
         f"Transcript:\n{transcript}\n"
     )
+
+    # Prefer the Hermes Google Workspace helper because it uses the durable
+    # google_token.json OAuth store. The direct env-var path below is kept as a
+    # deploy fallback for environments that expose GOOGLE_OAUTH_REFRESH_TOKEN.
+    gapi_error = ""
+    if GOOGLE_API_SCRIPT and Path(GOOGLE_API_SCRIPT).exists():
+        env = os.environ.copy()
+        if not env.get("HERMES_HOME") and Path("/opt/data/google_token.json").exists():
+            env["HERMES_HOME"] = "/opt/data"
+        try:
+            proc = subprocess.run(
+                [
+                    sys.executable,
+                    GOOGLE_API_SCRIPT,
+                    "gmail",
+                    "send",
+                    "--to",
+                    PHONE_LINE_VOICEMAIL_EMAIL,
+                    "--subject",
+                    subject,
+                    "--body",
+                    body,
+                ],
+                text=True,
+                capture_output=True,
+                timeout=30,
+                env=env,
+            )
+            if proc.returncode == 0:
+                try:
+                    payload = json.loads(proc.stdout or "{}")
+                    return f"sent:{payload.get('id', 'ok')}"
+                except json.JSONDecodeError:
+                    return "sent:gapi"
+            gapi_error = (proc.stderr or proc.stdout or "google_api.py failed").strip()[:300]
+        except Exception as e:
+            gapi_error = f"{type(e).__name__}:{str(e)[:250]}"
+
     try:
         token = _google_access_token()
         import base64
@@ -476,7 +568,8 @@ def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]
         resp.raise_for_status()
         return f"sent:{resp.json().get('id', 'ok')}"
     except Exception as e:
-        return f"gmail_error:{type(e).__name__}:{str(e)[:300]}"
+        suffix = f"; gapi_error:{gapi_error}" if gapi_error else ""
+        return f"gmail_error:{type(e).__name__}:{str(e)[:300]}{suffix}"
 
 
 @app.get("/health")
