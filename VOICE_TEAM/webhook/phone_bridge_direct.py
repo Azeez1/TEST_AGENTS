@@ -25,7 +25,7 @@ HERMES_TIMEOUT_SEC = int(os.getenv("HERMES_TIMEOUT_SEC", "120"))
 PHONE_LINE_SHARED_SECRET = os.getenv("PHONE_LINE_SHARED_SECRET", "")
 PHONE_LINE_DELIVERY_TARGET = os.getenv("PHONE_LINE_DELIVERY_TARGET", "telegram")
 PHONE_LINE_PASSCODE = os.getenv("PHONE_LINE_PASSCODE", "Infamous")
-PHONE_LINE_VOICEMAIL_EMAIL = os.getenv("PHONE_LINE_VOICEMAIL_EMAIL", "")
+PHONE_LINE_VOICEMAIL_EMAIL = os.getenv("PHONE_LINE_VOICEMAIL_EMAIL", "sabaazeez12@gmail.com")
 GOOGLE_API_SCRIPT = os.getenv(
     "GOOGLE_API_SCRIPT",
     "/opt/data/skills/productivity/google-workspace/scripts/google_api.py",
@@ -49,6 +49,7 @@ CALL_AUTHORIZED: dict[str, bool] = {}
 CALL_METADATA: dict[str, dict[str, Any]] = {}
 CALL_LAST_CALLER_TEXT: dict[str, str] = {}
 CALL_AUTH_ACKED: dict[str, bool] = {}
+CALL_REMINDER_COUNT: dict[str, int] = {}
 
 
 
@@ -174,6 +175,37 @@ def _strip_passcode(text: str) -> str:
     if words and _has_passcode(" ".join(words[:2])):
         stripped = " ".join(words[2:])
     return stripped.strip(" ,.;:-\n\t")
+
+
+def _caller_wants_to_end(text: str) -> bool:
+    normalized = re.sub(r"\s+", " ", (text or "").lower()).strip()
+    if not normalized:
+        return False
+    end_patterns = [
+        r"\b(bye|goodbye|good night|talk to you later|see you|peace)\b",
+        r"\b(that'?s all|that is all|that'?s it|that is it|nothing else|no thanks|no thank you)\b",
+        r"\b(i'?m done|i am done|we'?re done|we are done)\b",
+        r"\b(hang up|end (the )?call|you can hang up|go ahead and hang up)\b",
+    ]
+    return any(re.search(pattern, normalized) for pattern in end_patterns)
+
+
+def _should_end_call(caller_text: str, interaction_type: str, call_id: str) -> bool:
+    if _caller_wants_to_end(caller_text):
+        return True
+    if interaction_type == "reminder_required":
+        CALL_REMINDER_COUNT[call_id] = CALL_REMINDER_COUNT.get(call_id, 0) + 1
+        return CALL_REMINDER_COUNT[call_id] >= 2
+    CALL_REMINDER_COUNT[call_id] = 0
+    return False
+
+
+def _end_call_reply(caller_text: str, authorized: bool) -> str:
+    if _caller_wants_to_end(caller_text):
+        if authorized:
+            return "Alright, I’ll let you go. I’ll handle what I can and send the update after the call."
+        return "Alright, I’ll let you go. If you left anything for Z, I’ll pass it along safely."
+    return "I’ll let you go for now. If you need me again, just call back."
 
 
 def _extract_call_metadata(event: dict[str, Any]) -> dict[str, Any]:
@@ -447,6 +479,7 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
         "response_id": 0,
         "content": "Hey, this is Oshun. What do you need?",
         "content_complete": True,
+        "end_call": False,
     }))
 
     try:
@@ -507,12 +540,16 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
                             _unauth_live_chat_prompt(caller_text, transcript),
                             call_id,
                         )
+            end_call = _should_end_call(caller_text, interaction_type, call_id)
+            if end_call:
+                reply = _end_call_reply(caller_text, CALL_AUTHORIZED.get(call_id, False))
             # Retell prefers short spoken chunks. Keep first prototype simple: one complete response.
             await ws.send_text(json.dumps({
                 "response_type": "response",
                 "response_id": response_id,
                 "content": reply[:1800],
                 "content_complete": True,
+                "end_call": end_call,
             }))
     except WebSocketDisconnect:
         utterances = CALL_UTTERANCES.pop(call_id, [])
@@ -520,6 +557,7 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
         metadata = CALL_METADATA.pop(call_id, {})
         CALL_LAST_CALLER_TEXT.pop(call_id, None)
         CALL_AUTH_ACKED.pop(call_id, None)
+        CALL_REMINDER_COUNT.pop(call_id, None)
         if utterances:
             asyncio.create_task(run_post_call_delivery(call_id, utterances, authorized=authorized, metadata=metadata))
         return
