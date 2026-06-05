@@ -238,7 +238,7 @@ def _caller_wants_to_end(text: str) -> bool:
     end_patterns = [
         r"\b(bye|goodbye|good night|talk to you later|see you|peace)\b",
         r"\b(that'?s all|that is all|that'?s it|that is it|nothing else|no thanks|no thank you)\b",
-        r"\b(i'?m done|i am done|we'?re done|we are done)\b",
+        r"\b(i'?m done|i am done|we'?re done|we are done|i'?m good|i am good)\b",
         r"\b(hang up|end (the )?call|you can hang up|go ahead and hang up)\b",
     ]
     return any(re.search(pattern, normalized) for pattern in end_patterns)
@@ -254,7 +254,7 @@ def _caller_is_leaving_voicemail(text: str) -> bool:
     if not normalized:
         return False
     message_patterns = [
-        r"\b(can i|could i|may i|i want to|i need to|i'd like to|let me)\s+(leave|record)\s+(a\s+)?(message|voicemail)\b",
+        r"\b(can i|could i|may i|i want to|i need to|i'd like to|let me)\s+(leave|record)\s+(z|zeez|azeez|saba|him|her)?\s*(a\s+)?(message|voicemail)\b",
         r"\b(i'?m calling to|i am calling to|calling to)\s+(leave|tell|let|ask)\b",
         r"\b(tell|let|message|notify|ask)\s+(z|zeez|azeez|saba|him|her)\b",
         r"\b(pass|send|deliver)\s+(this|a|the)?\s*(message|note|voicemail)\s+(to|along to|over to)\s+(z|zeez|azeez|saba|him|her)\b",
