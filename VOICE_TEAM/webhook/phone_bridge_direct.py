@@ -382,7 +382,7 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
     await ws.send_text(json.dumps({
         "response_type": "response",
         "response_id": 0,
-        "content": "Phone Line connected. This is Oshun. Say the passcode if you want to give instructions, or leave a message for Z.",
+        "content": "Hey, this is Oshun. What do you need?",
         "content_complete": True,
     }))
 
