@@ -4,3 +4,4 @@ httpx>=0.27
 websockets>=12.0
 pyyaml>=6.0
 dateparser>=1.2
+hermes-agent==0.15.1
