@@ -241,6 +241,34 @@ def _send_telegram_fallback(call_id: str, transcript: str, metadata: dict[str, A
     ask_hermes(fallback_prompt, call_id, post_call=True, authorized=False)
 
 
+def _ask_personality_fallback(user_text: str, call_id: str) -> str:
+    """Direct model fallback for live conversational phone turns when Hermes CLI is unavailable."""
+    api_key = os.getenv("OPENAI_API_KEY", "")
+    if not api_key:
+        return "I'm here with you. Say that a little more plainly for me, and I'll stay with you."
+    payload = {
+        "model": os.getenv("PHONE_LINE_CHAT_MODEL", "gpt-4o-mini"),
+        "messages": [
+            {"role": "system", "content": SYSTEM_PREFACE + "\n\nThis is a live phone call. Reply in 1-3 natural spoken sentences. Do not use tools or claim external actions. If the caller asks for an action, tell them you can capture it after passcode/confirmation."},
+            {"role": "user", "content": f"Call ID: {call_id}\nCaller said: {user_text}"},
+        ],
+        "temperature": 0.85,
+        "max_tokens": 140,
+    }
+    req = urllib.request.Request(
+        "https://api.openai.com/v1/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        return (data["choices"][0]["message"]["content"] or "").strip() or "I'm here with you. Keep going."
+    except Exception:
+        return "I'm here with you. Talk to me — what's really on your mind?"
+
+
 def ask_hermes(user_text: str, call_id: str, *, post_call: bool = False, authorized: bool = True) -> str:
     _ensure_hermes_bootstrap()
     if post_call:
@@ -282,6 +310,8 @@ def ask_hermes(user_text: str, call_id: str, *, post_call: bool = False, authori
         timeout=HERMES_TIMEOUT_SEC,
     )
     if proc.returncode != 0:
+        if not post_call:
+            return _ask_personality_fallback(user_text, call_id)
         return "I hit an internal error reaching Hermes. Please try again in a moment."
     return _clean_hermes_output(proc.stdout)
 
