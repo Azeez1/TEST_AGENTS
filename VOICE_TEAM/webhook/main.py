@@ -48,6 +48,14 @@ import dateparser
 import httpx
 import websockets
 import yaml
+
+try:
+    import phone_bridge_direct
+except Exception as e:  # direct mode is optional; proxy mode still works
+    phone_bridge_direct = None
+    log_phone_bridge_import_error = e
+else:
+    log_phone_bridge_import_error = None
 from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -62,6 +70,7 @@ RETELL_BASE = os.getenv("RETELL_API_BASE", "https://api.retellai.com")
 # Public Render web service can act as the stable WSS front door for the
 # Hermes worker-hosted phone bridge. The worker keeps the real bridge because it
 # has Hermes auth/session state and Telegram delivery configured on /opt/data.
+PHONE_LINE_DIRECT_MODE = os.getenv("PHONE_LINE_DIRECT_MODE", "").lower() in {"1", "true", "yes", "on"}
 PHONE_LINE_UPSTREAM_WS_BASE = os.getenv("PHONE_LINE_UPSTREAM_WS_BASE", "")
 PHONE_LINE_UPSTREAM_WS_CANDIDATES = [
     base.rstrip("/")
@@ -69,9 +78,6 @@ PHONE_LINE_UPSTREAM_WS_CANDIDATES = [
         PHONE_LINE_UPSTREAM_WS_BASE,
         "ws://hermes-agent-otb8-discovery:8088",
         "ws://srv-d8d3etkm0tmc73dgjimg.own-d8bmchsm0tmc73emg3j0.svc.cluster.local:8088",
-        # Fallback tunnel into the Hermes worker bridge. Keep after private-network
-        # candidates so Render private networking wins when available.
-        "wss://walking-reporting-southampton-invite.trycloudflare.com",
     ]
     if base
 ]
@@ -419,12 +425,29 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"ok": True, "phone_line_proxy": bool(PHONE_LINE_UPSTREAM_WS_CANDIDATES)}
+    return {
+        "ok": True,
+        "phone_line_proxy": bool(PHONE_LINE_UPSTREAM_WS_CANDIDATES),
+        "phone_line_direct": PHONE_LINE_DIRECT_MODE,
+        "phone_line_direct_ready": bool(phone_bridge_direct),
+    }
 
 
 @app.websocket("/retell/llm-auth/{token}/{call_id}")
 async def retell_phone_line_proxy_auth(ws: WebSocket, token: str, call_id: str):
-    """Stable Render WSS front door for Retell custom-LLM phone-line calls."""
+    """Stable Render WSS front door for Retell custom-LLM phone-line calls.
+
+    In direct mode, this service runs the phone bridge itself. Otherwise it
+    preserves the older proxy behavior for rollback/tunnel fallback.
+    """
+    if PHONE_LINE_DIRECT_MODE:
+        if phone_bridge_direct is None:
+            log.error("Phone Line direct mode requested but import failed: %s", log_phone_bridge_import_error)
+            await ws.close(code=1011, reason="phone line direct bridge unavailable")
+            return
+        await phone_bridge_direct._retell_llm_impl(ws, call_id, token)
+        return
+
     await ws.accept()
     upstream = None
     try:
