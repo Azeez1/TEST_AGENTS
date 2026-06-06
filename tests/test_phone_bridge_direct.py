@@ -83,7 +83,7 @@ def test_done_thanks_is_treated_as_end_call_intent():
     assert bridge._should_end_call("I'm good. Thank you.", "response_required", "done-thanks") is True
 
 
-def test_post_call_delivery_is_scheduled_once_on_socket_close(monkeypatch):
+def test_post_call_delivery_state_is_popped_once(monkeypatch):
     call_id = "socket-close-delivery-test"
     bridge.CALL_UTTERANCES[call_id] = ["Can I leave Z a message?", "Please call me back at 301-448-9941."]
     bridge.CALL_AUTHORIZED[call_id] = False
@@ -92,25 +92,49 @@ def test_post_call_delivery_is_scheduled_once_on_socket_close(monkeypatch):
     bridge.CALL_AUTH_ACKED[call_id] = True
     bridge.CALL_REMINDER_COUNT[call_id] = 2
 
-    scheduled = []
+    utterances, authorized, metadata = bridge._pop_post_call_state(call_id)
+    second_utterances, _second_authorized, _second_metadata = bridge._pop_post_call_state(call_id)
 
-    def fake_create_task(coro):
-        scheduled.append(coro)
-        coro.close()
-        return object()
-
-    monkeypatch.setattr(bridge.asyncio, "create_task", fake_create_task)
-
-    bridge._schedule_post_call_delivery(call_id)
-    bridge._schedule_post_call_delivery(call_id)
-
-    assert len(scheduled) == 1
+    assert utterances == ["Can I leave Z a message?", "Please call me back at 301-448-9941."]
+    assert authorized is False
+    assert metadata == {"direction": "inbound"}
+    assert second_utterances == []
     assert call_id not in bridge.CALL_UTTERANCES
     assert call_id not in bridge.CALL_AUTHORIZED
     assert call_id not in bridge.CALL_METADATA
     assert call_id not in bridge.CALL_LAST_CALLER_TEXT
     assert call_id not in bridge.CALL_AUTH_ACKED
     assert call_id not in bridge.CALL_REMINDER_COUNT
+
+
+def test_post_call_delivery_completes_when_websocket_closes(monkeypatch):
+    call_id = "websocket-close-awaits-delivery-test"
+    deliveries = []
+
+    async def fake_run_post_call_delivery(delivery_call_id, utterances, *, authorized, metadata):
+        deliveries.append((delivery_call_id, utterances, authorized, metadata))
+
+    monkeypatch.setattr(bridge, "run_post_call_delivery", fake_run_post_call_delivery)
+
+    _client, ws_cm, ws = _open_call(call_id)
+    try:
+        _drain_initial(ws)
+        ws.send_text(json.dumps(_retell_event("Can I leave Z a message?", response_id=1)))
+        ws.receive_text()
+        ws.send_text(json.dumps(_retell_event("Please call me back at 301-448-9941. That's it.", response_id=2)))
+        response = json.loads(ws.receive_text())
+        assert response["end_call"] is True
+    finally:
+        ws_cm.__exit__(None, None, None)
+
+    assert deliveries == [
+        (
+            call_id,
+            ["Can I leave Z a message?", "Please call me back at 301-448-9941. That's it."],
+            False,
+            {"direction": "inbound", "from_number": "+130****9941", "to_number": "+133****8344"},
+        )
+    ]
 
 
 def test_voicemail_email_uses_google_token_file_when_refresh_env_missing(tmp_path, monkeypatch):
