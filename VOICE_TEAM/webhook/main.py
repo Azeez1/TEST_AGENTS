@@ -425,12 +425,17 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {
+    payload: dict[str, Any] = {
         "ok": True,
         "phone_line_proxy": bool(PHONE_LINE_UPSTREAM_WS_CANDIDATES),
         "phone_line_direct": PHONE_LINE_DIRECT_MODE,
         "phone_line_direct_ready": bool(phone_bridge_direct),
     }
+    if phone_bridge_direct is not None:
+        payload["phone_line_voicemail_delivery"] = phone_bridge_direct.voicemail_delivery_diagnostics()
+    elif log_phone_bridge_import_error is not None:
+        payload["phone_line_direct_import_error"] = type(log_phone_bridge_import_error).__name__
+    return payload
 
 
 @app.websocket("/retell/llm-auth/{token}/{call_id}")

@@ -50,6 +50,7 @@ CALL_METADATA: dict[str, dict[str, Any]] = {}
 CALL_LAST_CALLER_TEXT: dict[str, str] = {}
 CALL_AUTH_ACKED: dict[str, bool] = {}
 CALL_REMINDER_COUNT: dict[str, int] = {}
+LAST_POST_CALL_DELIVERY: dict[str, Any] = {}
 
 
 
@@ -485,18 +486,33 @@ async def ask_hermes_async(user_text: str, call_id: str) -> str:
 
 
 async def run_post_call_delivery(call_id: str, utterances: list[str], *, authorized: bool, metadata: dict[str, Any]) -> None:
+    LAST_POST_CALL_DELIVERY.update({
+        "call_id": call_id,
+        "authorized": authorized,
+        "utterance_count": len(utterances),
+        "started_at": int(time.time()),
+        "status": "started",
+    })
     if not utterances:
+        LAST_POST_CALL_DELIVERY.update({"status": "skipped:no_utterances", "finished_at": int(time.time())})
         return
     transcript = "\n".join(f"- {u}" for u in utterances if u.strip())
     if not transcript.strip():
+        LAST_POST_CALL_DELIVERY.update({"status": "skipped:blank_transcript", "finished_at": int(time.time())})
         return
     if not authorized and PHONE_LINE_VOICEMAIL_EMAIL:
         email_status = await asyncio.to_thread(send_voicemail_email, call_id, transcript, metadata)
         record_path = _write_call_record(call_id, transcript, authorized=authorized, metadata=metadata, email_status=email_status)
+        LAST_POST_CALL_DELIVERY.update({
+            "status": email_status,
+            "record_path": str(record_path),
+            "finished_at": int(time.time()),
+        })
         if not email_status.startswith("sent:"):
             await asyncio.to_thread(_send_telegram_fallback, call_id, transcript, metadata, f"{email_status}; saved locally at {record_path}")
         return
-    _write_call_record(call_id, transcript, authorized=authorized, metadata=metadata)
+    record_path = _write_call_record(call_id, transcript, authorized=authorized, metadata=metadata)
+    LAST_POST_CALL_DELIVERY.update({"status": "recorded", "record_path": str(record_path), "finished_at": int(time.time())})
     result = await asyncio.to_thread(ask_hermes, transcript, call_id, post_call=True, authorized=authorized)
     if authorized and PHONE_LINE_DELIVERY_TARGET.lower().startswith("telegram"):
         await asyncio.to_thread(_send_telegram_direct, f"Oshun phone result ({call_id}):\n\n{result}")
@@ -595,6 +611,19 @@ def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]
         return f"gmail_error:{type(e).__name__}:{str(e)[:300]}{suffix}"
 
 
+def voicemail_delivery_diagnostics() -> dict[str, Any]:
+    """Return redacted voicemail delivery readiness/status for health checks."""
+    token_candidates = _google_token_file_candidates()
+    return {
+        "email_recipient_configured": bool(PHONE_LINE_VOICEMAIL_EMAIL),
+        "google_api_script_exists": bool(GOOGLE_API_SCRIPT and Path(GOOGLE_API_SCRIPT).exists()),
+        "google_refresh_env_configured": bool(os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN")),
+        "google_client_env_configured": bool(os.getenv("GOOGLE_OAUTH_CLIENT_ID") and os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")),
+        "google_token_file_present": any(path.exists() for path in token_candidates),
+        "last_post_call_delivery": dict(LAST_POST_CALL_DELIVERY),
+    }
+
+
 @app.get("/health")
 async def health() -> JSONResponse:
     hermes_ok = bool(shutil.which(HERMES_BIN) or Path(HERMES_BIN).exists())
@@ -608,6 +637,7 @@ async def health() -> JSONResponse:
         "voicemail_email": PHONE_LINE_VOICEMAIL_EMAIL or None,
         "records_dir": str(CALL_RECORDS_DIR),
         "passcode_variants_count": len(PASSCODE_VARIANTS),
+        "voicemail_delivery": voicemail_delivery_diagnostics(),
     })
 
 
