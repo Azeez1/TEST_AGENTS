@@ -502,23 +502,27 @@ async def run_post_call_delivery(call_id: str, utterances: list[str], *, authori
         await asyncio.to_thread(_send_telegram_direct, f"Oshun phone result ({call_id}):\n\n{result}")
 
 
-def _schedule_post_call_delivery(call_id: str) -> None:
-    """Flush captured call content exactly once when the Retell socket ends.
-
-    Retell can terminate a call after receiving ``end_call: true`` without the
-    app necessarily seeing FastAPI's ``WebSocketDisconnect`` exception. Keeping
-    the state cleanup + delivery scheduling in one helper lets the websocket
-    handler call it from ``finally`` so voicemail email delivery runs for clean
-    closes, agent hangups, and socket errors alike.
-    """
+def _pop_post_call_state(call_id: str) -> tuple[list[str], bool, dict[str, Any]]:
+    """Pop captured call state exactly once when the Retell socket ends."""
     utterances = CALL_UTTERANCES.pop(call_id, [])
     authorized = CALL_AUTHORIZED.pop(call_id, False)
     metadata = CALL_METADATA.pop(call_id, {})
     CALL_LAST_CALLER_TEXT.pop(call_id, None)
     CALL_AUTH_ACKED.pop(call_id, None)
     CALL_REMINDER_COUNT.pop(call_id, None)
+    return utterances, authorized, metadata
+
+
+async def _flush_post_call_delivery(call_id: str) -> None:
+    """Deliver captured post-call content before the websocket task exits.
+
+    Render may cancel fire-and-forget tasks created during websocket cleanup.
+    Awaiting delivery here makes agent hangups, clean socket closes, and socket
+    errors all complete voicemail email delivery before request cleanup ends.
+    """
+    utterances, authorized, metadata = _pop_post_call_state(call_id)
     if utterances:
-        asyncio.create_task(run_post_call_delivery(call_id, utterances, authorized=authorized, metadata=metadata))
+        await run_post_call_delivery(call_id, utterances, authorized=authorized, metadata=metadata)
 
 
 def send_voicemail_email(call_id: str, transcript: str, metadata: dict[str, Any]) -> str:
@@ -726,4 +730,4 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
     except WebSocketDisconnect:
         return
     finally:
-        _schedule_post_call_delivery(call_id)
+        await _flush_post_call_delivery(call_id)
