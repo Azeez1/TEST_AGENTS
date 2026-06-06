@@ -83,6 +83,36 @@ def test_done_thanks_is_treated_as_end_call_intent():
     assert bridge._should_end_call("I'm good. Thank you.", "response_required", "done-thanks") is True
 
 
+def test_post_call_delivery_is_scheduled_once_on_socket_close(monkeypatch):
+    call_id = "socket-close-delivery-test"
+    bridge.CALL_UTTERANCES[call_id] = ["Can I leave Z a message?", "Please call me back at 301-448-9941."]
+    bridge.CALL_AUTHORIZED[call_id] = False
+    bridge.CALL_METADATA[call_id] = {"direction": "inbound"}
+    bridge.CALL_LAST_CALLER_TEXT[call_id] = "please call me back"
+    bridge.CALL_AUTH_ACKED[call_id] = True
+    bridge.CALL_REMINDER_COUNT[call_id] = 2
+
+    scheduled = []
+
+    def fake_create_task(coro):
+        scheduled.append(coro)
+        coro.close()
+        return object()
+
+    monkeypatch.setattr(bridge.asyncio, "create_task", fake_create_task)
+
+    bridge._schedule_post_call_delivery(call_id)
+    bridge._schedule_post_call_delivery(call_id)
+
+    assert len(scheduled) == 1
+    assert call_id not in bridge.CALL_UTTERANCES
+    assert call_id not in bridge.CALL_AUTHORIZED
+    assert call_id not in bridge.CALL_METADATA
+    assert call_id not in bridge.CALL_LAST_CALLER_TEXT
+    assert call_id not in bridge.CALL_AUTH_ACKED
+    assert call_id not in bridge.CALL_REMINDER_COUNT
+
+
 def test_voicemail_email_uses_google_token_file_when_refresh_env_missing(tmp_path, monkeypatch):
     token_file = tmp_path / "google_token.json"
     token_file.write_text(
