@@ -8,6 +8,7 @@ import subprocess
 import time
 import sys
 import urllib.request
+from dataclasses import dataclass
 import urllib.parse
 import shutil
 from pathlib import Path
@@ -286,6 +287,93 @@ def _caller_requires_passcode(text: str) -> bool:
 
 def _passcode_required_reply() -> str:
     return "I can’t get into Z’s private stuff from here, but I can pass him a message. What should I tell him?"
+
+
+@dataclass(frozen=True)
+class CallDecision:
+    reply: str
+    end_call: bool = False
+    use_model: bool = False
+    model_mode: str = ""
+
+
+def _caller_asks_about_internals(text: str) -> bool:
+    normalized = re.sub(r"\s+", " ", (text or "").lower()).strip()
+    if not normalized:
+        return False
+    internal_patterns = [
+        r"\b(passcode|password|secret code|authentication|authenticate|security setup|security system)\b",
+        r"\b(are you|is this|am i talking to)\s+(an?\s+)?(ai|bot|robot|assistant|machine)\b",
+        r"\bwhat (can|do) you (access|know|see|do)\b",
+    ]
+    return any(re.search(pattern, normalized) for pattern in internal_patterns)
+
+
+def _caller_is_sales_or_spam(text: str) -> bool:
+    normalized = re.sub(r"\s+", " ", (text or "").lower()).strip()
+    if not normalized:
+        return False
+    sales_patterns = [
+        r"\b(special promotion|limited time offer|business funding|merchant cash advance|loan offer)\b",
+        r"\b(sell|selling|sales call|marketing call|cold call|lead generation)\b",
+        r"\b(extend(ed)? warranty|insurance quote|solar|seo services|tax relief)\b",
+    ]
+    return any(re.search(pattern, normalized) for pattern in sales_patterns)
+
+
+def _sales_or_spam_reply() -> str:
+    return "Z is not available for that. If there’s a real message you need passed along, keep it brief and I’ll send it over. Otherwise I’m going to let you go."
+
+
+def _silence_reply(call_id: str) -> CallDecision:
+    CALL_REMINDER_COUNT[call_id] = CALL_REMINDER_COUNT.get(call_id, 0) + 1
+    if CALL_REMINDER_COUNT[call_id] >= 2:
+        return CallDecision("I’m going to let you go for now. If you need Z, call back and leave a clear message.", end_call=True)
+    return CallDecision("I didn’t catch that. If you’re leaving a message for Z, say it briefly.")
+
+
+def _decide_call_turn(
+    caller_text: str,
+    *,
+    call_id: str,
+    authorized: bool,
+    passcode_seen: bool,
+    duplicate_latest: bool,
+    interaction_type: str,
+) -> CallDecision:
+    """Deterministic call policy before any model fallback.
+
+    This is the hard receptionist brain: it decides when to authenticate, route,
+    refuse, capture voicemail, use the model for safe chat, or hang up.
+    """
+    if interaction_type == "reminder_required" and not (caller_text or "").strip():
+        return _silence_reply(call_id)
+
+    if authorized:
+        if passcode_seen and not CALL_AUTH_ACKED.get(call_id, False):
+            CALL_AUTH_ACKED[call_id] = True
+            if caller_text == "The caller provided the passcode and is ready to give instructions.":
+                return CallDecision("You’re good — I’m with you.")
+            return CallDecision("You’re good — I’ve got it. What else?")
+        if duplicate_latest:
+            return CallDecision("I’m with you.")
+        if _caller_wants_to_end(caller_text):
+            return CallDecision(_end_call_reply(caller_text, True), end_call=True)
+        return CallDecision("", use_model=True, model_mode="authorized")
+
+    if duplicate_latest:
+        return CallDecision("I’m with you. Keep going.")
+    if _caller_wants_to_end(caller_text):
+        return CallDecision(_end_call_reply(caller_text, False), end_call=True)
+    if _caller_asks_about_internals(caller_text):
+        return CallDecision(_passcode_required_reply())
+    if _caller_is_sales_or_spam(caller_text):
+        return CallDecision(_sales_or_spam_reply(), end_call=True)
+    if _caller_is_leaving_voicemail(caller_text):
+        return CallDecision(_voicemail_ack_reply(caller_text))
+    if _caller_requires_passcode(caller_text):
+        return CallDecision(_passcode_required_reply())
+    return CallDecision("", use_model=True, model_mode="unauth_chat")
 
 
 def _should_end_call(caller_text: str, interaction_type: str, call_id: str) -> bool:
@@ -700,55 +788,40 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
             response_id = event.get("response_id", 0)
             transcript = event.get("transcript") or []
             caller_text = _extract_latest_user_utterance(transcript)
-            if not caller_text:
-                caller_text = "The caller paused or gave unclear audio. Ask them to repeat briefly."
-                reply = "I didn't catch that. If you're leaving a message for Z, please say it briefly."
-            else:
-                normalized_latest = _normalize_for_passcode(caller_text)
-                duplicate_latest = normalized_latest and normalized_latest == CALL_LAST_CALLER_TEXT.get(call_id, "")
+            normalized_latest = _normalize_for_passcode(caller_text)
+            duplicate_latest = bool(normalized_latest and normalized_latest == CALL_LAST_CALLER_TEXT.get(call_id, ""))
+            if normalized_latest:
                 CALL_LAST_CALLER_TEXT[call_id] = normalized_latest
 
-                passcode_seen = _has_passcode(caller_text)
-                if passcode_seen:
-                    CALL_AUTHORIZED[call_id] = True
-                    caller_text = _strip_passcode(caller_text) or "The caller provided the passcode and is ready to give instructions."
+            passcode_seen = _has_passcode(caller_text)
+            if passcode_seen:
+                CALL_AUTHORIZED[call_id] = True
+                caller_text = _strip_passcode(caller_text) or "The caller provided the passcode and is ready to give instructions."
 
-                if not duplicate_latest:
-                    CALL_UTTERANCES.setdefault(call_id, []).append(caller_text)
+            if caller_text and not duplicate_latest:
+                CALL_UTTERANCES.setdefault(call_id, []).append(caller_text)
 
-                if CALL_AUTHORIZED.get(call_id, False):
-                    if passcode_seen and not CALL_AUTH_ACKED.get(call_id, False):
-                        CALL_AUTH_ACKED[call_id] = True
-                        if caller_text == "The caller provided the passcode and is ready to give instructions.":
-                            reply = "You’re good — I’m with you."
-                        else:
-                            reply = "You’re good — I’ve got it. What else?"
-                    elif duplicate_latest:
-                        reply = "I'm with you."
-                    elif _caller_wants_to_end(caller_text):
-                        reply = _end_call_reply(caller_text, True)
-                    else:
-                        reply = await ask_hermes_async(caller_text, call_id)
-                else:
-                    if duplicate_latest:
-                        reply = "I'm with you. Keep going."
-                    elif _caller_is_leaving_voicemail(caller_text):
-                        # No passcode required to capture an untrusted voicemail for Z.
-                        # The transcript is delivered after disconnect without executing it.
-                        reply = _voicemail_ack_reply(caller_text)
-                    elif _caller_requires_passcode(caller_text):
-                        reply = _passcode_required_reply()
-                    else:
-                        # Let unauthenticated callers have a normal, personable conversation,
-                        # but keep all private context, side effects, and execution behind passcode.
-                        reply = await asyncio.to_thread(
-                            _ask_personality_fallback,
-                            _unauth_live_chat_prompt(caller_text, transcript),
-                            call_id,
-                        )
-            end_call = _should_end_call(caller_text, interaction_type, call_id)
-            if end_call:
-                reply = _end_call_reply(caller_text, CALL_AUTHORIZED.get(call_id, False))
+            decision = _decide_call_turn(
+                caller_text,
+                call_id=call_id,
+                authorized=CALL_AUTHORIZED.get(call_id, False),
+                passcode_seen=passcode_seen,
+                duplicate_latest=duplicate_latest,
+                interaction_type=interaction_type,
+            )
+            if decision.use_model and decision.model_mode == "authorized":
+                reply = await ask_hermes_async(caller_text, call_id)
+            elif decision.use_model and decision.model_mode == "unauth_chat":
+                # Let unauthenticated callers have a normal, personable conversation,
+                # but keep all private context, side effects, and execution behind passcode.
+                reply = await asyncio.to_thread(
+                    _ask_personality_fallback,
+                    _unauth_live_chat_prompt(caller_text, transcript),
+                    call_id,
+                )
+            else:
+                reply = decision.reply
+            end_call = decision.end_call
             # Retell prefers short spoken chunks. Keep first prototype simple: one complete response.
             await ws.send_text(json.dumps({
                 "response_type": "response",
