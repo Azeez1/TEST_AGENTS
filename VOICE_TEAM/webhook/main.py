@@ -38,6 +38,7 @@ import json
 import logging
 import os
 import re
+import time
 from datetime import datetime, timedelta, timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -133,8 +134,28 @@ def _refresh_google_access_token() -> str:
     return _token_cache.access_token
 
 
+def find_existing_event(calendar_id: str, call_id: str) -> dict | None:
+    """Idempotency check: has this call already produced a calendar event?
+
+    Retell retries webhooks on failure; without this check every retry creates
+    a duplicate consultation event. We tag events with the call_id in a private
+    extended property and look it up before inserting.
+    """
+    token = _refresh_google_access_token()
+    resp = httpx.get(
+        f"https://www.googleapis.com/calendar/v3/calendars/{calendar_id}/events",
+        headers={"Authorization": f"Bearer {token}"},
+        params={"privateExtendedProperty": f"retell_call_id={call_id}", "maxResults": 1},
+        timeout=15.0,
+    )
+    resp.raise_for_status()
+    items = resp.json().get("items", [])
+    return items[0] if items else None
+
+
 def create_calendar_event(calendar_id: str, summary: str, description: str,
-                          start_iso: str, end_iso: str, tz_name: str = "America/New_York") -> dict:
+                          start_iso: str, end_iso: str, tz_name: str = "America/New_York",
+                          call_id: str = "") -> dict:
     token = _refresh_google_access_token()
     body = {
         "summary": summary,
@@ -143,6 +164,8 @@ def create_calendar_event(calendar_id: str, summary: str, description: str,
         "end": {"dateTime": end_iso, "timeZone": tz_name},
         "reminders": {"useDefault": True},
     }
+    if call_id:
+        body["extendedProperties"] = {"private": {"retell_call_id": call_id}}
     resp = httpx.post(
         f"https://www.googleapis.com/calendar/v3/calendars/{calendar_id}/events",
         headers={"Authorization": f"Bearer {token}"},
@@ -151,6 +174,22 @@ def create_calendar_event(calendar_id: str, summary: str, description: str,
     )
     resp.raise_for_status()
     return resp.json()
+
+
+def alert_operator(text: str) -> None:
+    """Push an ops alert to EZ's Telegram so failures are never log-only."""
+    token = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+    if not token or not chat_id:
+        return
+    try:
+        httpx.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={"chat_id": chat_id, "text": text[:3900], "disable_web_page_preview": "true"},
+            timeout=10.0,
+        )
+    except Exception:
+        log.warning("operator alert delivery failed")
 
 
 def send_gmail(to: str, subject: str, body_html: str) -> dict:
@@ -174,13 +213,21 @@ def send_gmail(to: str, subject: str, body_html: str) -> dict:
 # --- Retell API ------------------------------------------------------------
 
 def fetch_call(call_id: str) -> dict:
-    resp = httpx.get(
-        f"{RETELL_BASE}/v2/get-call/{call_id}",
-        headers={"Authorization": f"Bearer {RETELL_API_KEY}"},
-        timeout=15.0,
-    )
-    resp.raise_for_status()
-    return resp.json()
+    last_error: Exception | None = None
+    for attempt in range(3):
+        try:
+            resp = httpx.get(
+                f"{RETELL_BASE}/v2/get-call/{call_id}",
+                headers={"Authorization": f"Bearer {RETELL_API_KEY}"},
+                timeout=15.0,
+            )
+            resp.raise_for_status()
+            return resp.json()
+        except Exception as e:
+            last_error = e
+            if attempt < 2:
+                time.sleep(1.5 * (attempt + 1))
+    raise last_error  # caller logs and falls back to webhook payload
 
 
 def verify_signature(body: bytes, signature_header: str | None) -> bool:
@@ -315,7 +362,14 @@ def build_email_html(firm: dict, fields: dict, slot_dt: datetime | None) -> tupl
         "emergency": "EMERGENCY", "this_week": "This week",
         "this_month": "This month", "flexible": "Flexible",
     }.get(urgency, urgency)
-    slot_str = slot_dt.strftime("%a %b %d, %I:%M %p %Z") if slot_dt else "Not specified"
+    if slot_dt:
+        slot_str = slot_dt.strftime("%a %b %d, %I:%M %p %Z")
+    elif fields.get("preferred_day") or fields.get("preferred_time"):
+        # Parsing failed but the caller DID state a preference — surface their raw
+        # words so the firm can still honor the request instead of losing it.
+        slot_str = f"Could not auto-schedule. Caller asked for: {(fields.get('preferred_day', '') + ' ' + fields.get('preferred_time', '')).strip()} (please book manually)"
+    else:
+        slot_str = "Not specified"
     subject = f"[{firm['name']}] New Intake — {fields['caller_name']} — {fields.get('incident_type') or 'Unknown'} — {urgency_label}"
 
     rec = fields.get("recording_url") or ""
@@ -547,17 +601,31 @@ async def retell_webhook(req: Request):
             cal_id, slot_dt.isoformat(), end_dt.isoformat(), tz_name,
         )
         try:
-            booked = create_calendar_event(cal_id, cal_summary, cal_desc, slot_dt.isoformat(), end_dt.isoformat(), tz_name)
-            calendar_status = "ok"
-            log.info("Calendar event created: %s", booked.get("id"))
+            existing = find_existing_event(cal_id, call_id)
+            if existing:
+                booked = existing
+                calendar_status = "already_booked"
+                log.info("Calendar event already exists for call %s: %s", call_id, existing.get("id"))
+            else:
+                booked = create_calendar_event(cal_id, cal_summary, cal_desc, slot_dt.isoformat(), end_dt.isoformat(), tz_name, call_id=call_id)
+                calendar_status = "ok"
+                log.info("Calendar event created: %s", booked.get("id"))
         except httpx.HTTPStatusError as e:
             calendar_status = f"http_error_{e.response.status_code}"
             calendar_error = f"{e.response.status_code}: {e.response.text[:500]}"
             log.error("Calendar HTTP error: %s body=%s", e.response.status_code, e.response.text)
+            alert_operator(f"Voice intake ALERT: calendar booking failed for call {call_id} ({fields['caller_name']}). {calendar_error[:300]}")
         except Exception as e:
             calendar_status = "exception"
             calendar_error = f"{type(e).__name__}: {e}"
             log.exception("Calendar event failed: %s", e)
+            alert_operator(f"Voice intake ALERT: calendar booking failed for call {call_id} ({fields['caller_name']}). {calendar_error[:300]}")
+    elif fields.get("preferred_day") or fields.get("preferred_time"):
+        calendar_status = "slot_parse_failed"
+        alert_operator(
+            f"Voice intake NOTE: could not parse callback slot for call {call_id} ({fields['caller_name']}). "
+            f"Caller said: {fields.get('preferred_day', '')} {fields.get('preferred_time', '')}. Book manually."
+        )
 
     # 2) Email summary
     subject, body_html = build_email_html(firm, fields, slot_dt)
@@ -572,6 +640,7 @@ async def retell_webhook(req: Request):
         log.info("Email sent to %s: %s", notify_to, send_result.get("id"))
     except Exception as e:
         log.exception("Email send failed: %s", e)
+        alert_operator(f"Voice intake ALERT: summary email to {notify_to} FAILED for call {call_id} ({fields['caller_name']}). Error: {str(e)[:300]}")
         return {"status": "email_send_failed", "error": str(e), "calendar": booked}
 
     return {
