@@ -477,6 +477,28 @@ def _send_telegram_fallback(call_id: str, transcript: str, metadata: dict[str, A
     ask_hermes(fallback_prompt, call_id, post_call=True, authorized=False)
 
 
+# Hidden end-of-call signal the live model appends when the conversation is
+# naturally finished. The bridge strips it from the spoken reply and uses it to
+# hang up gracefully, so we don't depend on the caller saying a literal "bye".
+END_SIGNAL = "[[END]]"
+HANGUP_RULE = (
+    " HANG-UP JUDGMENT: when the caller's reason for calling is fully handled and "
+    "there is nothing left to say or capture (their question is answered, their "
+    "message is taken and read back, or they're clearly wrapping up), give a short "
+    "warm closing line and append the exact token [[END]] at the very end of your "
+    "reply. Do NOT append [[END]] while anything is still open or you just asked a "
+    "question. Never say the token out loud; it is a silent control signal."
+)
+
+
+def _split_end_signal(reply: str) -> tuple[str, bool]:
+    """Strip the hidden [[END]] hang-up token from a model reply.
+    Returns (spoken_text, should_end_call)."""
+    if END_SIGNAL in (reply or ""):
+        return reply.replace(END_SIGNAL, "").strip(), True
+    return reply, False
+
+
 def _ask_personality_fallback(user_text: str, call_id: str) -> str:
     """Direct model fallback for live conversational phone turns when Hermes CLI is unavailable."""
     api_key = os.getenv("OPENAI_API_KEY", "")
@@ -485,7 +507,7 @@ def _ask_personality_fallback(user_text: str, call_id: str) -> str:
     payload = {
         "model": os.getenv("PHONE_LINE_CHAT_MODEL", "gpt-4.1"),
         "messages": [
-            {"role": "system", "content": SYSTEM_PREFACE + "\n\nThis is a live phone call. Reply in 1-3 natural spoken sentences. First identify the caller's actual topic and intent from the latest turn plus recent transcript, then answer that exact topic. Do not drift into generic warmth, motivation, or small talk unless the caller is actually asking for that. Use only context from this call unless the owner has authenticated. Do not use tools or claim external actions. If the caller asks for an action, private information, or anything outside receptionist/message-taking scope, do not mention passcodes or authentication; offer to pass Z a message instead."},
+            {"role": "system", "content": SYSTEM_PREFACE + "\n\nThis is a live phone call. Reply in 1-3 natural spoken sentences. First identify the caller's actual topic and intent from the latest turn plus recent transcript, then answer that exact topic. Do not drift into generic warmth, motivation, or small talk unless the caller is actually asking for that. Use only context from this call unless the owner has authenticated. Do not use tools or claim external actions. If the caller asks for an action, private information, or anything outside receptionist/message-taking scope, do not mention passcodes or authentication; offer to pass Z a message instead." + HANGUP_RULE},
             {"role": "user", "content": f"Call ID: {call_id}\n{user_text}"},
         ],
         "temperature": 0.25,
@@ -525,6 +547,7 @@ def _ask_live_authorized(user_text: str, call_id: str, transcript: list[dict[str
         "So: answer questions directly from the call context and what you know about Z. "
         "For action requests, confirm the instruction back in one short sentence and promise the result after the call. "
         "Never claim an action is already done when it has not run yet."
+        + HANGUP_RULE
     )
     payload = {
         "model": os.getenv("PHONE_LINE_CHAT_MODEL", "gpt-4.1"),
@@ -933,12 +956,14 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
                 duplicate_latest=duplicate_latest,
                 interaction_type=interaction_type,
             )
+            model_end = False
             if decision.use_model and decision.model_mode == "authorized":
                 # Fast persona layer keeps live latency ~1-2s; the full Hermes
                 # executes captured instructions after hangup (worker post-call).
                 reply = await asyncio.to_thread(
                     _ask_live_authorized, caller_text, call_id, transcript,
                 )
+                reply, model_end = _split_end_signal(reply)
             elif decision.use_model and decision.model_mode == "unauth_chat":
                 # Let unauthenticated callers have a normal, personable conversation,
                 # but keep all private context, side effects, and execution behind passcode.
@@ -947,9 +972,12 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
                     _unauth_live_chat_prompt(caller_text, transcript),
                     call_id,
                 )
+                reply, model_end = _split_end_signal(reply)
             else:
                 reply = decision.reply
-            end_call = decision.end_call
+            # Hang up when EITHER the deterministic policy says so (explicit goodbye,
+            # spam) OR the model judged the conversation naturally complete.
+            end_call = decision.end_call or model_end
             # Retell prefers short spoken chunks. Keep first prototype simple: one complete response.
             await ws.send_text(json.dumps({
                 "response_type": "response",
