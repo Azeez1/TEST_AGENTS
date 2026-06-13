@@ -799,8 +799,14 @@ def _format_authorized_telegram(transcript: str, metadata: dict[str, Any], email
     """Clean assistant follow-up to Z for an authorized call."""
     tail = ""
     if email_status:
-        tail = ("\n\nEmailed to you ✅" if email_status.startswith("sent:")
-                else f"\n\n(Email attempt: {email_status})")
+        # Two-email status looks like "transcript=sent:.. deliverable=sent:..".
+        sent_count = email_status.count("sent:")
+        if sent_count >= 2:
+            tail = "\n\nEmailed you the transcript and your deliverable (2 separate emails) ✅"
+        elif sent_count == 1:
+            tail = "\n\nEmailed you (one of two emails sent; check the log) ⚠️"
+        else:
+            tail = f"\n\n(Email attempt failed: {email_status})"
     return (
         "Oshun here, following up on your call.\n\n"
         "What you asked me to do:\n"
@@ -857,12 +863,8 @@ def _generate_image_b64(prompt: str) -> str | None:
         return None
 
 
-def _send_authorized_email(call_id: str, transcript: str, metadata: dict[str, Any], image_b64: str | None = None) -> str:
-    """Email Z a summary of the call (optionally with a generated image attached),
-    using the web service's Gmail credential."""
-    to = os.getenv("PHONE_LINE_VOICEMAIL_EMAIL") or os.getenv("GOOGLE_USER_EMAIL", "")
-    if not to:
-        return "no_recipient"
+def _gmail_send(to: str, subject: str, body: str, image_b64: str | None = None) -> str:
+    """Send one email via the web service's Gmail credential, optional PNG attachment."""
     try:
         token = _google_access_token()
     except Exception as e:
@@ -871,13 +873,6 @@ def _send_authorized_email(call_id: str, transcript: str, metadata: dict[str, An
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     from email.mime.image import MIMEImage
-    subject = f"Oshun: your phone request ({call_id[:14]})"
-    body = (
-        "Hi Z, here's what you asked me to handle on your call:\n\n"
-        f"{transcript}\n\n"
-        + ("A generated image is attached.\n\n" if image_b64 else "")
-        + "— Oshun"
-    )
     msg = MIMEMultipart()
     msg["To"] = to
     msg["From"] = os.getenv("GOOGLE_USER_EMAIL", to)
@@ -901,6 +896,33 @@ def _send_authorized_email(call_id: str, transcript: str, metadata: dict[str, An
         return f"sent:{resp.json().get('id', 'ok')}"
     except Exception as e:
         return f"send_error:{type(e).__name__}:{str(e)[:150]}"
+
+
+def _send_authorized_emails(call_id: str, transcript: str, metadata: dict[str, Any], image_b64: str | None = None) -> str:
+    """Per Z's preference, send TWO separate emails: one with the call transcript
+    (the record), and a separate one with the actual deliverable (the requested
+    image, or the task note). Never bundle them into a single email."""
+    to = os.getenv("PHONE_LINE_VOICEMAIL_EMAIL") or os.getenv("GOOGLE_USER_EMAIL", "")
+    if not to:
+        return "no_recipient"
+    # Email 1: the transcript / record of the call.
+    t_status = _gmail_send(
+        to, f"Oshun — call transcript ({call_id[:12]})",
+        f"Transcript of your call:\n\n{transcript}\n\n— Oshun",
+    )
+    # Email 2: the actual deliverable, on its own.
+    if image_b64:
+        d_status = _gmail_send(
+            to, "Oshun — your requested image",
+            "Here's the image you asked for on your call. (Transcript sent separately.)\n\n— Oshun",
+            image_b64,
+        )
+    else:
+        d_status = _gmail_send(
+            to, "Oshun — your requested task",
+            f"Here's the task you asked me to handle on your call:\n\n{transcript}\n\n(Transcript sent separately.)\n\n— Oshun",
+        )
+    return f"transcript={t_status} deliverable={d_status}"
 
 
 async def run_post_call_delivery(call_id: str, utterances: list[str], *, authorized: bool, metadata: dict[str, Any]) -> None:
@@ -951,7 +973,7 @@ async def run_post_call_delivery(call_id: str, utterances: list[str], *, authori
         image_b64 = None
         if _wants_image(transcript):
             image_b64 = await asyncio.to_thread(_generate_image_b64, _image_prompt_from_transcript(transcript))
-        email_status = await asyncio.to_thread(_send_authorized_email, call_id, transcript, metadata, image_b64)
+        email_status = await asyncio.to_thread(_send_authorized_emails, call_id, transcript, metadata, image_b64)
     # Always send a Telegram follow-up too (with the email result if relevant).
     summary = _format_authorized_telegram(transcript, metadata, email_status)
     tg_status = await asyncio.to_thread(_send_telegram_direct, summary)
