@@ -378,10 +378,21 @@ def _sales_or_spam_reply() -> str:
 
 
 def _silence_reply(call_id: str) -> CallDecision:
+    """Handle 'no speech captured' events.
+
+    Retell fires these when it thinks the caller went quiet — but early in a call
+    that often fires WHILE the caller is just starting to talk. Re-prompting then
+    ('I didn't catch that') speaks right over them and reads as 'it can't hear me'.
+    So we stay SILENT (empty content = the agent says nothing) for the first couple,
+    giving the caller room, then prompt gently, then let them go.
+    """
     CALL_REMINDER_COUNT[call_id] = CALL_REMINDER_COUNT.get(call_id, 0) + 1
-    if CALL_REMINDER_COUNT[call_id] >= 2:
-        return CallDecision("I’m going to let you go for now. If you need Z, call back and leave a clear message.", end_call=True)
-    return CallDecision("I didn’t catch that. If you’re leaving a message for Z, say it briefly.")
+    n = CALL_REMINDER_COUNT[call_id]
+    if n <= 2:
+        return CallDecision("")  # stay quiet — do not talk over a caller who's starting to speak
+    if n == 3:
+        return CallDecision("Take your time — I'm right here when you're ready.")
+    return CallDecision("I'll let you go for now. Call back anytime and leave a message.", end_call=True)
 
 
 def _decide_call_turn(
@@ -398,7 +409,10 @@ def _decide_call_turn(
     This is the hard receptionist brain: it decides when to authenticate, route,
     refuse, capture voicemail, use the model for safe chat, or hang up.
     """
-    if interaction_type == "reminder_required" and not (caller_text or "").strip():
+    # No speech captured (on EITHER a reminder or a spurious early response_required):
+    # stay quiet instead of chattering over the caller. This is the core fix for
+    # "it can't hear me at the start" — the agent was interrupting itself.
+    if not (caller_text or "").strip():
         return _silence_reply(call_id)
 
     if authorized:
@@ -1035,6 +1049,7 @@ async def _retell_llm_impl(ws: WebSocket, call_id: str, token: str | None = None
 
             if caller_text and not duplicate_latest:
                 CALL_UTTERANCES.setdefault(call_id, []).append(caller_text)
+                CALL_REMINDER_COUNT[call_id] = 0  # real speech resets the silence streak
 
             decision = _decide_call_turn(
                 caller_text,

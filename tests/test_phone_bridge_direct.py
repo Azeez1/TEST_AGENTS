@@ -143,27 +143,32 @@ def test_call_brain_captures_voicemail_then_hangs_up_when_complete():
     assert "pass" in second.reply.lower()
 
 
-def test_call_brain_retries_silence_once_then_hangs_up():
-    first = bridge._decide_call_turn(
-        "",
-        call_id="silence-test",
-        authorized=False,
-        passcode_seen=False,
-        duplicate_latest=False,
-        interaction_type="reminder_required",
-    )
-    second = bridge._decide_call_turn(
-        "",
-        call_id="silence-test",
-        authorized=False,
-        passcode_seen=False,
-        duplicate_latest=False,
-        interaction_type="reminder_required",
-    )
+def test_silence_stays_quiet_early_then_ends_after_sustained_silence():
+    """No-speech events must NOT talk over a caller who's just starting.
 
-    assert first.end_call is False
-    assert second.end_call is True
-    assert "call back" in second.reply.lower()
+    The agent stays silent (empty reply) for the first two silence events, gently
+    prompts on the third, and only ends after sustained silence. This is the fix
+    for 'it can't hear me at the start' — the agent was interrupting itself.
+    """
+    bridge.CALL_REMINDER_COUNT.pop("silence-test", None)
+
+    def turn():
+        return bridge._decide_call_turn(
+            "",
+            call_id="silence-test",
+            authorized=False,
+            passcode_seen=False,
+            duplicate_latest=False,
+            interaction_type="reminder_required",
+        )
+
+    first, second, third, fourth = turn(), turn(), turn(), turn()
+
+    assert first.reply == "" and first.end_call is False    # stay quiet, give room
+    assert second.reply == "" and second.end_call is False  # still quiet
+    assert third.reply != "" and third.end_call is False    # gentle prompt
+    assert fourth.end_call is True                          # end after sustained silence
+    assert "call back" in fourth.reply.lower()
 
 
 def test_post_call_delivery_state_is_popped_once(monkeypatch):
