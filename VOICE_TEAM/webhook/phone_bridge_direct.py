@@ -405,8 +405,8 @@ def _decide_call_turn(
         if passcode_seen and not CALL_AUTH_ACKED.get(call_id, False):
             CALL_AUTH_ACKED[call_id] = True
             if caller_text == "The caller provided the passcode and is ready to give instructions.":
-                return CallDecision("You’re good — I’m with you.")
-            return CallDecision("You’re good — I’ve got it. What else?")
+                return CallDecision("Code word confirmed — you're verified, Z. What do you need?")
+            return CallDecision("Code word confirmed, you're verified. I've got it — what else?")
         if duplicate_latest:
             return CallDecision("I’m with you.")
         if _caller_wants_to_end(caller_text):
