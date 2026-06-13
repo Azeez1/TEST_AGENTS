@@ -795,15 +795,109 @@ def _format_voicemail_telegram(transcript: str, metadata: dict[str, Any]) -> str
     )
 
 
-def _format_authorized_telegram(transcript: str, metadata: dict[str, Any]) -> str:
-    """Clean assistant follow-up to Z for an authorized call. Deterministic and
-    instant — no dependency on the (currently unreachable) worker or on Gmail."""
+def _format_authorized_telegram(transcript: str, metadata: dict[str, Any], email_status: str | None = None) -> str:
+    """Clean assistant follow-up to Z for an authorized call."""
+    tail = ""
+    if email_status:
+        tail = ("\n\nEmailed to you ✅" if email_status.startswith("sent:")
+                else f"\n\n(Email attempt: {email_status})")
     return (
         "Oshun here, following up on your call.\n\n"
         "What you asked me to do:\n"
-        f"{transcript}\n\n"
-        "Logged and ready. (Email/image actions resume once Gmail is reconnected.)"
+        f"{transcript}"
+        f"{tail}"
     )
+
+
+_IMAGE_WORDS = ("image", "picture", "photo", "drawing", "art", "logo", "graphic", "illustration")
+_EMAIL_WORDS = ("email", "e-mail", "inbox", "mail me", "send me")
+
+
+def _wants_email(transcript: str) -> bool:
+    t = transcript.lower()
+    return any(w in t for w in _EMAIL_WORDS)
+
+
+def _wants_image(transcript: str) -> bool:
+    t = transcript.lower()
+    return any(w in t for w in _IMAGE_WORDS)
+
+
+def _image_prompt_from_transcript(transcript: str) -> str:
+    """Pull what kind of image the caller wanted; default to a pleasant surprise."""
+    t = transcript.lower()
+    for kw in ("image of ", "picture of ", "photo of ", "drawing of ", "image with ", "picture with "):
+        if kw in t:
+            after = transcript[t.index(kw) + len(kw):].strip().splitlines()[0][:200]
+            if after and not any(x in after.lower() for x in ("surprise", "random", "anything")):
+                return after
+    return "A vibrant, beautiful surprise: high-quality colorful digital art, uplifting and striking."
+
+
+def _generate_image_b64(prompt: str) -> str | None:
+    """Generate one image via OpenAI; return base64 PNG (no data: prefix)."""
+    api_key = os.getenv("OPENAI_API_KEY", "")
+    if not api_key:
+        return None
+    payload = {"model": "dall-e-3", "prompt": prompt[:900], "n": 1, "size": "1024x1024", "response_format": "b64_json"}
+    req = urllib.request.Request(
+        "https://api.openai.com/v1/images/generations",
+        data=json.dumps(payload).encode("utf-8"), method="POST",
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=90) as r:
+            d = json.loads(r.read())
+        return d["data"][0]["b64_json"]
+    except Exception as e:
+        print(f"[phone_line] image gen failed: {type(e).__name__}: {str(e)[:200]}", file=sys.stderr)
+        return None
+
+
+def _send_authorized_email(call_id: str, transcript: str, metadata: dict[str, Any], image_b64: str | None = None) -> str:
+    """Email Z a summary of the call (optionally with a generated image attached),
+    using the web service's Gmail credential."""
+    to = os.getenv("PHONE_LINE_VOICEMAIL_EMAIL") or os.getenv("GOOGLE_USER_EMAIL", "")
+    if not to:
+        return "no_recipient"
+    try:
+        token = _google_access_token()
+    except Exception as e:
+        return f"auth_error:{type(e).__name__}"
+    import base64 as _b64
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    from email.mime.image import MIMEImage
+    subject = f"Oshun: your phone request ({call_id[:14]})"
+    body = (
+        "Hi Z, here's what you asked me to handle on your call:\n\n"
+        f"{transcript}\n\n"
+        + ("A generated image is attached.\n\n" if image_b64 else "")
+        + "— Oshun"
+    )
+    msg = MIMEMultipart()
+    msg["To"] = to
+    msg["From"] = os.getenv("GOOGLE_USER_EMAIL", to)
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
+    if image_b64:
+        try:
+            img = MIMEImage(_b64.b64decode(image_b64), _subtype="png")
+            img.add_header("Content-Disposition", "attachment", filename="oshun-image.png")
+            msg.attach(img)
+        except Exception:
+            pass
+    raw = _b64.urlsafe_b64encode(msg.as_bytes()).decode("ascii")
+    try:
+        resp = httpx.post(
+            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            json={"raw": raw}, timeout=30,
+        )
+        resp.raise_for_status()
+        return f"sent:{resp.json().get('id', 'ok')}"
+    except Exception as e:
+        return f"send_error:{type(e).__name__}:{str(e)[:150]}"
 
 
 async def run_post_call_delivery(call_id: str, utterances: list[str], *, authorized: bool, metadata: dict[str, Any]) -> None:
@@ -847,12 +941,21 @@ async def run_post_call_delivery(call_id: str, utterances: list[str], *, authori
     if worker_status is not None:
         LAST_POST_CALL_DELIVERY.update({"status": f"worker:{worker_status}", "finished_at": int(time.time())})
         return
-    # Reliable fallback: a clean, structured Telegram follow-up delivered directly.
-    # We deliberately do NOT route through the shallow local bootstrap brain here —
-    # it's slow and has no real tools, so it only produced hollow promises.
-    summary = _format_authorized_telegram(transcript, metadata)
+    # Execute the common requests directly on the web service (which has working
+    # Gmail + image gen), since the full-brain worker is unreachable on Render.
+    email_status = None
+    if _wants_email(transcript):
+        image_b64 = None
+        if _wants_image(transcript):
+            image_b64 = await asyncio.to_thread(_generate_image_b64, _image_prompt_from_transcript(transcript))
+        email_status = await asyncio.to_thread(_send_authorized_email, call_id, transcript, metadata, image_b64)
+    # Always send a Telegram follow-up too (with the email result if relevant).
+    summary = _format_authorized_telegram(transcript, metadata, email_status)
     tg_status = await asyncio.to_thread(_send_telegram_direct, summary)
-    LAST_POST_CALL_DELIVERY.update({"status": f"authorized telegram={tg_status}", "finished_at": int(time.time())})
+    LAST_POST_CALL_DELIVERY.update({
+        "status": f"authorized telegram={tg_status} email={email_status or 'not_requested'}",
+        "finished_at": int(time.time()),
+    })
 
 
 def _pop_post_call_state(call_id: str) -> tuple[list[str], bool, dict[str, Any]]:
