@@ -543,6 +543,7 @@ def _ask_live_authorized(user_text: str, call_id: str, transcript: list[dict[str
     system = (
         SYSTEM_PREFACE + "\n\n" + OSHUN_CONTEXT_PACK + "\n\n"
         "AUTHORIZED LIVE MODE. The caller gave the passcode; treat them as Z. "
+        "NEVER say, repeat, or reference the code word / passcode out loud, even if it appears in the transcript as '[code word]'. Just act recognized and move on. "
         "This is a live phone call: reply in 1-3 natural spoken sentences. No lists, no markdown, no headers. "
         "CONTEXT MEMORY: the full call transcript so far is in the user message. Track everything already said this call and never re-ask for something Z already told you. "
         "You cannot run tools DURING the call; the full Oshun executes captured instructions right after hangup and delivers results to Telegram. "
@@ -607,6 +608,16 @@ def _worker_post_call(call_id: str, transcript: str, metadata: dict[str, Any]) -
     return None
 
 
+def _redact_passcode(text: str) -> str:
+    """Hide the code word from anything the model sees, so it can never repeat
+    it on the line. The caller often says it aloud, which puts it in the
+    transcript; without this the model echoes it back ('handle with Infamous')."""
+    out = text or ""
+    for pat in _passcode_patterns():
+        out = pat.sub("[code word]", out)
+    return out
+
+
 def _transcript_text(transcript: list[dict[str, Any]], *, max_turns: int = 40, char_budget: int = 7000) -> str:
     """Render the call transcript for the live model.
 
@@ -627,7 +638,7 @@ def _transcript_text(transcript: list[dict[str, Any]], *, max_turns: int = 40, c
     out = "\n".join(lines)
     if len(out) > char_budget:
         out = out[-char_budget:]
-    return out
+    return _redact_passcode(out)
 
 
 def _caller_known_facts(transcript: list[dict[str, Any]], metadata: dict[str, Any]) -> str:
@@ -736,6 +747,17 @@ def _format_voicemail_telegram(transcript: str, metadata: dict[str, Any]) -> str
     )
 
 
+def _format_authorized_telegram(transcript: str, metadata: dict[str, Any]) -> str:
+    """Clean assistant follow-up to Z for an authorized call. Deterministic and
+    instant — no dependency on the (currently unreachable) worker or on Gmail."""
+    return (
+        "Oshun here, following up on your call.\n\n"
+        "What you asked me to do:\n"
+        f"{transcript}\n\n"
+        "Logged and ready. (Email/image actions resume once Gmail is reconnected.)"
+    )
+
+
 async def run_post_call_delivery(call_id: str, utterances: list[str], *, authorized: bool, metadata: dict[str, Any]) -> None:
     LAST_POST_CALL_DELIVERY.update({
         "call_id": call_id,
@@ -770,16 +792,19 @@ async def run_post_call_delivery(call_id: str, utterances: list[str], *, authori
 
     record_path = _write_call_record(call_id, transcript, authorized=authorized, metadata=metadata)
     LAST_POST_CALL_DELIVERY.update({"status": "recorded", "record_path": str(record_path), "finished_at": int(time.time())})
-    # Prefer the worker's FULL Hermes (memories, skills, Telegram) for execution.
+    # Try the worker's FULL Hermes first (memories, skills, real tools). On Render
+    # this is usually unreachable because background workers don't accept inbound
+    # private connections, so this returns None fast and we fall through.
     worker_status = await asyncio.to_thread(_worker_post_call, call_id, transcript, metadata)
     if worker_status is not None:
         LAST_POST_CALL_DELIVERY.update({"status": f"worker:{worker_status}", "finished_at": int(time.time())})
         return
-    # Fallback: local bootstrap Hermes for execution, then ALWAYS Telegram the
-    # result directly (don't rely on the CLI having messaging tools).
-    result = await asyncio.to_thread(ask_hermes, transcript, call_id, post_call=True, authorized=authorized)
-    tg_status = await asyncio.to_thread(_send_telegram_direct, f"Oshun phone follow-up ({call_id}):\n\n{result}")
-    LAST_POST_CALL_DELIVERY.update({"status": f"local_exec telegram={tg_status}", "finished_at": int(time.time())})
+    # Reliable fallback: a clean, structured Telegram follow-up delivered directly.
+    # We deliberately do NOT route through the shallow local bootstrap brain here —
+    # it's slow and has no real tools, so it only produced hollow promises.
+    summary = _format_authorized_telegram(transcript, metadata)
+    tg_status = await asyncio.to_thread(_send_telegram_direct, summary)
+    LAST_POST_CALL_DELIVERY.update({"status": f"authorized telegram={tg_status}", "finished_at": int(time.time())})
 
 
 def _pop_post_call_state(call_id: str) -> tuple[list[str], bool, dict[str, Any]]:
