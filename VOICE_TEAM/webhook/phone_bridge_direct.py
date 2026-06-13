@@ -835,11 +835,14 @@ def _image_prompt_from_transcript(transcript: str) -> str:
 
 
 def _generate_image_b64(prompt: str) -> str | None:
-    """Generate one image via OpenAI; return base64 PNG (no data: prefix)."""
+    """Generate one image via OpenAI; return base64 PNG (no data: prefix).
+
+    Uses gpt-image-1 (the model this account has; dall-e-3 is not available and
+    gpt-image-1 returns b64_json directly with no response_format param)."""
     api_key = os.getenv("OPENAI_API_KEY", "")
     if not api_key:
         return None
-    payload = {"model": "dall-e-3", "prompt": prompt[:900], "n": 1, "size": "1024x1024", "response_format": "b64_json"}
+    payload = {"model": "gpt-image-1", "prompt": prompt[:900], "n": 1, "size": "1024x1024"}
     req = urllib.request.Request(
         "https://api.openai.com/v1/images/generations",
         data=json.dumps(payload).encode("utf-8"), method="POST",
