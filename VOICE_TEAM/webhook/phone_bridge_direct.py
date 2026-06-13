@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import difflib
 import json
 import os
 import re
@@ -232,12 +233,45 @@ def _passcode_patterns() -> list[re.Pattern[str]]:
     return [re.compile(rf"\b{re.escape(v)}\b", re.IGNORECASE) for v in variants if v]
 
 
+def _fuzzy_passcode_match(text: str, primary: str) -> bool:
+    """Tolerate speech-to-text mangling the spoken code word.
+
+    Real calls show STT writing 'Infamous' as 'Infinus', 'Infamus', etc. We anchor
+    on the code word's first 3 letters (the onset survives almost every misfire) and
+    then accept a close edit-distance match. The onset anchor keeps false positives
+    near zero — ordinary words that start the same AND are this similar are rare.
+    Only enabled for code words >= 5 chars so short ones can't loosely match.
+    """
+    if not primary or len(primary) < 5:
+        return False
+    onset = primary[:3]
+    n = len(primary)
+    words = [w for w in re.split(r"\s+", (text or "").lower()) if w]
+    cands: set[str] = set()
+    for i, w in enumerate(words):
+        nw = _normalize_for_passcode(w)
+        if nw:
+            cands.add(nw)
+        if i + 1 < len(words):  # also try adjacent pairs, e.g. "in famous"
+            pair = _normalize_for_passcode(w + words[i + 1])
+            if pair:
+                cands.add(pair)
+    for cand in cands:
+        if cand.startswith(onset) and abs(len(cand) - n) <= 3:
+            if difflib.SequenceMatcher(None, cand, primary).ratio() >= 0.6:
+                return True
+    return False
+
+
 def _has_passcode(text: str) -> bool:
     if not PHONE_LINE_PASSCODE:
         return False
     normalized_text = _normalize_for_passcode(text)
     normalized_variants = {_normalize_for_passcode(v) for v in [PHONE_LINE_PASSCODE, *PASSCODE_VARIANTS] if v}
-    return any(v and v in normalized_text for v in normalized_variants)
+    if any(v and v in normalized_text for v in normalized_variants):
+        return True
+    # Fuzzy fallback for STT misfires of the spoken code word.
+    return _fuzzy_passcode_match(text, _normalize_for_passcode(PHONE_LINE_PASSCODE))
 
 
 def _strip_passcode(text: str) -> str:
