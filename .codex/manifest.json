@@ -2479,7 +2479,10 @@
     },
     {
       "name": "pdf-filler",
-      "status": "missing_source"
+      "status": "alias",
+      "aliasOf": "pdf",
+      "codexPath": ".codex/skills-export/pdf/SKILL.md",
+      "note": "Use the exported pdf skill; it includes fillable and non-fillable PDF form workflows."
     },
     {
       "name": "pptx",

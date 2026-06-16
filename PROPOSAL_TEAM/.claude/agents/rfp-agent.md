@@ -11,10 +11,10 @@ tools:
   - index_knowledge_base
   - query_knowledge_base
 skills:
-  - document-skills/pdf
-  - document-skills/docx
-  - document-skills/pptx
-  - document-skills/xlsx
+  - pdf
+  - docx
+  - pptx
+  - xlsx
   - flow-diagram
   - infographic-creator
   - internal-comms

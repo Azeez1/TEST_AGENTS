@@ -113,8 +113,9 @@ temp_upload.txt
 **/token_drive.pickle
 **/temp_upload.txt
 
-# Binary/trained model files
+# Binary/trained model files + serialized credentials (covers machine-suffixed tokens like token-DESKTOP-*.pickle)
 *.pkl
+*.pickle
 
 # Node.js build artifacts (in outputs folders)
 **/node_modules/

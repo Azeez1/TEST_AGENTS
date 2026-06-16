@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 · The One Fact System Design Rests On</title>
+<style>
+  :root{
+    --ink:#1a1a2e; --soft:#4a4a68; --line:#e3e3ef; --bg:#fbfbfd;
+    --accent:#6c4ee0; --accent-soft:#efeafe; --good:#1d8a55; --good-bg:#e7f7ee;
+    --bad:#c0392b; --bad-bg:#fcebe9; --gold:#b8862b;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:18px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:56px 28px 96px}
+  .kicker{font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 8px}
+  h1{font-size:34px; line-height:1.18; margin:0 0 10px; letter-spacing:-.01em}
+  .sub{color:var(--soft); font-size:17px; margin:0 0 36px}
+  h2{font-size:23px; margin:46px 0 12px; letter-spacing:-.01em}
+  h3{font-size:18px; margin:28px 0 6px}
+  p{margin:0 0 16px}
+  .analogy{background:#fff; border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:18px 22px; margin:22px 0}
+  .analogy .tag{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-weight:700}
+  .floor{background:var(--accent-soft); border-radius:12px; padding:22px 24px; margin:24px 0}
+  .floor .tag{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:6px}
+  .floor p{margin:0; font-size:19px}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:16px; background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{background:#f4f3fb; font-size:13px; letter-spacing:.04em; text-transform:uppercase; color:var(--soft)}
+  tr:last-child td{border-bottom:none}
+  td b{color:var(--ink)}
+  .limit{display:inline-block; font-weight:700; color:var(--accent)}
+  .fact{border-left:3px solid var(--line); padding-left:14px; color:var(--soft); font-size:16px; margin:16px 0}
+  .quiz{background:#fff; border:1px solid var(--line); border-radius:12px; padding:22px 24px; margin:26px 0}
+  .quiz h3{margin-top:0}
+  .q{margin:18px 0}
+  .q p{font-weight:600; margin-bottom:10px}
+  .opt{display:block; width:100%; text-align:left; background:#fbfbfd; border:1.5px solid var(--line); border-radius:9px; padding:11px 15px; margin:7px 0; font:inherit; font-size:16px; cursor:pointer; transition:.15s}
+  .opt:hover{border-color:var(--accent)}
+  .opt.correct{background:var(--good-bg); border-color:var(--good); color:var(--good); font-weight:600}
+  .opt.wrong{background:var(--bad-bg); border-color:var(--bad); color:var(--bad)}
+  .fb{font-size:15px; margin-top:8px; padding:10px 14px; border-radius:8px; display:none}
+  .fb.show{display:block}
+  .fb.ok{background:var(--good-bg); color:var(--good)}
+  .fb.no{background:var(--bad-bg); color:var(--bad)}
+  .teachback{background:linear-gradient(135deg,#fff,#f6f4ff); border:1.5px solid var(--accent); border-radius:12px; padding:24px 26px; margin:34px 0}
+  .teachback .tag{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-weight:700}
+  .teachback h2{margin-top:6px}
+  .ask{background:#fff7e6; border:1px solid #f0d99a; border-radius:10px; padding:14px 18px; font-size:15px; color:#7a5b16; margin:30px 0}
+  a{color:var(--accent)}
+  .cite{font-size:14px; color:var(--soft)}
+  .foot{margin-top:48px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; color:var(--soft)}
+  code{background:#f0eefb; padding:1px 6px; border-radius:5px; font-size:.92em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">System Design · Lesson 1</p>
+  <h1>The one fact the whole field rests on</h1>
+  <p class="sub">Before any component, one bedrock truth. Everything else is built on top of it.</p>
+
+  <p>You already know words like <i>load balancer</i>, <i>cache</i>, and <i>sharding</i>. The problem with knowing the words is they feel like a random toolbox — a pile of parts with no logic connecting them. This lesson hands you the logic. After it, those parts stop being a vocabulary list and become a <b>family tree</b>, all descended from one ancestor.</p>
+
+  <div class="analogy">
+    <span class="tag">Picture this first</span>
+    <p style="margin:8px 0 0">Imagine a tiny corner shop with <b>one cashier</b>. When two customers walk in, fine. When two hundred walk in at once, the line spills out the door. The cashier didn't get worse — there's just <i>more work than one person can handle</i>. Every fix you can imagine (hire a second cashier, add a self-checkout, keep popular items by the register) is a response to <b>one cashier not being enough</b>.</p>
+  </div>
+
+  <p>A computer is that cashier. And here is the whole foundation of system design:</p>
+
+  <div class="floor">
+    <div class="tag">The floor — the irreducible truth</div>
+    <p><b>A single machine has hard limits, and it can fail. The moment your job is bigger than one machine, you must use more — and using more than one machine is what creates every problem (and every component) in system design.</b></p>
+  </div>
+
+  <p>That's it. That's the ancestor. Let's break the floor into its pieces, because each piece spawns a different branch of the family.</p>
+
+  <h2>What "limits" actually means</h2>
+  <p>A single computer can only offer four finite resources, plus one inconvenient fact about reality. When your need crosses any of these, you've hit a wall — and a named tool exists to climb it.</p>
+
+  <table>
+    <thead><tr><th>The limit</th><th>Plain meaning</th><th>The wall you hit</th></tr></thead>
+    <tbody>
+      <tr><td><span class="limit">Compute (CPU)</span></td><td>How much thinking per second.</td><td>Too many requests; the machine maxes out and slows to a crawl.</td></tr>
+      <tr><td><span class="limit">Memory (RAM)</span></td><td>How much it can hold "in hand" at once, fast.</td><td>Data set won't fit; the machine starts thrashing or crashes.</td></tr>
+      <tr><td><span class="limit">Storage (Disk)</span></td><td>How much it can keep long-term.</td><td>You run out of room to store the data.</td></tr>
+      <tr><td><span class="limit">Reliability</span></td><td>One machine <i>can and will</i> break.</td><td>It dies at 3am and everything goes down with it.</td></tr>
+      <tr><td><span class="limit">Latency</span></td><td>Talking to another machine takes time — info can't travel faster than light.</td><td>Spreading work across machines adds delay you can't erase.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="fact">The first four are about <b>one machine not being enough</b>. The fifth — latency — is the tax you pay the instant you add a second machine to fix the first four. That tension is the entire game: you add machines to escape limits, and adding machines creates a new limit. <span class="cite">(This framing — reliability, scalability, maintainability as the root concerns — is the opening argument of Kleppmann's <a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/">Designing Data-Intensive Applications</a>.)</span></p>
+
+  <h2>Now watch the tools fall out of the floor</h2>
+  <p>Here's the punchline. Every component you've heard of is just a <b>named response to one specific limit above</b>. Not best practice. Not tradition. A direct answer to a wall.</p>
+
+  <table>
+    <thead><tr><th>Limit hit</th><th>The response</th><th>The tool's name</th></tr></thead>
+    <tbody>
+      <tr><td>Compute maxed</td><td>Add more machines, spread requests across them</td><td><b>Load balancer</b> + more servers</td></tr>
+      <tr><td>Same work repeated</td><td>Keep the answer close so you don't recompute it</td><td><b>Cache</b></td></tr>
+      <tr><td>Storage too big for one disk</td><td>Split the data across machines</td><td><b>Sharding</b> / partitioning</td></tr>
+      <tr><td>One machine can fail</td><td>Keep copies on other machines</td><td><b>Replication</b></td></tr>
+      <tr><td>Work can wait / spikes</td><td>Put tasks in a line to handle later</td><td><b>Queue</b></td></tr>
+    </tbody>
+  </table>
+
+  <p>You don't memorize this table. You <i>derive</i> it. Asked "why a cache?", you don't say "because it's fast" — you say "because <b>recomputing the same answer wastes the compute limit</b>, so we store it once." That's first-principles reasoning, and it's exactly what makes a system-design interview (or a client conversation) sound like understanding instead of recall.</p>
+
+  <h3>Fact vs. choice</h3>
+  <p>Keep two buckets straight as we go through this whole mission:</p>
+  <p class="fact"><b>Bedrock fact:</b> a single machine has finite CPU/RAM/disk, it can fail, and cross-machine talk costs latency. These are not negotiable.<br><br><b>Choice / trade-off:</b> <i>which</i> tool you reach for, and what you sacrifice to use it (a cache can serve stale data; replication can disagree with itself). These could always have gone another way — and the "right" answer depends on the situation.</p>
+
+  <div class="quiz">
+    <h3>Quick check — instant feedback</h3>
+    <p class="cite">Match the symptom to the underlying limit. Click an answer.</p>
+
+    <div class="q" data-correct="b">
+      <p>1. Your app re-runs the exact same expensive database query thousands of times a minute and the servers are pinned at 100%. Which limit is the root cause a <b>cache</b> would relieve?</p>
+      <button class="opt" data-k="a">Storage — you're out of disk</button>
+      <button class="opt" data-k="b">Compute — you're wasting CPU recomputing a known answer</button>
+      <button class="opt" data-k="c">Latency — the speed of light</button>
+      <div class="fb ok">Right. A cache exists because <i>recomputing a known answer burns the compute limit</i>. Store it once, reuse it. The cost/choice: that stored answer can go stale.</div>
+      <div class="fb no">Not quite. The servers being pinned at 100% is the <b>compute</b> wall — you're spending CPU to recompute something you already figured out. That's what a cache fixes.</div>
+    </div>
+
+    <div class="q" data-correct="c">
+      <p>2. Your single database server holds everything. One night its disk dies and the whole product goes offline. Which limit just bit you?</p>
+      <button class="opt" data-k="a">Memory — not enough RAM</button>
+      <button class="opt" data-k="b">Compute — too many requests</button>
+      <button class="opt" data-k="c">Reliability — one machine can fail, and it did</button>
+      <div class="fb ok">Exactly. This is the reliability limit. The named response is <b>replication</b> — keep copies on other machines so one death isn't fatal.</div>
+      <div class="fb no">Look again — nothing here is about being slow or full. A machine <i>broke</i>. That's the reliability limit, and replication is its answer.</div>
+    </div>
+
+    <div class="q" data-correct="a">
+      <p>3. You split your data across 10 machines to fit it all. Now a request that needs data from 3 of them is noticeably slower than before. What did you trade away?</p>
+      <button class="opt" data-k="a">Latency — talking across machines costs time you can't erase</button>
+      <button class="opt" data-k="b">Storage — you ran out of disk again</button>
+      <button class="opt" data-k="c">Nothing, splitting data is always free</button>
+      <div class="fb ok">Yes — this is the whole tension. You added machines to beat the storage limit and inherited the <b>latency</b> tax. There's no free lunch; design is choosing which tax to pay.</div>
+      <div class="fb no">Reconsider. You solved storage by splitting — but now requests hop between machines, and each hop costs time. That's the latency tax for going multi-machine.</div>
+    </div>
+  </div>
+
+  <div class="teachback">
+    <span class="tag">Your turn — the real test</span>
+    <h2>Teach it back to me</h2>
+    <p style="margin-bottom:0">In your own words, in a couple of sentences — <b>no jargon allowed</b> — answer this in the chat:</p>
+    <p style="margin:10px 0 0"><i>"Why does system design exist at all, and how would you explain to a beginner where a tool like a cache or a replica <b>comes from</b>?"</i></p>
+    <p style="margin:14px 0 0; font-size:15px; color:var(--soft)">If you can say it plainly, you own it and we move to Lesson 2. If it comes out fuzzy, that fuzzy spot is exactly what we attack next — that's the point, not a failure.</p>
+  </div>
+
+  <div class="ask">
+    💡 <b>I'm your teacher — ask me anything.</b> Stuck on why latency can't be "optimized away"? Want a concrete example from your own 67-agent system? Just ask in the chat. Confusion is data, not embarrassment.
+  </div>
+
+  <div class="foot">
+    <b>Lesson 1 of your System Design mission.</b> Source grounding: Martin Kleppmann, <a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/"><i>Designing Data-Intensive Applications</i></a> (reliability / scalability / maintainability framing) and <a href="https://github.com/donnemartin/system-design-primer">The System Design Primer</a> (component catalog).<br><br>
+    <b>Next up (Lesson 2):</b> we take the first branch of the family tree — the <i>compute</i> limit — and derive horizontal scaling + the load balancer from scratch, including the new problem it quietly creates.
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.q').forEach(function(q){
+    var correct = q.getAttribute('data-correct');
+    var opts = q.querySelectorAll('.opt');
+    var fbOk = q.querySelector('.fb.ok');
+    var fbNo = q.querySelector('.fb.no');
+    opts.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        opts.forEach(function(b){ b.disabled = true; });
+        var k = btn.getAttribute('data-k');
+        if(k === correct){
+          btn.classList.add('correct');
+          fbOk.classList.add('show');
+        } else {
+          btn.classList.add('wrong');
+          var right = q.querySelector('.opt[data-k="'+correct+'"]');
+          if(right) right.classList.add('correct');
+          fbNo.classList.add('show');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

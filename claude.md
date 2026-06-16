@@ -16,6 +16,19 @@
 
 Reference docs: [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) | [CLAUDE_REFERENCE.md](CLAUDE_REFERENCE.md) | [MCP_SETUP.md](MCP_SETUP.md)
 
+## Non-Team Root Directories
+
+These live outside the 8 team folders and are mostly untracked working areas — do not treat them as team workspaces or write agent outputs into them:
+
+| Directory | Purpose |
+|-----------|---------|
+| `DUX_MACHINA/` | Dux Machina business assets: business plan, GTM plan, funnel, leak-scan + outreach material |
+| `RESEARCH/` | Standalone research projects (e.g. context-engineering playbook) |
+| `LEARNING/` | Self-study material: agentic engineering manual, audits, diagnoses, system-design notes |
+| `USPS_ANALYSIS/` | One-off USPS HoldMail analysis artifacts (CSV/XLSX/deck) |
+| `LOGS/` | Hook + agent run logs. Glance weekly: `agent-runs.jsonl`, `routing-violations.log`, `escalations.log` |
+| `tools/archive/` | Retired one-off scripts (week13 carousel builds, DBAC audio pipeline, misc root scripts). Reference only — do not extend |
+
 ---
 
 ## Use Existing Tools First

@@ -37,6 +37,10 @@
     "skill-creator": {
       "enabled": true
     },
+    "teach": {
+      "enabled": true,
+      "comment": "Stateful multi-session teaching workspace. Output routes to LEARNING/<topic-slug>/ (mattpocock/skills teach skill, adapted)"
+    },
     "slack-gif-creator": {
       "enabled": true
     },
@@ -183,6 +187,15 @@
       }
     ],
     "PreToolUse": [
+      {
+        "matcher": "mcp__claude-in-chrome__computer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.claude\\hooks\\brand_voice_gate.ps1\""
+          }
+        ]
+      },
       {
         "matcher": "mcp__google-workspace__send_gmail_message",
         "hooks": [

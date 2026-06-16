@@ -68,6 +68,14 @@ NATIVE_OR_EXTERNAL_CAPABILITIES = {
     "context7": "Use web/docs lookup or a configured docs MCP equivalent",
 }
 
+ALIASED_CODEX_SKILLS = {
+    "pdf-filler": {
+        "aliasOf": "pdf",
+        "codexPath": ".codex/skills-export/pdf/SKILL.md",
+        "note": "Use the exported pdf skill; it includes fillable and non-fillable PDF form workflows.",
+    },
+}
+
 SECRET_ENV_NAMES = {
     "OPENAI_API_KEY",
     "GOOGLE_OAUTH_CLIENT_ID",
@@ -388,6 +396,15 @@ def export_skills() -> list[dict[str, Any]]:
                     "name": name,
                     "status": "native_or_external",
                     "note": NATIVE_OR_EXTERNAL_CAPABILITIES[name],
+                }
+            )
+            continue
+        if name in ALIASED_CODEX_SKILLS:
+            exported.append(
+                {
+                    "name": name,
+                    "status": "alias",
+                    **ALIASED_CODEX_SKILLS[name],
                 }
             )
             continue

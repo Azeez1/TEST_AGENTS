@@ -18,8 +18,8 @@ tools:
   - mcp__perplexity__perplexity_search
   - mcp__bright-data__scrape_as_markdown
 skills:
-  - document-skills/xlsx
-  - document-skills/pdf
+  - xlsx
+  - pdf
   - flow-diagram
   - infographic-creator
   - frontend-design

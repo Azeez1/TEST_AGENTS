@@ -13,6 +13,31 @@
 | PreToolUse on Write/Edit | `output_routing_gate.ps1` | Inspects output paths. WARN-only today (logs violations, doesn't block). |
 | Stop (any agent finishes) | `log_agent_run.ps1` | Appends one JSONL line per run to `LOGS/agent-runs.jsonl`. |
 
+### Windows scheduled tasks (added 2026-06-10)
+
+Headless Claude Code runs via `scripts/run_scheduled_claude.ps1`. Each task gets a narrow tool allowlist (everything else auto-denies headless); the hard-block hooks apply on top. Logs land in `LOGS/scheduled/<name>-<date>.log` — skim them in the weekly glance.
+
+| Task | Schedule | Runs |
+|---|---|---|
+| `DuxOS sync-memory daily` | Daily 7:00am | `/sync-memory` |
+| `DuxOS lead-gen-pm daily` | Daily 8:00am | `/lead-gen-pm 40` |
+| `DuxOS agent-health weekly` | Monday 8:00am | `/agent-health full generate-report` |
+| `DuxOS brand-check weekly` | Thursday 10:00am | `/brand-check MARKETING_TEAM/outputs` |
+
+Manage: `Get-ScheduledTask DuxOS*` · run now: `Start-ScheduledTask -TaskName 'DuxOS sync-memory daily'` · remove: `Unregister-ScheduledTask -TaskName '<name>'`
+
+### /loop recipes (in-session, on-demand — start when you're at the desk)
+
+Each recipe is a stored slash command in `.claude/commands/` — no retyping prompts. Run the command bare for a one-off check, or wrap it in /loop to repeat:
+
+| When | Type this in Claude Code |
+|---|---|
+| Trading a killzone | `/loop 2h /ict-watch` (or `/ict-watch EURUSD` for one pass on another symbol) |
+| Video campaign running (Sora/Nano Banana) | `/loop 1h /spend-watch` (default budget $50/day; `/spend-watch 100` to override) |
+| Watching a deploy (e.g. Render) | `/loop 5m /deploy-watch` (or name the service: `/deploy-watch hermes-gateway`) |
+
+Loops die with the session — that's by design; these are react-in-real-time monitors.
+
 ---
 
 ## Reviewers you can invoke via the Task tool

@@ -107,6 +107,26 @@ Hooks see the **tool call**, not which sub-agent issued it. So gates enforce by
 workspace lock can't be done reliably at the hook layer today; `output_routing_gate`
 covers the path-routing half of that intent.
 
+## Codex layer (the same guardrails, Codex-native)
+
+Codex runs hooks too (`.codex/hooks.json`), but it names tools differently
+(`command_execution`/`local_shell` not "Bash"; `apply_patch` not "Write") and
+blocks with `exit 1` not `exit 2`. So the Claude `.ps1` gates copied into
+`.codex/hooks/` mostly do NOT fire there (wrong tool names). The real Codex
+enforcement is **`.codex/hooks/enforcement_gate.py`** — a single Python gate
+wired with matcher `*` that classifies the tool itself and applies the SAME
+rules + override tokens. It covers: secret_scan, destructive_bash, money_rule,
+deploy_approval, voice_deploy, proposal_placeholder. It does NOT cover
+financial_approval / team_email / api_cost — those gate Gmail/Drive/marketing
+MCP tools that don't exist in the Codex runtime. Generated/wired by
+`scripts/export_codex_layer.py` (`sync_codex_hooks()`), so `/sync-codex` keeps it
+current. Edit the rules in the `.py` gate; the Claude `.ps1` gates stay the
+source of truth for Claude Code.
+
+> Unverified end-to-end: Codex's Windows sandbox currently errors on spawn
+> (`windows sandbox: spawn setup refresh`), so a live in-Codex block couldn't be
+> observed. The gate's logic is unit-tested 13/13 against Codex tool names.
+
 ## Wiring map
 
 - `settings.json` → SessionStart (`session_start_time`) + PreToolUse (12 gates: the 3 pre-existing + 9 new)

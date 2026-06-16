@@ -14,13 +14,13 @@
   },
   "skills": {
     "allowed": [
-      "document-skills/xlsx",
-      "document-skills/pdf",
+      "xlsx",
+      "pdf",
       "flow-diagram",
       "infographic-creator",
       "frontend-design"
     ],
-    "comment": "Skills the agent may invoke. xlsx for trade journal, pdf for setup reports, flow-diagram for HTF-to-LTF visualization, infographic-creator for setup cards, frontend-design for any live dashboards.",
+    "comment": "Skills the agent may invoke, by canonical skill NAME (the document skills live under .claude/skills/document-skills/ but their names are flat). xlsx for trade journal, pdf for setup reports, flow-diagram for HTF-to-LTF visualization, infographic-creator for setup cards, frontend-design for any live dashboards.",
     "xlsx": { "enabled": true, "path": "document-skills/xlsx", "comment": "Trade journal + backtest results" },
     "pdf":  { "enabled": true, "path": "document-skills/pdf",  "comment": "Setup PDFs for review" },
     "flow-diagram": { "enabled": true, "path": "flow-diagram", "comment": "HTF -> MTF -> LTF cascade diagrams" },

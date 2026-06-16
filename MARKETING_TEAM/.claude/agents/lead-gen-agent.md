@@ -147,7 +147,7 @@ Before creating any new tool, script, or workflow:
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Configuration Files (READ FIRST)
 
 **ALWAYS read these memory files at task start:**
 

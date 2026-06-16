@@ -8,10 +8,15 @@ param(
     [int]$Port = 9222
 )
 
-$tvExe = "C:\Program Files\WindowsApps\TradingView.Desktop_3.1.0.7818_x64__n534cwy3pjxzj\TradingView.exe"
+$installLocation = (Get-AppxPackage -Name TradingView.Desktop -ErrorAction SilentlyContinue).InstallLocation
+if (-not $installLocation) {
+    Write-Host "TradingView MSIX package not found. Install TradingView Desktop from the Microsoft Store." -ForegroundColor Red
+    exit 1
+}
+$tvExe = Join-Path $installLocation "TradingView.exe"
 
 if (-not (Test-Path $tvExe)) {
-    Write-Host "TradingView.exe not found at expected MSIX path. Check Get-AppxPackage -Name TradingView.Desktop for current InstallLocation." -ForegroundColor Red
+    Write-Host "TradingView.exe not found at $tvExe (MSIX package present but exe missing)." -ForegroundColor Red
     exit 1
 }
 
