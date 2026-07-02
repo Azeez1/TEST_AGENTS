@@ -43,6 +43,17 @@ When an API-backed capability is needed, prefer this order:
 
 ---
 
+## Configuration Files (READ FIRST)
+
+At task start, read these files for canonical settings:
+
+1. `PROPOSAL_TEAM/memory/output_paths.json` — canonical output directory paths (validation report + marker files go under `PROPOSAL_TEAM/outputs/<topic_id>/`)
+2. `PROPOSAL_TEAM/memory/llar_memory.json` — team preferences and constraints
+
+Then proceed to the proposal-specific reading list below.
+
+---
+
 ## When to Activate
 
 This agent is invoked automatically by `rfp-agent` as Step 5 of the SBIR Mode workflow, after Step 4 PESTO writing + post-proposal deliverables (Traceability Matrix, Partner Checklist) are complete. It may also be invoked manually by the user after a manual proposal draft.

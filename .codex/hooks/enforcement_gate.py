@@ -21,10 +21,13 @@ HOOK_DIR = Path(__file__).resolve().parent
 LOG_DIR = Path.home() / ".codex" / "test_agents_hooks"
 LOG = LOG_DIR / "codex-enforcement.log"
 DO_NOT_EMAIL = HOOK_DIR / "config" / "do_not_email.txt"
+MARKETING_OUTPUT_ROOT = ROOT / "MARKETING_TEAM" / "outputs"
+WHITEBOARD_PIPELINE_ROOT = MARKETING_OUTPUT_ROOT / "whiteboard_pipeline"
 
 DAILY_API_BUDGET = 50.0
 WARN_API_SPEND_AT = 10.0
 DAILY_EMAIL_LIMIT = 50
+WHITEBOARD_ROUTE_OVERRIDE = "[[WHITEBOARD-ROUTE-APPROVED]]"
 
 SHELL_TOOLS = {
     "bash",
@@ -174,6 +177,26 @@ API_COST = {
     "mcp__marketing_tools__generate_nano_banana_2_image": 0.14,
     "mcp__marketing_tools__generate_image_with_fallback": 0.17,
 }
+WHITEBOARD_ROUTE_TERMS = [
+    "whiteboard",
+    "white board",
+    "excalidraw",
+    "golpo",
+    "storyboard-ai",
+    "storyboard_ai",
+    "storyboard ai",
+    "draw-on",
+    "draw on",
+    "sketch animation",
+    "hand-drawn",
+    "hand drawn",
+]
+FILE_MUTATION_PATTERN = re.compile(
+    r"(?i)\b("
+    r"set-content|add-content|out-file|new-item|move-item|copy-item|"
+    r"rename-item|ni|mv|cp|ren|mkdir|python|node|npm|npx"
+    r")\b|>|>>"
+)
 
 
 def normalize_tool(tool: str) -> str:
@@ -235,6 +258,77 @@ def iter_strings(value: Any) -> list[str]:
 
 def input_text(value: Any) -> str:
     return "\n".join(iter_strings(value))
+
+
+def resolve_repo_path(value: str) -> Path | None:
+    if not value or "\x00" in value:
+        return None
+    raw = value.strip().strip('"').strip("'")
+    if not raw:
+        return None
+    path = Path(raw)
+    if not path.is_absolute():
+        path = ROOT / path
+    try:
+        return path.resolve(strict=False)
+    except OSError:
+        return None
+
+
+def path_under(path: Path, parent: Path) -> bool:
+    path_text = str(path.resolve(strict=False)).replace("\\", "/").rstrip("/").lower()
+    parent_text = str(parent.resolve(strict=False)).replace("\\", "/").rstrip("/").lower()
+    return path_text == parent_text or path_text.startswith(parent_text + "/")
+
+
+def has_whiteboard_route_intent(text: str) -> bool:
+    lowered = text.lower()
+    return any(term in lowered for term in WHITEBOARD_ROUTE_TERMS)
+
+
+def enforce_whiteboard_routing_for_write(raw_input: Any, tool_input: dict[str, Any], blob: str) -> None:
+    path_text = str(tool_input.get("file_path") or tool_input.get("path") or tool_input.get("notebook_path") or "")
+    path = resolve_repo_path(path_text)
+    if path is None:
+        return
+    if not path_under(path, MARKETING_OUTPUT_ROOT):
+        return
+    if path_under(path, WHITEBOARD_PIPELINE_ROOT):
+        return
+
+    route_context = f"{path_text}\n{input_text(raw_input)}"
+    if not has_whiteboard_route_intent(route_context):
+        return
+
+    if WHITEBOARD_ROUTE_OVERRIDE in blob:
+        log("OVERRIDE", f"whiteboard-route: {path}")
+        return
+
+    log("BLOCK", f"whiteboard-route: {path}")
+    block(
+        WHITEBOARD_ROUTE_OVERRIDE,
+        "whiteboard pipeline outputs must live under MARKETING_TEAM/outputs/whiteboard_pipeline",
+    )
+
+
+def enforce_whiteboard_routing_for_shell(command: str, blob: str) -> None:
+    if not command or not FILE_MUTATION_PATTERN.search(command):
+        return
+    normalized = command.replace("\\", "/").lower()
+    if "marketing_team/outputs" not in normalized:
+        return
+    if "marketing_team/outputs/whiteboard_pipeline" in normalized:
+        return
+    if not has_whiteboard_route_intent(command):
+        return
+    if WHITEBOARD_ROUTE_OVERRIDE in blob:
+        log("OVERRIDE", "whiteboard-route shell command")
+        return
+    log("BLOCK", f"whiteboard-route shell: {command[:200]}")
+    block(
+        WHITEBOARD_ROUTE_OVERRIDE,
+        "whiteboard pipeline shell writes must target MARKETING_TEAM/outputs/whiteboard_pipeline",
+    )
 
 
 def safe_secret_context(blob: str, value: str) -> bool:
@@ -446,6 +540,8 @@ def main() -> None:
         enforce_financial_approval(tool, raw_input, command, blob)
 
         if is_shell(tool):
+            enforce_whiteboard_routing_for_shell(command, blob)
+
             reason = first_match(command, DESTRUCTIVE)
             if reason:
                 if has_token("[[CONFIRM-DESTRUCTIVE]]"):
@@ -479,6 +575,8 @@ def main() -> None:
                     block("[[DEPLOY-APPROVED]]", f"infrastructure deploy ({reason})")
 
         if is_write(tool):
+            enforce_whiteboard_routing_for_write(raw_input, tool_input, blob)
+
             reason = first_match(input_text(raw_input), MONEY)
             if reason:
                 if has_token("[[MONEY-APPROVED]]"):

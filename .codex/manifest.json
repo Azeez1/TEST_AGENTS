@@ -97,14 +97,11 @@
       "claude_model": "claude-opus-4-6",
       "codex_model": "gpt-5.5",
       "tools": [
-        "sequential-thinking",
-        "verify_task_completion",
-        "check_git_changes",
-        "validate_deliverables",
-        "run_verification_tests",
-        "generate_verification_report",
-        "check_code_quality",
-        "verify_documentation"
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "mcp__sequential-thinking__sequentialthinking"
       ],
       "skills": [],
       "capabilities": [
@@ -1210,10 +1207,10 @@
         "query_knowledge_base"
       ],
       "skills": [
-        "document-skills/pdf",
-        "document-skills/docx",
-        "document-skills/pptx",
-        "document-skills/xlsx",
+        "pdf",
+        "docx",
+        "pptx",
+        "xlsx",
         "flow-diagram",
         "infographic-creator",
         "internal-comms",
@@ -2277,6 +2274,12 @@
       "codexPath": ".codex/skills-export/animejs/SKILL.md"
     },
     {
+      "name": "animejs-EZ",
+      "status": "exported",
+      "source": ".claude/skills/animejs-EZ",
+      "codexPath": ".codex/skills-export/animejs-EZ/SKILL.md"
+    },
+    {
       "name": "artifacts-builder",
       "status": "exported",
       "source": ".claude/skills/artifacts-builder",
@@ -2318,10 +2321,28 @@
       "codexPath": ".codex/skills-export/contribute-catalog/SKILL.md"
     },
     {
+      "name": "contribute-catalog-EZ",
+      "status": "exported",
+      "source": ".claude/skills/contribute-catalog-EZ",
+      "codexPath": ".codex/skills-export/contribute-catalog-EZ/SKILL.md"
+    },
+    {
       "name": "css-animations",
       "status": "exported",
       "source": ".claude/skills/css-animations",
       "codexPath": ".codex/skills-export/css-animations/SKILL.md"
+    },
+    {
+      "name": "css-animations-EZ",
+      "status": "exported",
+      "source": ".claude/skills/css-animations-EZ",
+      "codexPath": ".codex/skills-export/css-animations-EZ/SKILL.md"
+    },
+    {
+      "name": "daily-social-round",
+      "status": "exported",
+      "source": ".claude/skills/daily-social-round",
+      "codexPath": ".codex/skills-export/daily-social-round/SKILL.md"
     },
     {
       "name": "docx",
@@ -2376,10 +2397,22 @@
       "codexPath": ".codex/skills-export/gsap/SKILL.md"
     },
     {
+      "name": "gsap-EZ",
+      "status": "exported",
+      "source": ".claude/skills/gsap-EZ",
+      "codexPath": ".codex/skills-export/gsap-EZ/SKILL.md"
+    },
+    {
       "name": "hyperframes",
       "status": "exported",
       "source": ".claude/skills/hyperframes",
       "codexPath": ".codex/skills-export/hyperframes/SKILL.md"
+    },
+    {
+      "name": "hyperframes-EZ",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-EZ",
+      "codexPath": ".codex/skills-export/hyperframes-EZ/SKILL.md"
     },
     {
       "name": "hyperframes-cli",
@@ -2388,16 +2421,34 @@
       "codexPath": ".codex/skills-export/hyperframes-cli/SKILL.md"
     },
     {
+      "name": "hyperframes-cli-EZ",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-cli-EZ",
+      "codexPath": ".codex/skills-export/hyperframes-cli-EZ/SKILL.md"
+    },
+    {
       "name": "hyperframes-media",
       "status": "exported",
       "source": ".claude/skills/hyperframes-media",
       "codexPath": ".codex/skills-export/hyperframes-media/SKILL.md"
     },
     {
+      "name": "hyperframes-media-EZ",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-media-EZ",
+      "codexPath": ".codex/skills-export/hyperframes-media-EZ/SKILL.md"
+    },
+    {
       "name": "hyperframes-registry",
       "status": "exported",
       "source": ".claude/skills/hyperframes-registry",
       "codexPath": ".codex/skills-export/hyperframes-registry/SKILL.md"
+    },
+    {
+      "name": "hyperframes-registry-EZ",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-registry-EZ",
+      "codexPath": ".codex/skills-export/hyperframes-registry-EZ/SKILL.md"
     },
     {
       "name": "infographic-creator",
@@ -2422,6 +2473,12 @@
       "status": "exported",
       "source": ".claude/skills/lottie",
       "codexPath": ".codex/skills-export/lottie/SKILL.md"
+    },
+    {
+      "name": "lottie-EZ",
+      "status": "exported",
+      "source": ".claude/skills/lottie-EZ",
+      "codexPath": ".codex/skills-export/lottie-EZ/SKILL.md"
     },
     {
       "name": "mcp-builder",
@@ -2497,6 +2554,12 @@
       "codexPath": ".codex/skills-export/remotion-to-hyperframes/SKILL.md"
     },
     {
+      "name": "remotion-to-hyperframes-EZ",
+      "status": "exported",
+      "source": ".claude/skills/remotion-to-hyperframes-EZ",
+      "codexPath": ".codex/skills-export/remotion-to-hyperframes-EZ/SKILL.md"
+    },
+    {
       "name": "remotion-video",
       "status": "exported",
       "source": ".claude/skills/remotion-video",
@@ -2533,6 +2596,18 @@
       "codexPath": ".codex/skills-export/tailwind/SKILL.md"
     },
     {
+      "name": "tailwind-EZ",
+      "status": "exported",
+      "source": ".claude/skills/tailwind-EZ",
+      "codexPath": ".codex/skills-export/tailwind-EZ/SKILL.md"
+    },
+    {
+      "name": "teach",
+      "status": "exported",
+      "source": ".claude/skills/teach",
+      "codexPath": ".codex/skills-export/teach/SKILL.md"
+    },
+    {
       "name": "theme-factory",
       "status": "exported",
       "source": ".claude/skills/theme-factory",
@@ -2545,16 +2620,34 @@
       "codexPath": ".codex/skills-export/three/SKILL.md"
     },
     {
+      "name": "three-EZ",
+      "status": "exported",
+      "source": ".claude/skills/three-EZ",
+      "codexPath": ".codex/skills-export/three-EZ/SKILL.md"
+    },
+    {
       "name": "waapi",
       "status": "exported",
       "source": ".claude/skills/waapi",
       "codexPath": ".codex/skills-export/waapi/SKILL.md"
     },
     {
+      "name": "waapi-EZ",
+      "status": "exported",
+      "source": ".claude/skills/waapi-EZ",
+      "codexPath": ".codex/skills-export/waapi-EZ/SKILL.md"
+    },
+    {
       "name": "website-to-hyperframes",
       "status": "exported",
       "source": ".claude/skills/website-to-hyperframes",
       "codexPath": ".codex/skills-export/website-to-hyperframes/SKILL.md"
+    },
+    {
+      "name": "website-to-hyperframes-EZ",
+      "status": "exported",
+      "source": ".claude/skills/website-to-hyperframes-EZ",
+      "codexPath": ".codex/skills-export/website-to-hyperframes-EZ/SKILL.md"
     },
     {
       "name": "wiki-compile",

@@ -1,0 +1,2678 @@
+{
+  "schema": "test-agents/codex-layer/v1",
+  "sourceRuntime": "claude+codex-native",
+  "targetRuntime": "codex",
+  "notes": [
+    "Generated without modifying .claude infrastructure.",
+    "Codex-native agents are loaded from CODEX_TEAM/.codex/agents.",
+    "Secrets are referenced by environment variable name only.",
+    "Claude MCP tools are treated as capability documentation for Codex."
+  ],
+  "agents": [
+    {
+      "slug": "linkedin-brand-reviewer",
+      "display_name": "linkedin-brand-reviewer",
+      "team": "ROOT",
+      "source": ".claude/agents/linkedin-brand-reviewer.md",
+      "codex_instructions": ".codex/agents/ROOT/linkedin-brand-reviewer.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "oracle",
+      "display_name": "oracle",
+      "team": "ROOT",
+      "source": ".claude/agents/oracle.md",
+      "codex_instructions": ".codex/agents/ROOT/oracle.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "youtube-transcript",
+        "wiki-ingest",
+        "wiki-compile",
+        "wiki-query",
+        "wiki-lint"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "pe-diagnosis-validator",
+      "display_name": "pe-diagnosis-validator",
+      "team": "ROOT",
+      "source": ".claude/agents/pe-diagnosis-validator.md",
+      "codex_instructions": ".codex/agents/ROOT/pe-diagnosis-validator.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Glob",
+        "Bash",
+        "mcp__bright-data__search_engine"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "pe-diagnosis-visual-reviewer",
+      "display_name": "pe-diagnosis-visual-reviewer",
+      "team": "ROOT",
+      "source": ".claude/agents/pe-diagnosis-visual-reviewer.md",
+      "codex_instructions": ".codex/agents/ROOT/pe-diagnosis-visual-reviewer.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "supervisor",
+      "display_name": "supervisor",
+      "team": "ROOT",
+      "source": ".claude/agents/supervisor.md",
+      "codex_instructions": ".codex/agents/ROOT/supervisor.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "mcp__sequential-thinking__sequentialthinking"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Task completion verification across all teams",
+        "Quality assurance and second-check validation",
+        "Deliverable inspection and validation",
+        "Git commit and code change verification",
+        "Test execution and result validation",
+        "Documentation completeness checks",
+        "Cross-team coordination verification",
+        "Comprehensive verification reporting"
+      ]
+    },
+    {
+      "slug": "analyst",
+      "display_name": "Analyst",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/analyst.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/analyst.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__bright-data__search_engine",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "Campaign performance analysis",
+        "Competitive benchmarking with web scraping",
+        "ROI calculation",
+        "Metrics tracking and reporting",
+        "A/B test analysis",
+        "Trend identification",
+        "Market data collection"
+      ]
+    },
+    {
+      "slug": "automation-agent",
+      "display_name": "Automation Agent",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/automation-agent.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/automation-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "mcp__n8n-mcp__list_workflows",
+        "mcp__n8n-mcp__get_workflow",
+        "mcp__n8n-mcp__create_workflow",
+        "mcp__n8n-mcp__update_workflow",
+        "mcp__n8n-mcp__trigger_workflow",
+        "mcp__n8n-mcp__get_execution",
+        "mcp__n8n-mcp__list_credentials",
+        "mcp__n8n-mcp__search_nodes",
+        "mcp__n8n-mcp__list_nodes",
+        "mcp__n8n-mcp__get_node_essentials",
+        "mcp__n8n-mcp__get_node_info",
+        "mcp__n8n-mcp__get_database_statistics",
+        "mcp__sequential-thinking__sequentialthinking"
+      ],
+      "skills": [
+        "context7"
+      ],
+      "capabilities": [
+        "Process discovery and documentation",
+        "n8n workflow architecture and node mapping",
+        "Automation QA, testing, and iteration",
+        "Cross-tool orchestration with marketing platforms",
+        "Change management and runbook creation",
+        "Collaboration with router and campaign agents",
+        "Deliverable packaging for stakeholders"
+      ]
+    },
+    {
+      "slug": "content-strategist",
+      "display_name": "Content Strategist",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/content-strategist.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/content-strategist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_event",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__create_doc",
+        "mcp__sequential-thinking__sequentialthinking"
+      ],
+      "skills": [
+        "context7",
+        "last30days"
+      ],
+      "capabilities": [
+        "Campaign planning",
+        "Subagent coordination",
+        "Quality oversight",
+        "Multi-channel strategy"
+      ]
+    },
+    {
+      "slug": "copywriter",
+      "display_name": "Copywriter",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/copywriter.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/copywriter.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__modify_doc_text"
+      ],
+      "skills": [
+        "internal-comms",
+        "docx",
+        "last30days"
+      ],
+      "capabilities": [
+        "Blog post writing (2000+ words)",
+        "Article writing",
+        "Web copy",
+        "Ad copy",
+        "Internal communications (status reports, newsletters, FAQs)"
+      ]
+    },
+    {
+      "slug": "editor",
+      "display_name": "Editor",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/editor.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/editor.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__get_doc_content",
+        "mcp__google-workspace__modify_doc_text",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Content review and editing",
+        "Quality assurance",
+        "Brand voice compliance",
+        "Grammar and style checking",
+        "Presentation QA review"
+      ]
+    },
+    {
+      "slug": "email-specialist",
+      "display_name": "Email Specialist",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/email-specialist.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/email-specialist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Email copywriting",
+        "Subject line optimization",
+        "Email sequences",
+        "Newsletter creation"
+      ]
+    },
+    {
+      "slug": "gmail-agent",
+      "display_name": "Gmail Agent",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/gmail-agent.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/gmail-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__google-workspace__search_gmail_messages",
+        "mcp__google-workspace__get_gmail_message_content",
+        "send_email_with_attachment",
+        "render_email_html",
+        "select_template_for_context",
+        "list_templates"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Send emails via Gmail",
+        "Create email drafts",
+        "Send email campaigns",
+        "Email automation",
+        "Send emails with attachments"
+      ]
+    },
+    {
+      "slug": "landing-page-specialist",
+      "display_name": "Landing Page Specialist",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/landing-page-specialist.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/landing-page-specialist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__perplexity__perplexity_ask",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__bright-data__search_engine",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_drive_file"
+      ],
+      "skills": [
+        "artifacts-builder",
+        "theme-factory",
+        "frontend-design:frontend-design"
+      ],
+      "capabilities": [
+        "Conversion-focused UX research",
+        "Competitor landing page analysis",
+        "Landing page information architecture",
+        "High-converting copy frameworks",
+        "Responsive HTML/CSS coding",
+        "Interactive React/Tailwind landing pages",
+        "Theme application for consistent branding",
+        "CRO experimentation planning",
+        "Accessibility compliance",
+        "Analytics and tracking recommendations"
+      ]
+    },
+    {
+      "slug": "lead-gen-agent",
+      "display_name": "Lead Generation Agent",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/lead-gen-agent.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/lead-gen-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__bright-data__scrape_batch",
+        "mcp__bright-data__search_engine",
+        "mcp__bright-data__search_engine_batch",
+        "mcp__perplexity__perplexity_ask",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__create_drive_file"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "LinkedIn company page scraping (B2B leads)",
+        "Google Maps business listings (local/SMB leads)",
+        "Business directory scraping (Yellow Pages, Yelp)",
+        "E-commerce store discovery (Shopify, WooCommerce)",
+        "Contact enrichment (business emails, phone numbers)",
+        "Lead export (CSV, Google Sheets, CRM formats)",
+        "Lead qualification and filtering"
+      ]
+    },
+    {
+      "slug": "newsletter-agent",
+      "display_name": "Newsletter Agent",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/newsletter-agent.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/newsletter-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__modify_doc_text",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "internal-comms",
+        "canvas-design",
+        "flow-diagram",
+        "infographic-creator",
+        "theme-factory",
+        "brand-guidelines",
+        "slack-gif-creator",
+        "algorithmic-art",
+        "artifacts-builder",
+        "frontend-design"
+      ],
+      "capabilities": [
+        "Email-safe HTML creation with frontend-design (Gmail, Outlook, Apple Mail compatible)",
+        "Interactive HTML newsletters with React + Tailwind CSS (artifacts-builder)",
+        "Newsletter topic ideation and research",
+        "Multi-format newsletter creation (marketing, company, product updates)",
+        "Creative writing and storytelling",
+        "Email copywriting with engaging hooks",
+        "Subject line optimization (A/B testing variations)",
+        "Visual content creation (infographics, diagrams, headers, GIFs)",
+        "Newsletter series planning",
+        "Audience segmentation strategies",
+        "Cross-client responsive email design"
+      ]
+    },
+    {
+      "slug": "pdf-specialist",
+      "display_name": "PDF Specialist",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/pdf-specialist.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/pdf-specialist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_drive_file",
+        "upload_to_drive"
+      ],
+      "skills": [
+        "pdf",
+        "pdf-filler",
+        "canvas-design"
+      ],
+      "capabilities": [
+        "Whitepaper creation",
+        "Lead magnet design",
+        "Report generation",
+        "eBook formatting",
+        "PDF form filling",
+        "Beautiful PDF document design"
+      ]
+    },
+    {
+      "slug": "presentation-designer",
+      "display_name": "Presentation Designer",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/presentation-designer.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/presentation-designer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__marketing-tools__generate_gpt4o_image",
+        "mcp__google-workspace__create_drive_file",
+        "upload_to_drive"
+      ],
+      "skills": [
+        "pptx (from document-skills)",
+        "theme-factory",
+        "artifacts-builder",
+        "excalidraw-diagrams",
+        "canvas-design",
+        "frontend-design:frontend-design"
+      ],
+      "capabilities": [
+        "PowerPoint creation with pptx skill (html2pptx + PptxGenJS)",
+        "Theme application with theme-factory (11 preset themes)",
+        "Interactive React presentations with artifacts-builder",
+        "Image generation via GPT-4o",
+        "Google Drive upload integration"
+      ]
+    },
+    {
+      "slug": "research-agent",
+      "display_name": "Research Agent",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/research-agent.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/research-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "conduct_research",
+        "quick_research",
+        "strategic_analysis",
+        "mcp__perplexity__perplexity_ask",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__perplexity__perplexity_search",
+        "mcp__bright-data__search_engine",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__playwright__playwright_navigate",
+        "mcp__playwright__playwright_get_visible_text",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "filesystem",
+        "last30days"
+      ],
+      "capabilities": [
+        "Advanced web research with Perplexity AI",
+        "Competitive intelligence with web scraping",
+        "Real-time data access",
+        "Citation-backed analysis",
+        "Market research",
+        "Trend identification",
+        "Competitor website analysis"
+      ]
+    },
+    {
+      "slug": "router-agent",
+      "display_name": "Router Agent",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/router-agent.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/router-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Task",
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__sequential-thinking__sequentialthinking"
+      ],
+      "skills": [
+        "context7",
+        "last30days"
+      ],
+      "capabilities": [
+        "Intent classification",
+        "Agent selection",
+        "Conversation management",
+        "Multi-turn dialogue",
+        "Clarification questions"
+      ]
+    },
+    {
+      "slug": "seo-specialist",
+      "display_name": "SEO Specialist",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/seo-specialist.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/seo-specialist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__bright-data__search_engine",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__playwright__playwright_navigate",
+        "mcp__playwright__playwright_screenshot",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "Keyword research",
+        "SERP analysis and rank tracking",
+        "Competitor SEO analysis",
+        "Web research via Perplexity",
+        "Strategic browser automation"
+      ]
+    },
+    {
+      "slug": "social-media-manager",
+      "display_name": "Social Media Manager",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/social-media-manager.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/social-media-manager.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__marketing-tools__generate_gpt4o_image",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "algorithmic-art",
+        "slack-gif-creator",
+        "canvas-design",
+        "last30days"
+      ],
+      "capabilities": [
+        "Twitter/X thread creation",
+        "LinkedIn long-form posts",
+        "Platform-specific optimization",
+        "Hashtag strategy",
+        "Visual content pairing",
+        "Generative art creation",
+        "Animated GIF creation for Slack"
+      ]
+    },
+    {
+      "slug": "video-producer",
+      "display_name": "Video Producer",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/video-producer.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/video-producer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__marketing-tools__generate_veo_ugc_from_image",
+        "mcp__marketing-tools__generate_veo_text_to_video",
+        "mcp__marketing-tools__generate_sora_video",
+        "mcp__marketing-tools__generate_multi_clip_video",
+        "mcp__marketing-tools__stitch_existing_videos",
+        "mcp__google-workspace__create_drive_file"
+      ],
+      "skills": [
+        "consistent-video-ads",
+        "remotion-video"
+      ],
+      "capabilities": [
+        "UGC-style ad creation via Veo 3.1 image-to-video (PRIMARY)",
+        "Text-to-video via Veo 3.1 (native audio, cinematic quality)",
+        "Video ad creation via Sora-2 (budget option)",
+        "Storyboard development",
+        "Video specifications",
+        "Platform optimization (TikTok, Instagram, Facebook)",
+        "Cost estimation"
+      ]
+    },
+    {
+      "slug": "visual-designer",
+      "display_name": "Visual Designer",
+      "team": "MARKETING_TEAM",
+      "source": "MARKETING_TEAM/.claude/agents/visual-designer.md",
+      "codex_instructions": ".codex/agents/MARKETING_TEAM/visual-designer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__marketing-tools__generate_nano_banana_image",
+        "mcp__marketing-tools__generate_nano_banana_2_image",
+        "mcp__marketing-tools__generate_gpt4o_image",
+        "mcp__marketing-tools__generate_image_with_fallback",
+        "mcp__marketing-tools__analyze_ugc_image",
+        "mcp__google-workspace__create_drive_file",
+        "upload_to_drive"
+      ],
+      "skills": [
+        "algorithmic-art",
+        "canvas-design",
+        "theme-factory",
+        "figma",
+        "flow-diagram",
+        "infographic-creator",
+        "frontend-design:frontend-design"
+      ],
+      "capabilities": [
+        "Product image generation for UGC ad workflow (Nano Banana - PRIMARY)",
+        "Image prompt engineering for GPT-4o",
+        "Character consistency across multiple images",
+        "Multi-image composition and blending",
+        "Data-driven infographic creation (7 types: statistical, timeline, comparison, process, hierarchical, geographic, list)",
+        "Animated and interactive infographics with Chart.js, D3.js, and Anime.js",
+        "Visual hierarchy planning",
+        "Brand-compliant design with logo and watermark placement",
+        "Generative art with p5.js",
+        "PNG/PDF poster and banner creation",
+        "Design theme application",
+        "Figma design extraction",
+        "Flow diagrams and LinkedIn carousels (glassmorphism, neon, hand-drawn styles)"
+      ]
+    },
+    {
+      "slug": "ai-engineer",
+      "display_name": "ai-engineer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/ai-engineer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/ai-engineer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "last30days"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "analytics-dashboard-agent",
+      "display_name": "analytics-dashboard-agent",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/analytics-dashboard-agent.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/analytics-dashboard-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "flow-diagram:flow-diagram",
+        "infographic-creator:infographic-creator",
+        "frontend-design:frontend-design"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "backend-architect",
+      "display_name": "backend-architect",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/backend-architect.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/backend-architect.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "excalidraw-diagrams",
+        "flow-diagram"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "code-reviewer",
+      "display_name": "code-reviewer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/code-reviewer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/code-reviewer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "cto",
+      "display_name": "cto",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/cto.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/cto.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "classify_engineering_request",
+        "get_engineer_capabilities",
+        "list_engineering_agents",
+        "create_execution_plan",
+        "mcp__sequential-thinking__sequentialthinking"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Strategic architecture and technology planning",
+        "Multi-agent workflow orchestration",
+        "Complex problem decomposition",
+        "Quality gate coordination",
+        "Dependency tracking and sequencing",
+        "Cross-functional team coordination"
+      ]
+    },
+    {
+      "slug": "database-architect",
+      "display_name": "database-architect",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/database-architect.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/database-architect.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "debugger",
+      "display_name": "debugger",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/debugger.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/debugger.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "devops-engineer",
+      "display_name": "devops-engineer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/devops-engineer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/devops-engineer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "excalidraw-diagrams",
+        "flow-diagram"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "frontend-developer",
+      "display_name": "frontend-developer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/frontend-developer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/frontend-developer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "frontend-design:frontend-design"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "prompt-engineer",
+      "display_name": "prompt-engineer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/prompt-engineer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/prompt-engineer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "last30days"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "security-auditor",
+      "display_name": "security-auditor",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/security-auditor.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/security-auditor.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "system-architect",
+      "display_name": "system-architect",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/system-architect.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/system-architect.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "flow-diagram",
+        "excalidraw-diagrams",
+        "canvas-design",
+        "artifacts-builder",
+        "document-skills",
+        "theme-factory"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "technical-writer",
+      "display_name": "technical-writer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/technical-writer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/technical-writer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "excalidraw-diagrams",
+        "flow-diagram"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "test-engineer",
+      "display_name": "test-engineer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/test-engineer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/test-engineer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "ui-ux-designer",
+      "display_name": "ui-ux-designer",
+      "team": "ENGINEERING_TEAM",
+      "source": "ENGINEERING_TEAM/.claude/agents/ui-ux-designer.md",
+      "codex_instructions": ".codex/agents/ENGINEERING_TEAM/ui-ux-designer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "workspace_enforcer",
+        "path_validator"
+      ],
+      "skills": [
+        "frontend-design:frontend-design"
+      ],
+      "capabilities": []
+    },
+    {
+      "slug": "edge-case-agent",
+      "display_name": "Edge Case Agent",
+      "team": "QA_TEAM",
+      "source": "QA_TEAM/.claude/agents/edge-case-agent.md",
+      "codex_instructions": ".codex/agents/QA_TEAM/edge-case-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "identify_edge_cases",
+        "analyze_function"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Edge case identification",
+        "Boundary value analysis",
+        "Error scenario testing",
+        "Negative testing"
+      ]
+    },
+    {
+      "slug": "fixture-agent",
+      "display_name": "Fixture Agent",
+      "team": "QA_TEAM",
+      "source": "QA_TEAM/.claude/agents/fixture-agent.md",
+      "codex_instructions": ".codex/agents/QA_TEAM/fixture-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "create_fixtures",
+        "analyze_function"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Pytest fixture creation",
+        "Test data generation",
+        "Mock object creation",
+        "Shared test utilities"
+      ]
+    },
+    {
+      "slug": "integration-test-agent",
+      "display_name": "Integration Test Agent",
+      "team": "QA_TEAM",
+      "source": "QA_TEAM/.claude/agents/integration-test-agent.md",
+      "codex_instructions": ".codex/agents/QA_TEAM/integration-test-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "scan_codebase",
+        "generate_integration_tests"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Integration test generation",
+        "Workflow testing",
+        "Module interaction testing",
+        "End-to-end scenarios"
+      ]
+    },
+    {
+      "slug": "test-orchestrator",
+      "display_name": "Test Orchestrator",
+      "team": "QA_TEAM",
+      "source": "QA_TEAM/.claude/agents/test-orchestrator.md",
+      "codex_instructions": ".codex/agents/QA_TEAM/test-orchestrator.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "scan_codebase",
+        "analyze_coverage",
+        "run_tests",
+        "classify_test_intent",
+        "list_test_agents",
+        "extract_target_path",
+        "Task"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Code analysis and scanning",
+        "Test strategy planning",
+        "Coordinating specialist test agents",
+        "Test execution and reporting"
+      ]
+    },
+    {
+      "slug": "unit-test-agent",
+      "display_name": "Unit Test Agent",
+      "team": "QA_TEAM",
+      "source": "QA_TEAM/.claude/agents/unit-test-agent.md",
+      "codex_instructions": ".codex/agents/QA_TEAM/unit-test-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "analyze_function",
+        "generate_unit_tests",
+        "create_fixtures"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Unit test generation",
+        "Function/method testing",
+        "Class testing",
+        "Mock creation"
+      ]
+    },
+    {
+      "slug": "proposal-tracker",
+      "display_name": "proposal-tracker",
+      "team": "PROPOSAL_TEAM",
+      "source": "PROPOSAL_TEAM/.claude/agents/proposal-tracker.md",
+      "codex_instructions": ".codex/agents/PROPOSAL_TEAM/proposal-tracker.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "rfp-agent",
+      "display_name": "rfp-agent",
+      "team": "PROPOSAL_TEAM",
+      "source": "PROPOSAL_TEAM/.claude/agents/rfp-agent.md",
+      "codex_instructions": ".codex/agents/PROPOSAL_TEAM/rfp-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "parse_rfp",
+        "generate_compliance_matrix",
+        "write_proposal_section",
+        "validate_proposal",
+        "process_rfp_full",
+        "index_knowledge_base",
+        "query_knowledge_base"
+      ],
+      "skills": [
+        "pdf",
+        "docx",
+        "pptx",
+        "xlsx",
+        "flow-diagram",
+        "infographic-creator",
+        "internal-comms",
+        "theme-factory",
+        "brand-guidelines",
+        "artifacts-builder"
+      ],
+      "capabilities": [
+        "Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via parse_rfp",
+        "Intelligent requirement extraction with LLM and RFC 2119 classification",
+        "Knowledge base retrieval (Pinecone) via query_knowledge_base",
+        "Compliance matrix generation with risk assessment via generate_compliance_matrix",
+        "AI-driven proposal section writing via write_proposal_section",
+        "Quality assurance validation via validate_proposal",
+        "Full pipeline orchestration via process_rfp_full",
+        "KB indexing via index_knowledge_base",
+        "Document creation with PDF, DOCX, PPTX, XLSX skills",
+        "Visual design with canvas-design and flow-diagram skills",
+        "Professional styling with theme-factory and brand-guidelines"
+      ]
+    },
+    {
+      "slug": "sbir-validator",
+      "display_name": "sbir-validator",
+      "team": "PROPOSAL_TEAM",
+      "source": "PROPOSAL_TEAM/.claude/agents/sbir-validator.md",
+      "codex_instructions": ".codex/agents/PROPOSAL_TEAM/sbir-validator.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Bash"
+      ],
+      "skills": [],
+      "capabilities": []
+    },
+    {
+      "slug": "accountant",
+      "display_name": "Accountant",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/accountant.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/accountant.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "xlsx"
+      ],
+      "capabilities": [
+        "Bookkeeping and journal entries",
+        "Accounts payable processing",
+        "Accounts receivable management",
+        "Bank reconciliations",
+        "Expense management",
+        "Payroll processing support",
+        "Month-end close procedures",
+        "General ledger maintenance"
+      ]
+    },
+    {
+      "slug": "cfo-agent",
+      "display_name": "CFO Agent",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/cfo-agent.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/cfo-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "excalidraw-diagrams",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "Capital allocation strategy",
+        "Fundraising (debt and equity)",
+        "Board relations and reporting",
+        "M&A strategy and execution",
+        "Financial risk management",
+        "Strategic planning",
+        "Investor relations",
+        "Exit planning"
+      ]
+    },
+    {
+      "slug": "controller",
+      "display_name": "Controller",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/controller.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/controller.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "xlsx",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "Financial statement preparation (GAAP)",
+        "Month/quarter/year-end close management",
+        "Audit coordination (internal and external)",
+        "Internal controls design and testing",
+        "Revenue recognition (ASC 606)",
+        "Lease accounting (ASC 842)",
+        "Technical accounting guidance",
+        "SOX compliance"
+      ]
+    },
+    {
+      "slug": "deal-analyst",
+      "display_name": "Deal Analyst",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/deal-analyst.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/deal-analyst.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "Financial due diligence",
+        "Deal structuring and terms",
+        "LBO (Leveraged Buyout) modeling",
+        "M&A valuation and analysis",
+        "Quality of Earnings (QoE) review",
+        "Transaction modeling",
+        "Data room management",
+        "Investment committee memos"
+      ]
+    },
+    {
+      "slug": "financial-analyst",
+      "display_name": "Financial Analyst",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/financial-analyst.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/financial-analyst.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "Financial modeling (3-statement models)",
+        "DCF and valuation analysis",
+        "Scenario modeling and sensitivity analysis",
+        "Business performance analysis",
+        "KPI tracking and dashboards",
+        "Financial reporting and visualization",
+        "Investment analysis",
+        "Working capital analysis"
+      ]
+    },
+    {
+      "slug": "financial-data-analyst",
+      "display_name": "Financial Data Analyst",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/financial-data-analyst.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "flow-diagram",
+        "infographic-creator",
+        "frontend-design"
+      ],
+      "capabilities": [
+        "SQL query generation for financial data warehouses",
+        "Financial data visualization (charts, graphs, heatmaps)",
+        "Interactive HTML dashboard creation",
+        "Data quality assurance and validation",
+        "Database schema discovery and documentation",
+        "ETL pipeline design for financial data",
+        "Statistical analysis of financial metrics",
+        "Automated reporting and data pipelines"
+      ]
+    },
+    {
+      "slug": "forecasting-agent",
+      "display_name": "Forecasting Agent",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/forecasting-agent.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/forecasting-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "Revenue forecasting (top-down and bottom-up)",
+        "Expense forecasting and budgeting",
+        "Scenario modeling and Monte Carlo simulation",
+        "Predictive analytics and trend analysis",
+        "Rolling forecasts",
+        "Sensitivity analysis",
+        "Financial planning projections",
+        "Variance analysis"
+      ]
+    },
+    {
+      "slug": "fpna-agent",
+      "display_name": "FP&A Agent",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/fpna-agent.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/fpna-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "xlsx",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "Annual budgeting and planning",
+        "Variance analysis (actual vs budget)",
+        "Rolling forecasts (monthly/quarterly)",
+        "Scenario planning and what-if analysis",
+        "Monthly financial reporting",
+        "Strategic planning support",
+        "Department budget management",
+        "Long-range planning (3-5 years)"
+      ]
+    },
+    {
+      "slug": "investor-relations-agent",
+      "display_name": "Investor Relations Agent",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/investor-relations-agent.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/investor-relations-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator",
+        "frontend-design"
+      ],
+      "capabilities": [
+        "LP quarterly update letters",
+        "Fund performance attribution (IRR, TVPI, DPI, RVPI)",
+        "Fundraising pitch decks and materials",
+        "Capital call and distribution notices",
+        "Investor CRM management",
+        "Data room preparation and management",
+        "Annual meeting materials",
+        "Investor onboarding documentation",
+        "ESG reporting for investors",
+        "Co-investment opportunity memos"
+      ]
+    },
+    {
+      "slug": "portfolio-manager",
+      "display_name": "Portfolio Manager",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/portfolio-manager.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/portfolio-manager.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_doc",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "Portfolio company performance monitoring",
+        "KPI dashboards and scorecards",
+        "Value creation tracking",
+        "Board deck preparation",
+        "Benchmark analysis across portfolio",
+        "Exit planning and readiness",
+        "Fund-level reporting",
+        "Portfolio analytics"
+      ]
+    },
+    {
+      "slug": "tax-advisor",
+      "display_name": "Tax Advisor",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/tax-advisor.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/tax-advisor.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "Tax planning and strategy",
+        "Federal and state tax compliance",
+        "Entity structure optimization",
+        "M&A tax structuring",
+        "Tax provision (ASC 740)",
+        "Transfer pricing",
+        "R&D tax credits",
+        "International tax planning"
+      ]
+    },
+    {
+      "slug": "trading-optimizer",
+      "display_name": "Trading Optimizer",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/trading-optimizer.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/trading-optimizer.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "skills": [
+        "xlsx"
+      ],
+      "capabilities": [
+        "Local Python backtesting with ICT strategy logic",
+        "Pine Script v5 strategy development (for deploying optimized params to TradingView)",
+        "Parameter optimization with overfitting protection",
+        "Funding Pips risk constraint enforcement",
+        "Self-improving autoresearch loop (reason \u2192 modify \u2192 backtest \u2192 measure \u2192 keep/revert \u2192 repeat)",
+        "Results tracking and experiment logging",
+        "Cross-symbol and out-of-sample validation"
+      ]
+    },
+    {
+      "slug": "treasury-agent",
+      "display_name": "Treasury Agent",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/treasury-agent.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/treasury-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc"
+      ],
+      "skills": [
+        "xlsx",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "Cash flow management and forecasting",
+        "Working capital optimization",
+        "Debt covenant monitoring and compliance",
+        "Liquidity planning and cash positioning",
+        "FX hedging strategy",
+        "Bank relationship management",
+        "Sweep account and investment strategy",
+        "Capital structure optimization",
+        "Cash pooling and intercompany funding",
+        "Debt maturity management"
+      ]
+    },
+    {
+      "slug": "valuation-agent",
+      "display_name": "Valuation Agent",
+      "team": "FINANCIAL_TEAM",
+      "source": "FINANCIAL_TEAM/.claude/agents/valuation-agent.md",
+      "codex_instructions": ".codex/agents/FINANCIAL_TEAM/valuation-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search"
+      ],
+      "skills": [
+        "xlsx",
+        "last30days",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "DCF valuation analysis",
+        "Comparable company analysis",
+        "Precedent transaction analysis",
+        "Asset-based valuation",
+        "WACC and cost of capital calculation",
+        "Terminal value analysis",
+        "Fairness opinions",
+        "Purchase price allocation"
+      ]
+    },
+    {
+      "slug": "account-executive",
+      "display_name": "Account Executive",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/account-executive.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/account-executive.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__google-workspace__get_doc_content",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__modify_sheet_values"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "Discovery calls and needs analysis",
+        "Product demonstrations",
+        "Solution design and scoping",
+        "Proposal creation and pricing",
+        "Negotiation and objection handling",
+        "Deal closing strategies",
+        "Relationship building",
+        "Pipeline management"
+      ]
+    },
+    {
+      "slug": "customer-success-manager",
+      "display_name": "Customer Success Manager",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/customer-success-manager.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/customer-success-manager.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__get_doc_content",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "Customer onboarding and training",
+        "Product adoption and engagement",
+        "Health scoring and risk monitoring",
+        "Churn prevention and retention",
+        "Upsell and cross-sell identification",
+        "Renewal management",
+        "Customer advocacy and references",
+        "QBR (Quarterly Business Review) facilitation"
+      ]
+    },
+    {
+      "slug": "outbound-specialist",
+      "display_name": "Outbound Specialist",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/outbound-specialist.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/outbound-specialist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__bright-data__search_engine",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__read_sheet_values"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram"
+      ],
+      "capabilities": [
+        "Cold calling scripts and execution",
+        "Email sequence creation and optimization",
+        "Multi-channel outreach cadences",
+        "Target list building and segmentation",
+        "A/B testing messaging",
+        "Call coaching and script development",
+        "Voicemail strategies",
+        "Objection handling frameworks"
+      ]
+    },
+    {
+      "slug": "pe-outreach-agent",
+      "display_name": "PE Outreach Agent",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/pe-outreach-agent.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/pe-outreach-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-opus-4-6",
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__claude-in-chrome__navigate",
+        "mcp__claude-in-chrome__read_page",
+        "mcp__claude-in-chrome__form_input",
+        "mcp__claude-in-chrome__computer",
+        "mcp__claude-in-chrome__find",
+        "mcp__claude-in-chrome__javascript_tool",
+        "mcp__claude-in-chrome__tabs_context_mcp",
+        "mcp__claude-in-chrome__tabs_create_mcp",
+        "mcp__claude-in-chrome__get_page_text"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "LinkedIn investor outreach (connection requests, follow-up messages)",
+        "Buy box discovery and documentation",
+        "Personalized message generation by investor category",
+        "Outreach tracking and pipeline management",
+        "Investor relationship management",
+        "Deal matching (sourced deals to investor criteria)",
+        "Finder's fee facilitation"
+      ]
+    },
+    {
+      "slug": "proposal-specialist",
+      "display_name": "Proposal Specialist",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/proposal-specialist.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/proposal-specialist.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__google-workspace__get_doc_content",
+        "mcp__google-workspace__search_drive_files"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "Proposal writing and design",
+        "RFP and RFI responses",
+        "Pricing and quote generation",
+        "SOW (Statement of Work) creation",
+        "Contract drafting",
+        "Competitive positioning",
+        "Value proposition development",
+        "ROI calculations"
+      ]
+    },
+    {
+      "slug": "sales-analyst",
+      "display_name": "Sales Analyst",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/sales-analyst.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/sales-analyst.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__bright-data__search_engine",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__google-workspace__get_doc_content",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__create_presentation"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator",
+        "theme-factory"
+      ],
+      "capabilities": [
+        "Sales forecasting and pipeline analysis",
+        "Performance metrics and KPI tracking",
+        "Win/loss analysis and insights",
+        "Sales cycle optimization",
+        "Predictive analytics and modeling",
+        "Dashboard creation and visualization",
+        "Trend identification",
+        "Revenue attribution"
+      ]
+    },
+    {
+      "slug": "sales-manager",
+      "display_name": "Sales Manager",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/sales-manager.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/sales-manager.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_presentation",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "Sales team coaching and development",
+        "Pipeline reviews and deal coaching",
+        "Forecast management and accuracy",
+        "Performance analytics and optimization",
+        "Hiring and onboarding",
+        "Quota setting and territory planning",
+        "Strategic sales planning",
+        "Cross-functional leadership"
+      ]
+    },
+    {
+      "slug": "sales-operations",
+      "display_name": "Sales Operations",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/sales-operations.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/sales-operations.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__create_presentation",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days",
+        "flow-diagram",
+        "infographic-creator"
+      ],
+      "capabilities": [
+        "CRM administration and data hygiene",
+        "Sales process design and optimization",
+        "Territory and quota planning",
+        "Commission and compensation management",
+        "Sales tech stack management",
+        "Reporting and dashboard creation",
+        "Workflow automation",
+        "Data quality management"
+      ]
+    },
+    {
+      "slug": "sdr-agent",
+      "display_name": "SDR Agent",
+      "team": "SALES_TEAM",
+      "source": "SALES_TEAM/.claude/agents/sdr-agent.md",
+      "codex_instructions": ".codex/agents/SALES_TEAM/sdr-agent.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-sonnet-4-6",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "workspace_enforcer",
+        "path_validator",
+        "mcp__bright-data__search_engine",
+        "mcp__bright-data__scrape_as_markdown",
+        "mcp__google-workspace__create_doc",
+        "mcp__google-workspace__create_spreadsheet",
+        "mcp__google-workspace__modify_sheet_values",
+        "mcp__google-workspace__send_gmail_message",
+        "mcp__perplexity__perplexity_search",
+        "mcp__perplexity__perplexity_reason",
+        "mcp__google-workspace__search_drive_files",
+        "mcp__google-workspace__read_sheet_values",
+        "mcp__google-workspace__get_doc_content"
+      ],
+      "skills": [
+        "filesystem",
+        "xlsx",
+        "last30days"
+      ],
+      "capabilities": [
+        "Cold outreach (email, LinkedIn, calls)",
+        "Lead generation and prospecting",
+        "Lead qualification (BANT, MEDDIC, CHAMP)",
+        "Meeting booking and handoffs",
+        "Multi-channel outreach campaigns",
+        "CRM data entry and management",
+        "A/B testing outreach messages",
+        "Pipeline building"
+      ]
+    },
+    {
+      "slug": "codex-agent-editor",
+      "display_name": "codex-agent-editor",
+      "team": "CODEX_TEAM",
+      "source": "CODEX_TEAM/.codex/agents/codex-agent-editor.md",
+      "codex_instructions": ".codex/agents/CODEX_TEAM/codex-agent-editor.md",
+      "source_runtime": "codex",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [
+        "codex-sync"
+      ],
+      "capabilities": [
+        "Codex agent definition editing",
+        "Specialist scope cleanup",
+        "Agent instruction quality control",
+        "Domain boundary enforcement"
+      ]
+    },
+    {
+      "slug": "codex-layer-architect",
+      "display_name": "codex-layer-architect",
+      "team": "CODEX_TEAM",
+      "source": "CODEX_TEAM/.codex/agents/codex-layer-architect.md",
+      "codex_instructions": ".codex/agents/CODEX_TEAM/codex-layer-architect.md",
+      "source_runtime": "codex",
+      "claude_model": null,
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [
+        "codex-sync",
+        "codex-validate"
+      ],
+      "capabilities": [
+        "Codex sidecar architecture",
+        "Exporter maintenance",
+        "Manifest design",
+        "Source-of-truth boundary design"
+      ]
+    },
+    {
+      "slug": "codex-leverage-auditor",
+      "display_name": "codex-leverage-auditor",
+      "team": "CODEX_TEAM",
+      "source": "CODEX_TEAM/.codex/agents/codex-leverage-auditor.md",
+      "codex_instructions": ".codex/agents/CODEX_TEAM/codex-leverage-auditor.md",
+      "source_runtime": "codex",
+      "claude_model": null,
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Write",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [
+        "agent-auditor",
+        "codex-validate"
+      ],
+      "capabilities": [
+        "L1-L13 coverage audit",
+        "Evidence mapping",
+        "Gap analysis",
+        "Implementation backlog generation"
+      ]
+    },
+    {
+      "slug": "codex-mcp-hooks-engineer",
+      "display_name": "codex-mcp-hooks-engineer",
+      "team": "CODEX_TEAM",
+      "source": "CODEX_TEAM/.codex/agents/codex-mcp-hooks-engineer.md",
+      "codex_instructions": ".codex/agents/CODEX_TEAM/codex-mcp-hooks-engineer.md",
+      "source_runtime": "codex",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [
+        "codex-sync-mcps"
+      ],
+      "capabilities": [
+        "Codex MCP configuration",
+        "Hook wiring",
+        "Local automation setup",
+        "Runtime validation"
+      ]
+    },
+    {
+      "slug": "codex-skill-engineer",
+      "display_name": "codex-skill-engineer",
+      "team": "CODEX_TEAM",
+      "source": "CODEX_TEAM/.codex/agents/codex-skill-engineer.md",
+      "codex_instructions": ".codex/agents/CODEX_TEAM/codex-skill-engineer.md",
+      "source_runtime": "codex",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [
+        "skill-creator",
+        "codex-sync-all"
+      ],
+      "capabilities": [
+        "Codex skill creation",
+        "Skill mirroring validation",
+        "Learned workflow capture",
+        "Prompt pattern codification"
+      ]
+    },
+    {
+      "slug": "codex-team-manager",
+      "display_name": "codex-team-manager",
+      "team": "CODEX_TEAM",
+      "source": "CODEX_TEAM/.codex/agents/codex-team-manager.md",
+      "codex_instructions": ".codex/agents/CODEX_TEAM/codex-team-manager.md",
+      "source_runtime": "codex",
+      "claude_model": null,
+      "codex_model": "gpt-5.5",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [
+        "test-agents-router",
+        "codex-sync-all"
+      ],
+      "capabilities": [
+        "Codex team orchestration",
+        "Codex sidecar governance",
+        "L1-L13 roadmap sequencing",
+        "Cross-specialist task decomposition"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "algorithmic-art",
+      "status": "exported",
+      "source": ".claude/skills/algorithmic-art",
+      "codexPath": ".codex/skills-export/algorithmic-art/SKILL.md"
+    },
+    {
+      "name": "animejs",
+      "status": "exported",
+      "source": ".claude/skills/animejs",
+      "codexPath": ".codex/skills-export/animejs/SKILL.md"
+    },
+    {
+      "name": "artifacts-builder",
+      "status": "exported",
+      "source": ".claude/skills/artifacts-builder",
+      "codexPath": ".codex/skills-export/artifacts-builder/SKILL.md"
+    },
+    {
+      "name": "brand-guidelines",
+      "status": "exported",
+      "source": ".claude/skills/brand-guidelines",
+      "codexPath": ".codex/skills-export/brand-guidelines/SKILL.md"
+    },
+    {
+      "name": "canvas-design",
+      "status": "exported",
+      "source": ".claude/skills/canvas-design",
+      "codexPath": ".codex/skills-export/canvas-design/SKILL.md"
+    },
+    {
+      "name": "capture-as-skill",
+      "status": "exported",
+      "source": ".claude/skills/capture-as-skill",
+      "codexPath": ".codex/skills-export/capture-as-skill/SKILL.md"
+    },
+    {
+      "name": "careful",
+      "status": "exported",
+      "source": ".claude/skills/careful",
+      "codexPath": ".codex/skills-export/careful/SKILL.md"
+    },
+    {
+      "name": "context7",
+      "status": "native_or_external",
+      "note": "Use web/docs lookup or a configured docs MCP equivalent"
+    },
+    {
+      "name": "contribute-catalog",
+      "status": "exported",
+      "source": ".claude/skills/contribute-catalog",
+      "codexPath": ".codex/skills-export/contribute-catalog/SKILL.md"
+    },
+    {
+      "name": "css-animations",
+      "status": "exported",
+      "source": ".claude/skills/css-animations",
+      "codexPath": ".codex/skills-export/css-animations/SKILL.md"
+    },
+    {
+      "name": "daily-social-round",
+      "status": "exported",
+      "source": ".claude/skills/daily-social-round",
+      "codexPath": ".codex/skills-export/daily-social-round/SKILL.md"
+    },
+    {
+      "name": "docx",
+      "status": "exported",
+      "source": ".claude/skills/document-skills/docx",
+      "codexPath": ".codex/skills-export/docx/SKILL.md"
+    },
+    {
+      "name": "excalidraw-diagrams",
+      "status": "exported",
+      "source": ".claude/skills/excalidraw-diagrams",
+      "codexPath": ".codex/skills-export/excalidraw-diagrams/SKILL.md"
+    },
+    {
+      "name": "figma",
+      "status": "native_or_external",
+      "note": "Codex Figma connector when available"
+    },
+    {
+      "name": "filesystem",
+      "status": "native_or_external",
+      "note": "Codex native file tools and sandbox permissions"
+    },
+    {
+      "name": "financial-guard",
+      "status": "exported",
+      "source": ".claude/skills/financial-guard",
+      "codexPath": ".codex/skills-export/financial-guard/SKILL.md"
+    },
+    {
+      "name": "flow-diagram",
+      "status": "exported",
+      "source": ".claude/skills/flow-diagram",
+      "codexPath": ".codex/skills-export/flow-diagram/SKILL.md"
+    },
+    {
+      "name": "freeze",
+      "status": "exported",
+      "source": ".claude/skills/freeze",
+      "codexPath": ".codex/skills-export/freeze/SKILL.md"
+    },
+    {
+      "name": "frontend-design",
+      "status": "exported",
+      "source": ".claude/skills/frontend-design",
+      "codexPath": ".codex/skills-export/frontend-design/SKILL.md"
+    },
+    {
+      "name": "gsap",
+      "status": "exported",
+      "source": ".claude/skills/gsap",
+      "codexPath": ".codex/skills-export/gsap/SKILL.md"
+    },
+    {
+      "name": "hyperframes",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes",
+      "codexPath": ".codex/skills-export/hyperframes/SKILL.md"
+    },
+    {
+      "name": "hyperframes-cli",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-cli",
+      "codexPath": ".codex/skills-export/hyperframes-cli/SKILL.md"
+    },
+    {
+      "name": "hyperframes-media",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-media",
+      "codexPath": ".codex/skills-export/hyperframes-media/SKILL.md"
+    },
+    {
+      "name": "hyperframes-registry",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-registry",
+      "codexPath": ".codex/skills-export/hyperframes-registry/SKILL.md"
+    },
+    {
+      "name": "infographic-creator",
+      "status": "exported",
+      "source": ".claude/skills/infographic-creator",
+      "codexPath": ".codex/skills-export/infographic-creator/SKILL.md"
+    },
+    {
+      "name": "internal-comms",
+      "status": "exported",
+      "source": ".claude/skills/internal-comms",
+      "codexPath": ".codex/skills-export/internal-comms/SKILL.md"
+    },
+    {
+      "name": "last30days",
+      "status": "exported",
+      "source": ".claude/skills/last30days",
+      "codexPath": ".codex/skills-export/last30days/SKILL.md",
+      "skippedFiles": [
+        ".claude/skills/last30days/assets/claude-code-rap.mp3"
+      ]
+    },
+    {
+      "name": "lottie",
+      "status": "exported",
+      "source": ".claude/skills/lottie",
+      "codexPath": ".codex/skills-export/lottie/SKILL.md"
+    },
+    {
+      "name": "mcp-builder",
+      "status": "exported",
+      "source": ".claude/skills/mcp-builder",
+      "codexPath": ".codex/skills-export/mcp-builder/SKILL.md"
+    },
+    {
+      "name": "n8n-code-javascript",
+      "status": "exported",
+      "source": ".claude/skills/n8n-code-javascript",
+      "codexPath": ".codex/skills-export/n8n-code-javascript/SKILL.md"
+    },
+    {
+      "name": "n8n-code-python",
+      "status": "exported",
+      "source": ".claude/skills/n8n-code-python",
+      "codexPath": ".codex/skills-export/n8n-code-python/SKILL.md"
+    },
+    {
+      "name": "n8n-expression-syntax",
+      "status": "exported",
+      "source": ".claude/skills/n8n-expression-syntax",
+      "codexPath": ".codex/skills-export/n8n-expression-syntax/SKILL.md"
+    },
+    {
+      "name": "n8n-mcp-tools-expert",
+      "status": "exported",
+      "source": ".claude/skills/n8n-mcp-tools-expert",
+      "codexPath": ".codex/skills-export/n8n-mcp-tools-expert/SKILL.md"
+    },
+    {
+      "name": "n8n-node-configuration",
+      "status": "exported",
+      "source": ".claude/skills/n8n-node-configuration",
+      "codexPath": ".codex/skills-export/n8n-node-configuration/SKILL.md"
+    },
+    {
+      "name": "n8n-validation-expert",
+      "status": "exported",
+      "source": ".claude/skills/n8n-validation-expert",
+      "codexPath": ".codex/skills-export/n8n-validation-expert/SKILL.md"
+    },
+    {
+      "name": "n8n-workflow-patterns",
+      "status": "exported",
+      "source": ".claude/skills/n8n-workflow-patterns",
+      "codexPath": ".codex/skills-export/n8n-workflow-patterns/SKILL.md"
+    },
+    {
+      "name": "pdf",
+      "status": "exported",
+      "source": ".claude/skills/document-skills/pdf",
+      "codexPath": ".codex/skills-export/pdf/SKILL.md"
+    },
+    {
+      "name": "pdf-filler",
+      "status": "alias",
+      "aliasOf": "pdf",
+      "codexPath": ".codex/skills-export/pdf/SKILL.md",
+      "note": "Use the exported pdf skill; it includes fillable and non-fillable PDF form workflows."
+    },
+    {
+      "name": "pptx",
+      "status": "exported",
+      "source": ".claude/skills/document-skills/pptx",
+      "codexPath": ".codex/skills-export/pptx/SKILL.md"
+    },
+    {
+      "name": "remotion-to-hyperframes",
+      "status": "exported",
+      "source": ".claude/skills/remotion-to-hyperframes",
+      "codexPath": ".codex/skills-export/remotion-to-hyperframes/SKILL.md"
+    },
+    {
+      "name": "remotion-video",
+      "status": "exported",
+      "source": ".claude/skills/remotion-video",
+      "codexPath": ".codex/skills-export/remotion-video/SKILL.md"
+    },
+    {
+      "name": "skill-builder",
+      "status": "exported",
+      "source": ".claude/skills/skill-builder",
+      "codexPath": ".codex/skills-export/skill-builder/SKILL.md"
+    },
+    {
+      "name": "skill-creator",
+      "status": "exported",
+      "source": ".claude/skills/skill-creator",
+      "codexPath": ".codex/skills-export/skill-creator/SKILL.md"
+    },
+    {
+      "name": "slack-gif-creator",
+      "status": "exported",
+      "source": ".claude/skills/slack-gif-creator",
+      "codexPath": ".codex/skills-export/slack-gif-creator/SKILL.md"
+    },
+    {
+      "name": "spec-driven-dev",
+      "status": "exported",
+      "source": ".claude/skills/spec-driven-dev",
+      "codexPath": ".codex/skills-export/spec-driven-dev/SKILL.md"
+    },
+    {
+      "name": "tailwind",
+      "status": "exported",
+      "source": ".claude/skills/tailwind",
+      "codexPath": ".codex/skills-export/tailwind/SKILL.md"
+    },
+    {
+      "name": "teach",
+      "status": "exported",
+      "source": ".claude/skills/teach",
+      "codexPath": ".codex/skills-export/teach/SKILL.md"
+    },
+    {
+      "name": "theme-factory",
+      "status": "exported",
+      "source": ".claude/skills/theme-factory",
+      "codexPath": ".codex/skills-export/theme-factory/SKILL.md",
+      "skippedFiles": [
+        ".claude/skills/theme-factory/theme-showcase.pdf"
+      ]
+    },
+    {
+      "name": "three",
+      "status": "exported",
+      "source": ".claude/skills/three",
+      "codexPath": ".codex/skills-export/three/SKILL.md"
+    },
+    {
+      "name": "waapi",
+      "status": "exported",
+      "source": ".claude/skills/waapi",
+      "codexPath": ".codex/skills-export/waapi/SKILL.md"
+    },
+    {
+      "name": "website-to-hyperframes",
+      "status": "exported",
+      "source": ".claude/skills/website-to-hyperframes",
+      "codexPath": ".codex/skills-export/website-to-hyperframes/SKILL.md"
+    },
+    {
+      "name": "wiki-compile",
+      "status": "exported",
+      "source": ".claude/skills/wiki-compile",
+      "codexPath": ".codex/skills-export/wiki-compile/SKILL.md"
+    },
+    {
+      "name": "wiki-ingest",
+      "status": "exported",
+      "source": ".claude/skills/wiki-ingest",
+      "codexPath": ".codex/skills-export/wiki-ingest/SKILL.md"
+    },
+    {
+      "name": "wiki-lint",
+      "status": "exported",
+      "source": ".claude/skills/wiki-lint",
+      "codexPath": ".codex/skills-export/wiki-lint/SKILL.md"
+    },
+    {
+      "name": "wiki-query",
+      "status": "exported",
+      "source": ".claude/skills/wiki-query",
+      "codexPath": ".codex/skills-export/wiki-query/SKILL.md"
+    },
+    {
+      "name": "xlsx",
+      "status": "exported",
+      "source": ".claude/skills/document-skills/xlsx",
+      "codexPath": ".codex/skills-export/xlsx/SKILL.md"
+    },
+    {
+      "name": "youtube-transcript",
+      "status": "exported",
+      "source": ".claude/skills/youtube-transcript",
+      "codexPath": ".codex/skills-export/youtube-transcript/SKILL.md",
+      "skippedFiles": [
+        ".claude/skills/youtube-transcript/scripts/lib/formatter.py",
+        ".claude/skills/youtube-transcript/scripts/lib/obsidian.py",
+        ".claude/skills/youtube-transcript/scripts/lib/playlist.py",
+        ".claude/skills/youtube-transcript/scripts/lib/whisper_fallback.py",
+        ".claude/skills/youtube-transcript/scripts/lib/youtube_api.py",
+        ".claude/skills/youtube-transcript/scripts/lib/__init__.py"
+      ]
+    },
+    {
+      "name": "test-agents-router",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/test-agents-router/SKILL.md"
+    },
+    {
+      "name": "codex-sync",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync/SKILL.md"
+    },
+    {
+      "name": "codex-sync-secrets",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync-secrets/SKILL.md"
+    },
+    {
+      "name": "codex-validate",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-validate/SKILL.md"
+    },
+    {
+      "name": "codex-sync-mcps",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync-mcps/SKILL.md"
+    },
+    {
+      "name": "codex-sync-all",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync-all/SKILL.md"
+    }
+  ],
+  "installedSkillsDir": "C:\\Users\\sabaa\\.codex\\skills",
+  "codexMcpConfig": {
+    "projectConfig": ".codex/config.toml",
+    "generatedConfig": ".codex/mcp.generated.toml",
+    "generatedFrom": ".mcp.json"
+  },
+  "secrets": {
+    "template": ".codex/secrets.example.env",
+    "local": ".codex/secrets.local.env",
+    "envNames": [
+      "API_TOKEN",
+      "GEMINI_API_KEY",
+      "GOOGLE_OAUTH_CLIENT_ID",
+      "GOOGLE_OAUTH_CLIENT_SECRET",
+      "N8N_API_KEY",
+      "N8N_API_URL",
+      "OPENAI_API_KEY",
+      "PERPLEXITY_API_KEY",
+      "PERPLEXITY_TIMEOUT_MS",
+      "PIAPI_API_KEY",
+      "XAI_API_KEY"
+    ]
+  }
+}

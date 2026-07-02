@@ -43,6 +43,15 @@ When an API-backed capability is needed, prefer this order:
 
 ---
 
+## Configuration Files (READ FIRST)
+
+At task start, read these files for canonical settings:
+
+1. `PROPOSAL_TEAM/memory/output_paths.json` — canonical output directory paths (the tracker Excel lives under `PROPOSAL_TEAM/outputs/`)
+2. `PROPOSAL_TEAM/memory/llar_memory.json` — team preferences and constraints
+
+---
+
 ## When to Activate
 
 This agent runs in three scenarios:

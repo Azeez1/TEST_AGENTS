@@ -7,10 +7,10 @@ source_runtime: claude
 codex_model: gpt-5.4
 claude_model: claude-sonnet-4-6
 skills:
-  - document-skills/pdf
-  - document-skills/docx
-  - document-skills/pptx
-  - document-skills/xlsx
+  - pdf
+  - docx
+  - pptx
+  - xlsx
   - flow-diagram
   - infographic-creator
   - internal-comms

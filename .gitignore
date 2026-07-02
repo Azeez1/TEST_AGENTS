@@ -183,6 +183,12 @@ tmp_*
 
 # Runtime logs
 LOGS/*.log
+LOGS/**/*.log
+
+# Untracked working areas (not team workspaces, not for GitHub)
+DUX_MACHINA/
+RESEARCH/
+USPS_ANALYSIS/
 
 # Excluded project (not for GitHub)
 ekomi/

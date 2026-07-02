@@ -1,0 +1,183 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\session_start_time.ps1\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\sabaa\\OneDrive\\Desktop\\TEST_AGENTS\\.codex\\hooks\\claude_boundary_gate.py\""
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\sabaa\\OneDrive\\Desktop\\TEST_AGENTS\\.codex\\hooks\\enforcement_gate.py\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__claude-in-chrome__computer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\brand_voice_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__google-workspace__send_gmail_message",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\voice_email_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\output_routing_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Write|Edit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\document_skill_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\secret_scan_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\destructive_bash_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell|Write|Edit|mcp__tradingview__replay_trade",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\money_rule_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__google-workspace__send_gmail_message|mcp__google-workspace__create_drive_file|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\financial_approval_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\voice_deploy_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__google-workspace__send_gmail_message",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\team_email_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__marketing-tools__generate_.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\api_cost_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\deploy_approval_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\proposal_placeholder_gate.ps1\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\pe_validation_gate.ps1\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\proposal_tracker_trigger.ps1\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\log_agent_run.ps1\""
+          }
+        ]
+      }
+    ]
+  }
+}
