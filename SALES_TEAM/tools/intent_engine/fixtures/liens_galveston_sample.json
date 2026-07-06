@@ -1,0 +1,12 @@
+{
+  "source_id": "liens_galveston",
+  "captured": "2026-07-06",
+  "live_status": "SKIPPED",
+  "window_days": 30,
+  "enabled": false,
+  "gate": "Fidlar AVA Breeze API requires a Bearer JWT minted via invisible reCAPTCHA-v3 in a real browser; endpoint 401s otherwise (verified 2026-07-06). Interim: set GALVESTON_AVA_JWT in ~/.dux_intent/.env from a Chrome session's localStorage authorizationData.access_token.",
+  "note": "no live data; GALVESTON_AVA_JWT not set in ~/.dux_intent/.env \u2014 the Fidlar AVA Breeze API 401s without a Bearer JWT minted via an invisible reCAPTCHA-v3 flow in a real browser (verified 2026-07-06). Capture localStorage.authorizationData.access_token from a Chrome session to enable; see module docstring.",
+  "sample_record": null,
+  "signal_counts": {},
+  "breeze_url": "https://ava.fidlar.com/TXGalveston/ScrapRelay.WebService.Ava/breeze/Search"
+}

@@ -1,0 +1,11 @@
+{
+  "source_id": "listings_transworld",
+  "captured": "2026-07-06",
+  "live_status": "SKIPPED",
+  "live_error": "blocked: tworld.com listings page is a client-side Apollo/GraphQL app shell with zero listing data in the HTML; the GraphQL endpoint is not statically discoverable and brightdata_unlock returns the same empty shell. Unblock: one-time Chrome MCP network capture of the GraphQL request, then rebuild as fetch page -> regex graphqlToken -> POST query.",
+  "live_snapshots": 0,
+  "synthetic": true,
+  "note": "collector intentionally disabled/skipped: blocked: tworld.com listings page is a client-side Apollo/GraphQL app shell with zero listing data in the HTML; the GraphQL endpoint is not statically discoverable and brightdata_unlock returns the same empty shell. Unblock: one-time Chrome MCP network capture of the GraphQL request, then rebuild as fetch page -> regex graphqlToken -> POST query.",
+  "sample_listing": null,
+  "synthetic_exercise_counts": {}
+}

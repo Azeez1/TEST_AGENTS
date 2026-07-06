@@ -2,7 +2,7 @@
   "metros": {
     "houston": {
       "state": "TX",
-      "counties": ["HARRIS", "FORT BEND", "MONTGOMERY"],
+      "counties": ["HARRIS", "FORT BEND", "MONTGOMERY", "GALVESTON", "BRAZORIA"],
       "zip_prefixes": ["77", "770", "772", "773", "774", "775"]
     },
     "atlanta": {
@@ -65,7 +65,10 @@
     "dead_listings": {
       "demo_asset": "broker-play",
       "entity_key_pattern": "bbs:{listing_id}",
-      "collectors": ["listings_bizbuysell"],
+      "collectors": ["listings_bizbuysell", "listings_businessesforsale",
+                     "listings_businessbroker", "listings_sunbelt",
+                     "listings_murphy", "listings_bizquest", "listings_loopnet",
+                     "listings_dealstream", "listings_transworld"],
       "signals": {
         "stale_180d": {"weight": 4.0, "half_life_days": 9999},
         "price_cut": {"weight": 3.0, "half_life_days": 45},
@@ -78,7 +81,10 @@
     "pe_distress": {
       "demo_asset": "acquisition-hunt",
       "entity_key_pattern": "biz:{name_norm}|{zip}",
-      "collectors": ["sba_loans", "liens_harris"],
+      "collectors": ["sba_loans", "liens_harris", "liens_fortbend",
+                     "liens_montgomery", "liens_galveston", "liens_brazoria",
+                     "liens_fulton", "liens_dekalb", "liens_cobb",
+                     "liens_gwinnett"],
       "signals": {
         "lien_filed": {"weight": 4.0, "half_life_days": 60},
         "judgment_filed": {"weight": 4.0, "half_life_days": 60},
@@ -100,7 +106,23 @@
     "epa_echo": true,
     "warn_tx_ga": true,
     "listings_bizbuysell": true,
+    "listings_businessesforsale": true,
+    "listings_businessbroker": true,
+    "listings_sunbelt": true,
+    "listings_murphy": true,
+    "listings_bizquest": false,
+    "listings_loopnet": false,
+    "listings_dealstream": false,
+    "listings_transworld": false,
     "sba_loans": true,
-    "liens_harris": true
+    "liens_harris": true,
+    "liens_fortbend": true,
+    "liens_montgomery": false,
+    "liens_galveston": false,
+    "liens_brazoria": false,
+    "liens_fulton": true,
+    "liens_dekalb": true,
+    "liens_cobb": true,
+    "liens_gwinnett": true
   }
 }

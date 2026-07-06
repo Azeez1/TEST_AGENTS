@@ -1,0 +1,12 @@
+{
+  "source_id": "liens_montgomery",
+  "captured": "2026-07-06",
+  "live_status": "ERROR",
+  "window_days": 30,
+  "enabled": false,
+  "blocked_reason": "bot-blocked: montgomery.tx.publicsearch.us returns only the JS loading shell to non-browser TLS fingerprints (plain requests AND Bright Data Web Unlocker; scrape_as_markdown robots-blocked). Needs a browser-fingerprinted fetch (Chrome MCP / headless Chromium) \u2014 see module docstring. No captcha, not paywalled.",
+  "note": "no live data; bot-blocked: montgomery.tx.publicsearch.us returns only the JS loading shell to non-browser TLS fingerprints (plain requests AND Bright Data Web Unlocker; scrape_as_markdown robots-blocked). Needs a browser-fingerprinted fetch (Chrome MCP / headless Chromium) \u2014 see module docstring. No captcha, not paywalled. \u2014 parser proven against embedded format fixture",
+  "sample_record": null,
+  "signal_counts": {},
+  "search_url_example": "https://montgomery.tx.publicsearch.us/results?department=RP&limit=50&offset=0&searchType=advancedSearch&docTypes=A%2FJ%2CJ%2CFTL%2CSTL%2CM%2FL%2CL%2FP&recordedDateRange=20260606,20260706"
+}

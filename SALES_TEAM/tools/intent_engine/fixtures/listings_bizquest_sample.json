@@ -1,0 +1,25 @@
+{
+  "source_id": "listings_bizquest",
+  "captured": "2026-07-06",
+  "live_status": "EMPTY",
+  "live_error": "",
+  "live_snapshots": 13,
+  "synthetic": false,
+  "note": "live listing snapshot",
+  "sample_listing": {
+    "listing_id": "2377707",
+    "title": "Profitable Niche SEO Agency for Law Firms \u2013 $46K MRR, High Growth",
+    "asking_price": 1870000,
+    "url": "https://www.bizquest.com/business-for-sale/profitable-niche-seo-agency-for-law-firms-46k-mrr-high-growth/BW2377707/",
+    "broker": "",
+    "location": "",
+    "cash_flow": null,
+    "parse_strategy": "ld_json",
+    "metro": "atlanta"
+  },
+  "synthetic_exercise_counts": {
+    "stale_180d": 2,
+    "price_cut": 1,
+    "relisting": 2
+  }
+}

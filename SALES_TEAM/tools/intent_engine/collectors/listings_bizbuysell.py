@@ -28,7 +28,19 @@ Broker aggregation: per-run count of stale listings per (best-effort parsed)
 broker; a broker holding >= 2 stale listings is a coffee target — stale
 signals carry attrs broker_stale_count + coffee_target.
 
-Entity key: "bbs:{listing_id}".
+Broker enrichment: listings still missing a broker after the search-page parse
+get a bounded detail-page fetch (oldest first, cap DETAIL_FETCH_CAP_BBS per
+metro — unlocker requests cost money). The detail page's "Business Listed By:"
+broker-name anchor was verified live 2026-07-06.
+
+Cross-site dedupe: snapshot diffing stays keyed on the BizBuySell listing id,
+but signal entity keys resolve through _listings_common.CrossSiteDeduper so a
+business cross-posted on BusinessesForSale/BusinessBroker/Sunbelt/Murphy
+stacks onto ONE entity with source_refs of every site (exact fingerprint
+matches only; near-misses are just flagged in attrs).
+
+Entity key: "bbs:{listing_id}" (canonical for the whole avenue — BizBuySell is
+the highest-priority listing site; BizQuest/LoopNet share this id space).
 
 Self-test (from SALES_TEAM/tools/intent_engine/):
     python -m collectors.listings_bizbuysell --self-test
@@ -51,7 +63,9 @@ if str(ENGINE_ROOT) not in sys.path:
     sys.path.insert(0, str(ENGINE_ROOT))
 
 import config  # noqa: E402
-from collectors import BaseCollector, CollectorResult, Signal  # noqa: E402
+from collectors import BaseCollector, CollectorResult, Signal  # noqa: E402, F401
+from collectors._listings_common import (  # noqa: E402
+    CrossSiteDeduper, diff_and_emit, enrich_brokers, unlock_with_retry)
 from common.http import brightdata_unlock  # noqa: E402
 
 SOURCE_ID = "listings_bizbuysell"
@@ -64,6 +78,7 @@ STALE_DAYS = 180
 RELIST_MIN_GAP_DAYS = 21
 PRICE_CUT_MIN_DROP = 0.005       # ignore <0.5% wiggles
 BROKER_COFFEE_THRESHOLD = 2
+DETAIL_FETCH_CAP_BBS = 3         # detail fetches go through the unlocker ($)
 
 SEARCH_URLS = {
     "houston": "https://www.bizbuysell.com/texas/houston-businesses-for-sale/",
@@ -132,6 +147,29 @@ def _broker_from_dict(d):
 def _listing_id_from_url(url):
     m = re.search(r"/business-(?:opportunity|asset)/[^/]+/(\d{5,9})/", url or "")
     return m.group(1) if m else None
+
+
+# detail page: <span>Business Listed By:</span> ...
+# <a class="broker-name ..." href="/business-broker/{person}/{firm}/{id}/">Name</a>
+# (verified live 2026-07-06 on listing 2507558)
+_DETAIL_BROKER_A_RE = re.compile(
+    r'<a[^>]*broker-name[^>]*>\s*([^<]+?)\s*</a>')
+_DETAIL_FIRM_RE = re.compile(r'href="/business-broker/[^/"]+/([^/"]+)/\d+/"')
+
+
+def parse_detail_broker(html):
+    """Broker 'Name (Firm)' from a listing detail page, or ''."""
+    i = html.find("Business Listed By")
+    window = html[i:i + 4000] if i >= 0 else html
+    m = _DETAIL_BROKER_A_RE.search(window)
+    if not m:
+        return ""
+    name = m.group(1).strip()
+    fm = _DETAIL_FIRM_RE.search(window)
+    if fm:
+        firm = fm.group(1).replace("-", " ").title()
+        return f"{name} ({firm})"
+    return name
 
 
 def parse_listings(html):
@@ -247,99 +285,33 @@ class Collector(BaseCollector):
             and PRICE_MIN <= l["asking_price"] <= PRICE_MAX
         }
 
+    # -- broker enrichment (bounded detail-page fetches through the unlocker)
+
+    def _enrich_brokers(self, store, listings):
+        """Fill missing brokers via detail pages, oldest listings first, hard
+        cap DETAIL_FETCH_CAP_BBS attempts per metro (unlocker spend)."""
+        missing = [l for l in listings if not l.get("broker")]
+        missing.sort(key=lambda l: store.first_seen(
+            self.source_id, str(l["listing_id"])) or "9999-12-31")
+        return enrich_brokers(missing, unlock_with_retry, parse_detail_broker,
+                              cap=DETAIL_FETCH_CAP_BBS)
+
     # -- snapshot diffing (separable so the self-test can drive it) --------
 
     def _diff_and_emit(self, store, metro, listings, today):
-        """Snapshot today's listings, diff against history, emit signals.
+        """Snapshot today's listings, diff against history, emit signals via
+        the shared _listings_common.diff_and_emit (single implementation for
+        all listing sites), with cross-site dedupe.
 
         listings: iterable of listing dicts (see parse_listings values).
         Returns (signals_added, entity_keys_set, Counter_by_signal_type).
         """
-        today_iso = today.isoformat()
-        added = 0
-        entity_keys = set()
-        by_type = Counter()
-        stale = []          # (listing, crossed_iso, age_days)
-        inline = []         # (listing, signal_type, signal_date, magnitude, extra)
-
-        for listing in listings:
-            lid = str(listing["listing_id"])
-            prior = [s for s in store.get_snapshots(self.source_id, lid)
-                     if s["snapshot_date"] < today_iso]
-            store.add_snapshot(self.source_id, today_iso, lid, listing)
-            entity_keys.add(f"bbs:{lid}")
-
-            first = store.first_seen(self.source_id, lid)
-            age = (today - date.fromisoformat(first)).days if first else 0
-            if age >= STALE_DAYS:
-                crossed = (date.fromisoformat(first)
-                           + timedelta(days=STALE_DAYS)).isoformat()
-                stale.append((listing, crossed, age))
-
-            if prior:
-                last = prior[-1]
-                last_date = date.fromisoformat(last["snapshot_date"])
-                payload = last["payload"] if isinstance(last["payload"], dict) \
-                    else {}
-                last_price = _to_price(payload.get("asking_price"))
-                cur_price = _to_price(listing.get("asking_price"))
-                if (last_price and cur_price
-                        and cur_price < last_price * (1 - PRICE_CUT_MIN_DROP)):
-                    drop = (last_price - cur_price) / last_price
-                    inline.append((listing, "price_cut", today_iso,
-                                   min(1.0, drop / 0.25),
-                                   {"prev_price": last_price,
-                                    "new_price": cur_price,
-                                    "drop_pct": round(drop * 100, 1)}))
-                gap = (today - last_date).days
-                if gap >= RELIST_MIN_GAP_DAYS:
-                    inline.append((listing, "relisting", today_iso,
-                                   max(0.5, min(1.0, gap / 90.0)),
-                                   {"gap_days": gap,
-                                    "last_seen": last["snapshot_date"]}))
-
-        # broker aggregation over this run's stale set
-        broker_counts = Counter(
-            l.get("broker", "") for l, _, _ in stale if l.get("broker"))
-
-        def emit(listing, signal_type, signal_date, magnitude, extra):
-            nonlocal added
-            attrs = {
-                "asking_price": listing.get("asking_price"),
-                "location": listing.get("location", ""),
-                "broker": listing.get("broker", ""),
-                "listing_url": listing.get("url", ""),
-            }
-            attrs.update(extra)
-            sig = Signal(
-                entity_key=f"bbs:{listing['listing_id']}",
-                entity_name=listing.get("title", f"listing {listing['listing_id']}"),
-                metro=metro,
-                avenue=self.avenue,
-                signal_type=signal_type,
-                signal_date=signal_date,
-                magnitude=round(float(magnitude), 3),
-                source_id=self.source_id,
-                source_ref=listing.get("url", ""),
-                raw=dict(listing),
-                attrs=attrs,
-            )
-            if store.add_signal(sig):
-                added += 1
-            by_type[signal_type] += 1
-
-        for listing, crossed, age in stale:
-            broker = listing.get("broker", "")
-            n = broker_counts.get(broker, 0) if broker else 0
-            emit(listing, "stale_180d", crossed, 1.0, {
-                "days_on_market": age,
-                "broker_stale_count": n,
-                "coffee_target": n >= BROKER_COFFEE_THRESHOLD,
-            })
-        for listing, stype, sdate, mag, extra in inline:
-            emit(listing, stype, sdate, mag, extra)
-
-        return added, entity_keys, by_type
+        deduper = CrossSiteDeduper(store, own_source=self.source_id)
+        return diff_and_emit(
+            store, self.source_id, self.avenue, "bbs", metro, listings, today,
+            stale_days=STALE_DAYS, relist_min_gap_days=RELIST_MIN_GAP_DAYS,
+            price_cut_min_drop=PRICE_CUT_MIN_DROP,
+            broker_coffee_threshold=BROKER_COFFEE_THRESHOLD, deduper=deduper)
 
     # -- contract entrypoint -----------------------------------------------
 
@@ -361,6 +333,10 @@ class Collector(BaseCollector):
                     errors.append(f"{metro}: {type(exc).__name__}: {exc}")
                     continue
                 fetched_any = True
+                try:
+                    self._enrich_brokers(store, list(listings.values()))
+                except Exception:
+                    pass            # enrichment is best-effort
                 added, keys, _ = self._diff_and_emit(
                     store, metro, list(listings.values()), today)
                 total_added += added
@@ -401,6 +377,15 @@ _PARSER_FIXTURE_HTML = """
 <span>Houston, TX</span><span class="asking-price">$100,000</span></a></div>
 """
 
+# Real detail-page broker block captured live 2026-07-06 (listing 2507558).
+_DETAIL_FIXTURE_HTML = """
+<div class="broker-card"> <span class="f-14">Business Listed By:</span><br>
+<a id="ctl00_ctl00_Content_ContentPlaceHolder1_wideProfile_ContactBrokerNameHyperLink"
+ class="broker-name width-100 f-m normal"
+ href="/business-broker/shawn-mcpeters/buyers-market-inc/9064/">Shawn McPeters</a>
+</div>
+"""
+
 
 def _mk_listing(lid, title, price, broker="", url=None):
     return {
@@ -418,8 +403,10 @@ def _parser_regression():
     in_band = {k: v for k, v in parsed.items()
                if PRICE_MIN <= v["asking_price"] <= PRICE_MAX}
     assert set(in_band) == {"2511364", "2507558", "2509430"}, in_band
+    broker = parse_detail_broker(_DETAIL_FIXTURE_HTML)
+    assert broker == "Shawn McPeters (Buyers Market Inc)", broker
     print(f"  parser regression: {len(parsed)} cards parsed, "
-          f"{len(in_band)} in $1M-$10M band  OK")
+          f"{len(in_band)} in $1M-$10M band, detail broker '{broker}'  OK")
     return parsed["2511364"]
 
 

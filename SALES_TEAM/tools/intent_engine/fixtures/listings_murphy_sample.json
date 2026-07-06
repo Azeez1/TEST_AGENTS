@@ -1,0 +1,26 @@
+{
+  "source_id": "listings_murphy",
+  "captured": "2026-07-06",
+  "live_status": "EMPTY",
+  "live_error": "",
+  "live_snapshots": 17,
+  "synthetic": false,
+  "note": "live listing snapshot",
+  "sample_listing": {
+    "listing_id": "16769",
+    "title": "Commercial Glass & Glazing Business",
+    "asking_price": 1800000,
+    "url": "https://murphybusiness.com/northfultoncounty/business-brokerage/detail/16769/commercial-glass-and-glazing-business",
+    "broker": "Murphy Business (northfultoncounty)",
+    "location": "Georgia",
+    "cash_flow": 543920,
+    "office": "northfultoncounty",
+    "parse_strategy": "office_card",
+    "metro": "atlanta"
+  },
+  "synthetic_exercise_counts": {
+    "stale_180d": 2,
+    "price_cut": 1,
+    "relisting": 2
+  }
+}

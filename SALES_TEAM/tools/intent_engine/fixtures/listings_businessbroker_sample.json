@@ -1,0 +1,25 @@
+{
+  "source_id": "listings_businessbroker",
+  "captured": "2026-07-06",
+  "live_status": "EMPTY",
+  "live_error": "",
+  "live_snapshots": 32,
+  "synthetic": false,
+  "note": "live listing snapshot",
+  "sample_listing": {
+    "listing_id": "1000336",
+    "title": "Turnkey Precision Machine Shop with Real Estate",
+    "asking_price": 1500000,
+    "url": "https://www.businessbroker.net/business-for-sale/turnkey-precision-machine-shop-with-real-estate-houston-texas/1000336.aspx",
+    "broker": "",
+    "location": "Houston, TX | Harris County",
+    "cash_flow": null,
+    "parse_strategy": "result_item",
+    "metro": "houston"
+  },
+  "synthetic_exercise_counts": {
+    "stale_180d": 2,
+    "price_cut": 1,
+    "relisting": 2
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source_id": "listings_sunbelt",
+  "captured": "2026-07-06",
+  "live_status": "EMPTY",
+  "live_error": "",
+  "live_snapshots": 1,
+  "synthetic": false,
+  "note": "live listing snapshot",
+  "sample_listing": {
+    "listing_id": "59450",
+    "title": "Profitable Houston Auto Repair Business with Growing Earnings",
+    "asking_price": 1600000,
+    "price_display": "$1.600m",
+    "url": "https://www.sunbeltnetwork.com/houston-west-tx/buy-a-business/listings/listing-details/houston-auto-repair-business-profitable-59450/",
+    "broker": "Sunbelt office: houston-west-tx",
+    "location": "Houston, Texas",
+    "cash_flow": 258500,
+    "parse_strategy": "article_card",
+    "metro": "houston"
+  },
+  "synthetic_exercise_counts": {
+    "stale_180d": 2,
+    "price_cut": 1,
+    "relisting": 2
+  }
+}

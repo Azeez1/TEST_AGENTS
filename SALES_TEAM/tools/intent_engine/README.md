@@ -25,7 +25,7 @@ Data home: `~/.dux_intent/` (SQLite `intent.db`, `cache/` for big CSVs, `.env` f
 1. Deps (already installed into `C:\Python314`): `pip install requests pandas python-dotenv beautifulsoup4 google-api-python-client google-auth`
 2. Keys in `~/.dux_intent/.env` (never in the repo):
    - `DOL_API_KEY` - free, register at https://dataportal.dol.gov/registration (enables osha_dol)
-   - `BRIGHTDATA_API_TOKEN` - from the Bright Data dashboard (enables listings_bizbuysell)
+   - `BRIGHTDATA_API_TOKEN` + `BRIGHTDATA_ZONE=mcp_unlocker` - from the Bright Data dashboard (enables listings_bizbuysell; other listing sites are plain fetch)
    - `SOCRATA_APP_TOKEN` - optional, raises rate limits for FMCSA/TX WARN pulls
    - `INTENT_SPREADSHEET_ID` - printed by bootstrap_sheet.py (step 3)
 3. Google Sheet: needs valid google-workspace credentials at `~/.google_workspace_mcp/credentials/sabaazeez12@gmail.com.json` WITH the spreadsheets scope. If auth is stale (invalid_grant / invalid_scope): delete that json, kill port 8000, restart Claude Code, re-auth the google-workspace MCP, then run:
@@ -58,7 +58,9 @@ python -m collectors.trucking_fmcsa --self-test     (run from the intent_engine 
 
 Outputs land in `SALES_TEAM/outputs/prospecting/`: `intent_{avenue}_{metro}_{date}.csv` per avenue/metro plus `intent_hotlist_{date}.csv` (all hot rows). Then `/intent-scan` in Claude Code drafts evidence-cited outreach from the hotlist into `SALES_TEAM/outputs/outreach/intent_drafts_{date}.md` (queue only - NEVER sends).
 
-## Per-source status (verified 2026-07-05)
+## Per-source status (verified 2026-07-06)
+
+Metros now cover counties: Houston = Harris, Fort Bend, Montgomery, Galveston, Brazoria; Atlanta = Fulton, DeKalb, Cobb, Gwinnett.
 
 | source_id | avenue | enabled | live status | notes |
 |---|---|---|---|---|
@@ -71,9 +73,27 @@ Outputs land in `SALES_TEAM/outputs/prospecting/`: `intent_{avenue}_{metro}_{dat
 | osha_dol | manufacturing | yes | NEEDS KEY | DOL API v4 fully implemented; SKIPPED until DOL_API_KEY set |
 | epa_echo | manufacturing | yes | LIVE | ECHO SNC facilities (FacSNCFlg=Y), 7 metro counties |
 | warn_tx_ga | manufacturing | yes | LIVE | TX Socrata WARN + GA TCSG GravityView scrape |
-| listings_bizbuysell | dead_listings | yes | NEEDS TOKEN | parser proven on real cards; SKIPPED until BRIGHTDATA_API_TOKEN set |
+| listings_bizbuysell | dead_listings | yes | LIVE | Bright Data unlocker; cross-site dedupe canonical site; bounded broker enrichment (3 detail fetches/metro) |
+| listings_businessesforsale | dead_listings | yes | LIVE | plain fetch, server-side $1M-$10M filter; band prices -> midpoint; broker from detail 'Listed by' (cap 10/metro) |
+| listings_businessbroker | dead_listings | yes | LIVE | plain fetch city pages, client-side price band; broker from detail JSON-LD founder Person |
+| listings_sunbelt | dead_listings | yes | LIVE (thin) | admin-ajax city filter; Houston/Atlanta city inventory mostly under $1M, so few in-band listings; suburb cities = v2 |
+| listings_murphy | dead_listings | yes | LIVE (page 1/office) | per-office pages (5 Houston + 3 Atlanta offices); office AJAX pagination returns the national feed, so page 1 only |
+| listings_bizquest | dead_listings | NO | DUPLICATE SOURCE | fully working via unlocker but CoStar skin of BizBuySell (same listing ids) - near-zero incremental data; keys bbs:{id} if ever enabled |
+| listings_loopnet | dead_listings | NO | DUPLICATE SOURCE | stub; loopnet.com/biz/ = CoStar syndication of BizBuySell, zero incremental listings |
+| listings_dealstream | dead_listings | NO | BLOCKED | stub; geo URLs return global feed (JS-only metro filter) + detail pages login-gated; unblock path in module docstring |
+| listings_transworld | dead_listings | NO | BLOCKED | stub; tworld.com = GraphQL app shell, endpoint not statically discoverable; unblock path in module docstring |
 | sba_loans | pe_distress | yes | LIVE | SBA FOIA CSVs (~456MB cached, 80-day refresh), maturity-window signal |
 | liens_harris | pe_distress | yes | LIVE | Harris County Clerk WebForms (A/J, LIEN, L/P instrument codes) |
+| liens_fortbend | pe_distress | yes | LIVE | Fort Bend Aumentum Recorder (6 doc codes: AJ, JUDGE, FEDLIEN, STLIEN, LIEN, LISPEN); 300-row cap handled via day-split re-queries |
+| liens_montgomery | pe_distress | NO | BLOCKED | publicsearch.us bot-blocks non-browser TLS fingerprints (plain requests AND unlocker get the JS shell); parser ready, needs browser-fingerprinted fetch |
+| liens_galveston | pe_distress | NO | BLOCKED | Fidlar AVA needs a reCAPTCHA-v3-minted JWT; set GALVESTON_AVA_JWT in ~/.dux_intent/.env (from a Chrome session) to attempt |
+| liens_brazoria | pe_distress | NO | BLOCKED | Tyler Self Service portal gates all search behind interactive reCAPTCHA v2; enable paths in module docstring |
+| liens_fulton | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens via GSCCCA (no login). Full FIFA/judgment/federal index needs GSCCCA paid ($14.95/mo); recipe in docstring |
+| liens_dekalb | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens via shared GSCCCA flow; full index = GSCCCA paid (intCountyID=44) |
+| liens_cobb | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens; Cobb's own LandmarkWeb withholds rows from non-browser sessions - never trust its zero-row responses |
+| liens_gwinnett | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens; full FIFA/judgment index = GSCCCA paid (intCountyID=67) |
+
+Cross-site listing dedupe: `collectors/_listings_common.py` (CrossSiteDeduper) - exact fingerprint (metro + distinctive title tokens + $250K price bucket) merges to the highest-priority site's entity_key with all source_refs; fuzzy matches only flagged. County lien collectors share `collectors/_liens_common.py` (kind classification) and `collectors/_gsccca.py` (GA DOR flow); all key debtors as `biz:{name_norm}|` so the same business stacks across counties.
 
 ## Adding a collector
 

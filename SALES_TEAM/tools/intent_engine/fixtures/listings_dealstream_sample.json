@@ -1,0 +1,11 @@
+{
+  "source_id": "listings_dealstream",
+  "captured": "2026-07-06",
+  "live_status": "SKIPPED",
+  "live_error": "blocked: geo URLs return the GLOBAL feed (metro scoping unproven - the search form's JS-set hidden inputs were not reproducible by URL), and detail pages are login-gated. Collecting now would pollute the metros with foreign listings. Unblock: one-time Chrome MCP capture of the location-filter POST, then rebuild on brightdata_unlock.",
+  "live_snapshots": 0,
+  "synthetic": true,
+  "note": "collector intentionally disabled/skipped: blocked: geo URLs return the GLOBAL feed (metro scoping unproven - the search form's JS-set hidden inputs were not reproducible by URL), and detail pages are login-gated. Collecting now would pollute the metros with foreign listings. Unblock: one-time Chrome MCP capture of the location-filter POST, then rebuild on brightdata_unlock.",
+  "sample_listing": null,
+  "synthetic_exercise_counts": {}
+}

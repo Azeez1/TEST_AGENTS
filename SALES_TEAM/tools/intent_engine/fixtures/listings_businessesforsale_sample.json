@@ -1,0 +1,26 @@
+{
+  "source_id": "listings_businessesforsale",
+  "captured": "2026-07-06",
+  "live_status": "EMPTY",
+  "live_error": "",
+  "live_snapshots": 33,
+  "synthetic": false,
+  "note": "live listing snapshot",
+  "sample_listing": {
+    "listing_id": "3209636",
+    "title": "New Listing Top Primrose School In Houston",
+    "asking_price": 5400000,
+    "price_display": "$5,400,000",
+    "url": "https://us.businessesforsale.com/us/new-listing-top-primrose-school-in-houston-for-sale-1.aspx",
+    "broker": "",
+    "location": "Houston, Texas, US",
+    "cash_flow": 540000,
+    "parse_strategy": "result_table",
+    "metro": "houston"
+  },
+  "synthetic_exercise_counts": {
+    "stale_180d": 2,
+    "price_cut": 1,
+    "relisting": 2
+  }
+}

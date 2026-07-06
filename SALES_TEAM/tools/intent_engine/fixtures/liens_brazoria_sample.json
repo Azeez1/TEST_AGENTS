@@ -1,0 +1,11 @@
+{
+  "source_id": "liens_brazoria",
+  "captured": "2026-07-06",
+  "live_status": "SKIPPED",
+  "window_days": 30,
+  "enabled": false,
+  "blocked_reason": "hard-blocked: Tyler Self Service portal gates ALL search behind a reCAPTCHA v2 interactive checkbox on the disclaimer-accept page (verified 2026-07-06). Captcha solving is out of scope. Options: human-in-the-loop session cookie, Chrome-MCP session with a human click, or paid bulk via TexasFile. See module docstring.",
+  "portal_url": "https://brazoriacountytx-web.tylerhost.net/web",
+  "sample_record": null,
+  "signal_counts": {}
+}

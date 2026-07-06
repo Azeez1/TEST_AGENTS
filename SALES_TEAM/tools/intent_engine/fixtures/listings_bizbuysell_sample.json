@@ -1,9 +1,9 @@
 {
   "source_id": "listings_bizbuysell",
-  "captured": "2026-07-05",
-  "live_status": "SKIPPED",
-  "synthetic": true,
-  "note": "live scrape unavailable (BRIGHTDATA_API_TOKEN not set in ~/.dux_intent/.env); sample is the embedded real-format parser fixture",
+  "captured": "2026-07-06",
+  "live_status": "EMPTY",
+  "synthetic": false,
+  "note": "live listing snapshot",
   "sample_listing": {
     "listing_id": "2511364",
     "title": "Profitable Turnkey Active Freight Trucking Company - Active Amazon R.",
@@ -12,7 +12,8 @@
     "broker": "",
     "location": "",
     "cash_flow": null,
-    "parse_strategy": "anchor"
+    "parse_strategy": "ld_json",
+    "metro": "houston"
   },
   "synthetic_exercise_counts": {
     "stale_180d": 2,

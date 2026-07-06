@@ -1,0 +1,26 @@
+{
+  "source_id": "liens_gwinnett",
+  "captured": "2026-07-06",
+  "live_status": "OK",
+  "window_days": 30,
+  "note": "raw record behind the first emitted signal",
+  "sample_record": {
+    "county": "Gwinnett",
+    "instrument": "State Tax Lien",
+    "filed": "07/03/2026 08:12 AM",
+    "control_url": "https://gtc.dor.ga.gov/Services/SOLVED/Link/?REV=262166511",
+    "control_rev": "262166511",
+    "direct_parties": [
+      "ATLANTA SCREENPRINTS GA LLC"
+    ],
+    "reverse_parties": [
+      "GEORGIA STATE DEPT OF REVENUE"
+    ]
+  },
+  "signal_counts": {
+    "lien_filed": 2
+  },
+  "lien_kind_counts": {
+    "state_tax_lien": 2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source_id": "listings_loopnet",
+  "captured": "2026-07-06",
+  "live_status": "SKIPPED",
+  "live_error": "not collected by design: loopnet.com/biz/ is CoStar syndication of BizBuySell (one inventory, three skins) - zero incremental listings over listings_bizbuysell, only extra unlocker spend + duplicate signals. If ever built, key entities as bbs:{id} (see listings_bizquest).",
+  "live_snapshots": 0,
+  "synthetic": true,
+  "note": "collector intentionally disabled/skipped: not collected by design: loopnet.com/biz/ is CoStar syndication of BizBuySell (one inventory, three skins) - zero incremental listings over listings_bizbuysell, only extra unlocker spend + duplicate signals. If ever built, key entities as bbs:{id} (see listings_bizquest).",
+  "sample_listing": null,
+  "synthetic_exercise_counts": {}
+}
