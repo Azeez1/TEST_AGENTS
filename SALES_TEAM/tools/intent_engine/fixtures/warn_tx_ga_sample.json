@@ -1,0 +1,158 @@
+{
+  "source_id": "warn_tx_ga",
+  "captured_at": "2026-07-05T23:17:35",
+  "self_test_status": "OK",
+  "self_test_error": "ga-legacy: HTTPError: 404 Client Error: Not Found for url: https://www.dol.state.ga.us/public/es/warn/searchwarns/list?geoArea=9&year=2026&ste (expected \u2014 moved to TCSG)",
+  "sample": {
+    "tx_warn_row": {
+      "notice_date": "2026-06-09T00:00:00.000",
+      "job_site_name": "Remington Lodging and Hospitality, LLC (Hilton Houston NASA Clear Lake)",
+      "county_name": "Harris",
+      "wda_name": "Gulf Coast WDA",
+      "total_layoff_number": "65",
+      "layoff_date": "2026-07-31T00:00:00.000",
+      "wfdd_received_date": "2026-06-09T00:00:00.000",
+      "city_name": "Houston"
+    },
+    "ga_warn_entry": {
+      "listing": {
+        "warn_id": "GA202500107",
+        "company": "Americold Logistics, LLC",
+        "submitted": "2026-06-23",
+        "affected": 69,
+        "entry_id": "82845",
+        "url": "https://www.tcsg.edu/warn-public-view/entry/82845/"
+      },
+      "detail_fields": [
+        [
+          "GA WARN ID",
+          "GA202500107"
+        ],
+        [
+          "Company Name",
+          "Americold Logistics, LLC"
+        ],
+        [
+          "Contact Job Title",
+          "Sr. Director, Human Resources - Corporate & Automation"
+        ],
+        [
+          "Phone",
+          "(404) 368-5131"
+        ],
+        [
+          "Zip Code",
+          "30336"
+        ],
+        [
+          "Email",
+          "Email hidden; Javascript is required. /* */"
+        ],
+        [
+          "County",
+          "Fulton County"
+        ],
+        [
+          "Company Address",
+          "6180 Xavier Dr SW, Atlanta, Georgia, Map It"
+        ],
+        [
+          "Alternate Contact Person",
+          "Tasha Bateman"
+        ],
+        [
+          "Alternate Contact Job Title",
+          "Field Human Resources Manager"
+        ],
+        [
+          "Contact Person",
+          "Alana Horton"
+        ],
+        [
+          "Trade Affected Layoff or Closure",
+          "Yes"
+        ],
+        [
+          "Type of Layoff or Closure",
+          "Permanent Closure"
+        ],
+        [
+          "Number of Expected Dates Associated with WARN Event",
+          "One"
+        ],
+        [
+          "Alternate Phone",
+          "(404) 698-5513"
+        ],
+        [
+          "First Date of Separation",
+          "08/31/2026"
+        ],
+        [
+          "Alternate Email",
+          "Email hidden; Javascript is required. /* */"
+        ],
+        [
+          "Number of Locations Associated with WARN Event",
+          "One"
+        ],
+        [
+          "First Location Address",
+          "6180 Xavier Dr SW, Atlanta, Georgia, Map It"
+        ],
+        [
+          "Zip Code",
+          "30336"
+        ],
+        [
+          "Total Employees at Worksite",
+          "69"
+        ],
+        [
+          "Number of Employees Affected",
+          "69"
+        ],
+        [
+          "Are any Employees Represented by a Union Affected?",
+          "Yes"
+        ],
+        [
+          "Additional Information and Acknowledgement",
+          ""
+        ],
+        [
+          "Submitter Name",
+          "Tasha Bateman"
+        ],
+        [
+          "Public Notice Acknowledgement",
+          "I confirm and acknowledge this is a Public Notice"
+        ],
+        [
+          "WARN Notice Selection",
+          "Not applicable as the expected date of separation is within the next 60 days."
+        ],
+        [
+          "Submitter Title",
+          "Field Human Resources Manager"
+        ],
+        [
+          "Submitter Information",
+          "By entering the below submission information (name, title, phone number), you are indicating that you are authorized by the employer listed on this notice to submit on their behalf and are authorizing TCSG staff to contact you or the employer. If you are not authorized to perform this submission and have further questions, please do not perform the submission and contact us at WARN@tcsg.edu."
+        ],
+        [
+          "Submitter Email",
+          "Email hidden; Javascript is required. /* */"
+        ],
+        [
+          "Submitter Phone Number",
+          "(404) 698-5513"
+        ],
+        [
+          "Total Number of Affected Employees",
+          "69"
+        ]
+      ]
+    }
+  }
+}

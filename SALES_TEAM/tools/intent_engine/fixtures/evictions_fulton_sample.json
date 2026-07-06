@@ -1,0 +1,14 @@
+{
+  "target": "https://researchga.tylerhost.net/CourtRecordsSearch/",
+  "probed_on": "2026-07-05",
+  "conclusion": "re:SearchGA case search is login-walled: anonymous api/auth/claims returns null security claims and POST /CourtRecordsSearch/search redirects to Tyler Identity login. Set RESEARCHGA_COOKIE in ~/.dux_intent/.env and implement _authenticated_search() before enabling.",
+  "probes": {
+    "api/auth/claims": {
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://researchga.tylerhost.net/CourtRecordsSearch/api/auth/claims"
+    },
+    "api/search": {
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://researchga.tylerhost.net/CourtRecordsSearch/api/search",
+      "body_snippet": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  }
+}

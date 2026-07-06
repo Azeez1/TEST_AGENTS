@@ -1,0 +1,82 @@
+{
+  "source": "https://services5.arcgis.com/5RxyIIJ9boPdptdo/arcgis/rest/services/Building_Permit_latest/FeatureServer/0",
+  "where": "Opend >= DATE '2025-12-01'",
+  "note": "sample from layer tail; data ends 2026-01-28 and has no contractor field \u2014 collector disabled",
+  "features": [
+    {
+      "attributes": {
+        "RecordID": "BB-202600038",
+        "Name": "HUNSAKER - MISC. (RES)",
+        "Opend": 1767571200000,
+        "TypeCombo": "Residential Miscellaneous",
+        "Use_": "Residential",
+        "Subtype": "Miscellaneous",
+        "Group_": "Building",
+        "Address": "936 VIRGINIA NE, ATLANTA, GA 30306",
+        "Status_1": "Routed for Review",
+        "JobValue": 75000,
+        "ACA_Link": "https://aca-prod.accela.com/ATLANTA_GA/Cap/GlobalSearchResults.aspx?QueryText=BB-202600038"
+      }
+    },
+    {
+      "attributes": {
+        "RecordID": "BB-202600051",
+        "Name": "933 Hank Aaron Dr. SE",
+        "Opend": 1767571200000,
+        "TypeCombo": "Residential New",
+        "Use_": "Residential",
+        "Subtype": "New",
+        "Group_": "Building",
+        "Address": "933 HANK AARON SW, ATLANTA, GA 30315",
+        "Status_1": "ACA Pending",
+        "JobValue": 600000,
+        "ACA_Link": "https://aca-prod.accela.com/ATLANTA_GA/Cap/GlobalSearchResults.aspx?QueryText=BB-202600051"
+      }
+    },
+    {
+      "attributes": {
+        "RecordID": "BT-202502438",
+        "Name": "Virginia Adam",
+        "Opend": 1764633600000,
+        "TypeCombo": "Temporary Power",
+        "Use_": "Temporary Power",
+        "Subtype": "NA",
+        "Group_": "Building",
+        "Address": "932 NATHAM SE, ATLANTA, GA 30315",
+        "Status_1": "Issued",
+        "JobValue": 0,
+        "ACA_Link": "https://aca-prod.accela.com/ATLANTA_GA/Cap/GlobalSearchResults.aspx?QueryText=BT-202502438"
+      }
+    },
+    {
+      "attributes": {
+        "RecordID": "BT-202502484",
+        "Name": "Arp Residence",
+        "Opend": 1765324800000,
+        "TypeCombo": "Temporary Power",
+        "Use_": "Temporary Power",
+        "Subtype": "NA",
+        "Group_": "Building",
+        "Address": "932 MERCER SE, ATLANTA, GA 30316",
+        "Status_1": "Issued",
+        "JobValue": 0,
+        "ACA_Link": "https://aca-prod.accela.com/ATLANTA_GA/Cap/GlobalSearchResults.aspx?QueryText=BT-202502484"
+      }
+    },
+    {
+      "attributes": {
+        "RecordID": "BT-202502571",
+        "Name": "TEMP POWER LARRY",
+        "Opend": 1766534400000,
+        "TypeCombo": "Temporary Power",
+        "Use_": "Temporary Power",
+        "Subtype": "NA",
+        "Group_": "Building",
+        "Address": "930 REBEL FOREST SE, ATLANTA, GA 30315",
+        "Status_1": "Issued",
+        "JobValue": 0,
+        "ACA_Link": "https://aca-prod.accela.com/ATLANTA_GA/Cap/GlobalSearchResults.aspx?QueryText=BT-202502571"
+      }
+    }
+  ]
+}

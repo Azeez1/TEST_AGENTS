@@ -1,0 +1,106 @@
+{
+  "metros": {
+    "houston": {
+      "state": "TX",
+      "counties": ["HARRIS", "FORT BEND", "MONTGOMERY"],
+      "zip_prefixes": ["77", "770", "772", "773", "774", "775"]
+    },
+    "atlanta": {
+      "state": "GA",
+      "counties": ["FULTON", "DEKALB", "COBB", "GWINNETT"],
+      "zip_prefixes": ["30", "303", "300", "301"]
+    }
+  },
+  "avenues": {
+    "trucking": {
+      "demo_asset": "Ironhaul",
+      "entity_key_pattern": "dot:{dot}",
+      "collectors": ["trucking_fmcsa"],
+      "signals": {
+        "insurance_cancellation": {"weight": 5.0, "half_life_days": 30},
+        "recent_crash": {"weight": 4.0, "half_life_days": 60},
+        "oos_rate_high": {"weight": 3.0, "half_life_days": 45},
+        "bleed_score": {"weight": 2.0, "half_life_days": 90}
+      },
+      "stacking_bonus": 1.5,
+      "hot_threshold": 6.0,
+      "top_n": 25
+    },
+    "property_mgmt": {
+      "demo_asset": "Stonebridge",
+      "entity_key_pattern": "biz:{name_norm}|{zip}",
+      "collectors": ["evictions_harris", "evictions_fulton", "violations_houston"],
+      "signals": {
+        "eviction_spike": {"weight": 4.0, "half_life_days": 30},
+        "violation_cluster": {"weight": 3.0, "half_life_days": 60}
+      },
+      "stacking_bonus": 1.5,
+      "hot_threshold": 5.0,
+      "top_n": 25
+    },
+    "mechanical": {
+      "demo_asset": "Meridian",
+      "entity_key_pattern": "biz:{name_norm}|{zip}",
+      "collectors": ["permits_houston", "permits_atlanta"],
+      "signals": {
+        "permit_volume_growth": {"weight": 3.0, "half_life_days": 90}
+      },
+      "stacking_bonus": 1.5,
+      "hot_threshold": 4.0,
+      "top_n": 25
+    },
+    "manufacturing": {
+      "demo_asset": "Plantview",
+      "entity_key_pattern": "biz:{name_norm}|{zip}",
+      "collectors": ["osha_dol", "epa_echo", "warn_tx_ga"],
+      "signals": {
+        "osha_citation": {"weight": 5.0, "half_life_days": 90},
+        "epa_violation": {"weight": 3.0, "half_life_days": 90},
+        "warn_notice": {"weight": 4.0, "half_life_days": 60}
+      },
+      "stacking_bonus": 1.5,
+      "hot_threshold": 5.0,
+      "top_n": 25
+    },
+    "dead_listings": {
+      "demo_asset": "broker-play",
+      "entity_key_pattern": "bbs:{listing_id}",
+      "collectors": ["listings_bizbuysell"],
+      "signals": {
+        "stale_180d": {"weight": 4.0, "half_life_days": 9999},
+        "price_cut": {"weight": 3.0, "half_life_days": 45},
+        "relisting": {"weight": 3.0, "half_life_days": 60}
+      },
+      "stacking_bonus": 1.5,
+      "hot_threshold": 4.0,
+      "top_n": 25
+    },
+    "pe_distress": {
+      "demo_asset": "acquisition-hunt",
+      "entity_key_pattern": "biz:{name_norm}|{zip}",
+      "collectors": ["sba_loans", "liens_harris"],
+      "signals": {
+        "lien_filed": {"weight": 4.0, "half_life_days": 60},
+        "judgment_filed": {"weight": 4.0, "half_life_days": 60},
+        "sba_maturity_window": {"weight": 3.0, "half_life_days": 120}
+      },
+      "stacking_bonus": 2.0,
+      "hot_threshold": 5.0,
+      "top_n": 25
+    }
+  },
+  "collectors_enabled": {
+    "trucking_fmcsa": true,
+    "evictions_harris": true,
+    "evictions_fulton": false,
+    "violations_houston": true,
+    "permits_houston": true,
+    "permits_atlanta": false,
+    "osha_dol": true,
+    "epa_echo": true,
+    "warn_tx_ga": true,
+    "listings_bizbuysell": true,
+    "sba_loans": true,
+    "liens_harris": true
+  }
+}

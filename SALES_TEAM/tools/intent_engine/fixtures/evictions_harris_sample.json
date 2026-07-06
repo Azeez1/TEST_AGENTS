@@ -1,0 +1,19 @@
+{
+  "query_url": "https://jpwebsite.harriscountytx.gov/PublicExtracts/GetExtractData?extractCaseType=CV&extract=7&court=300&casetype=8464&format=csv&fdate=06%2F29%2F2026&tdate=07%2F05%2F2026",
+  "sample_record": {
+    "case_number": "261100282993",
+    "court": "Precinct 1, Place 1",
+    "case_type": "Eviction",
+    "file_date": "2026-06-29",
+    "style": "Mikal Araujo  vs.  Ken and all other unauthorized occupants",
+    "cause_of_action": "Forcible Entry and Detainer - Residential",
+    "status": "Active",
+    "plaintiff_name": "Mikal Araujo",
+    "plaintiff_street": "9235 Colendale Drive",
+    "plaintiff_city": "Houston",
+    "plaintiff_state": "TX",
+    "plaintiff_zip": "77037",
+    "defendant_name": "Ken and all other unauthorized occupants"
+  },
+  "rows_in_window": 932
+}

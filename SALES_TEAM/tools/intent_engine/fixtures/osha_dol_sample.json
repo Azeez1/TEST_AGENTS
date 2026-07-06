@@ -1,0 +1,7 @@
+{
+  "source_id": "osha_dol",
+  "captured_at": "2026-07-05T23:18:41",
+  "self_test_status": "SKIPPED",
+  "self_test_error": "DOL_API_KEY not set in ~/.dux_intent/.env and the keyless CSV catalog (enforcedata.dol.gov / enfxfr.dol.gov) serves only an HTML app shell to scripts. Set DOL_API_KEY (free key: https://dataportal.dol.gov/registration) or drop an osha_inspection*.csv(.zip) into ~/.dux_intent/cache/osha/.",
+  "sample": null
+}

@@ -1,0 +1,29 @@
+{
+  "source_id": "liens_harris",
+  "captured": "2026-07-05",
+  "live_status": "OK",
+  "window_days": 30,
+  "note": "raw record behind the first emitted signal",
+  "sample_record": {
+    "file_no": "RP-2026-265781",
+    "file_date": "07/02/2026",
+    "instrument": "A/J",
+    "grantors": [
+      "RS CONSTRUCTION",
+      "RS TEXAS CONSTRUCTION LLC"
+    ],
+    "grantees": [
+      "J TALASEK HOMES LLC"
+    ]
+  },
+  "signal_counts": {
+    "judgment_filed": 293,
+    "lien_filed": 182
+  },
+  "lien_kind_counts": {
+    "abstract_of_judgment": 293,
+    "lis_pendens": 85,
+    "municipal_lien": 68,
+    "mechanics_or_private_lien": 29
+  }
+}

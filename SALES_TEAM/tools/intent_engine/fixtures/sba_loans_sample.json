@@ -1,0 +1,29 @@
+{
+  "source_id": "sba_loans",
+  "captured_at": "2026-07-05T23:19:29",
+  "self_test_status": "OK",
+  "self_test_error": "",
+  "sample": {
+    "sba_loan": {
+      "program": "504",
+      "locationid": "188096",
+      "borrname": "LEWISTON EXPRESS",
+      "borrstreet": "107 LEWISTON ROAD",
+      "borrcity": "GROVETOWN",
+      "borrstate": "GA",
+      "borrzip": "30813",
+      "grossapproval": "355000",
+      "approvaldate": "7/17/2006",
+      "approvalfy": "2006",
+      "terminmonths": "240",
+      "naicscode": "447110",
+      "naicsdescription": "Gasoline Stations with Convenience Stores",
+      "projectcounty": "COLUMBIA",
+      "projectstate": "GA",
+      "loanstatus": "PREPAID IN FULL",
+      "_maturity_date": "2026-07-17",
+      "_days_to_maturity": 12,
+      "_source_file": "sba_504_fy1991-2009.csv"
+    }
+  }
+}
