@@ -111,7 +111,8 @@ def brightdata_unlock(url):
             "BRIGHTDATA_API_TOKEN not set in ~/.dux_intent/.env — cannot use Web Unlocker"
         )
     api_url = "https://api.brightdata.com/request"
-    payload = {"zone": "web_unlocker1", "url": url, "format": "raw"}
+    zone = config.get_env("BRIGHTDATA_ZONE") or "mcp_unlocker"
+    payload = {"zone": zone, "url": url, "format": "raw"}
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
