@@ -39,6 +39,9 @@ Self-test (seeds real-DB entities read-only into a throwaway store):
     python -m collectors.pay_hcad --self-test [--cap N]
 """
 import io
+import json
+import os
+import sqlite3
 import sys
 import time
 import zipfile
@@ -63,6 +66,11 @@ ZIP_NAME = "Real_acct_owner.zip"
 MEMBER = "real_acct.txt"
 CACHE_MAX_AGE_DAYS = 80
 SAMPLE_ACCTS = 3                     # parcel account numbers kept as evidence
+# Persisted owner-name -> parcel-count index. Building it means streaming +
+# normalizing the 872 MB HCAD member (multi-minute); once persisted, later
+# runs load only the counts for the entities they need (sub-second) and never
+# touch the raw export until it is re-downloaded (see _counts_cache_fresh).
+COUNTS_CACHE_NAME = "owner_parcel_counts.sqlite"
 
 # HCAD placeholder owner names (normalized) — never join on these
 PLACEHOLDER_OWNERS = {
@@ -137,10 +145,13 @@ class PayHcadCollector(BaseCollector):
 
     # ------------------------------------------------------------- scanning
 
-    def _owner_counts(self, zip_path, targets):
-        """Stream real_acct.txt out of the ZIP; count parcels per matching
-        normalized owner name. Returns {name_norm: {'count', 'accts', 'raw'}}.
-        Only target names are kept, so memory stays O(matched entities)."""
+    def _owner_counts(self, zip_path, targets=None):
+        """Stream real_acct.txt out of the ZIP; count parcels per normalized
+        owner name. Returns {name_norm: {'count', 'accts', 'raw'}}.
+
+        targets is a set -> keep only those names (memory O(matched entities));
+        targets is None -> keep EVERY owner (used to build the persistent
+        counts cache once, so subsequent runs never re-stream the export)."""
         counts = {}
         with zipfile.ZipFile(zip_path) as zf:
             with zf.open(MEMBER) as raw:
@@ -162,7 +173,7 @@ class PayHcadCollector(BaseCollector):
                     if not owner:
                         continue
                     nn = normalize_name(owner).lower()
-                    if nn not in targets:
+                    if targets is not None and nn not in targets:
                         continue
                     rec = counts.setdefault(nn, {"count": 0, "accts": [],
                                                  "raw": owner})
@@ -170,6 +181,94 @@ class PayHcadCollector(BaseCollector):
                     if len(rec["accts"]) < SAMPLE_ACCTS:
                         rec["accts"].append(cells[i_acct].strip())
         return counts
+
+    # ---------------------------------------------------- persistent counts cache
+
+    def _counts_cache_path(self):
+        d = config.CACHE_DIR / "hcad"
+        d.mkdir(parents=True, exist_ok=True)
+        return d / COUNTS_CACHE_NAME
+
+    @staticmethod
+    def _counts_cache_fresh(cache_path, zip_path):
+        """Cache is usable only if it exists and is at least as new as the raw
+        HCAD ZIP. A re-download bumps the ZIP mtime past the cache -> rebuild."""
+        try:
+            return (cache_path.exists()
+                    and cache_path.stat().st_mtime >= zip_path.stat().st_mtime)
+        except OSError:
+            return False
+
+    def _build_counts_cache(self, zip_path, cache_path):
+        """Parse the full owner-name -> parcel-count map ONCE and persist it to
+        a small sqlite index. Written to a temp file then atomically renamed so
+        a crash mid-build never leaves a half-written cache in place."""
+        counts = self._owner_counts(zip_path, targets=None)   # ALL owners
+        tmp = cache_path.with_suffix(cache_path.suffix + ".part")
+        try:
+            if tmp.exists():
+                tmp.unlink()
+        except OSError:
+            pass
+        conn = sqlite3.connect(str(tmp))
+        try:
+            conn.execute("PRAGMA journal_mode=OFF")
+            conn.execute("PRAGMA synchronous=OFF")
+            conn.execute(
+                "CREATE TABLE owner_counts (name_norm TEXT PRIMARY KEY, "
+                "cnt INTEGER NOT NULL, raw TEXT, accts TEXT)")
+            conn.executemany(
+                "INSERT OR REPLACE INTO owner_counts "
+                "(name_norm, cnt, raw, accts) VALUES (?,?,?,?)",
+                ((nn, rec["count"], rec["raw"], json.dumps(rec["accts"]))
+                 for nn, rec in counts.items()))
+            conn.commit()
+        finally:
+            conn.close()
+        os.replace(str(tmp), str(cache_path))
+        return len(counts)
+
+    def _load_counts_cache(self, cache_path, targets):
+        """Fetch counts for just the target names from the persisted cache."""
+        conn = sqlite3.connect(f"file:{Path(cache_path).as_posix()}?mode=ro",
+                               uri=True)
+        conn.row_factory = sqlite3.Row
+        out = {}
+        try:
+            names = list(targets)
+            chunk = 400              # stay well under SQLite's variable limit
+            for i in range(0, len(names), chunk):
+                part = names[i:i + chunk]
+                q = ("SELECT name_norm, cnt, raw, accts FROM owner_counts "
+                     f"WHERE name_norm IN ({','.join('?' * len(part))})")
+                for r in conn.execute(q, part):
+                    try:
+                        accts = json.loads(r["accts"]) if r["accts"] else []
+                    except (TypeError, ValueError):
+                        accts = []
+                    out[r["name_norm"]] = {"count": r["cnt"],
+                                           "raw": r["raw"] or "",
+                                           "accts": accts}
+        finally:
+            conn.close()
+        return out
+
+    def _owner_counts_cached(self, targets, zip_path, notes):
+        """Return {name_norm: rec} for target owners, using the persistent
+        cache when it is newer than the raw ZIP, else (re)building it first."""
+        cache_path = self._counts_cache_path()
+        if self._counts_cache_fresh(cache_path, zip_path):
+            try:
+                counts = self._load_counts_cache(cache_path, targets)
+                notes.append("owner-parcel counts served from cache")
+                return counts
+            except Exception as exc:
+                notes.append(f"counts cache unreadable "
+                             f"({type(exc).__name__}: {exc}); rebuilding")
+        built = self._build_counts_cache(zip_path, cache_path)
+        notes.append(f"owner-parcel counts cache built ({built} owners) "
+                     "from HCAD export")
+        return self._load_counts_cache(cache_path, targets)
 
     # ------------------------------------------------------------- emission
 
@@ -224,7 +323,7 @@ class PayHcadCollector(BaseCollector):
                     "signals attach to existing entities; run the pain "
                     "collectors first")
             zip_path = self._ensure_zip(notes)
-            counts = self._owner_counts(zip_path, set(index))
+            counts = self._owner_counts_cached(set(index), zip_path, notes)
             added, entities = 0, set()
             for nn, rec in counts.items():
                 for ent in index[nn]:

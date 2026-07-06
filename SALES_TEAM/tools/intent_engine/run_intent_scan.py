@@ -16,6 +16,7 @@ OUTPUT_DIR/dry_run/ so real exports are never overwritten.
 import argparse
 import importlib.util
 import sys
+import threading
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -32,6 +33,94 @@ from common.store import Store  # noqa: E402
 from export_csv import export_csv  # noqa: E402
 
 CONTACT_FIELDS = ("phone", "email", "street", "zip")
+
+# --- per-collector timeout watchdog -----------------------------------------
+# A single stalled collector (slow HTTP, first-run HCAD reparse) must never
+# freeze the whole scan. Each collector runs under a wall-clock timeout; on
+# expiry it is abandoned (SKIPPED) and the run continues. Defaults are in
+# seconds and overridable via the registry's optional "collector_timeouts"
+# section; heavy first-run collectors get more headroom.
+DEFAULT_COLLECTOR_TIMEOUT = 300
+_CODE_COLLECTOR_TIMEOUTS = {
+    "pay_hcad": 900,        # first run streams + parses an 872 MB HCAD member
+    "osha_dol": 600,        # downloads + scans a large OSHA inspection CSV
+    "sba_loans": 600,       # downloads + scans the SBA FOIA CSV
+    "pay_sba": 600,         # joins every avenue's entities against the SBA index
+    "trucking_fmcsa": 900,  # pulls 5k+ inspection/crash signals — slow but reliable, must finish
+                            # not abandoned (an abandoned mid-write worker keeps the DB lock and stalls the run)
+}
+
+
+def _collector_timeout(source_id, registry):
+    """Watchdog timeout (seconds) for one collector. Registry
+    'collector_timeouts' overrides the in-code defaults; unknown -> DEFAULT."""
+    reg = registry.get("collector_timeouts") or {}
+    val = reg.get(source_id)
+    if val is None:
+        val = _CODE_COLLECTOR_TIMEOUTS.get(source_id, DEFAULT_COLLECTOR_TIMEOUT)
+    try:
+        return max(1, int(val))
+    except (TypeError, ValueError):
+        return DEFAULT_COLLECTOR_TIMEOUT
+
+
+def _call_collect(collector, since, store, registry):
+    """Invoke one collector, containing ALL errors into a CollectorResult
+    (the collector contract says never raise, but contain anyway)."""
+    try:
+        r = collector.collect(since, store, registry)
+        if not isinstance(r, CollectorResult):
+            r = CollectorResult(collector.source_id, 0, 0, "ERROR",
+                                "collector returned non-CollectorResult")
+    except Exception as exc:  # noqa: BLE001 - defensive containment
+        r = CollectorResult(collector.source_id, 0, 0, "ERROR",
+                            f"{type(exc).__name__}: {exc}")
+    return r
+
+
+def _run_with_watchdog(collector, since, db_path, registry, timeout_s):
+    """Run a collector on its OWN Store connection inside a DAEMON worker
+    thread, bounded by `timeout_s`. On timeout the worker is abandoned (a
+    leaked thread is acceptable) and a SKIPPED result is returned so the
+    orchestrator moves on.
+
+    A DAEMON thread is essential: a stalled collector's thread may still be
+    blocked in a slow HTTP call at interpreter shutdown. Non-daemon workers
+    (e.g. ThreadPoolExecutor's) are joined by an atexit handler, which would
+    hang the whole process at exit and swallow the SUMMARY. Daemon threads are
+    abandoned cleanly on exit, so the run always finishes and flushes."""
+    from common.store import Store  # local import: only needed for real runs
+
+    box = {}
+
+    def _target():
+        # Connection is created AND used entirely within this worker thread,
+        # so SQLite's same-thread check is satisfied without global flags.
+        cs = Store(db_path)
+        try:
+            box["result"] = _call_collect(collector, since, cs, registry)
+        except BaseException as exc:  # noqa: BLE001 - never let a worker die silently
+            box["result"] = CollectorResult(collector.source_id, 0, 0, "ERROR",
+                                            f"{type(exc).__name__}: {exc}")
+        finally:
+            try:
+                cs.close()
+            except Exception:
+                pass
+
+    t = threading.Thread(target=_target,
+                         name=f"collector-{collector.source_id}", daemon=True)
+    t.start()
+    t.join(timeout_s)
+    if t.is_alive():
+        # Still blocked (likely a stalled HTTP call). Abandon it and continue;
+        # the daemon thread dies when the process exits at end of run.
+        print(f"[watchdog] {collector.source_id} exceeded {timeout_s}s — "
+              f"abandoning it (SKIPPED) and continuing the scan.", flush=True)
+        return CollectorResult(collector.source_id, 0, 0, "SKIPPED",
+                               f"timeout after {timeout_s}s")
+    return box.get("result") or CollectorResult(
+        collector.source_id, 0, 0, "ERROR", "watchdog: no result produced")
 
 
 def _registry_types(registry, section):
@@ -186,9 +275,18 @@ def build_rows(store, registry, avenues, metros, run_id=None):
 
 
 def run_collectors(store, registry, avenues, metros, since):
-    """Load enabled collectors and run each, containing ALL errors."""
+    """Load enabled collectors and run each under a per-collector timeout
+    watchdog so a single stalled collector can never freeze the whole scan.
+
+    Real (file-backed) runs isolate each collector on its own Store connection
+    inside a worker thread bounded by `_collector_timeout`; a timeout is
+    recorded as SKIPPED and the scan continues. Dry-run uses an in-memory DB
+    (which cannot be shared across connections), so those collectors run inline
+    with errors contained — no watchdog, since dry-run is a manual dev tool.
+    """
     results = []
     collectors, missing, disabled = load_collectors(registry)
+    in_memory = str(getattr(store, "db_path", "")) == ":memory:"
     for c in collectors:
         if c.avenue not in avenues:
             results.append(CollectorResult(c.source_id, 0, 0, "SKIPPED",
@@ -198,14 +296,11 @@ def run_collectors(store, registry, avenues, metros, since):
             results.append(CollectorResult(c.source_id, 0, 0, "SKIPPED",
                                            "no selected metro"))
             continue
-        try:
-            r = c.collect(since, store, registry)
-            if not isinstance(r, CollectorResult):
-                r = CollectorResult(c.source_id, 0, 0, "ERROR",
-                                    "collector returned non-CollectorResult")
-        except Exception as exc:  # contract says never raise, but contain anyway
-            r = CollectorResult(c.source_id, 0, 0, "ERROR",
-                                f"{type(exc).__name__}: {exc}")
+        if in_memory:
+            r = _call_collect(c, since, store, registry)
+        else:
+            timeout_s = _collector_timeout(c.source_id, registry)
+            r = _run_with_watchdog(c, since, store.db_path, registry, timeout_s)
         results.append(r)
     for m in missing:
         results.append(CollectorResult(m, 0, 0, "SKIPPED",
@@ -256,6 +351,12 @@ def print_summary(run_date, since, collector_results, summary_lines, csv_paths,
         counts = (f"  +{r.signals_added} signals / {r.entities_seen} entities"
                   if r.status == "OK" else "")
         print(f"  {r.source_id:<22} {r.status:<8}{counts}{detail}")
+    timed_out = sorted(r.source_id for r in collector_results
+                       if r.status == "SKIPPED"
+                       and "timeout" in (r.error or "").lower())
+    if timed_out:
+        print(f"Timed out (abandoned by watchdog, scan continued): "
+              f"{', '.join(timed_out)}")
     print("Avenues:")
     for line in summary_lines:
         print(f"  {line}")
@@ -286,6 +387,14 @@ def main(argv=None):
                         help="override lookback for a deep backfill run")
     parser.add_argument("--no-sheet", action="store_true",
                         help="skip Google Sheet export")
+    parser.add_argument("--export-only", action="store_true",
+                        help="skip ALL collection; re-score the already-persisted "
+                             "signals in the real DB across ALL avenues+metros and "
+                             "run the combined export (customers/acquisitions CSVs "
+                             "+ CUSTOMERS/ACQUISITIONS/PIPELINE sheet tabs). Use as "
+                             "the assembly step after per-avenue collection runs. "
+                             "Writes the sheet unless --no-sheet; degrades to "
+                             "CSV-only if creds/spreadsheet id are absent.")
     parser.add_argument("--dry-run", action="store_true",
                         help="in-memory store + synthetic fixture signals; "
                              "no real DB, no sheet; CSVs -> OUTPUT_DIR/dry_run/")
@@ -295,8 +404,18 @@ def main(argv=None):
 
     config.ensure_dirs()
     registry = config.load_registry()
-    avenues = _parse_list(args.avenues, list(registry["avenues"].keys()), "avenue")
-    metros = _parse_list(args.metros, list(registry["metros"].keys()), "metro")
+    # --export-only is an assembly step: it must ALWAYS span every avenue+metro
+    # so the combined customers/acquisitions lists are complete regardless of
+    # which per-avenue collection runs preceded it. It also forces the real DB
+    # (dry-run's in-memory store holds nothing to export).
+    if args.export_only:
+        args.dry_run = False
+        avenues = list(registry["avenues"].keys())
+        metros = list(registry["metros"].keys())
+    else:
+        avenues = _parse_list(args.avenues, list(registry["avenues"].keys()),
+                              "avenue")
+        metros = _parse_list(args.metros, list(registry["metros"].keys()), "metro")
     lookback = args.backfill_days if args.backfill_days else args.since_days
     since = date.today() - timedelta(days=lookback)
     run_date = date.today().isoformat()
@@ -314,9 +433,16 @@ def main(argv=None):
         output_dir = config.OUTPUT_DIR
 
     run_id = store.start_run({"argv": vars(args), "scheduled": args.scheduled,
-                              "dry_run": args.dry_run})
+                              "dry_run": args.dry_run,
+                              "export_only": args.export_only})
 
-    collector_results = run_collectors(store, registry, avenues, metros, since)
+    if args.export_only:
+        print("[export-only] skipping all collection; re-scoring the persisted "
+              f"DB across {len(avenues)} avenues x {len(metros)} metros and "
+              "assembling the combined lists.", flush=True)
+        collector_results = []
+    else:
+        collector_results = run_collectors(store, registry, avenues, metros, since)
     rows = build_rows(store, registry, avenues, metros, run_id=run_id)
     csv_paths = export_csv(rows, run_date=run_date, output_dir=output_dir)
 
@@ -364,8 +490,16 @@ def main(argv=None):
     print_summary(run_date, since.isoformat(), collector_results, summary_lines,
                   csv_paths, sheet_status)
     store.close()
+    sys.stdout.flush()
+    sys.stderr.flush()
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    code = main()
+    # Flush before exit: any daemon watchdog worker still stuck in a stalled
+    # HTTP call is abandoned here (daemon threads do not block interpreter
+    # shutdown), so the SUMMARY above is always written.
+    sys.stdout.flush()
+    sys.stderr.flush()
+    sys.exit(code)

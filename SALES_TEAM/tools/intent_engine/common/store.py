@@ -104,6 +104,17 @@ class Store:
         self.db_path = str(db_path)
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
+        # Robustness for the per-collector watchdog (run_intent_scan.py): each
+        # collector runs on its OWN Store connection in a worker thread, so a
+        # timed-out/abandoned collector's connection may briefly coexist with
+        # the next one. WAL + a generous busy_timeout let independent
+        # connections to the same file share it without spurious "database is
+        # locked" errors. Best-effort: never fatal (and a no-op for :memory:).
+        try:
+            self.conn.execute("PRAGMA busy_timeout=30000")
+            self.conn.execute("PRAGMA journal_mode=WAL")
+        except sqlite3.Error:
+            pass
         self.conn.executescript(SCHEMA)
         self.conn.commit()
 

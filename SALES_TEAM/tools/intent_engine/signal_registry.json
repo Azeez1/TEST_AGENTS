@@ -173,5 +173,11 @@
     "pay_ga_ucc": false,
     "timing_insurance": true,
     "timing_trajectory": true
+  },
+  "collector_timeouts": {
+    "_doc": "Per-collector watchdog timeout in SECONDS for run_intent_scan.py. A collector exceeding its timeout is abandoned (recorded SKIPPED 'timeout after Ns') and the scan continues to the next collector, so an unattended run always completes. Collectors omitted here use the 300s default. Heavy first-run collectors (large downloads/parses) get more headroom; pay_hcad builds its owner-parcel cache on run 1, which is slow ONCE.",
+    "pay_hcad": 900,
+    "osha_dol": 600,
+    "sba_loans": 600
   }
 }
