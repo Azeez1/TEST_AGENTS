@@ -1,0 +1,68 @@
+{
+ "spike_evidence": {
+  "liview": "reCAPTCHA-gated search form (g_recaptcha_response); direct GET/POST re-renders the form; Bright Data unlocker returned empty bodies. BLOCKED.",
+  "soql": "qh9u-swkp coverage: 12/12 hot DOTs with effective_date; 81/150 random census DOTs with an active filing (2026-07-06 spike)."
+ },
+ "raw_samples": {
+  "actpend_active": {
+   "dot_number": "00036431",
+   "docket_number": "MC116077",
+   "ins_form_code": "91X",
+   "mod_col_1": "BIPD/Primary",
+   "name_company": "GREAT WEST CASUALTY CO.",
+   "policy_no": "GWP66492E",
+   "effective_date": "04/07/2025",
+   "max_cov_amount": "5000"
+  }
+ },
+ "example_signals": [
+  {
+   "id": 26,
+   "dedup_hash": "6728a26397cb0fe9d89e1e9b58371f49d7352a20",
+   "entity_key": "dot:174",
+   "entity_name": "CWT FARMS INTERNATIONAL INC",
+   "metro": "atlanta",
+   "avenue": "trucking",
+   "signal_type": "insurance_renewal",
+   "signal_date": "2026-07-01",
+   "magnitude": 1.0,
+   "source_id": "timing_insurance",
+   "source_ref": "https://data.transportation.gov/resource/qh9u-swkp.json?dot_number=00000174",
+   "raw": "{\"policy_effective_date\": \"2025-07-01\", \"renewal_anniversary_anchor\": \"2026-07-01\", \"window\": [\"2026-06-01\", \"2026-07-31\"], \"days_until_window\": 0, \"insurer\": \"HARTFORD FIRE INSURANCE COMPANY\", \"policy_no\": \"20CSES95301\", \"form\": \"91X\", \"coverage_type\": \"BIPD/Primary\", \"docket\": \"MC187460\", \"note\": \"renewal proxy = anniversary of the active L&I filing effective date (LIVIEW scrape is reCAPTCHA-blocked; data via SoQL qh9u-swkp)\"}",
+   "attrs": "{\"window_start\": \"2026-06-01\", \"window_end\": \"2026-07-31\", \"phone\": \"7705323181\", \"email\": \"bking@AVIAGEN.COM\", \"street\": \"1180 AIRPORT PARKWAY\", \"zip\": \"30501\", \"power_units\": 8, \"mcs150_mileage\": 121904}",
+   "created_at": "2026-07-06T15:05:08"
+  },
+  {
+   "id": 31,
+   "dedup_hash": "e87b09112e524243a5f38c9577f7efb55f2f80a1",
+   "entity_key": "dot:111228",
+   "entity_name": "TRCC TRANSPORT INC",
+   "metro": "atlanta",
+   "avenue": "trucking",
+   "signal_type": "insurance_renewal",
+   "signal_date": "2026-07-01",
+   "magnitude": 1.0,
+   "source_id": "timing_insurance",
+   "source_ref": "https://data.transportation.gov/resource/qh9u-swkp.json?dot_number=00111228",
+   "raw": "{\"policy_effective_date\": \"2023-07-01\", \"renewal_anniversary_anchor\": \"2026-07-01\", \"window\": [\"2026-06-01\", \"2026-07-31\"], \"days_until_window\": 0, \"insurer\": \"AMERICAN INTERNATIONAL SPECIALTY LINES INS.\", \"policy_no\": \"15828703\", \"form\": \"91X\", \"coverage_type\": \"BIPD/Excess\", \"docket\": \"MC678003\", \"note\": \"renewal proxy = anniversary of the active L&I filing effective date (LIVIEW scrape is reCAPTCHA-blocked; data via SoQL qh9u-swkp)\"}",
+   "attrs": "{\"window_start\": \"2026-06-01\", \"window_end\": \"2026-07-31\", \"phone\": \"7062771300\", \"email\": \"HSMITH@TRCC.COM\", \"street\": \"1300 TIARCO DR\", \"zip\": \"30721\", \"power_units\": 61, \"mcs150_mileage\": 2865124}",
+   "created_at": "2026-07-06T15:05:08"
+  },
+  {
+   "id": 39,
+   "dedup_hash": "7652bffe7f4faceee4c42d340b052a83d868e2df",
+   "entity_key": "dot:233221",
+   "entity_name": "S P RICHARDS COMPANY",
+   "metro": "atlanta",
+   "avenue": "trucking",
+   "signal_type": "insurance_renewal",
+   "signal_date": "2026-07-01",
+   "magnitude": 1.0,
+   "source_id": "timing_insurance",
+   "source_ref": "https://data.transportation.gov/resource/qh9u-swkp.json?dot_number=00233221",
+   "raw": "{\"policy_effective_date\": \"2025-07-01\", \"renewal_anniversary_anchor\": \"2026-07-01\", \"window\": [\"2026-06-01\", \"2026-07-31\"], \"days_until_window\": 0, \"insurer\": \"HARTFORD FIRE INSURANCE COMPANY\", \"policy_no\": \"10 CSE S94803\", \"form\": \"91X\", \"coverage_type\": \"BIPD/Primary\", \"docket\": \"MC1727004\", \"note\": \"renewal proxy = anniversary of the active L&I filing effective date (LIVIEW scrape is reCAPTCHA-blocked; data via SoQL qh9u-swkp)\"}",
+   "attrs": "{\"window_start\": \"2026-06-01\", \"window_end\": \"2026-07-31\", \"phone\": \"7707794332\", \"email\": \"adam_lowery@sprich.com\", \"street\": \"4300 WILDWOOD PKWY, STE 300\", \"zip\": \"30339\", \"power_units\": 138, \"mcs150_mileage\": 4944000}",
+   "created_at": "2026-07-06T15:05:08"
+  }
+ ]
+}

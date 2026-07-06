@@ -1,0 +1,34 @@
+{
+  "source_id": "pay_sba",
+  "captured_at": "2026-07-06T15:37:29",
+  "self_test_status": "OK",
+  "self_test_error": "skipped pre-window files: sba_504_fy1991-2009.csv, sba_7a_fy2010-2019.csv",
+  "sample": {
+    "matched_entity": {
+      "entity_key": "biz:fabric joint|30032",
+      "name": "FABRIC JOINT LLC",
+      "avenue": "pe_distress",
+      "metro": "atlanta",
+      "zip": "30032"
+    },
+    "sba_loan": {
+      "program": "504",
+      "locationid": "188130",
+      "borrname": "Fabric Joint LLC",
+      "borrstreet": "3372 Memorial Drive",
+      "borrcity": "Decatur",
+      "borrstate": "GA",
+      "borrzip": "30032",
+      "grossapproval": "168000",
+      "approvaldate": "3/24/2025",
+      "approvalfy": "2025",
+      "terminmonths": "300",
+      "naicscode": "424310",
+      "naicsdescription": "Piece Goods, Notions, and Other Dry Goods Merchant Wholesalers",
+      "projectcounty": "DEKALB",
+      "projectstate": "GA",
+      "loanstatus": "CANCELED"
+    },
+    "source_file": "sba_504_fy2010-present.csv"
+  }
+}

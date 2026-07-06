@@ -14,6 +14,7 @@
   "avenues": {
     "trucking": {
       "demo_asset": "Ironhaul",
+      "funnel": "customers",
       "entity_key_pattern": "dot:{dot}",
       "collectors": ["trucking_fmcsa"],
       "signals": {
@@ -23,11 +24,15 @@
         "bleed_score": {"weight": 2.0, "half_life_days": 90}
       },
       "stacking_bonus": 1.5,
+      "per_type_cap": 3,
+      "per_type_diminish": 0.5,
+      "deal_size_weight": 1.0,
       "hot_threshold": 6.0,
       "top_n": 25
     },
     "property_mgmt": {
       "demo_asset": "Stonebridge",
+      "funnel": "customers",
       "entity_key_pattern": "biz:{name_norm}|{zip}",
       "collectors": ["evictions_harris", "evictions_fulton", "violations_houston"],
       "signals": {
@@ -35,22 +40,30 @@
         "violation_cluster": {"weight": 3.0, "half_life_days": 60}
       },
       "stacking_bonus": 1.5,
+      "per_type_cap": 3,
+      "per_type_diminish": 0.5,
+      "deal_size_weight": 1.0,
       "hot_threshold": 5.0,
       "top_n": 25
     },
     "mechanical": {
       "demo_asset": "Meridian",
+      "funnel": "customers",
       "entity_key_pattern": "biz:{name_norm}|{zip}",
       "collectors": ["permits_houston", "permits_atlanta"],
       "signals": {
         "permit_volume_growth": {"weight": 3.0, "half_life_days": 90}
       },
       "stacking_bonus": 1.5,
+      "per_type_cap": 3,
+      "per_type_diminish": 0.5,
+      "deal_size_weight": 1.0,
       "hot_threshold": 4.0,
       "top_n": 25
     },
     "manufacturing": {
       "demo_asset": "Plantview",
+      "funnel": "customers",
       "entity_key_pattern": "biz:{name_norm}|{zip}",
       "collectors": ["osha_dol", "epa_echo", "warn_tx_ga"],
       "signals": {
@@ -59,11 +72,15 @@
         "warn_notice": {"weight": 4.0, "half_life_days": 60}
       },
       "stacking_bonus": 1.5,
+      "per_type_cap": 3,
+      "per_type_diminish": 0.5,
+      "deal_size_weight": 1.0,
       "hot_threshold": 5.0,
       "top_n": 25
     },
     "dead_listings": {
       "demo_asset": "broker-play",
+      "funnel": "acquisitions",
       "entity_key_pattern": "bbs:{listing_id}",
       "collectors": ["listings_bizbuysell", "listings_businessesforsale",
                      "listings_businessbroker", "listings_sunbelt",
@@ -75,11 +92,15 @@
         "relisting": {"weight": 3.0, "half_life_days": 60}
       },
       "stacking_bonus": 1.5,
+      "per_type_cap": 3,
+      "per_type_diminish": 0.5,
+      "deal_size_weight": 1.0,
       "hot_threshold": 4.0,
       "top_n": 25
     },
     "pe_distress": {
       "demo_asset": "acquisition-hunt",
+      "funnel": "acquisitions",
       "entity_key_pattern": "biz:{name_norm}|{zip}",
       "collectors": ["sba_loans", "liens_harris", "liens_fortbend",
                      "liens_montgomery", "liens_galveston", "liens_brazoria",
@@ -91,9 +112,31 @@
         "sba_maturity_window": {"weight": 3.0, "half_life_days": 120}
       },
       "stacking_bonus": 2.0,
+      "per_type_cap": 3,
+      "per_type_diminish": 0.4,
+      "deal_size_weight": 1.0,
       "hot_threshold": 5.0,
       "top_n": 25
     }
+  },
+  "solvency_signals": {
+    "_doc": "v2 ability-to-pay signals. Types MUST start with size_/credit_. magnitude MUST be pre-normalized 0..1 per common/solvency.py (SIZE_ATTR_NORMALIZERS, sba_credit_bucket, UCC_PRESENCE_CREDIT). Emitted as ordinary Signals under the collector's natural avenue; they attach cross-avenue at resolve conf >= 0.9. Missing pay data scores 0.5 neutral + pay_data=unknown, never drops the row.",
+    "size_fleet": {"kind": "size", "source": "FMCSA census power_units/mcs150_mileage", "norm": "max(log10(power_units+1)/log10(501), log10(miles+1)/7)"},
+    "size_parcels": {"kind": "size", "source": "HCAD real_acct owner parcel count (Houston; ownership not 3rd-party mgmt)", "norm": "log10(parcels+1)/log10(201)"},
+    "size_permit_volume": {"kind": "size", "source": "permit volume trailing 12mo", "norm": "permits_12m/50 (linear, capped)"},
+    "size_employees": {"kind": "size", "source": "OSHA Nr Employees (inspection-gated, often stale -> expect pay_data=partial/unknown)", "norm": "log10(employees+1)/log10(501)"},
+    "size_asking_price": {"kind": "size", "source": "listing asking price", "norm": "(log10(price)-5)/2 -> $100K=0, $10M=1"},
+    "credit_sba_loan": {"kind": "credit", "source": "SBA FOIA GrossApproval", "norm": "bucket <50K=.3 <250K=.5 <1M=.7 <5M=.9 else 1.0"},
+    "credit_ucc_filing": {"kind": "credit", "source": "GA UCC-1 presence via GSCCCA (GA-only; TX SOS is paywalled -> no TX UCC signal)", "norm": "fixed 0.6"}
+  },
+  "timing_signals": {
+    "_doc": "v2 receptiveness windows. window = [signal_date+offset_days, +window_days]; attrs window_start/window_end/boost override. Boost ramps linearly over ramp_days before the window, capped at 2.0 overall. No window active -> 1.0.",
+    "insurance_renewal": {"avenue": "trucking", "offset_days": 335, "window_days": 60, "ramp_days": 30, "boost": 1.8, "anchor": "policy effective date (FMCSA L&I via SoQL dataset qh9u-swkp ActPendInsur; LIVIEW scrape is reCAPTCHA-blocked)"},
+    "permit_growth_window": {"avenue": "mechanical", "offset_days": 0, "window_days": 90, "ramp_days": 14, "boost": 1.4, "anchor": "permit growth-trajectory detection date"},
+    "eviction_spike_window": {"avenue": "property_mgmt", "offset_days": 0, "window_days": 60, "ramp_days": 14, "boost": 1.5, "anchor": "eviction-spike detection date"},
+    "stale_crossing_180": {"avenue": "dead_listings", "offset_days": 0, "window_days": 60, "ramp_days": 0, "boost": 1.6, "anchor": "date days-on-market crossed 180"},
+    "abatement_deadline": {"avenue": "manufacturing", "offset_days": -30, "window_days": 45, "ramp_days": 0, "boost": 1.5, "anchor": "OSHA abatement date (window opens 30d before)"},
+    "distress_acceleration": {"avenue": "pe_distress", "offset_days": 0, "window_days": 90, "ramp_days": 0, "boost": 1.6, "anchor": "distress-accumulation-rate spike date"}
   },
   "collectors_enabled": {
     "trucking_fmcsa": true,
@@ -123,6 +166,12 @@
     "liens_fulton": true,
     "liens_dekalb": true,
     "liens_cobb": true,
-    "liens_gwinnett": true
+    "liens_gwinnett": true,
+    "pay_sba": true,
+    "pay_hcad": true,
+    "pay_census_size": true,
+    "pay_ga_ucc": false,
+    "timing_insurance": true,
+    "timing_trajectory": true
   }
 }

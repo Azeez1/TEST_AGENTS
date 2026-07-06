@@ -2,6 +2,25 @@
 
 Scans public data sources for buying-intent signals across 6 avenues (trucking, property_mgmt, mechanical, manufacturing, dead_listings, pe_distress) in 2 metros (Houston, Atlanta), resolves entities, scores them, and exports ranked prospect lists (CSV + Google Sheet). Pure Python, no LLM calls, no sending. Outreach drafting is a separate human-approved step (`/intent-scan` command).
 
+## v2 scoring: EXPECTED_VALUE (pain x timing x ability-to-pay x deal-size)
+
+A wound is not a customer. v2 ranks by:
+
+```
+EXPECTED_VALUE = pain_norm x timing x ability_to_pay x (0.5 + 0.5*deal_size)   in 0..2
+```
+
+- `pain_norm` (0..1) = v1 pain score / (pain + hot_threshold); v1 pain now has a PER-TYPE CAP (first 3 signals of a type count fully, the rest diminish geometrically) so 20 identical bulk-filed liens cannot dominate diverse distress.
+- `timing` (1..2) = receptiveness-window boost (`common/timing.py`): trucking insurance renewal (policy effective + 12mo), contractor permit-growth window, eviction-spike window, dead-listing DOM-180 crossing, OSHA abatement deadline, distress acceleration. No window = exactly 1.0.
+- `ability_to_pay` (0..1) = `common/solvency.py`: SIZE (fleet/mileage, HCAD parcels, permit volume, OSHA employees) + CREDIT (SBA GrossApproval bucket, GA UCC presence — TX UCC/SOS is paywalled, so credit is GA-only) + a distress-density guardrail (few wounds + sizable = solvent; many stacked severe = dying). **Missing pay data = 0.5 neutral + `pay_data=unknown`, the row is NEVER dropped.**
+- `deal_size` (0..1) = the SIZE proxy; balanced weighting — its EV factor spans only 0.5..1.0 so an acute-pain company in its window can outrank a big calm one.
+
+Two funnel outputs, ranked by EV: **CUSTOMERS** (trucking, property_mgmt, mechanical, manufacturing) and **ACQUISITIONS** (dead_listings, pe_distress) — `intent_customers_{date}.csv` / `intent_acquisitions_{date}.csv` + same-named sheet tabs. Outcome log for later weight tuning: `python -m common.outcomes record <entity_key> <stage>` (drafted/replied/meeting/won...).
+
+Known limits (do not mistake the list for the market): sources are selection-biased (OSHA = inspected-only, SBA = borrowers-only, listings = already-selling); solvency data can be stale (confidence decays with a 2-year half-life, stamped per signal); manufacturing pay coverage is inspection-gated so `pay_data=unknown` is common there.
+
+v2 regression test: `python fixtures/v2_test.py`
+
 ## Layout
 
 ```
@@ -56,7 +75,9 @@ python SALES_TEAM\tools\intent_engine\fixtures\synthetic_test.py
 python -m collectors.trucking_fmcsa --self-test     (run from the intent_engine dir)
 ```
 
-Outputs land in `SALES_TEAM/outputs/prospecting/`: `intent_{avenue}_{metro}_{date}.csv` per avenue/metro plus `intent_hotlist_{date}.csv` (all hot rows). Then `/intent-scan` in Claude Code drafts evidence-cited outreach from the hotlist into `SALES_TEAM/outputs/outreach/intent_drafts_{date}.md` (queue only - NEVER sends).
+Outputs land in `SALES_TEAM/outputs/prospecting/`: `intent_{avenue}_{metro}_{date}.csv` per avenue/metro, `intent_hotlist_{date}.csv` (all hot rows), and the two v2 funnel lists `intent_customers_{date}.csv` + `intent_acquisitions_{date}.csv` ranked by expected_value. Then `/intent-scan` in Claude Code drafts a full 4-touch, evidence-cited sequence per top target into `SALES_TEAM/outputs/outreach/intent_drafts_{date}.md`.
+
+**Outbound is DRAFT-ONLY.** `/intent-scan` never sends anything; every touch sits in the queue file with APPROVE/EDIT/SKIP checkboxes and EZ approves each personally. **Do NOT blast sequences from the primary Gmail (sabaazeez12@gmail.com)** - cold volume from the primary inbox is a deliverability/reputation risk. Sending infrastructure (separate domain, warmed inbox, SPF/DKIM/DMARC) is a separate future decision.
 
 ## Per-source status (verified 2026-07-06)
 
@@ -92,6 +113,12 @@ Metros now cover counties: Houston = Harris, Fort Bend, Montgomery, Galveston, B
 | liens_dekalb | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens via shared GSCCCA flow; full index = GSCCCA paid (intCountyID=44) |
 | liens_cobb | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens; Cobb's own LandmarkWeb withholds rows from non-browser sessions - never trust its zero-row responses |
 | liens_gwinnett | pe_distress | yes | LIVE (free slice) | GA DOR state tax liens; full FIFA/judgment index = GSCCCA paid (intCountyID=67) |
+| pay_sba | pay (credit) | yes | LIVE | credit_sba_loan: joins cached SBA FOIA CSVs to existing pe_distress/manufacturing/mechanical/trucking entities by normalized name + metro (name-quality guard, zip-conflict veto); magnitude = GrossApproval bucket; CANCLD/CHGOFF excluded; 3y window |
+| pay_hcad | pay (size) | yes | LIVE (houston only) | size_parcels: HCAD Real_acct_owner.zip (210MB, streamed, 80-day refresh) grouped by mailto owner -> parcel count per property_mgmt landlord. Limits: per-property LLCs and 3rd-party managers under-count |
+| pay_census_size | pay (size) | yes | LIVE | size_fleet: DOT-keyed join to FMCSA census (zero name-match risk); magnitude = max(power_units, mcs150_mileage) norms; snapshot change-gated |
+| pay_ga_ucc | pay (credit) | NO | LOGIN-WALLED | credit_ucc_filing (GA): GSCCCA UCC search results are behind a login (auth wall, not bot wall - unlocker does not apply). Enable path: GSCCCA_USER/GSCCCA_PASS + ~$24.95/mo sub, playbook in module docstring |
+| timing_insurance | timing | yes | LIVE | insurance_renewal: policy EFFECTIVE dates via FMCSA L&I SoQL (qh9u-swkp); projects to calendar anniversary, emits when the +/-30d renewal window is open or opens within 60d. LIVIEW scrape is reCAPTCHA-blocked (documented) |
+| timing_trajectory | timing | yes | LIVE (derived) | permit_growth_window (needs 6 complete permit months in store - accumulating) + eviction_spike_window (live now) from existing snapshots; no network |
 
 Cross-site listing dedupe: `collectors/_listings_common.py` (CrossSiteDeduper) - exact fingerprint (metro + distinctive title tokens + $250K price bucket) merges to the highest-priority site's entity_key with all source_refs; fuzzy matches only flagged. County lien collectors share `collectors/_liens_common.py` (kind classification) and `collectors/_gsccca.py` (GA DOR flow); all key debtors as `biz:{name_norm}|` so the same business stacks across counties.
 

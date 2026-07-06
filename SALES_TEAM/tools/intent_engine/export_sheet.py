@@ -1,4 +1,6 @@
-"""Google Sheets export — one INTENT_SIGNALS spreadsheet, one tab per avenue + SUMMARY.
+"""Google Sheets export — one INTENT_SIGNALS spreadsheet, one tab per avenue,
+the two v2 funnel tabs (CUSTOMERS / ACQUISITIONS ranked by expected_value),
+plus SUMMARY.
 
 Auth block cloned from tools/apply_sheet_formatting.py (MCP creds, spreadsheets scope,
 sheets v4). Spreadsheet id comes from INTENT_SPREADSHEET_ID in ~/.dux_intent/.env —
@@ -6,8 +8,9 @@ if unset, this module no-ops with a clear message (run bootstrap_sheet.py once t
 create the spreadsheet and get the id).
 
 Behavior per run:
-    - ensure the 7 tabs exist
+    - ensure the 9 tabs exist
     - clear + rewrite each avenue tab (<=30 rows per values.update batch)
+    - clear + rewrite CUSTOMERS + ACQUISITIONS (V2_COLUMNS, ranked by EV)
     - green conditional format on the hot column (delete-then-add rule pattern)
     - SUMMARY tab gets run timestamp + per avenue/metro counts
 """
@@ -21,7 +24,8 @@ if str(ENGINE_ROOT) not in sys.path:
     sys.path.insert(0, str(ENGINE_ROOT))
 
 import config  # noqa: E402
-from export_csv import COLUMNS, _fmt  # noqa: E402
+from export_csv import (COLUMNS, V2_COLUMNS, _fmt, _fmt_v2,  # noqa: E402
+                        row_funnel)
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
@@ -33,8 +37,12 @@ TAB_FOR_AVENUE = {
     "dead_listings": "DEAD_LISTINGS",
     "pe_distress": "PE_DISTRESS",
 }
-TABS = ["TRUCKING", "PROPERTY_MGMT", "MECHANICAL", "MANUFACTURING",
-        "DEAD_LISTINGS", "PE_DISTRESS", "SUMMARY"]
+TAB_FOR_FUNNEL = {
+    "customers": "CUSTOMERS",
+    "acquisitions": "ACQUISITIONS",
+}
+TABS = ["CUSTOMERS", "ACQUISITIONS", "TRUCKING", "PROPERTY_MGMT", "MECHANICAL",
+        "MANUFACTURING", "DEAD_LISTINGS", "PE_DISTRESS", "SUMMARY"]
 
 ROWS_PER_BATCH = 30
 # hot is column C in the frozen column order; TRUE/FALSE written as strings
@@ -168,6 +176,15 @@ def export_sheet(rows, summary_rows=None):
         values = [COLUMNS] + [[str(fr[c]) for c in COLUMNS] for fr in formatted]
         _write_values(service, spreadsheet_id, tab, values)
 
+    # v2 funnel tabs: CUSTOMERS + ACQUISITIONS ranked by expected_value
+    for funnel, tab in TAB_FOR_FUNNEL.items():
+        frows = sorted([r for r in rows if row_funnel(r) == funnel],
+                       key=lambda r: -float(r.get("expected_value", 0.0)))
+        formatted = [_fmt_v2(r, i + 1) for i, r in enumerate(frows)]
+        values = [V2_COLUMNS] + [[str(fr[c]) for c in V2_COLUMNS]
+                                 for fr in formatted]
+        _write_values(service, spreadsheet_id, tab, values)
+
     # SUMMARY tab
     header = [["INTENT SIGNAL ENGINE - last run",
                datetime.now().isoformat(timespec="seconds")], []]
@@ -181,5 +198,7 @@ def export_sheet(rows, summary_rows=None):
         _apply_hot_formatting(service, spreadsheet_id, tab, sheet_id, props)
 
     print(f"[sheet] Updated spreadsheet {spreadsheet_id}: "
-          f"{sum(len(v) for v in groups.values())} rows across {len(TAB_FOR_AVENUE)} tabs.")
+          f"{sum(len(v) for v in groups.values())} rows across "
+          f"{len(TAB_FOR_AVENUE) + len(TAB_FOR_FUNNEL)} tabs "
+          f"(incl. CUSTOMERS/ACQUISITIONS).")
     return True

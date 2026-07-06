@@ -1,0 +1,12 @@
+{
+  "source_id": "pay_ga_ucc",
+  "captured_at": "2026-07-06T15:02:45",
+  "self_test_status": "SKIPPED",
+  "self_test_error": "GSCCCA UCC Basic Name Search is LOGIN-WALLED at the results step: results.asp returns a 'Restrict Access' stub that auto-POSTs to apps.gsccca.org/login.asp (verified live 2026-07-06 with session cookies + referer). Auth wall, not bot wall \u2014 Bright Data Web Unlocker does not apply; needs a paid GSCCCA subscriber account. enabled:false in signal_registry.json; unlock playbook in the module docstring.",
+  "sample": {
+    "blocked": true,
+    "wall_still_up": true,
+    "probe_detail": "results.asp still bounces to login.asp (HTTP 200, 2313 bytes)",
+    "reason": "GSCCCA UCC Basic Name Search is LOGIN-WALLED at the results step: results.asp returns a 'Restrict Access' stub that auto-POSTs to apps.gsccca.org/login.asp (verified live 2026-07-06 with session cookies + referer). Auth wall, not bot wall \u2014 Bright Data Web Unlocker does not apply; needs a paid GSCCCA subscriber account. enabled:false in signal_registry.json; unlock playbook in the module docstring."
+  }
+}

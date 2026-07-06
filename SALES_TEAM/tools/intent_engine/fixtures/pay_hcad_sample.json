@@ -1,0 +1,20 @@
+{
+  "source_id": "pay_hcad",
+  "captured_at": "2026-07-06T15:04:34",
+  "self_test_status": "OK",
+  "self_test_error": "",
+  "sample": {
+    "matched_entity": {
+      "entity_key": "biz:galium rice|77002",
+      "name": "Galium Rice LLC",
+      "avenue": "property_mgmt",
+      "metro": "houston"
+    },
+    "parcel_count": 1,
+    "owner_name_raw": "GALIUM RICE LLC",
+    "sample_accts": [
+      "0010570000009"
+    ],
+    "zip_file": "C:\\Users\\sabaa\\.dux_intent\\cache\\hcad\\Real_acct_owner.zip"
+  }
+}

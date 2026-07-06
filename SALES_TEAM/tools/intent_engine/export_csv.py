@@ -1,4 +1,5 @@
-"""CSV export — one file per avenue/metro plus a combined hotlist.
+"""CSV export — one file per avenue/metro, a combined hotlist, and (v2) the
+two funnel lists ranked by EXPECTED_VALUE.
 
 FROZEN INTERFACE:
     export_csv(rows, run_date=None, output_dir=None) -> list[Path]
@@ -6,10 +7,15 @@ FROZEN INTERFACE:
 Files written into OUTPUT_DIR (or output_dir override):
     intent_{avenue}_{metro}_{YYYY-MM-DD}.csv    per avenue/metro with any rows
     intent_hotlist_{YYYY-MM-DD}.csv             all hot rows across avenues/metros
+    intent_customers_{YYYY-MM-DD}.csv           v2: funnel=customers ranked by EV
+    intent_acquisitions_{YYYY-MM-DD}.csv        v2: funnel=acquisitions ranked by EV
 
-Columns (exact order):
+v1 columns (exact order, unchanged):
     rank,score,hot,entity_name,metro,avenue,top_signals,signal_count,
     latest_signal_date,evidence_urls,phone,email,street,zip,first_seen,match_conf
+v2 funnel columns (exact order):
+    rank,expected_value,pain,timing,ability_to_pay,deal_size,pay_data,entity,
+    metro,top_signals,evidence,contact,avenue,timing_window,hot
 """
 import csv
 import sys
@@ -27,6 +33,53 @@ COLUMNS = [
     "signal_count", "latest_signal_date", "evidence_urls", "phone", "email",
     "street", "zip", "first_seen", "match_conf",
 ]
+
+V2_COLUMNS = [
+    "rank", "expected_value", "pain", "timing", "ability_to_pay", "deal_size",
+    "pay_data", "entity", "metro", "top_signals", "evidence", "contact",
+    "avenue", "timing_window", "hot",
+]
+
+FUNNELS = ("customers", "acquisitions")
+# fallback when a row lacks a funnel tag (registry avenues carry the canonical tag)
+FUNNEL_BY_AVENUE = {
+    "trucking": "customers", "property_mgmt": "customers",
+    "mechanical": "customers", "manufacturing": "customers",
+    "dead_listings": "acquisitions", "pe_distress": "acquisitions",
+}
+
+
+def _contact_str(row):
+    parts = [row.get("phone") or "", row.get("email") or ""]
+    street_zip = " ".join(p for p in (row.get("street") or "",
+                                      row.get("zip") or "") if p)
+    parts.append(street_zip)
+    return " | ".join(p for p in parts if p)
+
+
+def _fmt_v2(row, rank):
+    return {
+        "rank": rank,
+        "expected_value": f"{float(row.get('expected_value', 0.0)):.4f}",
+        "pain": f"{float(row.get('pain', row.get('score', 0.0))):.2f}",
+        "timing": f"{float(row.get('timing', 1.0)):.2f}",
+        "ability_to_pay": f"{float(row.get('ability_to_pay', 0.5)):.2f}",
+        "deal_size": f"{float(row.get('deal_size', 0.5)):.2f}",
+        "pay_data": row.get("pay_data", "unknown"),
+        "entity": row.get("entity_name", ""),
+        "metro": row.get("metro", ""),
+        "top_signals": row.get("top_signals", ""),
+        "evidence": row.get("evidence_urls", ""),
+        "contact": _contact_str(row),
+        "avenue": row.get("avenue", ""),
+        "timing_window": row.get("timing_window", ""),
+        "hot": "TRUE" if row.get("hot") else "FALSE",
+    }
+
+
+def row_funnel(row):
+    return row.get("funnel") or FUNNEL_BY_AVENUE.get(row.get("avenue", ""),
+                                                     "customers")
 
 
 def _fmt(row, rank):
@@ -50,9 +103,9 @@ def _fmt(row, rank):
     }
 
 
-def _write(path, formatted_rows):
+def _write(path, formatted_rows, columns=COLUMNS):
     with open(path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=COLUMNS)
+        writer = csv.DictWriter(f, fieldnames=columns)
         writer.writeheader()
         writer.writerows(formatted_rows)
 
@@ -83,4 +136,13 @@ def export_csv(rows, run_date=None, output_dir=None):
     hot_path = out_dir / f"intent_hotlist_{run_date}.csv"
     _write(hot_path, hot_formatted)
     written.append(hot_path)
+
+    # v2: the two funnel lists, ranked by expected_value across avenues/metros
+    for funnel in FUNNELS:
+        frows = sorted([r for r in rows if row_funnel(r) == funnel],
+                       key=lambda r: -float(r.get("expected_value", 0.0)))
+        formatted = [_fmt_v2(r, i + 1) for i, r in enumerate(frows)]
+        path = out_dir / f"intent_{funnel}_{run_date}.csv"
+        _write(path, formatted, columns=V2_COLUMNS)
+        written.append(path)
     return written

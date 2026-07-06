@@ -1,0 +1,16 @@
+{
+  "source_id": "pay_census_size",
+  "captured_at": "2026-07-06T15:03:00",
+  "self_test_status": "OK",
+  "self_test_error": "",
+  "sample": {
+    "census": {
+      "dot_number": "22918",
+      "legal_name": "STANDLEY FEED & SEED INC",
+      "power_units": "24",
+      "mcs150_mileage": "421021",
+      "mcs150_mileage_year": "2024"
+    },
+    "entity_key": "dot:22918"
+  }
+}

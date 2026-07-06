@@ -26,11 +26,47 @@ if str(ENGINE_ROOT) not in sys.path:
 import config  # noqa: E402
 import resolve as resolve_mod  # noqa: E402
 from collectors import CollectorResult, load_collectors  # noqa: E402
-from common.score import MAX_AGE_DAYS, score_entity  # noqa: E402
+from common.score import (MAX_AGE_DAYS, PAY_MAX_AGE_DAYS,  # noqa: E402
+                          TIMING_MAX_AGE_DAYS, score_entity_v2)
 from common.store import Store  # noqa: E402
 from export_csv import export_csv  # noqa: E402
 
 CONTACT_FIELDS = ("phone", "email", "street", "zip")
+
+
+def _registry_types(registry, section):
+    """Signal types under a top-level registry section, minus _doc keys."""
+    return {k for k in (registry.get(section) or {}) if not k.startswith("_")}
+
+
+def _merged_attrs(store, ent, contributing):
+    """Entity attrs (JSON) merged with first non-null attrs off its signals so
+    solvency sees size attrs (power_units etc.) collectors stamp on Signals."""
+    import json as _json
+    merged = {}
+    raw = (ent or {}).get("attrs")
+    if isinstance(raw, str) and raw.strip():
+        try:
+            parsed = _json.loads(raw)
+            if isinstance(parsed, dict):
+                merged.update(parsed)
+        except ValueError:
+            pass
+    elif isinstance(raw, dict):
+        merged.update(raw)
+    for s, _conf in contributing:
+        a = s.get("attrs")
+        if isinstance(a, str) and a.strip():
+            try:
+                a = _json.loads(a)
+            except ValueError:
+                continue
+        if not isinstance(a, dict):
+            continue
+        for k, v in a.items():
+            if v not in (None, "", "None") and merged.get(k) in (None, "", "None"):
+                merged[k] = v
+    return merged
 
 
 def _parse_list(values, valid, label):
@@ -49,38 +85,52 @@ def _parse_list(values, valid, label):
 
 
 def build_rows(store, registry, avenues, metros, run_id=None):
-    """Resolve entities, score each cluster per avenue/metro, return export rows."""
+    """Resolve entities, score each cluster per avenue/metro (v2: pain x timing
+    x ability-to-pay x deal-size), return export rows ranked by expected_value."""
     clusters, _ = resolve_mod.resolve(store)
     rows = []
     today = date.today()
+    pay_types = _registry_types(registry, "solvency_signals")
+    timing_types = _registry_types(registry, "timing_signals")
+    timing_defs = registry.get("timing_signals") or {}
     for avenue in avenues:
         cfg = registry["avenues"][avenue]
         known_types = set(cfg.get("signals", {}).keys())
+        funnel = cfg.get("funnel", "customers")
         top_n = int(cfg.get("top_n", 25))
         for metro in metros:
             scored_rows = []
             for canonical, members in clusters.items():
                 pairs = resolve_mod.signals_for_cluster(store, members, avenue, metro)
-                contributing = []
+                contributing, pay_contrib, timing_contrib = [], [], []
                 for s, conf in pairs:
-                    if s["signal_type"] not in known_types:
-                        continue
+                    stype = s["signal_type"]
                     try:
                         sdate = date.fromisoformat(str(s["signal_date"])[:10])
                     except ValueError:
                         continue
                     age = (today - sdate).days
-                    if age < 0 or age > MAX_AGE_DAYS:
-                        continue
-                    contributing.append((s, conf))
+                    if stype in known_types and 0 <= age <= MAX_AGE_DAYS:
+                        contributing.append((s, conf))
+                    elif stype in pay_types and age <= PAY_MAX_AGE_DAYS:
+                        pay_contrib.append((s, conf))   # future pay dates = fresh
+                    elif (stype in timing_types
+                          and -400 <= age <= TIMING_MAX_AGE_DAYS):
+                        timing_contrib.append((s, conf))  # future anchors OK
                 if not contributing:
-                    continue
+                    continue  # pain is the entry ticket; pay/timing only enrich
                 sigs = [s for s, _ in contributing]
-                score, top_types = score_entity(sigs, cfg)
+                ent = store.get_entity(canonical) or {}
+                ent = dict(ent)
+                ent["attrs"] = _merged_attrs(store, ent,
+                                             contributing + pay_contrib)
+                v2 = score_entity_v2(sigs, [s for s, _ in pay_contrib],
+                                     [s for s, _ in timing_contrib], ent, cfg,
+                                     as_of=today, timing_defs=timing_defs)
+                score, top_types = v2["pain"], v2["top_signals"]
                 if score <= 0:
                     continue
-                hot = score >= float(cfg.get("hot_threshold", 999))
-                ent = store.get_entity(canonical) or {}
+                hot = v2["hot"]
                 contact = {f: (ent.get(f) or "") for f in CONTACT_FIELDS}
                 for info in members:
                     if all(contact.values()):
@@ -97,6 +147,7 @@ def build_rows(store, registry, avenues, metros, run_id=None):
                         evidence.append(ref)
                     if len(evidence) >= 3:
                         break
+                all_contrib = contributing + pay_contrib + timing_contrib
                 row = {
                     "entity_key": canonical,
                     "score": score,
@@ -104,6 +155,16 @@ def build_rows(store, registry, avenues, metros, run_id=None):
                     "entity_name": ent.get("name") or sigs[0]["entity_name"],
                     "metro": metro,
                     "avenue": avenue,
+                    "funnel": funnel,
+                    "expected_value": v2["expected_value"],
+                    "pain": v2["pain"],
+                    "pain_norm": v2["pain_norm"],
+                    "timing": v2["timing"],
+                    "timing_window": v2["timing_window"],
+                    "ability_to_pay": v2["ability_to_pay"],
+                    "pay_data": v2["pay_data"],
+                    "pay_sources": ";".join(v2["pay_sources"]),
+                    "deal_size": v2["deal_size"],
                     "top_signals": ";".join(top_types),
                     "signal_count": len(contributing),
                     "latest_signal_date": max(s["signal_date"] for s in sigs),
@@ -113,13 +174,13 @@ def build_rows(store, registry, avenues, metros, run_id=None):
                     "street": contact["street"],
                     "zip": contact["zip"],
                     "first_seen": ent.get("first_seen", ""),
-                    "match_conf": min(c for _, c in contributing),
+                    "match_conf": min(c for _, c in all_contrib),
                 }
                 scored_rows.append(row)
                 if run_id is not None:
                     store.save_score(run_id, canonical, avenue, metro, score, hot,
                                      top_types)
-            scored_rows.sort(key=lambda r: -r["score"])
+            scored_rows.sort(key=lambda r: -r["expected_value"])
             rows.extend(scored_rows[:top_n])
     return rows
 

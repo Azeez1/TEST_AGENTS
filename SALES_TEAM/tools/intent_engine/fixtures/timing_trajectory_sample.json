@@ -1,0 +1,62 @@
+{
+ "note": "derived collector \u2014 reads permits_houston/evictions_harris snapshots already in the store; no network",
+ "synthetic_example_signals": [
+  {
+   "id": 3,
+   "dedup_hash": "c2e35b1c99e807f687c67aa68721c854e129c1aa",
+   "entity_key": "biz:spike apartments|77001",
+   "entity_name": "Spike Apartments LLC",
+   "metro": "houston",
+   "avenue": "property_mgmt",
+   "signal_type": "eviction_spike_window",
+   "signal_date": "2026-07-04",
+   "magnitude": 0.463,
+   "source_id": "timing_trajectory",
+   "source_ref": "https://jpwebsite.harriscountytx.gov/PublicExtracts/GetExtractData?extractCaseType=CV&extract=7&court=300&casetype=8464&format=csv&fdate=06%2F04%2F2026&tdate=07%2F04%2F2026",
+   "raw": "{\"filings_in_window\": 34, \"window\": [\"2026-06-04\", \"2026-07-04\"], \"weekly_rate\": 8.0, \"baseline_weekly\": 1.05, \"excess_weekly\": 6.95, \"n_baseline_windows\": 2}",
+   "attrs": "{\"zip\": \"77001\"}",
+   "created_at": "2026-07-06T15:04:46"
+  },
+  {
+   "id": 2,
+   "dedup_hash": "7c6f240a77fc81814346adf45d596af48a892445",
+   "entity_key": "biz:acute villas|77003",
+   "entity_name": "Acute Villas LP",
+   "metro": "houston",
+   "avenue": "property_mgmt",
+   "signal_type": "eviction_spike_window",
+   "signal_date": "2026-07-03",
+   "magnitude": 0.48,
+   "source_id": "timing_trajectory",
+   "source_ref": "https://jpwebsite.harriscountytx.gov/PublicExtracts/GetExtractData?extractCaseType=CV&extract=7&court=300&casetype=8464&format=csv&fdate=06%2F03%2F2026&tdate=07%2F03%2F2026",
+   "raw": "{\"filings_in_window\": 31, \"window\": [\"2026-06-03\", \"2026-07-03\"], \"weekly_rate\": 7.2, \"baseline_weekly\": null, \"excess_weekly\": 7.2, \"n_baseline_windows\": 0}",
+   "attrs": "{\"zip\": \"77003\"}",
+   "created_at": "2026-07-06T15:04:46"
+  },
+  {
+   "id": 1,
+   "dedup_hash": "30d9d30da8c92546975ccb6026f9ebd5b804cb63",
+   "entity_key": "biz:accelerating hvac|77002",
+   "entity_name": "ACCELERATING HVAC",
+   "metro": "houston",
+   "avenue": "mechanical",
+   "signal_type": "permit_growth_window",
+   "signal_date": "2026-06-30",
+   "magnitude": 0.779,
+   "source_id": "timing_trajectory",
+   "source_ref": "hpc-sold-permits-accel:accelerating hvac:202604-202606",
+   "raw": "{\"buyer\": \"ACCELERATING HVAC\", \"trailing_quarter_jobs\": 15, \"previous_quarter_jobs\": 6, \"qoq_growth_pct\": 150.0, \"monthly_counts\": {\"2026-01-01\": 2, \"2026-02-01\": 2, \"2026-03-01\": 2, \"2026-04-01\": 4, \"2026-05-01\": 5, \"2026-06-01\": 6}, \"evidence_url\": \"http://cohtora.houstontx.gov/approot/soldpermits/online_permit.htm\", \"verify_hint\": \"search Buyer's Name on the HPC Sold Permits page to reproduce\"}",
+   "attrs": "{\"street\": \"123 MAIN ST HOUSTON TX 77002\", \"zip\": \"77002\"}",
+   "created_at": "2026-07-06T15:04:46"
+  }
+ ],
+ "real_store_dry_pass": {
+  "snapshots_cloned": 4348,
+  "status": "OK",
+  "signals_added": 9,
+  "by_type": {
+   "eviction_spike_window": 9
+  },
+  "notes": "permits_houston: permit half skipped, months not yet backfilled: 2026-04-01,2026-05-01,2026-01-01,2026-02-01,2026-03-01"
+ }
+}
