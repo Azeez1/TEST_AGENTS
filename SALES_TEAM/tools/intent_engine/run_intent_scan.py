@@ -333,6 +333,19 @@ def main(argv=None):
         try:
             ok = export_sheet(rows, summary_rows=summary_rows)
             sheet_status = "updated" if ok else "skipped (no spreadsheet id or creds)"
+            if ok:
+                # Durable PIPELINE tracker tab — guarded so a failure here can
+                # never crash the scan (the tab is a convenience, not the scan).
+                try:
+                    from pipeline_tab import sync_pipeline
+                    presult = sync_pipeline()
+                    if presult.get("ok"):
+                        print(f"[pipeline] PIPELINE tab refreshed: "
+                              f"{presult['rows']} companies, "
+                              f"{presult['preserved']} statuses preserved.")
+                except Exception as pexc:
+                    print(f"[pipeline] WARNING: PIPELINE tab refresh failed "
+                          f"({type(pexc).__name__}: {pexc}) - scan unaffected.")
         except Exception as exc:
             sheet_status = f"ERROR: {type(exc).__name__}: {exc}"
 
