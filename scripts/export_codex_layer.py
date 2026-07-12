@@ -17,6 +17,8 @@ import os
 import re
 import shutil
 import argparse
+import ctypes
+import stat
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -32,6 +34,8 @@ AGENT_DIRS = {
     "PROPOSAL_TEAM": ROOT / "PROPOSAL_TEAM" / ".claude" / "agents",
     "FINANCIAL_TEAM": ROOT / "FINANCIAL_TEAM" / ".claude" / "agents",
     "SALES_TEAM": ROOT / "SALES_TEAM" / ".claude" / "agents",
+    "VOICE_TEAM": ROOT / "VOICE_TEAM" / ".claude" / "agents",
+    "HEDGE_FUND": ROOT / "HEDGE_FUND" / ".claude" / "agents",
 }
 
 NATIVE_CODEX_AGENT_DIRS = {
@@ -75,6 +79,24 @@ ALIASED_CODEX_SKILLS = {
         "note": "Use the exported pdf skill; it includes fillable and non-fillable PDF form workflows.",
     },
 }
+
+SKILL_COPY_IGNORE = shutil.ignore_patterns(
+    "__pycache__",
+    "*.pyc",
+    "*.pyo",
+    ".DS_Store",
+    "Thumbs.db",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+    "node_modules",
+)
+SKIPPED_SKILL_COPY_FILES: list[str] = []
+FILE_ATTRIBUTE_OFFLINE = 0x1000
+FILE_ATTRIBUTE_RECALL_ON_OPEN = 0x40000
+FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS = 0x400000
+INVALID_FILE_ATTRIBUTES = 0xFFFFFFFF
 
 SECRET_ENV_NAMES = {
     "OPENAI_API_KEY",
@@ -180,6 +202,64 @@ def yaml_list(items: list[str]) -> str:
 def write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def is_offline_cloud_file(path: Path) -> bool:
+    if os.name == "nt":
+        attributes = ctypes.windll.kernel32.GetFileAttributesW(str(path))
+        if attributes != INVALID_FILE_ATTRIBUTES:
+            cloud_only_flags = (
+                FILE_ATTRIBUTE_OFFLINE
+                | FILE_ATTRIBUTE_RECALL_ON_OPEN
+                | FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS
+            )
+            return bool(attributes & cloud_only_flags)
+    try:
+        attributes = path.stat().st_file_attributes
+    except (AttributeError, OSError):
+        return False
+    return bool(attributes & getattr(stat, "FILE_ATTRIBUTE_OFFLINE", 0))
+
+
+def copy_skill_file(src: str, dst: str) -> str:
+    source = Path(src)
+    if is_offline_cloud_file(source):
+        SKIPPED_SKILL_COPY_FILES.append(rel(source))
+        return dst
+    try:
+        return shutil.copy2(src, dst)
+    except OSError as exc:
+        if getattr(exc, "winerror", None) == 426 or "cloud operation" in str(exc).lower():
+            SKIPPED_SKILL_COPY_FILES.append(rel(Path(src)))
+            return dst
+        raise
+
+
+def copy_skill_tree(source: Path, target: Path) -> None:
+    target.mkdir(parents=True, exist_ok=True)
+    for current_root, dir_names, file_names in os.walk(source):
+        current = Path(current_root)
+        ignored = set(SKILL_COPY_IGNORE(str(current), [*dir_names, *file_names]) or [])
+
+        kept_dirs: list[str] = []
+        for dirname in dir_names:
+            if dirname in ignored:
+                continue
+            directory = current / dirname
+            if is_offline_cloud_file(directory):
+                SKIPPED_SKILL_COPY_FILES.append(rel(directory) + "/")
+                continue
+            kept_dirs.append(dirname)
+        dir_names[:] = kept_dirs
+
+        relative_current = current.relative_to(source)
+        target_root = target if str(relative_current) == "." else target / relative_current
+        target_root.mkdir(parents=True, exist_ok=True)
+
+        for filename in file_names:
+            if filename in ignored:
+                continue
+            copy_skill_file(str(current / filename), str(target_root / filename))
 
 
 def remove_tree(path: Path) -> None:
@@ -413,16 +493,19 @@ def export_skills() -> list[dict[str, Any]]:
             exported.append({"name": name, "status": "missing_source"})
             continue
         target_dir = CODEX_SKILLS_EXPORT_DIR / name
-        shutil.copytree(source_dir, target_dir)
+        skipped_before = len(SKIPPED_SKILL_COPY_FILES)
+        copy_skill_tree(source_dir, target_dir)
         sanitize_skill_frontmatter(target_dir / "SKILL.md", name)
-        exported.append(
-            {
-                "name": name,
-                "status": "exported",
-                "source": rel(source_dir),
-                "codexPath": rel(target_dir / "SKILL.md"),
-            }
-        )
+        record = {
+            "name": name,
+            "status": "exported",
+            "source": rel(source_dir),
+            "codexPath": rel(target_dir / "SKILL.md"),
+        }
+        skipped_files = SKIPPED_SKILL_COPY_FILES[skipped_before:]
+        if skipped_files:
+            record["skippedFiles"] = skipped_files
+        exported.append(record)
     exported.extend(write_codex_workflow_skills())
     return exported
 
@@ -630,6 +713,7 @@ def write_codex_root_doc(agent_exports: list[AgentExport]) -> None:
         "- Use Codex-native tools/connectors first when available.",
         "- Do not assume Claude MCP tools are callable from Codex.",
         "- Do not write secrets into generated files. Use `.codex/secrets.local.env` locally.",
+        "- For article, post, thread, PDF, or webpage reading, do not summarize from search snippets or preview cards. Verify full-body access with the source URL/access method, title, first paragraph, last paragraph, and approximate length; state clearly when only preview text is available.",
         "",
         "## Local Slash Commands",
         "",
@@ -1004,7 +1088,7 @@ def install_global_skills(skill_exports: list[dict[str, Any]]) -> int:
             continue
         target = GLOBAL_CODEX_SKILLS_DIR / name
         remove_tree(target)
-        shutil.copytree(source, target)
+        copy_skill_tree(source, target)
         installed += 1
     return installed
 
@@ -1058,6 +1142,13 @@ def main() -> None:
         print(f"Installed {installed} skills into {GLOBAL_CODEX_SKILLS_DIR}")
     if args.write_codex_mcp_config:
         print("Wrote local Codex MCP config for servers: " + ", ".join(mcp_names))
+    if SKIPPED_SKILL_COPY_FILES:
+        preview = ", ".join(SKIPPED_SKILL_COPY_FILES[:5])
+        suffix = "" if len(SKIPPED_SKILL_COPY_FILES) <= 5 else " ..."
+        print(
+            f"Skipped {len(SKIPPED_SKILL_COPY_FILES)} unavailable cloud skill files: "
+            f"{preview}{suffix}"
+        )
 
 
 if __name__ == "__main__":

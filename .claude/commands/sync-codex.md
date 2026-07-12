@@ -20,8 +20,8 @@ python scripts/export_codex_layer.py --write-local-secrets --install-global-skil
 ```
 
 Report back from the output:
-- Number of agents exported (e.g., "Exported 64 agents to .codex/agents")
-- Number of skills processed (e.g., "Processed 28 skills into .codex/skills-export")
+- Number of agents exported (e.g., "Exported 73 agents to .codex/agents") (see CLAUDE.md — single source of truth for roster counts)
+- Number of skills processed (e.g., "Processed 54 skills into .codex/skills-export")
 - Number of skills installed globally to `~/.codex/skills/`
 - Number of hook scripts synced + Codex hooks wired (e.g., "Synced 18 hook scripts and wired 17 Codex hooks")
 - MCP server names wired into Codex config

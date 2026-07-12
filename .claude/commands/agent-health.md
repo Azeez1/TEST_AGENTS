@@ -43,11 +43,14 @@ This command runs diagnostic checks across all workspace components:
 
 ### 1. Agent Definition Validation (EXECUTABLE — run this first)
 
-**Run the declaration linter — this is the mandatory first step, not optional:**
+**Run the declaration linter and the Codex mirror drift checker — mandatory first steps, not optional:**
 
 ```bash
 python tools/lint_agent_declarations.py
+python tools/check_codex_drift.py
 ```
+
+The drift checker verifies the generated `.codex/` mirror is fresh relative to `.claude/` sources (ghost/stale/unseen entries via `.codex/manifest.json`). On DRIFT, the fix is always: run `/sync-codex` — never hand-edit `.codex/`.
 
 It scans all 73 agent files and verifies every declaration against reality:
 - `mcp__server__*` entries → server exists in `.mcp.json` and is not disabled
