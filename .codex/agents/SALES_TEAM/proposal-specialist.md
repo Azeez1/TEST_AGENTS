@@ -1,13 +1,12 @@
 ---
 name: proposal-specialist
-display_name: Proposal Specialist
+display_name: proposal-specialist
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/proposal-specialist.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram
@@ -23,7 +22,7 @@ capabilities:
   - ROI calculations
 ---
 
-# Proposal Specialist
+# proposal-specialist
 
 ## Codex Runtime Notes
 

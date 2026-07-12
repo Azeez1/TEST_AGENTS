@@ -4,8 +4,8 @@ display_name: ai-engineer
 team: ENGINEERING_TEAM
 source: ENGINEERING_TEAM/.claude/agents/ai-engineer.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:
   - last30days
 capabilities:[]
@@ -111,9 +111,9 @@ read_from_file(config)
 **When working with OTHER teams:**
 ```python
 # Reviewing MARKETING_TEAM code
-target = "MARKETING_TEAM/tools/sora_video.py"  # Absolute path
-review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERING_TEAM")
-# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_sora_review.md
+target = "MARKETING_TEAM/tools/upload_to_drive.py"  # Absolute path
+review = validate_save_path("code_reviews/marketing_drive_tool_review.md", "ENGINEERING_TEAM")
+# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_drive_tool_review.md
 ```
 
 ### 👥 Your Team & Collaboration Scope

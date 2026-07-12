@@ -19,7 +19,7 @@ class TestRenderCompact(unittest.TestCase):
             generated_at="2026-01-31T12:00:00Z",
             mode="both",
             openai_model_used="gpt-5.2",
-            xai_model_used="grok-4-1-fast",
+            xai_model_used="grok-4-latest",
         )
 
         result = render.render_compact(report)
@@ -65,9 +65,9 @@ class TestRenderCompact(unittest.TestCase):
             mode="reddit-only",
         )
 
-        result = render.render_compact(report, missing_keys="x")
+        result = render.render_compact(report)
 
-        self.assertIn("XAI_API_KEY", result)
+        self.assertIn("xAI key", result)
 
 
 class TestRenderContextSnippet(unittest.TestCase):
@@ -95,7 +95,7 @@ class TestRenderFullReport(unittest.TestCase):
             generated_at="2026-01-31T12:00:00Z",
             mode="both",
             openai_model_used="gpt-5.2",
-            xai_model_used="grok-4-1-fast",
+            xai_model_used="grok-4-latest",
         )
 
         result = render.render_full_report(report)

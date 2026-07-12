@@ -1,11 +1,11 @@
 ---
 name: video-producer
-display_name: Video Producer
+display_name: video-producer
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/video-producer.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - consistent-video-ads
   - remotion-video
@@ -19,7 +19,7 @@ capabilities:
   - Cost estimation
 ---
 
-# Video Producer
+# video-producer
 
 ## Codex Runtime Notes
 

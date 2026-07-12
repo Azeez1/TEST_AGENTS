@@ -1,11 +1,11 @@
 ---
 name: landing-page-specialist
-display_name: Landing Page Specialist
+display_name: landing-page-specialist
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/landing-page-specialist.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - artifacts-builder
   - theme-factory
@@ -23,7 +23,7 @@ capabilities:
   - Analytics and tracking recommendations
 ---
 
-# Landing Page Specialist
+# landing-page-specialist
 
 ## Codex Runtime Notes
 

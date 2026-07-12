@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:\\Users\\sabaa\\OneDrive\\Desktop\\TEST_AGENTS\\.codex\\hooks\\claude_boundary_gate.py\""
+            "command": "python \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\claude_boundary_gate.py\""
           }
         ]
       },
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:\\Users\\sabaa\\OneDrive\\Desktop\\TEST_AGENTS\\.codex\\hooks\\enforcement_gate.py\""
+            "command": "python \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.codex\\hooks\\enforcement_gate.py\""
           }
         ]
       },

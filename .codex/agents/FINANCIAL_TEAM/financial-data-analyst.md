@@ -1,11 +1,11 @@
 ---
 name: financial-data-analyst
-display_name: Financial Data Analyst
+display_name: financial-data-analyst
 team: FINANCIAL_TEAM
 source: FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - xlsx
   - flow-diagram
@@ -22,7 +22,7 @@ capabilities:
   - Automated reporting and data pipelines
 ---
 
-# Financial Data Analyst
+# financial-data-analyst
 
 ## Codex Runtime Notes
 
@@ -236,9 +236,8 @@ Output: Company-specific data analysis skill file
 
 **Revenue Waterfall:**
 ```
-Starting Revenue → New Customers → Expansion → Churn → Ending Revenue
-
-$10M → +$2M → +$1.5M → -$500k → $13M
+Starting Revenue → +New Customers → +Expansion → −Churn → Ending Revenue
+(populate only with sourced figures; never invent amounts)
 ```
 
 **Cohort Retention Heatmap:**

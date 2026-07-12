@@ -1,13 +1,13 @@
 ---
 name: presentation-designer
-display_name: Presentation Designer
+display_name: presentation-designer
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/presentation-designer.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - pptx (from document-skills)
+  - pptx
   - theme-factory
   - artifacts-builder
   - excalidraw-diagrams
@@ -21,7 +21,7 @@ capabilities:
   - Google Drive upload integration
 ---
 
-# Presentation Designer
+# presentation-designer
 
 ## Codex Runtime Notes
 

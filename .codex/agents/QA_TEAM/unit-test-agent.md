@@ -1,11 +1,11 @@
 ---
 name: unit-test-agent
-display_name: Unit Test Agent
+display_name: unit-test-agent
 team: QA_TEAM
 source: QA_TEAM/.claude/agents/unit-test-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Unit test generation
@@ -14,7 +14,7 @@ capabilities:
   - Mock creation
 ---
 
-# Unit Test Agent
+# unit-test-agent
 
 ## Codex Runtime Notes
 
@@ -29,9 +29,8 @@ Claude tools declared by the source agent:
 
   - workspace_enforcer
   - path_validator
-  - analyze_function
-  - generate_unit_tests
-  - create_fixtures
+  - code_scanner
+  - test_generator
 
 When an API-backed capability is needed, prefer this order:
 1. Use a Codex-native connector/tool if one is available in the current session.

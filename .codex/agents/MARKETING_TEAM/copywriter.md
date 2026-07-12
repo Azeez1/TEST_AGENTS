@@ -1,11 +1,11 @@
 ---
 name: copywriter
-display_name: Copywriter
+display_name: copywriter
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/copywriter.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - internal-comms
   - docx
@@ -18,7 +18,7 @@ capabilities:
   - Internal communications (status reports, newsletters, FAQs)
 ---
 
-# Copywriter
+# copywriter
 
 ## Codex Runtime Notes
 

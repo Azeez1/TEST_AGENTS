@@ -1,13 +1,12 @@
 ---
 name: research-agent
-display_name: Research Agent
+display_name: research-agent
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/research-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - last30days
 capabilities:
   - Advanced web research with Perplexity AI
@@ -19,7 +18,7 @@ capabilities:
   - Competitor website analysis
 ---
 
-# Research Agent
+# research-agent
 
 ## Codex Runtime Notes
 
@@ -34,9 +33,7 @@ Claude tools declared by the source agent:
 
   - workspace_enforcer
   - path_validator
-  - conduct_research
-  - quick_research
-  - strategic_analysis
+  - perplexity_research_tool
   - mcp__perplexity__perplexity_ask
   - mcp__perplexity__perplexity_reason
   - mcp__perplexity__perplexity_search

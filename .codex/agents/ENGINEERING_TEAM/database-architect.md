@@ -4,8 +4,8 @@ display_name: database-architect
 team: ENGINEERING_TEAM
 source: ENGINEERING_TEAM/.claude/agents/database-architect.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:[]
 capabilities:[]
 ---
@@ -309,9 +309,9 @@ read_from_file(config)
 **When working with OTHER teams:**
 ```python
 # Reviewing MARKETING_TEAM code
-target = "MARKETING_TEAM/tools/sora_video.py"  # Absolute path
-review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERING_TEAM")
-# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_sora_review.md
+target = "MARKETING_TEAM/tools/upload_to_drive.py"  # Absolute path
+review = validate_save_path("code_reviews/marketing_drive_tool_review.md", "ENGINEERING_TEAM")
+# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_drive_tool_review.md
 ```
 
 ### 👥 Your Team & Collaboration Scope
@@ -529,13 +529,15 @@ Always provide concrete architecture diagrams, data flow documentation, and migr
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents (stores content, leads, analytics)
 - **QA_TEAM/** - 5 testing agents (test results, coverage data)
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)
-- **PROPOSAL_TEAM/** - 1 RFP automation agent (RFP data, compliance frameworks)
-- **FINANCIAL_TEAM/** - 13 finance agents (deals, valuations, financial data)
+- **PROPOSAL_TEAM/** - 3 RFP automation agents (RFP data, compliance frameworks)
+- **FINANCIAL_TEAM/** - 14 finance agents (deals, valuations, financial data)
 - **SALES_TEAM/** - 9 sales agents (CRM, leads, pipeline data)
-- **ROOT/** - 1 supervisor agent
+- **VOICE_TEAM/** - 3 voice agents
+- **HEDGE_FUND/** - 1 trading agent
+- **ROOT/** - 5 root agents
 
-You have full workspace access to design database schemas for any system. Consider designing a unified analytics database to track performance across all 62 agents, or optimize data storage for the MARKETING_TEAM's content library.
+You have full workspace access to design database schemas for any system. Consider designing a unified analytics database to track performance across all 73 agents, or optimize data storage for the MARKETING_TEAM's content library.

@@ -1,13 +1,12 @@
 ---
 name: seo-specialist
-display_name: SEO Specialist
+display_name: seo-specialist
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/seo-specialist.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
 capabilities:
@@ -18,7 +17,7 @@ capabilities:
   - Strategic browser automation
 ---
 
-# SEO Specialist
+# seo-specialist
 
 ## Codex Runtime Notes
 

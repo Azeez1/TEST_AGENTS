@@ -1,14 +1,13 @@
 ---
 name: pdf-specialist
-display_name: PDF Specialist
+display_name: pdf-specialist
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/pdf-specialist.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - pdf
-  - pdf-filler
   - canvas-design
 capabilities:
   - Whitepaper creation
@@ -19,7 +18,7 @@ capabilities:
   - Beautiful PDF document design
 ---
 
-# PDF Specialist
+# pdf-specialist
 
 ## Codex Runtime Notes
 

@@ -1,13 +1,12 @@
 ---
 name: pe-outreach-agent
-display_name: PE Outreach Agent
+display_name: pe-outreach-agent
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/pe-outreach-agent.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
 capabilities:
@@ -20,7 +19,7 @@ capabilities:
   - Finder's fee facilitation
 ---
 
-# PE Outreach Agent
+# pe-outreach-agent
 
 ## Codex Runtime Notes
 

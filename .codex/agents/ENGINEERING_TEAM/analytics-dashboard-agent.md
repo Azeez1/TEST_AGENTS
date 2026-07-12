@@ -5,7 +5,7 @@ team: ENGINEERING_TEAM
 source: ENGINEERING_TEAM/.claude/agents/analytics-dashboard-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - flow-diagram:flow-diagram
   - infographic-creator:infographic-creator

@@ -1,11 +1,11 @@
 ---
 name: trading-optimizer
-display_name: Trading Optimizer
+display_name: trading-optimizer
 team: FINANCIAL_TEAM
 source: FINANCIAL_TEAM/.claude/agents/trading-optimizer.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:
   - xlsx
 capabilities:
@@ -18,7 +18,7 @@ capabilities:
   - Cross-symbol and out-of-sample validation
 ---
 
-# Trading Optimizer
+# trading-optimizer
 
 ## Codex Runtime Notes
 

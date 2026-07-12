@@ -1,13 +1,12 @@
 ---
 name: lead-gen-agent
-display_name: Lead Generation Agent
+display_name: lead-gen-agent
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/lead-gen-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
 capabilities:
@@ -20,7 +19,7 @@ capabilities:
   - Lead qualification and filtering
 ---
 
-# Lead Generation Agent
+# lead-gen-agent
 
 ## Codex Runtime Notes
 

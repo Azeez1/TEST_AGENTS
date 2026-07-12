@@ -1,13 +1,12 @@
 ---
 name: automation-agent
-display_name: Automation Agent
+display_name: automation-agent
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/automation-agent.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
-skills:
-  - context7
+codex_model: gpt-5.4
+claude_model: 
+skills:[]
 capabilities:
   - Process discovery and documentation
   - n8n workflow architecture and node mapping
@@ -18,7 +17,7 @@ capabilities:
   - Deliverable packaging for stakeholders
 ---
 
-# Automation Agent
+# automation-agent
 
 ## Codex Runtime Notes
 
@@ -31,18 +30,15 @@ a matching Codex skill, connector, MCP server, or local script is available.
 
 Claude tools declared by the source agent:
 
-  - mcp__n8n-mcp__list_workflows
-  - mcp__n8n-mcp__get_workflow
-  - mcp__n8n-mcp__create_workflow
-  - mcp__n8n-mcp__update_workflow
-  - mcp__n8n-mcp__trigger_workflow
-  - mcp__n8n-mcp__get_execution
-  - mcp__n8n-mcp__list_credentials
+  - mcp__n8n-mcp__n8n_list_workflows
+  - mcp__n8n-mcp__n8n_get_workflow
+  - mcp__n8n-mcp__n8n_create_workflow
+  - mcp__n8n-mcp__n8n_update_partial_workflow
+  - mcp__n8n-mcp__n8n_test_workflow
+  - mcp__n8n-mcp__n8n_executions
+  - mcp__n8n-mcp__n8n_validate_workflow
   - mcp__n8n-mcp__search_nodes
-  - mcp__n8n-mcp__list_nodes
-  - mcp__n8n-mcp__get_node_essentials
-  - mcp__n8n-mcp__get_node_info
-  - mcp__n8n-mcp__get_database_statistics
+  - mcp__n8n-mcp__get_node
   - mcp__sequential-thinking__sequentialthinking
 
 When an API-backed capability is needed, prefer this order:

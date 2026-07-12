@@ -1,13 +1,12 @@
 ---
 name: content-strategist
-display_name: Content Strategist
+display_name: content-strategist
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/content-strategist.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:
-  - context7
   - last30days
 capabilities:
   - Campaign planning
@@ -16,7 +15,7 @@ capabilities:
   - Multi-channel strategy
 ---
 
-# Content Strategist
+# content-strategist
 
 ## Codex Runtime Notes
 

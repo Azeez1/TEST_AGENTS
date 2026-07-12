@@ -1,11 +1,11 @@
 ---
 name: fixture-agent
-display_name: Fixture Agent
+display_name: fixture-agent
 team: QA_TEAM
 source: QA_TEAM/.claude/agents/fixture-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Pytest fixture creation
@@ -14,7 +14,7 @@ capabilities:
   - Shared test utilities
 ---
 
-# Fixture Agent
+# fixture-agent
 
 ## Codex Runtime Notes
 
@@ -29,8 +29,8 @@ Claude tools declared by the source agent:
 
   - workspace_enforcer
   - path_validator
-  - create_fixtures
-  - analyze_function
+  - test_generator
+  - code_scanner
 
 When an API-backed capability is needed, prefer this order:
 1. Use a Codex-native connector/tool if one is available in the current session.

@@ -1,13 +1,12 @@
 ---
 name: analyst
-display_name: Analyst
+display_name: analyst
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/analyst.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
 capabilities:
@@ -20,7 +19,7 @@ capabilities:
   - Market data collection
 ---
 
-# Analyst
+# analyst
 
 ## Codex Runtime Notes
 

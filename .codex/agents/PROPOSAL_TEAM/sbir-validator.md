@@ -5,7 +5,7 @@ team: PROPOSAL_TEAM
 source: PROPOSAL_TEAM/.claude/agents/sbir-validator.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:[]
 ---

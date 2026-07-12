@@ -5,7 +5,7 @@ team: ENGINEERING_TEAM
 source: ENGINEERING_TEAM/.claude/agents/test-engineer.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:[]
 ---
@@ -240,9 +240,9 @@ read_from_file(config)
 **When working with OTHER teams:**
 ```python
 # Reviewing MARKETING_TEAM code
-target = "MARKETING_TEAM/tools/sora_video.py"  # Absolute path
-review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERING_TEAM")
-# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_sora_review.md
+target = "MARKETING_TEAM/tools/upload_to_drive.py"  # Absolute path
+review = validate_save_path("code_reviews/marketing_drive_tool_review.md", "ENGINEERING_TEAM")
+# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_drive_tool_review.md
 ```
 
 ### 👥 Your Team & Collaboration Scope
@@ -516,7 +516,7 @@ You own load testing, stress testing, and performance benchmarks.
 ```
 1. Analyze MARKETING_TEAM structure:
    - 17 agents with 50+ tools
-   - 7 MCP servers (google-workspace, perplexity, bright-data, playwright, etc.)
+   - 10 MCP servers (google-workspace, perplexity, bright-data, playwright, etc. — see MCP_SETUP.md)
    - Complex multi-agent coordination (router → specialists)
    - Critical paths: email operations, conditional editor review, file uploads
 
@@ -583,7 +583,7 @@ Task(test-orchestrator): Generate comprehensive pytest test suite for MARKETING_
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents (email tools, image generation, video creation, etc.)
 - **QA_TEAM/** - 5 testing agents (unit, integration, edge case, fixture specialists)
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)

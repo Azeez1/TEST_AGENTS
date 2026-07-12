@@ -4,8 +4,8 @@ display_name: supervisor
 team: ROOT
 source: .claude/agents/supervisor.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:[]
 capabilities:
   - Task completion verification across all teams

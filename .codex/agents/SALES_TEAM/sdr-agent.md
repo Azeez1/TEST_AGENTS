@@ -1,13 +1,12 @@
 ---
 name: sdr-agent
-display_name: SDR Agent
+display_name: sdr-agent
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/sdr-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
 capabilities:
@@ -21,7 +20,7 @@ capabilities:
   - Pipeline building
 ---
 
-# SDR Agent
+# sdr-agent
 
 ## Codex Runtime Notes
 

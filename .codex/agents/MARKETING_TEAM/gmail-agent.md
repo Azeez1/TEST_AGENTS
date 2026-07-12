@@ -1,11 +1,11 @@
 ---
 name: gmail-agent
-display_name: Gmail Agent
+display_name: gmail-agent
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/gmail-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Send emails via Gmail
@@ -15,7 +15,7 @@ capabilities:
   - Send emails with attachments
 ---
 
-# Gmail Agent
+# gmail-agent
 
 ## Codex Runtime Notes
 
@@ -34,9 +34,7 @@ Claude tools declared by the source agent:
   - mcp__google-workspace__search_gmail_messages
   - mcp__google-workspace__get_gmail_message_content
   - send_email_with_attachment
-  - render_email_html
-  - select_template_for_context
-  - list_templates
+  - email_template_renderer
 
 When an API-backed capability is needed, prefer this order:
 1. Use a Codex-native connector/tool if one is available in the current session.

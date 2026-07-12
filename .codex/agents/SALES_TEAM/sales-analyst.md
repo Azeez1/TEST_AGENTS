@@ -1,13 +1,12 @@
 ---
 name: sales-analyst
-display_name: Sales Analyst
+display_name: sales-analyst
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/sales-analyst.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram
@@ -24,7 +23,7 @@ capabilities:
   - Revenue attribution
 ---
 
-# Sales Analyst
+# sales-analyst
 
 ## Codex Runtime Notes
 

@@ -64,6 +64,9 @@ This directory is generated from Claude-first sources plus Codex-native sources 
 - `treasury-agent`: `.codex/agents/FINANCIAL_TEAM/treasury-agent.md`
 - `valuation-agent`: `.codex/agents/FINANCIAL_TEAM/valuation-agent.md`
 
+### HEDGE_FUND
+- `ict-trader`: `.codex/agents/HEDGE_FUND/ict-trader.md`
+
 ### MARKETING_TEAM
 - `analyst`: `.codex/agents/MARKETING_TEAM/analyst.md`
 - `automation-agent`: `.codex/agents/MARKETING_TEAM/automation-agent.md`
@@ -113,3 +116,8 @@ This directory is generated from Claude-first sources plus Codex-native sources 
 - `sales-manager`: `.codex/agents/SALES_TEAM/sales-manager.md`
 - `sales-operations`: `.codex/agents/SALES_TEAM/sales-operations.md`
 - `sdr-agent`: `.codex/agents/SALES_TEAM/sdr-agent.md`
+
+### VOICE_TEAM
+- `voice-deployer`: `.codex/agents/VOICE_TEAM/voice-deployer.md`
+- `voice-email-validator`: `.codex/agents/VOICE_TEAM/voice-email-validator.md`
+- `voice-onboarder`: `.codex/agents/VOICE_TEAM/voice-onboarder.md`

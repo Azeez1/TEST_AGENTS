@@ -1,11 +1,11 @@
 ---
 name: email-specialist
-display_name: Email Specialist
+display_name: email-specialist
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/email-specialist.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Email copywriting
@@ -14,7 +14,7 @@ capabilities:
   - Newsletter creation
 ---
 
-# Email Specialist
+# email-specialist
 
 ## Codex Runtime Notes
 

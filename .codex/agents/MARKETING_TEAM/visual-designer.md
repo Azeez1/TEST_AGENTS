@@ -1,16 +1,15 @@
 ---
 name: visual-designer
-display_name: Visual Designer
+display_name: visual-designer
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/visual-designer.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - algorithmic-art
   - canvas-design
   - theme-factory
-  - figma
   - flow-diagram
   - infographic-creator
   - frontend-design:frontend-design
@@ -30,7 +29,7 @@ capabilities:
   - Flow diagrams and LinkedIn carousels (glassmorphism, neon, hand-drawn styles)
 ---
 
-# Visual Designer
+# visual-designer
 
 ## Codex Runtime Notes
 

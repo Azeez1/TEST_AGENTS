@@ -1,11 +1,11 @@
 ---
 name: integration-test-agent
-display_name: Integration Test Agent
+display_name: integration-test-agent
 team: QA_TEAM
 source: QA_TEAM/.claude/agents/integration-test-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Integration test generation
@@ -14,7 +14,7 @@ capabilities:
   - End-to-end scenarios
 ---
 
-# Integration Test Agent
+# integration-test-agent
 
 ## Codex Runtime Notes
 
@@ -29,8 +29,8 @@ Claude tools declared by the source agent:
 
   - workspace_enforcer
   - path_validator
-  - scan_codebase
-  - generate_integration_tests
+  - code_scanner
+  - test_generator
 
 When an API-backed capability is needed, prefer this order:
 1. Use a Codex-native connector/tool if one is available in the current session.

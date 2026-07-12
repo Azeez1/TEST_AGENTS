@@ -1,13 +1,12 @@
 ---
 name: sales-operations
-display_name: Sales Operations
+display_name: sales-operations
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/sales-operations.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram
@@ -23,7 +22,7 @@ capabilities:
   - Data quality management
 ---
 
-# Sales Operations
+# sales-operations
 
 ## Codex Runtime Notes
 

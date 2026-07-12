@@ -1,11 +1,11 @@
 ---
 name: editor
-display_name: Editor
+display_name: editor
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/editor.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Content review and editing
@@ -15,7 +15,7 @@ capabilities:
   - Presentation QA review
 ---
 
-# Editor
+# editor
 
 ## Codex Runtime Notes
 

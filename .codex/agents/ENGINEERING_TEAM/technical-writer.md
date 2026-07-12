@@ -5,7 +5,7 @@ team: ENGINEERING_TEAM
 source: ENGINEERING_TEAM/.claude/agents/technical-writer.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - excalidraw-diagrams
   - flow-diagram
@@ -115,9 +115,9 @@ read_from_file(config)
 **When working with OTHER teams:**
 ```python
 # Reviewing MARKETING_TEAM code
-target = "MARKETING_TEAM/tools/sora_video.py"  # Absolute path
-review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERING_TEAM")
-# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_sora_review.md
+target = "MARKETING_TEAM/tools/upload_to_drive.py"  # Absolute path
+review = validate_save_path("code_reviews/marketing_drive_tool_review.md", "ENGINEERING_TEAM")
+# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_drive_tool_review.md
 ```
 
 ### 👥 Your Team & Collaboration Scope
@@ -265,18 +265,20 @@ When asked to write documentation:
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (YOU ARE HERE)
-- **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 13 finance agents
+- **PROPOSAL_TEAM/** - 3 RFP automation agents
+- **FINANCIAL_TEAM/** - 14 finance agents
 - **SALES_TEAM/** - 9 sales agents
-- **ROOT/** - 1 supervisor agent
+- **VOICE_TEAM/** - 3 voice agents
+- **HEDGE_FUND/** - 1 trading agent
+- **ROOT/** - 5 root agents
 
 **Documentation Needs:**
-1. **Agent Documentation** - How to use each of the 62 agents
-2. **System Architecture** - How the 6 systems work together
+1. **Agent Documentation** - How to use each of the 73 agents
+2. **System Architecture** - How the 8 systems work together
 3. **API Documentation** - Document Python tools and functions
 4. **PRDs** - Specs for new features and improvements
 5. **Integration Guides** - How to integrate with MCPs and external services
@@ -332,7 +334,7 @@ Build a web-based dashboard that provides a unified interface to manage all 28 A
 
 ### Functional Requirements
 1. **Agent Management**
-   - List all 62 agents with status indicators
+   - List all 73 agents with status indicators
    - Start/stop agents
    - Configure agent parameters
    - View agent capabilities
@@ -384,13 +386,16 @@ Build a web-based dashboard that provides a unified interface to manage all 28 A
          │
          ▼
 ┌─────────────────────────────────────────────┐
-│   AI Agents (62 total)                      │
+│   AI Agents (73 total)                      │
 │   - MARKETING_TEAM (18)                     │
 │   - QA_TEAM (5)                             │
 │   - ENGINEERING_TEAM (15)                   │
-│   - PROPOSAL_TEAM (1)                       │
-│   - FINANCIAL_TEAM (13)                     │
+│   - PROPOSAL_TEAM (3)                       │
+│   - FINANCIAL_TEAM (14)                     │
 │   - SALES_TEAM (9)                          │
+│   - VOICE_TEAM (3)                          │
+│   - HEDGE_FUND (1)                          │
+│   - ROOT (5)                                │
 └─────────────────────────────────────────────┘
 ```
 
@@ -556,7 +561,7 @@ Check the status of a task.
 # System Architecture: AI Multi-Agent Workspace
 
 ## Overview
-This document describes the architecture of a multi-agent AI system consisting of 58 specialized agents organized into 6 teams.
+This document describes the architecture of a multi-agent AI system consisting of 73 specialized agents organized into 8 teams.
 
 ## System Diagram
 
@@ -596,8 +601,8 @@ graph TB
 - lead-gen-agent: B2B lead generation
 
 **Tools:**
-- `openai_gpt4o_image.py`: Image generation
-- `sora_video.py`: Video creation
+- `mcp__marketing-tools__generate_gpt4o_image` (MCP): Image generation
+- `mcp__marketing-tools__generate_sora_video` (MCP): Video creation
 - `send_email_with_attachment.py`: Email automation
 - `upload_to_drive.py`: Google Drive uploads
 
@@ -750,4 +755,4 @@ Save all documentation to:
 
 ---
 
-**Ready to document!** Ask me to write PRDs, technical specs, API documentation, user guides, or any other documentation for your 58 AI agents.
+**Ready to document!** Ask me to write PRDs, technical specs, API documentation, user guides, or any other documentation for your 73 AI agents.

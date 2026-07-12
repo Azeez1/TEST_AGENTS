@@ -1,11 +1,11 @@
 ---
 name: test-orchestrator
-display_name: Test Orchestrator
+display_name: test-orchestrator
 team: QA_TEAM
 source: QA_TEAM/.claude/agents/test-orchestrator.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:[]
 capabilities:
   - Code analysis and scanning
@@ -14,7 +14,7 @@ capabilities:
   - Test execution and reporting
 ---
 
-# Test Orchestrator
+# test-orchestrator
 
 ## Codex Runtime Notes
 
@@ -29,12 +29,9 @@ Claude tools declared by the source agent:
 
   - workspace_enforcer
   - path_validator
-  - scan_codebase
-  - analyze_coverage
-  - run_tests
-  - classify_test_intent
-  - list_test_agents
-  - extract_target_path
+  - code_scanner
+  - coverage_analyzer
+  - qa_router_tools
   - Task
 
 When an API-backed capability is needed, prefer this order:

@@ -1,13 +1,12 @@
 ---
 name: router-agent
-display_name: Router Agent
+display_name: router-agent
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/router-agent.md
 source_runtime: claude
-codex_model: gpt-5.5
-claude_model: claude-opus-4-6
+codex_model: gpt-5.4
+claude_model: 
 skills:
-  - context7
   - last30days
 capabilities:
   - Intent classification
@@ -17,7 +16,7 @@ capabilities:
   - Clarification questions
 ---
 
-# Router Agent
+# router-agent
 
 ## Codex Runtime Notes
 

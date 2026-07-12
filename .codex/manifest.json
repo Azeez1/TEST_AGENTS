@@ -94,8 +94,8 @@
       "source": ".claude/agents/supervisor.md",
       "codex_instructions": ".codex/agents/ROOT/supervisor.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "Read",
         "Grep",
@@ -117,12 +117,12 @@
     },
     {
       "slug": "analyst",
-      "display_name": "Analyst",
+      "display_name": "analyst",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/analyst.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/analyst.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -135,7 +135,6 @@
         "mcp__google-workspace__create_doc"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days"
       ],
@@ -151,31 +150,26 @@
     },
     {
       "slug": "automation-agent",
-      "display_name": "Automation Agent",
+      "display_name": "automation-agent",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/automation-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/automation-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
-        "mcp__n8n-mcp__list_workflows",
-        "mcp__n8n-mcp__get_workflow",
-        "mcp__n8n-mcp__create_workflow",
-        "mcp__n8n-mcp__update_workflow",
-        "mcp__n8n-mcp__trigger_workflow",
-        "mcp__n8n-mcp__get_execution",
-        "mcp__n8n-mcp__list_credentials",
+        "mcp__n8n-mcp__n8n_list_workflows",
+        "mcp__n8n-mcp__n8n_get_workflow",
+        "mcp__n8n-mcp__n8n_create_workflow",
+        "mcp__n8n-mcp__n8n_update_partial_workflow",
+        "mcp__n8n-mcp__n8n_test_workflow",
+        "mcp__n8n-mcp__n8n_executions",
+        "mcp__n8n-mcp__n8n_validate_workflow",
         "mcp__n8n-mcp__search_nodes",
-        "mcp__n8n-mcp__list_nodes",
-        "mcp__n8n-mcp__get_node_essentials",
-        "mcp__n8n-mcp__get_node_info",
-        "mcp__n8n-mcp__get_database_statistics",
+        "mcp__n8n-mcp__get_node",
         "mcp__sequential-thinking__sequentialthinking"
       ],
-      "skills": [
-        "context7"
-      ],
+      "skills": [],
       "capabilities": [
         "Process discovery and documentation",
         "n8n workflow architecture and node mapping",
@@ -188,13 +182,13 @@
     },
     {
       "slug": "content-strategist",
-      "display_name": "Content Strategist",
+      "display_name": "content-strategist",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/content-strategist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/content-strategist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -204,7 +198,6 @@
         "mcp__sequential-thinking__sequentialthinking"
       ],
       "skills": [
-        "context7",
         "last30days"
       ],
       "capabilities": [
@@ -216,12 +209,12 @@
     },
     {
       "slug": "copywriter",
-      "display_name": "Copywriter",
+      "display_name": "copywriter",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/copywriter.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/copywriter.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -244,12 +237,12 @@
     },
     {
       "slug": "editor",
-      "display_name": "Editor",
+      "display_name": "editor",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/editor.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/editor.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -269,12 +262,12 @@
     },
     {
       "slug": "email-specialist",
-      "display_name": "Email Specialist",
+      "display_name": "email-specialist",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/email-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/email-specialist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -292,12 +285,12 @@
     },
     {
       "slug": "gmail-agent",
-      "display_name": "Gmail Agent",
+      "display_name": "gmail-agent",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/gmail-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/gmail-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -306,9 +299,7 @@
         "mcp__google-workspace__search_gmail_messages",
         "mcp__google-workspace__get_gmail_message_content",
         "send_email_with_attachment",
-        "render_email_html",
-        "select_template_for_context",
-        "list_templates"
+        "email_template_renderer"
       ],
       "skills": [],
       "capabilities": [
@@ -321,12 +312,12 @@
     },
     {
       "slug": "landing-page-specialist",
-      "display_name": "Landing Page Specialist",
+      "display_name": "landing-page-specialist",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/landing-page-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/landing-page-specialist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -359,12 +350,12 @@
     },
     {
       "slug": "lead-gen-agent",
-      "display_name": "Lead Generation Agent",
+      "display_name": "lead-gen-agent",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/lead-gen-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/lead-gen-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -380,7 +371,6 @@
         "mcp__google-workspace__create_drive_file"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days"
       ],
@@ -396,12 +386,12 @@
     },
     {
       "slug": "newsletter-agent",
-      "display_name": "Newsletter Agent",
+      "display_name": "newsletter-agent",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/newsletter-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/newsletter-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -439,12 +429,12 @@
     },
     {
       "slug": "pdf-specialist",
-      "display_name": "PDF Specialist",
+      "display_name": "pdf-specialist",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/pdf-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/pdf-specialist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -455,7 +445,6 @@
       ],
       "skills": [
         "pdf",
-        "pdf-filler",
         "canvas-design"
       ],
       "capabilities": [
@@ -469,12 +458,12 @@
     },
     {
       "slug": "presentation-designer",
-      "display_name": "Presentation Designer",
+      "display_name": "presentation-designer",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/presentation-designer.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/presentation-designer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -484,7 +473,7 @@
         "upload_to_drive"
       ],
       "skills": [
-        "pptx (from document-skills)",
+        "pptx",
         "theme-factory",
         "artifacts-builder",
         "excalidraw-diagrams",
@@ -501,19 +490,17 @@
     },
     {
       "slug": "research-agent",
-      "display_name": "Research Agent",
+      "display_name": "research-agent",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/research-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/research-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "conduct_research",
-        "quick_research",
-        "strategic_analysis",
+        "perplexity_research_tool",
         "mcp__perplexity__perplexity_ask",
         "mcp__perplexity__perplexity_reason",
         "mcp__perplexity__perplexity_search",
@@ -524,7 +511,6 @@
         "mcp__google-workspace__create_doc"
       ],
       "skills": [
-        "filesystem",
         "last30days"
       ],
       "capabilities": [
@@ -539,13 +525,13 @@
     },
     {
       "slug": "router-agent",
-      "display_name": "Router Agent",
+      "display_name": "router-agent",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/router-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/router-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "Task",
         "workspace_enforcer",
@@ -553,7 +539,6 @@
         "mcp__sequential-thinking__sequentialthinking"
       ],
       "skills": [
-        "context7",
         "last30days"
       ],
       "capabilities": [
@@ -566,12 +551,12 @@
     },
     {
       "slug": "seo-specialist",
-      "display_name": "SEO Specialist",
+      "display_name": "seo-specialist",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/seo-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/seo-specialist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -587,7 +572,6 @@
         "mcp__google-workspace__read_sheet_values"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days"
       ],
@@ -601,12 +585,12 @@
     },
     {
       "slug": "social-media-manager",
-      "display_name": "Social Media Manager",
+      "display_name": "social-media-manager",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/social-media-manager.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/social-media-manager.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -632,12 +616,12 @@
     },
     {
       "slug": "video-producer",
-      "display_name": "Video Producer",
+      "display_name": "video-producer",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/video-producer.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/video-producer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -665,12 +649,12 @@
     },
     {
       "slug": "visual-designer",
-      "display_name": "Visual Designer",
+      "display_name": "visual-designer",
       "team": "MARKETING_TEAM",
       "source": "MARKETING_TEAM/.claude/agents/visual-designer.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/visual-designer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -687,7 +671,6 @@
         "algorithmic-art",
         "canvas-design",
         "theme-factory",
-        "figma",
         "flow-diagram",
         "infographic-creator",
         "frontend-design:frontend-design"
@@ -715,8 +698,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/ai-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/ai-engineer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "Read",
         "Write",
@@ -737,7 +720,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/analytics-dashboard-agent.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/analytics-dashboard-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -761,7 +744,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/backend-architect.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/backend-architect.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -784,7 +767,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/code-reviewer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/code-reviewer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -805,15 +788,12 @@
       "source": "ENGINEERING_TEAM/.claude/agents/cto.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/cto.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "classify_engineering_request",
-        "get_engineer_capabilities",
-        "list_engineering_agents",
-        "create_execution_plan",
+        "engineering_coordinator_tools",
         "mcp__sequential-thinking__sequentialthinking"
       ],
       "skills": [],
@@ -833,8 +813,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/database-architect.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/database-architect.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "Read",
         "Write",
@@ -853,7 +833,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/debugger.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/debugger.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -874,7 +854,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/devops-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/devops-engineer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -897,7 +877,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/frontend-developer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/frontend-developer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -919,8 +899,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/prompt-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/prompt-engineer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "Read",
         "Write",
@@ -940,7 +920,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/security-auditor.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/security-auditor.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -962,7 +942,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/system-architect.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/system-architect.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -978,7 +958,7 @@
         "excalidraw-diagrams",
         "canvas-design",
         "artifacts-builder",
-        "document-skills",
+        "docx",
         "theme-factory"
       ],
       "capabilities": []
@@ -990,7 +970,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/technical-writer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/technical-writer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -1014,7 +994,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/test-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/test-engineer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -1034,7 +1014,7 @@
       "source": "ENGINEERING_TEAM/.claude/agents/ui-ux-designer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/ui-ux-designer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -1050,18 +1030,18 @@
     },
     {
       "slug": "edge-case-agent",
-      "display_name": "Edge Case Agent",
+      "display_name": "edge-case-agent",
       "team": "QA_TEAM",
       "source": "QA_TEAM/.claude/agents/edge-case-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/edge-case-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "identify_edge_cases",
-        "analyze_function"
+        "test_generator",
+        "code_scanner"
       ],
       "skills": [],
       "capabilities": [
@@ -1073,18 +1053,18 @@
     },
     {
       "slug": "fixture-agent",
-      "display_name": "Fixture Agent",
+      "display_name": "fixture-agent",
       "team": "QA_TEAM",
       "source": "QA_TEAM/.claude/agents/fixture-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/fixture-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "create_fixtures",
-        "analyze_function"
+        "test_generator",
+        "code_scanner"
       ],
       "skills": [],
       "capabilities": [
@@ -1096,18 +1076,18 @@
     },
     {
       "slug": "integration-test-agent",
-      "display_name": "Integration Test Agent",
+      "display_name": "integration-test-agent",
       "team": "QA_TEAM",
       "source": "QA_TEAM/.claude/agents/integration-test-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/integration-test-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "scan_codebase",
-        "generate_integration_tests"
+        "code_scanner",
+        "test_generator"
       ],
       "skills": [],
       "capabilities": [
@@ -1119,22 +1099,19 @@
     },
     {
       "slug": "test-orchestrator",
-      "display_name": "Test Orchestrator",
+      "display_name": "test-orchestrator",
       "team": "QA_TEAM",
       "source": "QA_TEAM/.claude/agents/test-orchestrator.md",
       "codex_instructions": ".codex/agents/QA_TEAM/test-orchestrator.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "scan_codebase",
-        "analyze_coverage",
-        "run_tests",
-        "classify_test_intent",
-        "list_test_agents",
-        "extract_target_path",
+        "code_scanner",
+        "coverage_analyzer",
+        "qa_router_tools",
         "Task"
       ],
       "skills": [],
@@ -1147,19 +1124,18 @@
     },
     {
       "slug": "unit-test-agent",
-      "display_name": "Unit Test Agent",
+      "display_name": "unit-test-agent",
       "team": "QA_TEAM",
       "source": "QA_TEAM/.claude/agents/unit-test-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/unit-test-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
-        "analyze_function",
-        "generate_unit_tests",
-        "create_fixtures"
+        "code_scanner",
+        "test_generator"
       ],
       "skills": [],
       "capabilities": [
@@ -1176,7 +1152,7 @@
       "source": "PROPOSAL_TEAM/.claude/agents/proposal-tracker.md",
       "codex_instructions": ".codex/agents/PROPOSAL_TEAM/proposal-tracker.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -1195,16 +1171,14 @@
       "source": "PROPOSAL_TEAM/.claude/agents/rfp-agent.md",
       "codex_instructions": ".codex/agents/PROPOSAL_TEAM/rfp-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
-        "parse_rfp",
-        "generate_compliance_matrix",
-        "write_proposal_section",
-        "validate_proposal",
-        "process_rfp_full",
-        "index_knowledge_base",
-        "query_knowledge_base"
+        "rfp_parser",
+        "compliance_engine",
+        "adaptive_proposal_writer",
+        "pinecone_knowledge_base",
+        "hybrid_search"
       ],
       "skills": [
         "pdf",
@@ -1219,14 +1193,14 @@
         "artifacts-builder"
       ],
       "capabilities": [
-        "Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via parse_rfp",
+        "Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via rfp_parser",
         "Intelligent requirement extraction with LLM and RFC 2119 classification",
-        "Knowledge base retrieval (Pinecone) via query_knowledge_base",
-        "Compliance matrix generation with risk assessment via generate_compliance_matrix",
-        "AI-driven proposal section writing via write_proposal_section",
-        "Quality assurance validation via validate_proposal",
-        "Full pipeline orchestration via process_rfp_full",
-        "KB indexing via index_knowledge_base",
+        "Knowledge base retrieval (Pinecone) via hybrid_search",
+        "Compliance matrix generation with risk assessment via compliance_engine",
+        "AI-driven proposal section writing via adaptive_proposal_writer",
+        "Quality assurance validation via compliance_engine",
+        "Full pipeline orchestration across the tools above",
+        "KB indexing via pinecone_knowledge_base",
         "Document creation with PDF, DOCX, PPTX, XLSX skills",
         "Visual design with canvas-design and flow-diagram skills",
         "Professional styling with theme-factory and brand-guidelines"
@@ -1239,7 +1213,7 @@
       "source": "PROPOSAL_TEAM/.claude/agents/sbir-validator.md",
       "codex_instructions": ".codex/agents/PROPOSAL_TEAM/sbir-validator.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "Read",
@@ -1253,12 +1227,12 @@
     },
     {
       "slug": "accountant",
-      "display_name": "Accountant",
+      "display_name": "accountant",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/accountant.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/accountant.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1284,12 +1258,12 @@
     },
     {
       "slug": "cfo-agent",
-      "display_name": "CFO Agent",
+      "display_name": "cfo-agent",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/cfo-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/cfo-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1321,12 +1295,12 @@
     },
     {
       "slug": "controller",
-      "display_name": "Controller",
+      "display_name": "controller",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/controller.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/controller.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1352,12 +1326,12 @@
     },
     {
       "slug": "deal-analyst",
-      "display_name": "Deal Analyst",
+      "display_name": "deal-analyst",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/deal-analyst.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/deal-analyst.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1386,12 +1360,12 @@
     },
     {
       "slug": "financial-analyst",
-      "display_name": "Financial Analyst",
+      "display_name": "financial-analyst",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/financial-analyst.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/financial-analyst.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1422,12 +1396,12 @@
     },
     {
       "slug": "financial-data-analyst",
-      "display_name": "Financial Data Analyst",
+      "display_name": "financial-data-analyst",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/financial-data-analyst.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1458,12 +1432,12 @@
     },
     {
       "slug": "forecasting-agent",
-      "display_name": "Forecasting Agent",
+      "display_name": "forecasting-agent",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/forecasting-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/forecasting-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1491,12 +1465,12 @@
     },
     {
       "slug": "fpna-agent",
-      "display_name": "FP&A Agent",
+      "display_name": "fpna-agent",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/fpna-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/fpna-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1523,12 +1497,12 @@
     },
     {
       "slug": "investor-relations-agent",
-      "display_name": "Investor Relations Agent",
+      "display_name": "investor-relations-agent",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/investor-relations-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/investor-relations-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1563,12 +1537,12 @@
     },
     {
       "slug": "portfolio-manager",
-      "display_name": "Portfolio Manager",
+      "display_name": "portfolio-manager",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/portfolio-manager.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/portfolio-manager.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1599,12 +1573,12 @@
     },
     {
       "slug": "tax-advisor",
-      "display_name": "Tax Advisor",
+      "display_name": "tax-advisor",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/tax-advisor.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/tax-advisor.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1632,13 +1606,13 @@
     },
     {
       "slug": "trading-optimizer",
-      "display_name": "Trading Optimizer",
+      "display_name": "trading-optimizer",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/trading-optimizer.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/trading-optimizer.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1664,12 +1638,12 @@
     },
     {
       "slug": "treasury-agent",
-      "display_name": "Treasury Agent",
+      "display_name": "treasury-agent",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/treasury-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/treasury-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1698,12 +1672,12 @@
     },
     {
       "slug": "valuation-agent",
-      "display_name": "Valuation Agent",
+      "display_name": "valuation-agent",
       "team": "FINANCIAL_TEAM",
       "source": "FINANCIAL_TEAM/.claude/agents/valuation-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/valuation-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1732,12 +1706,12 @@
     },
     {
       "slug": "account-executive",
-      "display_name": "Account Executive",
+      "display_name": "account-executive",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/account-executive.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/account-executive.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1755,7 +1729,6 @@
         "mcp__google-workspace__modify_sheet_values"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram"
@@ -1773,12 +1746,12 @@
     },
     {
       "slug": "customer-success-manager",
-      "display_name": "Customer Success Manager",
+      "display_name": "customer-success-manager",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/customer-success-manager.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/customer-success-manager.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1795,7 +1768,6 @@
         "mcp__perplexity__perplexity_reason"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram",
@@ -1814,12 +1786,12 @@
     },
     {
       "slug": "outbound-specialist",
-      "display_name": "Outbound Specialist",
+      "display_name": "outbound-specialist",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/outbound-specialist.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/outbound-specialist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1835,7 +1807,6 @@
         "mcp__google-workspace__read_sheet_values"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram"
@@ -1853,13 +1824,13 @@
     },
     {
       "slug": "pe-outreach-agent",
-      "display_name": "PE Outreach Agent",
+      "display_name": "pe-outreach-agent",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/pe-outreach-agent.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/pe-outreach-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-opus-4-6",
-      "codex_model": "gpt-5.5",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1883,7 +1854,6 @@
         "mcp__claude-in-chrome__get_page_text"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days"
       ],
@@ -1899,12 +1869,12 @@
     },
     {
       "slug": "proposal-specialist",
-      "display_name": "Proposal Specialist",
+      "display_name": "proposal-specialist",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/proposal-specialist.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/proposal-specialist.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1919,7 +1889,6 @@
         "mcp__google-workspace__search_drive_files"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram",
@@ -1938,12 +1907,12 @@
     },
     {
       "slug": "sales-analyst",
-      "display_name": "Sales Analyst",
+      "display_name": "sales-analyst",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/sales-analyst.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sales-analyst.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -1960,7 +1929,6 @@
         "mcp__google-workspace__create_presentation"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram",
@@ -1980,12 +1948,12 @@
     },
     {
       "slug": "sales-manager",
-      "display_name": "Sales Manager",
+      "display_name": "sales-manager",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/sales-manager.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sales-manager.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -2000,7 +1968,6 @@
         "mcp__perplexity__perplexity_reason"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram",
@@ -2019,12 +1986,12 @@
     },
     {
       "slug": "sales-operations",
-      "display_name": "Sales Operations",
+      "display_name": "sales-operations",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/sales-operations.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sales-operations.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -2039,7 +2006,6 @@
         "mcp__perplexity__perplexity_reason"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days",
         "flow-diagram",
@@ -2058,12 +2024,12 @@
     },
     {
       "slug": "sdr-agent",
-      "display_name": "SDR Agent",
+      "display_name": "sdr-agent",
       "team": "SALES_TEAM",
       "source": "SALES_TEAM/.claude/agents/sdr-agent.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sdr-agent.md",
       "source_runtime": "claude",
-      "claude_model": "claude-sonnet-4-6",
+      "claude_model": null,
       "codex_model": "gpt-5.4",
       "tools": [
         "workspace_enforcer",
@@ -2081,7 +2047,6 @@
         "mcp__google-workspace__get_doc_content"
       ],
       "skills": [
-        "filesystem",
         "xlsx",
         "last30days"
       ],
@@ -2094,6 +2059,129 @@
         "CRM data entry and management",
         "A/B testing outreach messages",
         "Pipeline building"
+      ]
+    },
+    {
+      "slug": "voice-deployer",
+      "display_name": "voice-deployer",
+      "team": "VOICE_TEAM",
+      "source": "VOICE_TEAM/.claude/agents/voice-deployer.md",
+      "codex_instructions": ".codex/agents/VOICE_TEAM/voice-deployer.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Glob",
+        "Grep",
+        "mcp__google-workspace__manage_event",
+        "mcp__google-workspace__list_calendars",
+        "mcp__google-workspace__get_events"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Deploy a Retell voice agent from a firm.yml config via deploy_retell_agent.py",
+        "Re-deploy or update an existing firm's agent (delete + recreate flow + agent + re-attach phone)",
+        "Process pending booking intents from VOICE_TEAM/outputs/bookings/*.json with status=pending",
+        "Use google-workspace MCP manage_event to actually create Google Calendar events",
+        "Update booking intent files to status=completed (or failed with error reason)",
+        "Verify deployment artifacts in VOICE_TEAM/outputs/deployments/"
+      ]
+    },
+    {
+      "slug": "voice-email-validator",
+      "display_name": "voice-email-validator",
+      "team": "VOICE_TEAM",
+      "source": "VOICE_TEAM/.claude/agents/voice-email-validator.md",
+      "codex_instructions": ".codex/agents/VOICE_TEAM/voice-email-validator.md",
+      "source_runtime": "claude",
+      "claude_model": "claude-haiku-4-5-20251001",
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Read a single email intent file from VOICE_TEAM/outputs/emails/",
+        "Validate against white-label rules (no vendor names) and structural rules (required sections, subject prefix)",
+        "Return a structured verdict: APPROVE / REJECT with reasons",
+        "Suggest exact text changes to fix rejections"
+      ]
+    },
+    {
+      "slug": "voice-onboarder",
+      "display_name": "voice-onboarder",
+      "team": "VOICE_TEAM",
+      "source": "VOICE_TEAM/.claude/agents/voice-onboarder.md",
+      "codex_instructions": ".codex/agents/VOICE_TEAM/voice-onboarder.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "skills": [],
+      "capabilities": [
+        "Conduct a structured discovery interview about a new firm client",
+        "Translate discovery notes into a firm.yml that matches firm_template.yml",
+        "Generate firm-specific KB docs (about.md, faq.md, practice_areas.md)",
+        "Recommend voice_id selection based on firm brand tone",
+        "Output a deploy-ready firm config"
+      ]
+    },
+    {
+      "slug": "ict-trader",
+      "display_name": "ict-trader",
+      "team": "HEDGE_FUND",
+      "source": "HEDGE_FUND/.claude/agents/ict-trader.md",
+      "codex_instructions": ".codex/agents/HEDGE_FUND/ict-trader.md",
+      "source_runtime": "claude",
+      "claude_model": null,
+      "codex_model": "gpt-5.4",
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "mcp__claude-in-chrome__tabs_context_mcp",
+        "mcp__claude-in-chrome__tabs_create_mcp",
+        "mcp__claude-in-chrome__navigate",
+        "mcp__claude-in-chrome__read_page",
+        "mcp__claude-in-chrome__computer",
+        "mcp__claude-in-chrome__javascript_tool",
+        "mcp__perplexity__perplexity_search",
+        "mcp__bright-data__scrape_as_markdown"
+      ],
+      "skills": [
+        "xlsx",
+        "pdf",
+        "flow-diagram",
+        "infographic-creator",
+        "frontend-design"
+      ],
+      "capabilities": [
+        "HTF bias identification (D1/H4) using PD arrays, weekly profile, DXY correlation",
+        "LTF entry identification (M15/M5/M1) using OTE, FVG mitigation, OB mitigation",
+        "All ICT imbalance concepts: FVG, IFVG, BPR, Volume Imbalance, Liquidity Void",
+        "All ICT order block variants: Bullish/Bearish OB, Breaker, Mitigation, Propulsion",
+        "Market structure analysis: BOS, MSS, CHoCH, internal vs swing",
+        "Market maker models: MMBM, MMSM, Power of 3 (AMD), Judas Swing",
+        "Liquidity mapping: BSL, SSL, equal highs/lows, trendline liquidity, session liquidity, sweeps",
+        "Killzone-aware setup scoring against the rubric in ict_playbook.json",
+        "Risk-rule enforcement per risk_rules.json (1% default, 3% daily DD, 2.0 min R:R)",
+        "Trade journal write-back to outputs/journal/trade_log.xlsx + postmortems",
+        "TradingView integration via Chrome MCP (v1) or pluggable TV MCP (v2)"
       ]
     },
     {
@@ -2418,10 +2506,7 @@
       "name": "last30days",
       "status": "exported",
       "source": ".claude/skills/last30days",
-      "codexPath": ".codex/skills-export/last30days/SKILL.md",
-      "skippedFiles": [
-        ".claude/skills/last30days/assets/claude-code-rap.mp3"
-      ]
+      "codexPath": ".codex/skills-export/last30days/SKILL.md"
     },
     {
       "name": "lottie",
@@ -2548,10 +2633,7 @@
       "name": "theme-factory",
       "status": "exported",
       "source": ".claude/skills/theme-factory",
-      "codexPath": ".codex/skills-export/theme-factory/SKILL.md",
-      "skippedFiles": [
-        ".claude/skills/theme-factory/theme-showcase.pdf"
-      ]
+      "codexPath": ".codex/skills-export/theme-factory/SKILL.md"
     },
     {
       "name": "three",

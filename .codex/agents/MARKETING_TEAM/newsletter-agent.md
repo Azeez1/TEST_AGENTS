@@ -1,11 +1,11 @@
 ---
 name: newsletter-agent
-display_name: Newsletter Agent
+display_name: newsletter-agent
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/newsletter-agent.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - internal-comms
   - canvas-design
@@ -31,7 +31,7 @@ capabilities:
   - Cross-client responsive email design
 ---
 
-# Newsletter Agent
+# newsletter-agent
 
 ## Codex Runtime Notes
 

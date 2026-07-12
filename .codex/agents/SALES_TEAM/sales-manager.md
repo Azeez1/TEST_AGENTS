@@ -1,13 +1,12 @@
 ---
 name: sales-manager
-display_name: Sales Manager
+display_name: sales-manager
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/sales-manager.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram
@@ -23,7 +22,7 @@ capabilities:
   - Cross-functional leadership
 ---
 
-# Sales Manager
+# sales-manager
 
 ## Codex Runtime Notes
 

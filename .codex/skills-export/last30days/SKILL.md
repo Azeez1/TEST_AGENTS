@@ -84,14 +84,8 @@ echo "Edit to add your API keys for enhanced research."
 **IMPORTANT: The script handles API key detection automatically.** Run it and check the output to determine mode.
 
 **Step 1: Run the research script**
-```powershell
-python3 "$HOME\.codex\skills\last30days\scripts\last30days.py" "$ARGUMENTS" --emit=compact 2>&1
-```
-
-On POSIX shells, use:
-
 ```bash
-python3 "$HOME/.codex/skills/last30days/scripts/last30days.py" "$ARGUMENTS" --emit=compact 2>&1
+python3 ~/.claude/skills/last30days/scripts/last30days.py "$ARGUMENTS" --emit=compact 2>&1
 ```
 
 The script will automatically:
@@ -142,8 +136,8 @@ For ALL query types:
 - INCLUDE: blogs, tutorials, docs, news, GitHub repos
 - **DO NOT output "Sources:" list** - this is noise, we'll show stats at the end
 
-**Step 4: Wait for the script to complete**
-Read the command output before proceeding to synthesis.
+**Step 3: Wait for background script to complete**
+Use TaskOutput to get the script results before proceeding to synthesis.
 
 **Depth options** (passed through from user's command):
 - `--quick` → Faster, fewer sources (8-12 each)

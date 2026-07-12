@@ -1,11 +1,11 @@
 ---
 name: social-media-manager
-display_name: Social Media Manager
+display_name: social-media-manager
 team: MARKETING_TEAM
 source: MARKETING_TEAM/.claude/agents/social-media-manager.md
 source_runtime: claude
 codex_model: gpt-5.4
-claude_model: claude-sonnet-4-6
+claude_model: 
 skills:
   - algorithmic-art
   - slack-gif-creator
@@ -21,7 +21,7 @@ capabilities:
   - Animated GIF creation for Slack
 ---
 
-# Social Media Manager
+# social-media-manager
 
 ## Codex Runtime Notes
 
