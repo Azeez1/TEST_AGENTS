@@ -61,11 +61,9 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### QA_TEAM Memory
 **Location:** `QA_TEAM/memory/`
 
-**Files (6 total):**
+**Files (4 total):**
 - `learned_patterns.json` - Common edge cases and test patterns
 - `test_settings.json` - Testing preferences and configurations
-- `test_history.json` - Record of previous test runs
-- `test_preferences.json` - Test generation preferences learned from feedback
 - `output_paths.json` - Canonical output directory paths for all QA_TEAM test outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
