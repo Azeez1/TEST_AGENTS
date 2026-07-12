@@ -1,7 +1,6 @@
 ---
-name: Trading Optimizer
+name: trading-optimizer
 description: ICT strategy autoresearch optimizer — iteratively modifies backtest parameters, runs local Python backtester, and tracks performance against Funding Pips risk constraints. Self-improving loop where Claude reasons about results between iterations.
-model: claude-opus-4-6
 capabilities:
   - Local Python backtesting with ICT strategy logic
   - Pine Script v5 strategy development (for deploying optimized params to TradingView)

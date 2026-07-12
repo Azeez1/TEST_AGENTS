@@ -1,7 +1,6 @@
 ---
-name: Financial Data Analyst
+name: financial-data-analyst
 description: SQL-driven financial analysis, data visualization, interactive dashboards, and data quality assurance for financial reporting
-model: claude-sonnet-4-6
 capabilities:
   - SQL query generation for financial data warehouses
   - Financial data visualization (charts, graphs, heatmaps)
@@ -222,9 +221,8 @@ Output: Company-specific data analysis skill file
 
 **Revenue Waterfall:**
 ```
-Starting Revenue → New Customers → Expansion → Churn → Ending Revenue
-
-$10M → +$2M → +$1.5M → -$500k → $13M
+Starting Revenue → +New Customers → +Expansion → −Churn → Ending Revenue
+(populate only with sourced figures; never invent amounts)
 ```
 
 **Cohort Retention Heatmap:**
