@@ -38,12 +38,8 @@ Claude tools declared by the source agent:
   - workspace_enforcer
   - path_validator
   - mcp__google-workspace__create_doc
-  - mcp__google-workspace__create_presentation
-  - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__send_gmail_message
   - mcp__google-workspace__read_sheet_values
-  - mcp__google-workspace__search_drive_files
-  - mcp__perplexity__perplexity_search
   - mcp__perplexity__perplexity_reason
 
 When an API-backed capability is needed, prefer this order:

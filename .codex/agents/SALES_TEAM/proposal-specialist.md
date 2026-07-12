@@ -40,11 +40,9 @@ Claude tools declared by the source agent:
   - mcp__google-workspace__create_doc
   - mcp__google-workspace__create_presentation
   - mcp__google-workspace__create_spreadsheet
-  - mcp__bright-data__search_engine
-  - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_reason
   - mcp__google-workspace__get_doc_content
   - mcp__google-workspace__search_drive_files
+  - mcp__perplexity__perplexity_reason
 
 When an API-backed capability is needed, prefer this order:
 1. Use a Codex-native connector/tool if one is available in the current session.
