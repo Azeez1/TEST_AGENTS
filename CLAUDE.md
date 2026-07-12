@@ -1,6 +1,6 @@
 # TEST_AGENTS - AI Multi-Agent System
 
-73 agents across 8 teams + 28 skills + 7 MCP servers. Pure Claude Code conversation — no Python orchestrators.
+73 agents across 8 teams + 54 skills (50 top-level + 4 document-skills) + 10 MCP servers. Pure Claude Code conversation — no Python orchestrators. **This table is the single source of truth for roster counts — other docs defer to it.**
 
 | Team | Agents | Orchestrator |
 |------|--------|-------------|
@@ -86,7 +86,7 @@ Full guide: [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES
 
 ## Memory System
 
-Agents auto-read config files at task start: `email_config.json`, `google_drive_config.json`, `brand_voice.json`, `visual_guidelines.json`, `output_paths.json`
+Agents auto-read config files at task start: `output_paths.json` (exists in ALL 8 team memory folders). MARKETING_TEAM agents additionally read `email_config.json`, `google_drive_config.json`, `brand_voice.json`, `visual_guidelines.json` (these 4 exist ONLY in MARKETING_TEAM/memory/ — do not reference them from other teams).
 
 Key rules:
 - Use `tools/upload_to_drive.py` for Drive uploads (MCP broken for binary files)
