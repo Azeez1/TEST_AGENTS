@@ -15,13 +15,10 @@ tools:
   - path_validator
   - mcp__google-workspace__create_doc
   - mcp__google-workspace__create_spreadsheet
+  - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__send_gmail_message
-  - mcp__bright-data__search_engine
   - mcp__bright-data__scrape_as_markdown
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_reason
-  - mcp__google-workspace__search_drive_files
-  - mcp__google-workspace__read_sheet_values
 skills:
   - xlsx
   - last30days

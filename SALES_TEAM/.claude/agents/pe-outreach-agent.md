@@ -14,22 +14,17 @@ tools:
   - path_validator
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__modify_sheet_values
-  - mcp__google-workspace__create_spreadsheet
-  - mcp__google-workspace__search_drive_files
-  - mcp__google-workspace__create_doc
   - mcp__google-workspace__send_gmail_message
   - mcp__perplexity__perplexity_search
-  - mcp__perplexity__perplexity_reason
   - mcp__bright-data__scrape_as_markdown
-  - mcp__claude-in-chrome__navigate
-  - mcp__claude-in-chrome__read_page
-  - mcp__claude-in-chrome__form_input
-  - mcp__claude-in-chrome__computer
-  - mcp__claude-in-chrome__find
-  - mcp__claude-in-chrome__javascript_tool
   - mcp__claude-in-chrome__tabs_context_mcp
   - mcp__claude-in-chrome__tabs_create_mcp
+  - mcp__claude-in-chrome__navigate
+  - mcp__claude-in-chrome__read_page
   - mcp__claude-in-chrome__get_page_text
+  - mcp__claude-in-chrome__find
+  - mcp__claude-in-chrome__form_input
+  - mcp__claude-in-chrome__computer
 skills:
   - xlsx
   - last30days
