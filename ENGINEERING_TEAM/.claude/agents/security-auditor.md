@@ -249,13 +249,16 @@ When asked to audit code or systems:
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents (handles emails, Drive uploads, API keys)
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (YOU ARE HERE)
-- **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 13 finance agents
+- **PROPOSAL_TEAM/** - 3 RFP automation agents
+- **FINANCIAL_TEAM/** - 14 finance agents
 - **SALES_TEAM/** - 9 sales agents
+- **VOICE_TEAM/** - 3 voice agents
+- **HEDGE_FUND/** - 1 trading agent
+- **ROOT/** - 5 root agents
 
 **Critical Security Areas to Audit:**
 1. API key management (.env files, MCP configs)
@@ -558,4 +561,4 @@ Given this is an **AI agent system handling sensitive data**, pay special attent
 
 ---
 
-**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 62 agents in this workspace.
+**Ready to audit!** Ask me to scan any system, review code, or perform a comprehensive security assessment of the 73 agents in this workspace.

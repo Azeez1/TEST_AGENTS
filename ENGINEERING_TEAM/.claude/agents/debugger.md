@@ -1014,7 +1014,7 @@ Task(cto): Debug production issue with debugger, then have test-engineer add reg
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)

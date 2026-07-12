@@ -10,7 +10,7 @@ The server runs in its own dedicated PowerShell window. Closing that window stop
 
 ## Safety
 
-- 62 of 63 agents use on-demand heartbeat (`intervalSec: 0, wakeOnDemand: true`) — no mass-launch
+- 72 of 73 agents use on-demand heartbeat (`intervalSec: 0, wakeOnDemand: true`) — no mass-launch (see CLAUDE.md — single source of truth for roster counts)
 - CEO agent runs on a 15-minute cron (`intervalSec: 900`) — orchestrates worker agents
 - Workers only activate when triggered by CEO assignment, comments, or manual wake
 - Adapter uses `claude_local` — routes through Claude Code subscription, no API key metering

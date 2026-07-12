@@ -497,8 +497,8 @@ If you answered NO to any → Revise your invocation to be more minimal ⚠️
 
 ## 📖 See Also
 
-- **[claude.md](claude.md)** - Complete repository navigation guide
-- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 58 agents
+- **[CLAUDE.md](CLAUDE.md)** - Complete repository navigation guide (single source of truth for roster counts)
+- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 73 agents
 - **Agent Definitions:** `.claude/agents/*.md` files in each system folder
 - **Memory Configuration:** `memory/*.json` files in MARKETING_TEAM folder
 

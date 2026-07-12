@@ -504,13 +504,15 @@ Always provide concrete architecture diagrams, data flow documentation, and migr
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents (stores content, leads, analytics)
 - **QA_TEAM/** - 5 testing agents (test results, coverage data)
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)
-- **PROPOSAL_TEAM/** - 1 RFP automation agent (RFP data, compliance frameworks)
-- **FINANCIAL_TEAM/** - 13 finance agents (deals, valuations, financial data)
+- **PROPOSAL_TEAM/** - 3 RFP automation agents (RFP data, compliance frameworks)
+- **FINANCIAL_TEAM/** - 14 finance agents (deals, valuations, financial data)
 - **SALES_TEAM/** - 9 sales agents (CRM, leads, pipeline data)
-- **ROOT/** - 1 supervisor agent
+- **VOICE_TEAM/** - 3 voice agents
+- **HEDGE_FUND/** - 1 trading agent
+- **ROOT/** - 5 root agents
 
-You have full workspace access to design database schemas for any system. Consider designing a unified analytics database to track performance across all 62 agents, or optimize data storage for the MARKETING_TEAM's content library.
+You have full workspace access to design database schemas for any system. Consider designing a unified analytics database to track performance across all 73 agents, or optimize data storage for the MARKETING_TEAM's content library.

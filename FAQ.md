@@ -256,7 +256,7 @@ Yes, but follow the governance process:
 3. Complete [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)
 4. Register new tool in TOOL_REGISTRY.md
 
-**See:** [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md)
+**See:** [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)*
 
 ---
 
@@ -344,7 +344,7 @@ Use supervisor for:
 - Cross-team coordination verification
 - Quality gate before delivery
 
-**See:** [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md)
+**See:** [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)*
 
 ---
 
@@ -384,7 +384,7 @@ memory/brand_voice.json  # Where is "memory"? Ambiguous!
 - Makes debugging easier
 - Required for workspace validation
 
-**See:** [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md)
+**See:** [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)*
 
 ---
 
@@ -552,7 +552,7 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 - [PROPOSAL_TEAM/README.md](PROPOSAL_TEAM/README.md)
 
 **For governance:**
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Governance map
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance map
 
 ---
 
@@ -579,7 +579,7 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 
 **For now, use:**
 - [claude.md](claude.md) - Navigation hub
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Governance docs
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance docs
 - [GETTING_STARTED.md](GETTING_STARTED.md) - Setup guide
 
 ---
@@ -620,7 +620,7 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 Yes! Follow the agent definition template.
 
 **See:**
-- [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) - Required sections
+- [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* - Required sections
 - [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) - Governance rules
 - Existing agents as templates (editor, supervisor are excellent examples)
 
@@ -666,7 +666,7 @@ Yes, but consider:
 - [GETTING_STARTED.md](GETTING_STARTED.md) - Setup guide
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debugging guide
 - [GLOSSARY.md](GLOSSARY.md) - Terms and definitions
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Governance rules
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance rules
 - [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - Invocation patterns
 

@@ -30,12 +30,12 @@ Complete navigation guide for TEST_AGENTS documentation.
 - [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents explained
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - How to invoke agents
 - [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) - Agent-specific rules
-- [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) - Quality verification system
-- [SUPERVISOR_VERIFICATION_CRITERIA.md](SUPERVISOR_VERIFICATION_CRITERIA.md) - Verification standards
+- [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)* - Quality verification system
+- [SUPERVISOR_VERIFICATION_CRITERIA.md](docs/archive/SUPERVISOR_VERIFICATION_CRITERIA.md) *(archived)* - Verification standards
 
 **System Configuration:**
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Configuration management
-- [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) - File path validation
+- [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* - File path validation
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server configuration
 - [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - API keys and credentials
 
@@ -44,7 +44,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 ### Governance Documentation
 
 **Entry Point:**
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Maps all governance docs
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Maps all governance docs
 
 **The 7 Governance Documents:**
 1. [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Pre-creation checklist
@@ -97,8 +97,8 @@ Complete navigation guide for TEST_AGENTS documentation.
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory file configuration
 
 **System Architecture:**
-- [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) - Supervisor design
-- [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) - Workspace validation
+- [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)* - Supervisor design
+- [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* - Workspace validation
 
 ---
 
@@ -182,8 +182,8 @@ Complete navigation guide for TEST_AGENTS documentation.
 - [editor](MULTI_AGENT_GUIDE.md#editor) - Brand voice QA (MARKETING)
 
 **Learn more:**
-- [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) - How supervisor works
-- [SUPERVISOR_VERIFICATION_CRITERIA.md](SUPERVISOR_VERIFICATION_CRITERIA.md) - Quality standards
+- [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)* - How supervisor works
+- [SUPERVISOR_VERIFICATION_CRITERIA.md](docs/archive/SUPERVISOR_VERIFICATION_CRITERIA.md) *(archived)* - Quality standards
 
 ---
 
@@ -266,7 +266,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 
 **Goal:** Manage and govern TEST_AGENTS
 
-1. [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Governance system
+1. [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance system
 2. [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Current inventory
 3. [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Creation process
 4. [TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md) - Audit process
@@ -347,14 +347,14 @@ TEST_AGENTS/
 - GLOSSARY.md *(planned)*
 
 **Governance & Rules:**
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md)
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)*
 - [TOOL_REGISTRY.md](TOOL_REGISTRY.md)
 - [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)
 
 **Setup & Configuration:**
 - [api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md)
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md)
-- [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md)
+- [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)*
 
 ---
 

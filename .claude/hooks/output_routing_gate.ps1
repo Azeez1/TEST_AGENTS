@@ -33,6 +33,9 @@ $ROOT_ALLOWED = @(
     "MEMORY_ROUTING.md",
     "DOCUMENTATION.md", "FAQ.md", "GETTING_STARTED.md",
     "AGENT_GOVERNANCE_RULES.md", "MEMORY_SYSTEM.md",
+    "TROUBLESHOOTING.md", "PRE_FLIGHT_CHECKS.md",
+    "TOOL_USAGE_POLICY.md", "LLAR_GOVERNANCE.md",
+    "AGENT_INVOCATION_BEST_PRACTICES.md",
     ".gitignore", ".gitattributes",
     "package.json", "pnpm-lock.yaml", "package-lock.json",
     "MEMORY.md", "skills-lock.json"

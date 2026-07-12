@@ -34,7 +34,7 @@ LLAR (Layered Language Agent Reasoning) is a meta-governance framework that prov
 ┌───────────────┐    ┌───────────────┐    ┌───────────────┐
 │ router-agent  │    │     cto       │    │test-orchestr. │
 │  MARKETING    │    │ ENGINEERING   │    │    QA_TEAM    │
-│  (18 agents)  │    │  (14 agents)  │    │  (4 agents)   │
+│  (18 agents)  │    │  (15 agents)  │    │  (5 agents)   │
 │   LLAR 6-11   │    │   LLAR 6-11   │    │   LLAR 6-11   │
 └───────────────┘    └───────────────┘    └───────────────┘
         │                      │                      │
@@ -42,10 +42,12 @@ LLAR (Layered Language Agent Reasoning) is a meta-governance framework that prov
 ┌───────────────┐    ┌───────────────┐    ┌───────────────┐
 │  rfp-agent    │    │  cfo-agent    │    │sales-manager  │
 │   PROPOSAL    │    │  FINANCIAL    │    │  SALES_TEAM   │
-│  (1 agent)    │    │  (9 agents)   │    │  (7 agents)   │
+│  (3 agents)   │    │  (14 agents)  │    │  (9 agents)   │
 │   LLAR 6-11   │    │   LLAR 6-11   │    │   LLAR 6-11   │
 └───────────────┘    └───────────────┘    └───────────────┘
 ```
+
+*(Plus VOICE_TEAM — 3 agents — and HEDGE_FUND — 1 agent, not shown above. See [CLAUDE.md](CLAUDE.md) for the authoritative roster: 73 agents across 8 teams.)*
 
 ---
 
@@ -426,7 +428,7 @@ Specialists do NOT implement LLAR directly:
 - [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Before creating tools
 - [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) - Agent rules
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Memory configuration
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 58 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents
 
 ---
 

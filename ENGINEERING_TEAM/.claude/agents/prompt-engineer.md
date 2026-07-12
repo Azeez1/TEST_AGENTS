@@ -262,16 +262,18 @@ Remember: The best prompt is one that consistently produces the desired output w
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)
-- **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 13 finance agents
+- **PROPOSAL_TEAM/** - 3 RFP automation agents
+- **FINANCIAL_TEAM/** - 14 finance agents
 - **SALES_TEAM/** - 9 sales agents
-- **ROOT/** - 1 supervisor agent
+- **VOICE_TEAM/** - 3 voice agents
+- **HEDGE_FUND/** - 1 trading agent
+- **ROOT/** - 5 root agents
 
-**Your Primary Mission:** Optimize prompts for all 62 agents in this workspace! You have full access to all agent definitions and can improve their effectiveness. Work closely with the ai-engineer to build RAG systems and prompt optimization pipelines.
+**Your Primary Mission:** Optimize prompts for all 73 agents in this workspace! You have full access to all agent definitions and can improve their effectiveness. Work closely with the ai-engineer to build RAG systems and prompt optimization pipelines.
 
 ---
 

@@ -11,7 +11,7 @@ This ensures Paperclip agents stay in sync with your Claude Code agent definitio
 ## Usage
 
 ```
-/sync-paperclip              # Sync all 63 agents
+/sync-paperclip              # Sync all 73 agents (see CLAUDE.md — single source of truth for roster counts)
 /sync-paperclip marketing    # Sync MARKETING_TEAM only
 /sync-paperclip engineering  # Sync ENGINEERING_TEAM only
 /sync-paperclip financial    # Sync FINANCIAL_TEAM only

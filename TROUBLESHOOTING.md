@@ -2,7 +2,7 @@
 
 **Comprehensive debugging guide for the TEST_AGENTS multi-agent system**
 
-This guide helps you diagnose and fix common issues when working with the 39 agents across MARKETING_TEAM, ENGINEERING_TEAM, QA_TEAM, PROPOSAL_TEAM, and the ROOT supervisor.
+This guide helps you diagnose and fix common issues when working with the 73 agents across 8 teams plus ROOT (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts).
 
 ---
 
@@ -301,7 +301,7 @@ config_path = f"{paths['memory']}/brand_voice.json"
 config_path = "memory/brand_voice.json"
 ```
 
-**See:** [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) for complete guide
+**See:** [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* for complete guide
 
 ---
 
@@ -1613,7 +1613,7 @@ ls -la .claude/agents/supervisor.md
 # Should exist at root level (not in team folder)
 ```
 
-**See:** [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) and [SUPERVISOR_AUTO_TRIGGER_SETUP.md](SUPERVISOR_AUTO_TRIGGER_SETUP.md)
+**See:** [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)* and [SUPERVISOR_AUTO_TRIGGER_SETUP.md](docs/archive/SUPERVISOR_AUTO_TRIGGER_SETUP.md) *(archived)*
 
 ---
 
@@ -2005,15 +2005,15 @@ STEP 5: Document decision
 | Issue | Quick Fix | Documentation |
 |-------|-----------|---------------|
 | Agent not found | Check spelling, verify team | [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) |
-| Workspace validation failed | `cd TEST_AGENTS`, verify folders | [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) |
-| File not found | Use absolute paths | [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) |
+| Workspace validation failed | `cd TEST_AGENTS`, verify folders | [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* |
+| File not found | Use absolute paths | [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* |
 | API key missing | Set environment variable, create .env | [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) |
 | MCP not connected | `claude mcp list`, install server | [MCP_SETUP.md](MCP_SETUP.md) |
 | Memory file missing | Create in team/memory/ folder | [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) |
 | Skill not enabled | Check .claude/settings.json | [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md) |
 | Duplicate scripts created | Use minimal invocation, trust agent | [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) |
 | Brand voice not applied | Verify agent reads brand_voice.json | [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) |
-| Supervisor not verifying | Explicitly invoke or configure auto-trigger | [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) |
+| Supervisor not verifying | Explicitly invoke or configure auto-trigger | [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)* |
 
 ---
 
@@ -2026,13 +2026,13 @@ STEP 5: Document decision
 - [claude.md](claude.md) - Repository navigation
 
 **Technical Documentation:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 39 agents
-- [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) - Workspace validation
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents
+- [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* - Workspace validation
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Configuration files
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - Invocation patterns
 
 **Governance:**
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Governance map
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance map
 - [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md) - Priority hierarchy
 - [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Complete tool inventory
 

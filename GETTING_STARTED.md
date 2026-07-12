@@ -188,11 +188,11 @@ Task(supervisor): Verify [deliverable] meets quality standards
 
 **Core Documentation:**
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) - Configuration guide
-- [WORKSPACE_ENFORCEMENT.md](WORKSPACE_ENFORCEMENT.md) - Workspace validation
-- [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) - Quality verification
+- [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* - Workspace validation
+- [SUPERVISOR_ARCHITECTURE.md](docs/archive/SUPERVISOR_ARCHITECTURE.md) *(archived)* - Quality verification
 
 **Governance (For Maintainers):**
-- [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md) - Governance map
+- [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance map
 - [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md) - Tool priority hierarchy
 - [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Complete tool inventory
 - [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Pre-creation checklist
@@ -234,7 +234,7 @@ Task(rfp-agent): Parse this RFP and generate a proposal
 - **Common Questions:** See [FAQ.md](FAQ.md)
 - **Troubleshooting:** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 - **Agent Invocation Issues:** See [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md)
-- **Governance Questions:** See [GOVERNANCE_OVERVIEW.md](GOVERNANCE_OVERVIEW.md)
+- **Governance Questions:** See [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)*
 
 ## Key Reminders
 

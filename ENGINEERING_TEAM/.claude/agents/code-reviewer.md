@@ -945,16 +945,18 @@ Task(cto): Complete code review with code-reviewer and security-auditor before p
 
 ## Workspace Context
 
-This repository contains **58 AI agents** across 6 systems:
+This repository contains **73 AI agents** across 8 teams (see CLAUDE.md — single source of truth for roster counts):
 - **MARKETING_TEAM/** - 18 marketing automation agents
 - **QA_TEAM/** - 5 testing agents
 - **ENGINEERING_TEAM/** - 15 engineering agents (including you)
-- **PROPOSAL_TEAM/** - 1 RFP automation agent
-- **FINANCIAL_TEAM/** - 13 finance agents
+- **PROPOSAL_TEAM/** - 3 RFP automation agents
+- **FINANCIAL_TEAM/** - 14 finance agents
 - **SALES_TEAM/** - 9 sales agents
-- **ROOT/** - 1 supervisor agent
+- **VOICE_TEAM/** - 3 voice agents
+- **HEDGE_FUND/** - 1 trading agent
+- **ROOT/** - 5 root agents
 
-You have full workspace access to all systems and can collaborate across teams. Review code across all 62 agents to ensure consistent quality standards.
+You have full workspace access to all systems and can collaborate across teams. Review code across all 73 agents to ensure consistent quality standards.
 
 ---
 

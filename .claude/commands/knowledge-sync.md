@@ -228,7 +228,7 @@ Automatically updates and maintains workspace documentation including:
 
 ### Updated
 - TOOL_REGISTRY.md: 5 new tools added
-- Agent count: 58 agents across 6 teams
+- Agent count: 73 agents across 8 teams (see CLAUDE.md — single source of truth for roster counts)
 
 ### Fixed
 - Broken links in MULTI_AGENT_GUIDE.md
@@ -476,7 +476,7 @@ Edit `.claude/knowledge-sync-config.json` to customize:
 ✅ KNOWLEDGE SYNC COMPLETE
 
 Summary:
-  • 58 agents documented
+  • 73 agents documented
   • 27 commands documented
   • 20 tools registered
   • 2 links fixed

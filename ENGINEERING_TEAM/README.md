@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, optimization, and analytics. These agents have **full workspace access** and can work with all 62 agents across the 6 teams.
+The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 CTO coordinator) for software engineering, infrastructure, security, AI/ML, design, quality, optimization, and analytics. These agents have **full workspace access** and can work with all 73 agents across the 8 teams (see CLAUDE.md — single source of truth for roster counts).
 
 **CTO Coordinator:**
 - **cto** ⭐ - Chief Technology Officer for strategic coordination of all 14 specialists
@@ -14,14 +14,14 @@ The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 
 - **security-auditor** ⭐ - Code security analysis, vulnerability scanning, compliance audits (unique comprehensive security)
 - **technical-writer** ⭐ - Documentation, PRDs, technical specs, API docs, user guides (broader scope)
 - **system-architect** ⭐ **NEW** - System architecture design, professional flow diagrams with Mermaid.js, interactive visualizations
-- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 62 agents!)
+- **ai-engineer** ⭐ - LLM integration, RAG systems, prompt optimization, agent frameworks (perfect for 73 agents!)
 - **ui-ux-designer** - User research, wireframes, design systems, accessibility, user flows
 - **analytics-dashboard-agent** ⭐ **NEW** - Real-time analytics dashboards, data visualization, multi-source ETL pipelines, client-specific analytics
 
 **Specialist Agents (5 - From aitmpl.com):**
 - **code-reviewer** - Quality, security, maintainability reviews (3.2K community downloads)
 - **test-engineer** - Test automation, quality assurance, CI/CD testing (1.3K downloads)
-- **prompt-engineer** - LLM prompt optimization for all 62 agents (2.4K downloads)
+- **prompt-engineer** - LLM prompt optimization for all 73 agents (2.4K downloads)
 - **database-architect** - Database design, data modeling, scalability (1.2K downloads)
 - **debugger** - Root cause analysis, troubleshooting, error investigation (1.7K downloads)
 
@@ -34,8 +34,8 @@ The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 
 **Using the CTO Coordinator (Recommended for Complex Tasks):**
 ```
 "Use cto to build an AI-powered analytics dashboard"
-"Use cto to deploy all 7 systems to AWS with Kubernetes"
-"Use cto to optimize prompts for all 62 agents"
+"Use cto to deploy all 8 systems to AWS with Kubernetes"
+"Use cto to optimize prompts for all 73 agents"
 "Use cto to conduct a comprehensive security audit"
 "Use cto to troubleshoot the MARKETING_TEAM timeout issues"
 ```
@@ -44,10 +44,10 @@ The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 
 ```
 "Use the devops-engineer to create a complete CI/CD pipeline with GitHub Actions"
 "Use the system-architect to create microservices architecture diagram"
-"Use the ai-engineer to optimize prompts for the 62 agents in this workspace"
+"Use the ai-engineer to optimize prompts for the 73 agents in this workspace"
 "Use the ui-ux-designer to create wireframes for an agent control dashboard"
 "Use the frontend-developer to implement the dashboard in Next.js"
-"Use the backend-architect to design an API for managing all 62 agents"
+"Use the backend-architect to design an API for managing all 73 agents"
 "Use the security-auditor to scan for hardcoded API keys across all systems"
 "Use the technical-writer to write a PRD for agent analytics"
 ```
@@ -93,7 +93,7 @@ The **ENGINEERING_TEAM** contains **15 specialized agents** (14 specialists + 1 
 → Coordinates: devops-engineer (infra) → security-auditor (scan) →
    test-engineer (validation) → technical-writer (docs)
 
-"Use cto to optimize prompts for all 62 agents"
+"Use cto to optimize prompts for all 73 agents"
 → Coordinates: ai-engineer + prompt-engineer (analyze & optimize) →
    technical-writer (document improvements)
 
@@ -149,7 +149,7 @@ RDS PostgreSQL, Redis cache, and Application Load Balancer"
 
 **Example Tasks:**
 ```
-"Use frontend-developer to create a React dashboard component for managing 62 agents
+"Use frontend-developer to create a React dashboard component for managing 73 agents
 with status indicators, filtering, and responsive design"
 
 "Use frontend-developer to build a marketing content gallery with lazy loading
@@ -178,7 +178,7 @@ and infinite scroll"
 
 **Example Tasks:**
 ```
-"Use backend-architect to design a microservices architecture for managing 62 agents
+"Use backend-architect to design a microservices architecture for managing 73 agents
 with API gateway, service mesh, and database per service"
 
 "Use backend-architect to create an API specification for agent task execution
@@ -212,7 +212,7 @@ vulnerabilities and OAuth token security"
 **Outputs:** `outputs/security/audits/`, `outputs/security/scans/`
 
 **Special Focus:**
-- API key management across 62 agents
+- API key management across 73 agents
 - Email security (MARKETING_TEAM Gmail integration)
 - OAuth token security (Google Workspace)
 
@@ -273,7 +273,7 @@ with endpoint descriptions, request/response examples, and authentication detail
 "Use system-architect to create a microservices architecture diagram for the
 MARKETING_TEAM system with API gateway, service mesh, and database interactions"
 
-"Use system-architect to visualize the CI/CD pipeline for deploying all 62 agents
+"Use system-architect to visualize the CI/CD pipeline for deploying all 73 agents
 to AWS with Kubernetes, including security scanning and automated testing"
 
 "Use system-architect to create an ER diagram for the agent analytics database
@@ -298,7 +298,7 @@ showing relationships between agents, executions, and performance metrics"
 - ✅ **Token optimization** - Cost management and monitoring
 
 **Why Perfect for Your Workspace:**
-- You have **59 AI agents** - ai-engineer can help improve them!
+- You have **73 AI agents** - ai-engineer can help improve them!
 - You use **Anthropic Claude** - ai-engineer knows prompt optimization
 - You could build **RAG systems** for agent knowledge
 - Can help with **agent orchestration** frameworks
@@ -399,7 +399,7 @@ color palette, typography, spacing, and component patterns"
 
 **Example Tasks:**
 ```
-"Use test-engineer to create a complete test strategy for the 58-agent workspace"
+"Use test-engineer to create a complete test strategy for the 73-agent workspace"
 "Use test-engineer to build E2E tests for MARKETING_TEAM agent workflows"
 ```
 
@@ -419,7 +419,7 @@ color palette, typography, spacing, and component patterns"
 - ✅ Performance benchmarking
 
 **Why Perfect for This Workspace:**
-- You have **59 AI agents** that all use prompts!
+- You have **73 AI agents** that all use prompts!
 - Can optimize every agent definition for better performance
 - Reduce token usage across all agents
 - Improve output quality and consistency
@@ -446,14 +446,14 @@ color palette, typography, spacing, and component patterns"
 - ✅ Performance monitoring and optimization
 
 **Why Needed:**
-- Design unified analytics database for 62 agents
+- Design unified analytics database for 73 agents
 - Optimize MARKETING_TEAM content storage
 - Track agent performance metrics
 - Store test results and coverage data
 
 **Example Tasks:**
 ```
-"Use database-architect to design an analytics database tracking all 59 agent metrics"
+"Use database-architect to design an analytics database tracking all 73 agent metrics"
 "Use database-architect to create a content management schema for MARKETING_TEAM"
 ```
 
@@ -545,22 +545,24 @@ All ENGINEERING_TEAM agents can access and work with:
 |--------|--------|--------------------------------|
 | **MARKETING_TEAM/** | 18 agents | Deploy, audit security, build dashboards, document APIs, optimize prompts, review code, test workflows, design databases, create analytics dashboards |
 | **QA_TEAM/** | 5 agents | Review test code, containerize, build CI/CD, document testing, debug failures |
-| **PROPOSAL_TEAM/** | 1 agent | RFP automation, compliance matrix, proposal generation |
-| **FINANCIAL_TEAM/** | 13 agents | PE/M&A, valuations, FP&A, accounting, tax planning |
+| **PROPOSAL_TEAM/** | 3 agents | RFP automation, compliance matrix, proposal generation |
+| **FINANCIAL_TEAM/** | 14 agents | PE/M&A, valuations, FP&A, accounting, tax planning |
 | **SALES_TEAM/** | 9 agents | SDR, AE, sales ops, proposals, customer success |
+| **VOICE_TEAM/** | 3 agents | Deploy voice infrastructure, audit webhooks, document call flows |
+| **HEDGE_FUND/** | 1 agent | Review trading tooling, document playbooks |
 | **ENGINEERING_TEAM/** | 15 agents | Self-improvement, documentation, deployment, AI optimization, quality assurance, database design, analytics dashboards |
 
 **Cross-Team Collaboration:**
-- **DevOps** can deploy ANY of the 62 agents
+- **DevOps** can deploy ANY of the 73 agents
 - **AI Engineer** can optimize prompts for ALL agents
-- **Prompt Engineer** can refine all 58 agent definitions
-- **Security Auditor** can scan ALL 6 teams
+- **Prompt Engineer** can refine all 73 agent definitions
+- **Security Auditor** can scan ALL 8 teams
 - **Code Reviewer** ensures quality across ALL codebases
 - **UI/UX Designer** can design dashboards for ALL teams
 - **Frontend Developer** can build UIs for ANY system
 - **Backend Architect** can create APIs for ALL agents
 - **Database Architect** can design unified data layer
-- **Technical Writer** can document ALL 62 agents
+- **Technical Writer** can document ALL 73 agents
 - **Test Engineer** can create test strategies for ALL teams
 - **Debugger** can troubleshoot ANY agent or workflow
 - **Analytics Dashboard Agent** can create dashboards for ANY team's data
@@ -648,7 +650,7 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 
 **With CTO (Single Command - Automated Coordination):**
 ```
-"Use cto to build an AI-powered analytics dashboard for tracking all 62 agents"
+"Use cto to build an AI-powered analytics dashboard for tracking all 73 agents"
 
 → CTO automatically:
   1. Classifies request as "build_feature"
@@ -659,10 +661,10 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
   6. Generates complete documentation
 ```
 
-### 2. Optimize All 59 Agents (AI Engineer + Prompt Engineer Collaboration)
+### 2. Optimize All 73 Agents (AI Engineer + Prompt Engineer Collaboration)
 ```
 "Use ai-engineer and prompt-engineer together to:
-1. Analyze prompts for all 62 agents
+1. Analyze prompts for all 73 agents
 2. Optimize for token reduction (30% target)
 3. Improve structured outputs with JSON mode
 4. Add fallback strategies for API failures
@@ -729,9 +731,9 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 ## 📊 Agent Statistics ⭐ **SUPER TEAM**
 
 **Total Workspace:**
-- **58 AI agents** across 6 teams
-- 18 marketing + 5 QA + 1 proposal + 13 financial + 9 sales + **15 engineering** + 1 supervisor
-- 6 teams working together
+- **73 AI agents** across 8 teams (see CLAUDE.md)
+- 18 marketing + 5 QA + 3 proposal + 14 financial + 9 sales + **15 engineering** + 3 voice + 1 hedge fund + 5 root
+- 8 teams working together
 
 **ENGINEERING_TEAM Agents (15 Total):**
 
@@ -754,9 +756,9 @@ Step 12: "Use debugger to troubleshoot any deployment issues"
 - debugger (1.7K downloads) ← Troubleshooting
 
 **Resources:**
-- Full workspace access to all 62 agents
-- 23 skills available (inherited from workspace)
-- 7 MCP servers (playwright, google-workspace, perplexity, bright-data, n8n-mcp, sequential-thinking, marketing-tools)
+- Full workspace access to all 73 agents
+- 54 skills available (inherited from workspace)
+- 10 MCP servers (see MCP_SETUP.md)
 
 ---
 
@@ -775,7 +777,7 @@ All ENGINEERING_TEAM agents follow these security standards:
 ## 📖 Documentation
 
 - **Main Workspace Docs:** `../claude.md` - Complete repository guide
-- **Multi-Agent Guide:** `../MULTI_AGENT_GUIDE.md` - How to use all 62 agents
+- **Multi-Agent Guide:** `../MULTI_AGENT_GUIDE.md` - How to use all 73 agents
 - **Agent Definitions:** `.claude/agents/` - Individual agent instructions
 
 ---
@@ -789,7 +791,7 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 2. **Optimize All AI Agents**
    ```
-   "Use ai-engineer and prompt-engineer to optimize prompts for all 62 agents"
+   "Use ai-engineer and prompt-engineer to optimize prompts for all 73 agents"
    ```
 
 3. **Build Agent Dashboard**
@@ -799,12 +801,12 @@ All ENGINEERING_TEAM agents follow these security standards:
 
 4. **Create Documentation**
    ```
-   "Use technical-writer to document all 62 agents with PRDs and API specs"
+   "Use technical-writer to document all 73 agents with PRDs and API specs"
    ```
 
 5. **Security & Quality Audit**
    ```
-   "Use security-auditor and code-reviewer to scan and review all 7 teams"
+   "Use security-auditor and code-reviewer to scan and review all 8 teams"
    ```
 
 6. **Comprehensive Testing**

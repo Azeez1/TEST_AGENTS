@@ -363,7 +363,7 @@ Total agent coordination time: 10-20 hours (varies by complexity)
 ## Notes
 
 - This is the most comprehensive command in the workspace
-- Requires coordination across ALL 6 teams
+- Requires coordination across ALL 8 teams
 - Supervisor verification recommended at each phase
 - Can be run in phases (use specific phase commands if preferred)
 - Adjust timeline based on product complexity
