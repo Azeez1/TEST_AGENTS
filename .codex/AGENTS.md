@@ -12,6 +12,7 @@ This directory is generated from Claude-first sources plus Codex-native sources 
 - Use Codex-native tools/connectors first when available.
 - Do not assume Claude MCP tools are callable from Codex.
 - Do not write secrets into generated files. Use `.codex/secrets.local.env` locally.
+- For article, post, thread, PDF, or webpage reading, do not summarize from search snippets or preview cards. Verify full-body access with the source URL/access method, title, first paragraph, last paragraph, and approximate length; state clearly when only preview text is available.
 
 ## Local Slash Commands
 

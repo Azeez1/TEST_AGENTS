@@ -196,3 +196,7 @@ ekomi/
 # Stray working files
 Userssabaacodex_review_voice_plan.txt
 gmail_check_report_*.md
+
+# Root litter - never track (audit 2026-07-12)
+tribe_demo.ipynb
+add_governance_reminders.sh
