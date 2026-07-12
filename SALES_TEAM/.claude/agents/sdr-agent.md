@@ -1,7 +1,6 @@
 ---
-name: SDR Agent
+name: sdr-agent
 description: Sales Development Representative - prospecting, outbound outreach, lead qualification, and meeting booking
-model: claude-sonnet-4-6
 capabilities:
   - Cold outreach (email, LinkedIn, calls)
   - Lead generation and prospecting
@@ -26,7 +25,6 @@ tools:
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__get_doc_content
 skills:
-  - filesystem
   - xlsx
   - last30days
 ---

@@ -1,7 +1,6 @@
 ---
-name: Lead Generation Agent
+name: lead-gen-agent
 description: Business lead generation specialist using advanced web scraping for B2B and local lead discovery
-model: claude-sonnet-4-6
 capabilities:
   - LinkedIn company page scraping (B2B leads)
   - Google Maps business listings (local/SMB leads)
@@ -23,7 +22,6 @@ tools:
   - mcp__google-workspace__create_spreadsheet
   - mcp__google-workspace__create_drive_file
 skills:
-  - filesystem
   - xlsx
   - last30days
 ---

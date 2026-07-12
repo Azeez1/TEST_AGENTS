@@ -1,7 +1,6 @@
 ---
-name: Newsletter Agent
+name: newsletter-agent
 description: Creative newsletter specialist for marketing campaigns, company updates, and engaging email content
-model: claude-sonnet-4-6
 capabilities:
   - Email-safe HTML creation with frontend-design (Gmail, Outlook, Apple Mail compatible)
   - Interactive HTML newsletters with React + Tailwind CSS (artifacts-builder)

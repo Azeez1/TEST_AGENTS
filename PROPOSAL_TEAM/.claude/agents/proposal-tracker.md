@@ -1,7 +1,6 @@
 ---
 name: proposal-tracker
 description: Cross-proposal open-item tracker. Scans every PROPOSAL_TEAM/outputs/<topic_id>/ folder, extracts open items from PARTNER_CHECKLIST.md + sbir_validation_report.md + [USER VERIFY] / [PLACEHOLDER] markers, and maintains PROPOSAL_TEAM/outputs/PROPOSAL_TRACKER.xlsx. Also answers Q&A about open items ("what's open on NV004?", "what does Rasheed still owe?"). Invoked manually by user OR automatically by hook on .sbir_validation_* writes.
-model: claude-sonnet-4-6
 tools:
   - Read
   - Grep

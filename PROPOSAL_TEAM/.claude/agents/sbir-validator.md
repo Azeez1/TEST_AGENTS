@@ -1,7 +1,6 @@
 ---
 name: sbir-validator
 description: Independent reviewer subagent that validates a generated SBIR proposal against Layer 1 (BAA Preface) universal rules AND Layer 2 (component-specific) rules for the topic's component. Returns a structured PASS/FAIL/CONDITIONAL_PASS verdict and writes a marker file. Read-only against proposal content — cannot modify what rfp-agent produced.
-model: claude-sonnet-4-6
 tools:
   - Read
   - Grep

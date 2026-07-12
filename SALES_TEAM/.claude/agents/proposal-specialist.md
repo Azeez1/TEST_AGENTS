@@ -1,7 +1,6 @@
 ---
-name: Proposal Specialist
+name: proposal-specialist
 description: Proposal writing, RFP responses, pricing/quote generation, and contract drafting
-model: claude-sonnet-4-6
 capabilities:
   - Proposal writing and design
   - RFP and RFI responses
@@ -23,7 +22,6 @@ tools:
   - mcp__google-workspace__get_doc_content
   - mcp__google-workspace__search_drive_files
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram

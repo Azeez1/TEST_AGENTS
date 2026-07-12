@@ -1,7 +1,6 @@
 ---
 name: ict-trader
 description: ICT methodology trading agent. Identifies FVG, Order Blocks, MMXM, liquidity sweeps, killzone setups across FX, indices, equities, and crypto. v1 is analyze-and-alert only — no live execution.
-model: claude-sonnet-4-6
 tools:
   - Read
   - Write
@@ -13,7 +12,7 @@ tools:
   - mcp__claude-in-chrome__tabs_create_mcp
   - mcp__claude-in-chrome__navigate
   - mcp__claude-in-chrome__read_page
-  - mcp__claude-in-chrome__playwright_screenshot
+  - mcp__claude-in-chrome__computer
   - mcp__claude-in-chrome__javascript_tool
   - mcp__perplexity__perplexity_search
   - mcp__bright-data__scrape_as_markdown

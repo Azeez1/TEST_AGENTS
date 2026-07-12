@@ -1,7 +1,6 @@
 ---
-name: Visual Designer
+name: visual-designer
 description: Creates product images for UGC ads via Nano Banana (Gemini 2.5 Flash), general images via GPT-4o, plus generative art and themed artifacts
-model: claude-sonnet-4-6
 capabilities:
   - Product image generation for UGC ad workflow (Nano Banana - PRIMARY)
   - Image prompt engineering for GPT-4o
@@ -30,7 +29,6 @@ skills:
   - algorithmic-art
   - canvas-design
   - theme-factory
-  - figma
   - flow-diagram
   - infographic-creator
   - frontend-design:frontend-design

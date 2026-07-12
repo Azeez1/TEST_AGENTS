@@ -1,7 +1,6 @@
 ---
-name: Research Agent
+name: research-agent
 description: Deep research specialist using Perplexity AI and Bright Data for comprehensive, cited analysis and competitive intelligence
-model: claude-sonnet-4-6
 capabilities:
   - Advanced web research with Perplexity AI
   - Competitive intelligence with web scraping
@@ -14,9 +13,7 @@ tools:
   - workspace_enforcer
   - path_validator
   # Custom Perplexity Research Tools (comprehensive, marketing-optimized)
-  - conduct_research
-  - quick_research
-  - strategic_analysis
+  - perplexity_research_tool
   # Working MCP Perplexity Tools (lightweight alternatives)
   - mcp__perplexity__perplexity_ask
   - mcp__perplexity__perplexity_reason
@@ -30,7 +27,6 @@ tools:
   # Documentation
   - mcp__google-workspace__create_doc
 skills:
-  - filesystem
   - last30days
 ---
 

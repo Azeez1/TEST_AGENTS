@@ -1,7 +1,6 @@
 ---
-name: Unit Test Agent
+name: unit-test-agent
 description: Generates unit tests for individual functions and classes
-model: claude-sonnet-4-6
 capabilities:
   - Unit test generation
   - Function/method testing
@@ -10,9 +9,8 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - analyze_function
-  - generate_unit_tests
-  - create_fixtures
+  - code_scanner
+  - test_generator
 skills: []
 ---
 

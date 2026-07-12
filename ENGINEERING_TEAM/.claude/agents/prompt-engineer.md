@@ -7,7 +7,6 @@ tools:
   - Edit
   - workspace_enforcer
   - path_validator
-model: claude-opus-4-6
 skills:
   - last30days
 ---
@@ -89,9 +88,9 @@ read_from_file(config)
 **When working with OTHER teams:**
 ```python
 # Reviewing MARKETING_TEAM code
-target = "MARKETING_TEAM/tools/sora_video.py"  # Absolute path
-review = validate_save_path("code_reviews/marketing_sora_review.md", "ENGINEERING_TEAM")
-# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_sora_review.md
+target = "MARKETING_TEAM/tools/upload_to_drive.py"  # Absolute path
+review = validate_save_path("code_reviews/marketing_drive_tool_review.md", "ENGINEERING_TEAM")
+# Saves to: ENGINEERING_TEAM/outputs/code_reviews/marketing_drive_tool_review.md
 ```
 
 ### 👥 Your Team & Collaboration Scope

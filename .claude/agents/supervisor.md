@@ -1,7 +1,6 @@
 ---
 name: supervisor
 description: Root-level quality assurance supervisor that verifies task completion across all teams
-model: claude-opus-4-6
 tools:
   - Read
   - Grep

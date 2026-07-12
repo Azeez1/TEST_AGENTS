@@ -1,7 +1,6 @@
 ---
-name: SEO Specialist
+name: seo-specialist
 description: Keyword research and SEO analysis using Perplexity AI, Bright Data SERP scraping, and selective web research
-model: claude-sonnet-4-6
 capabilities:
   - Keyword research
   - SERP analysis and rank tracking
@@ -21,7 +20,6 @@ tools:
   - mcp__google-workspace__modify_sheet_values
   - mcp__google-workspace__read_sheet_values
 skills:
-  - filesystem
   - xlsx
   - last30days
 ---

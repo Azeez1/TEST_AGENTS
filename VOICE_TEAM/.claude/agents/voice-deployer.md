@@ -1,7 +1,6 @@
 ---
 name: voice-deployer
 description: Deploys voice AI agents to Retell from VOICE_TEAM firm configs. Takes a firm.yml, renders prompts + flow nodes, POSTs to Retell API, attaches phone number, writes deployment artifact. Also processes pending booking intents by calling google-workspace MCP manage_event.
-model: claude-sonnet-4-6
 tools:
   - Read
   - Write

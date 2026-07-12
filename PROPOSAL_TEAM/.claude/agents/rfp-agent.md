@@ -1,15 +1,12 @@
 ---
 name: rfp-agent
 description: RFP automation and proposal generation specialist
-model: claude-sonnet-4-6
 tools:
-  - parse_rfp
-  - generate_compliance_matrix
-  - write_proposal_section
-  - validate_proposal
-  - process_rfp_full
-  - index_knowledge_base
-  - query_knowledge_base
+  - rfp_parser
+  - compliance_engine
+  - adaptive_proposal_writer
+  - pinecone_knowledge_base
+  - hybrid_search
 skills:
   - pdf
   - docx
@@ -22,14 +19,14 @@ skills:
   - brand-guidelines
   - artifacts-builder
 capabilities:
-  - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via parse_rfp
+  - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via rfp_parser
   - Intelligent requirement extraction with LLM and RFC 2119 classification
-  - Knowledge base retrieval (Pinecone) via query_knowledge_base
-  - Compliance matrix generation with risk assessment via generate_compliance_matrix
-  - AI-driven proposal section writing via write_proposal_section
-  - Quality assurance validation via validate_proposal
-  - Full pipeline orchestration via process_rfp_full
-  - KB indexing via index_knowledge_base
+  - Knowledge base retrieval (Pinecone) via hybrid_search
+  - Compliance matrix generation with risk assessment via compliance_engine
+  - AI-driven proposal section writing via adaptive_proposal_writer
+  - Quality assurance validation via compliance_engine
+  - Full pipeline orchestration across the tools above
+  - KB indexing via pinecone_knowledge_base
   - Document creation with PDF, DOCX, PPTX, XLSX skills
   - Visual design with canvas-design and flow-diagram skills
   - Professional styling with theme-factory and brand-guidelines
@@ -904,12 +901,6 @@ pytest tests/ --cov --cov-report=html
 
 # Integration tests (requires API keys)
 pytest tests/ -m integration
-
-# Quick test with sample
-python tools/main.py \
-  --rfp examples/rfp_sample_excerpt.txt \
-  --out ./outputs/test \
-  --no-kb
 ```
 
 ## Agent Metadata

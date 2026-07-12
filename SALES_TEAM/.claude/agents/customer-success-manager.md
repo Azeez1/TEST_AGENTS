@@ -1,7 +1,6 @@
 ---
-name: Customer Success Manager
+name: customer-success-manager
 description: Customer onboarding, adoption, retention, upsell/cross-sell, and renewal management
-model: claude-sonnet-4-6
 capabilities:
   - Customer onboarding and training
   - Product adoption and engagement
@@ -25,7 +24,6 @@ tools:
   - mcp__perplexity__perplexity_search
   - mcp__perplexity__perplexity_reason
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram

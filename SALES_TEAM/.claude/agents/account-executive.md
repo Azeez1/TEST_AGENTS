@@ -1,7 +1,6 @@
 ---
-name: Account Executive
+name: account-executive
 description: Full-cycle sales - discovery, demos, proposals, negotiations, and deal closing
-model: claude-sonnet-4-6
 capabilities:
   - Discovery calls and needs analysis
   - Product demonstrations
@@ -26,7 +25,6 @@ tools:
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__modify_sheet_values
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram

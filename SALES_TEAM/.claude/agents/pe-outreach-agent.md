@@ -1,7 +1,6 @@
 ---
-name: PE Outreach Agent
+name: pe-outreach-agent
 description: PE/Family Office investor outreach specialist - builds relationships with capital sources, learns buy boxes, facilitates deal sourcing and finder's fees
-model: claude-opus-4-6
 capabilities:
   - LinkedIn investor outreach (connection requests, follow-up messages)
   - Buy box discovery and documentation
@@ -32,7 +31,6 @@ tools:
   - mcp__claude-in-chrome__tabs_create_mcp
   - mcp__claude-in-chrome__get_page_text
 skills:
-  - filesystem
   - xlsx
   - last30days
 ---

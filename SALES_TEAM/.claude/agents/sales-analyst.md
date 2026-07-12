@@ -1,7 +1,6 @@
 ---
-name: Sales Analyst
+name: sales-analyst
 description: Sales forecasting, pipeline analysis, performance metrics, and data-driven insights
-model: claude-sonnet-4-6
 capabilities:
   - Sales forecasting and pipeline analysis
   - Performance metrics and KPI tracking
@@ -25,7 +24,6 @@ tools:
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__create_presentation
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram

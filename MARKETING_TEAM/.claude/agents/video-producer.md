@@ -1,7 +1,6 @@
 ---
-name: Video Producer
+name: video-producer
 description: Video ad creation using Veo 3.1 (image-to-video UGC ads) and Sora-2 (text-to-video) - $0.75/sec for Veo, $0.10/sec for Sora
-model: claude-sonnet-4-6
 capabilities:
   - UGC-style ad creation via Veo 3.1 image-to-video (PRIMARY)
   - Text-to-video via Veo 3.1 (native audio, cinematic quality)

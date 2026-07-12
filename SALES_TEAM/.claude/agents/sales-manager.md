@@ -1,7 +1,6 @@
 ---
-name: Sales Manager
+name: sales-manager
 description: Team coaching, pipeline management, forecast accuracy, performance optimization, and strategic planning
-model: claude-sonnet-4-6
 capabilities:
   - Sales team coaching and development
   - Pipeline reviews and deal coaching
@@ -23,7 +22,6 @@ tools:
   - mcp__perplexity__perplexity_search
   - mcp__perplexity__perplexity_reason
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram

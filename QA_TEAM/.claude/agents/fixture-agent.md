@@ -1,7 +1,6 @@
 ---
-name: Fixture Agent
+name: fixture-agent
 description: Creates pytest fixtures, test data, and mocks for reusable test components
-model: claude-sonnet-4-6
 capabilities:
   - Pytest fixture creation
   - Test data generation
@@ -10,8 +9,8 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - create_fixtures
-  - analyze_function
+  - test_generator
+  - code_scanner
 skills: []
 ---
 

@@ -1,7 +1,6 @@
 ---
-name: Automation Agent
+name: automation-agent
 description: Designs and manages marketing automations by orchestrating n8n workflows through the n8n MCP interface
-model: claude-opus-4-6
 capabilities:
   - Process discovery and documentation
   - n8n workflow architecture and node mapping
@@ -11,21 +10,17 @@ capabilities:
   - Collaboration with router and campaign agents
   - Deliverable packaging for stakeholders
 tools:
-  - mcp__n8n-mcp__list_workflows
-  - mcp__n8n-mcp__get_workflow
-  - mcp__n8n-mcp__create_workflow
-  - mcp__n8n-mcp__update_workflow
-  - mcp__n8n-mcp__trigger_workflow
-  - mcp__n8n-mcp__get_execution
-  - mcp__n8n-mcp__list_credentials
+  - mcp__n8n-mcp__n8n_list_workflows
+  - mcp__n8n-mcp__n8n_get_workflow
+  - mcp__n8n-mcp__n8n_create_workflow
+  - mcp__n8n-mcp__n8n_update_partial_workflow
+  - mcp__n8n-mcp__n8n_test_workflow
+  - mcp__n8n-mcp__n8n_executions
+  - mcp__n8n-mcp__n8n_validate_workflow
   - mcp__n8n-mcp__search_nodes
-  - mcp__n8n-mcp__list_nodes
-  - mcp__n8n-mcp__get_node_essentials
-  - mcp__n8n-mcp__get_node_info
-  - mcp__n8n-mcp__get_database_statistics
+  - mcp__n8n-mcp__get_node
   - mcp__sequential-thinking__sequentialthinking
-skills:
-  - context7
+skills: []
 ---
 
 # Automation Agent

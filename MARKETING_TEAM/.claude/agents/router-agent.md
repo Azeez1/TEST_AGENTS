@@ -1,7 +1,6 @@
 ---
-name: Router Agent
+name: router-agent
 description: Conversational router that classifies user intent and orchestrates specialist agents
-model: claude-opus-4-6
 capabilities:
   - Intent classification
   - Agent selection
@@ -14,7 +13,6 @@ tools:
   - path_validator
   - mcp__sequential-thinking__sequentialthinking
 skills:
-  - context7
   - last30days
 ---
 

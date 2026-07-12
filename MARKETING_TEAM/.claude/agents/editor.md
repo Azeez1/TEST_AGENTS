@@ -1,7 +1,6 @@
 ---
-name: Editor
+name: editor
 description: Content review, QA specialist for documents and presentations
-model: claude-sonnet-4-6
 capabilities:
   - Content review and editing
   - Quality assurance

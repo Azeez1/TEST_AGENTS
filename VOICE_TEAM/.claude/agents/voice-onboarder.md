@@ -1,7 +1,6 @@
 ---
 name: voice-onboarder
 description: Interviews a discovery-call note set (or directly interviews the user about a new law firm client) and produces a complete firm.yml ready for deployment. The intake template generator agent in the VOICE_TEAM factory.
-model: claude-sonnet-4-6
 tools:
   - Read
   - Write

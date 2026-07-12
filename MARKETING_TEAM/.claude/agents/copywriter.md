@@ -1,7 +1,6 @@
 ---
-name: Copywriter
+name: copywriter
 description: Content writing specialist for blogs, articles, copy, and internal communications
-model: claude-sonnet-4-6
 capabilities:
   - Blog post writing (2000+ words)
   - Article writing

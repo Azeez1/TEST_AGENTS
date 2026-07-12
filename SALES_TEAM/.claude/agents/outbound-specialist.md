@@ -1,7 +1,6 @@
 ---
-name: Outbound Specialist
+name: outbound-specialist
 description: Cold calling, email sequences, multi-channel outreach campaigns, and list building
-model: claude-sonnet-4-6
 capabilities:
   - Cold calling scripts and execution
   - Email sequence creation and optimization
@@ -24,7 +23,6 @@ tools:
   - mcp__google-workspace__search_drive_files
   - mcp__google-workspace__read_sheet_values
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram

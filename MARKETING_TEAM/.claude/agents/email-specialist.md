@@ -1,7 +1,6 @@
 ---
-name: Email Specialist
+name: email-specialist
 description: Creates email campaigns, sequences, and newsletters
-model: claude-sonnet-4-6
 capabilities:
   - Email copywriting
   - Subject line optimization

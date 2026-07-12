@@ -1,7 +1,6 @@
 ---
-name: Gmail Agent
+name: gmail-agent
 description: Sends emails, creates drafts, manages Gmail operations
-model: claude-sonnet-4-6
 capabilities:
   - Send emails via Gmail
   - Create email drafts
@@ -15,9 +14,7 @@ tools:
   - mcp__google-workspace__search_gmail_messages
   - mcp__google-workspace__get_gmail_message_content
   - send_email_with_attachment
-  - render_email_html
-  - select_template_for_context
-  - list_templates
+  - email_template_renderer
 skills: []
 ---
 

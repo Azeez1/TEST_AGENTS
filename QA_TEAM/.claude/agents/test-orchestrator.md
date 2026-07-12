@@ -1,7 +1,6 @@
 ---
-name: Test Orchestrator
+name: test-orchestrator
 description: Main testing agent that coordinates test generation and execution
-model: claude-sonnet-4-6
 capabilities:
   - Code analysis and scanning
   - Test strategy planning
@@ -10,12 +9,9 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - scan_codebase
-  - analyze_coverage
-  - run_tests
-  - classify_test_intent
-  - list_test_agents
-  - extract_target_path
+  - code_scanner
+  - coverage_analyzer
+  - qa_router_tools
   - Task
 skills: []
 ---

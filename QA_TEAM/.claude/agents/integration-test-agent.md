@@ -1,7 +1,6 @@
 ---
-name: Integration Test Agent
+name: integration-test-agent
 description: Creates integration tests for module interactions and workflows
-model: claude-sonnet-4-6
 capabilities:
   - Integration test generation
   - Workflow testing
@@ -10,8 +9,8 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - scan_codebase
-  - generate_integration_tests
+  - code_scanner
+  - test_generator
 skills: []
 ---
 

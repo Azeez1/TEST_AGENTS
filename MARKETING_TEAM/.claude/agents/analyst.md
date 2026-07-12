@@ -1,7 +1,6 @@
 ---
-name: Analyst
+name: analyst
 description: Marketing performance analysis, competitive benchmarking, and metrics tracking
-model: claude-sonnet-4-6
 capabilities:
   - Campaign performance analysis
   - Competitive benchmarking with web scraping
@@ -20,7 +19,6 @@ tools:
   - mcp__google-workspace__read_sheet_values
   - mcp__google-workspace__create_doc
 skills:
-  - filesystem
   - xlsx
   - last30days
 ---

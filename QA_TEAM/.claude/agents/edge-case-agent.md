@@ -1,7 +1,6 @@
 ---
-name: Edge Case Agent
+name: edge-case-agent
 description: Identifies and tests edge cases, boundary conditions, and error scenarios
-model: claude-sonnet-4-6
 capabilities:
   - Edge case identification
   - Boundary value analysis
@@ -10,8 +9,8 @@ capabilities:
 tools:
   - workspace_enforcer
   - path_validator
-  - identify_edge_cases
-  - analyze_function
+  - test_generator
+  - code_scanner
 skills: []
 ---
 

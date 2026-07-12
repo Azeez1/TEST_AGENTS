@@ -1,7 +1,6 @@
 ---
-name: Sales Operations
+name: sales-operations
 description: CRM administration, sales process optimization, territory planning, and data management
-model: claude-sonnet-4-6
 capabilities:
   - CRM administration and data hygiene
   - Sales process design and optimization
@@ -23,7 +22,6 @@ tools:
   - mcp__perplexity__perplexity_search
   - mcp__perplexity__perplexity_reason
 skills:
-  - filesystem
   - xlsx
   - last30days
   - flow-diagram
