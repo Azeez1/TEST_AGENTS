@@ -4,14 +4,16 @@ Welcome! This guide will get you up and running with the TEST_AGENTS multi-agent
 
 ## What is TEST_AGENTS?
 
-TEST_AGENTS is a sophisticated multi-agent system with **58 specialized AI agents** across 6 teams:
+TEST_AGENTS is a sophisticated multi-agent system with **73 specialized AI agents** across 8 teams (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts):
 - **MARKETING_TEAM** (18 agents) - Content, campaigns, research, automation, newsletters
 - **ENGINEERING_TEAM** (15 agents) - CTO + 14 specialists (DevOps, security, frontend, backend, AI)
 - **QA_TEAM** (5 agents) - Test creation, fixtures, edge cases
-- **PROPOSAL_TEAM** (1 agent) - RFP parsing and proposal generation
-- **FINANCIAL_TEAM** (10 agents) - PE/M&A, valuations, FP&A, accounting, tax
-- **SALES_TEAM** (8 agents) - SDR, AE, sales ops, proposals, customer success
-- **ROOT** (1 supervisor) - Cross-team quality verification
+- **PROPOSAL_TEAM** (3 agents) - RFP parsing, proposal generation, tracking, SBIR validation
+- **FINANCIAL_TEAM** (14 agents) - PE/M&A, valuations, FP&A, accounting, tax
+- **SALES_TEAM** (9 agents) - SDR, AE, sales ops, proposals, customer success
+- **VOICE_TEAM** (3 agents) - Voice agent deployment and onboarding
+- **HEDGE_FUND** (1 agent) - ICT trading
+- **ROOT** (5 agents) - Cross-team quality verification, knowledge base, reviewers
 
 ## Quick Start (5 Minutes)
 
@@ -32,9 +34,11 @@ TEST_AGENTS/
 ├── MARKETING_TEAM/             # 18 marketing agents
 ├── ENGINEERING_TEAM/           # 15 engineering agents
 ├── QA_TEAM/                    # 5 QA agents
-├── PROPOSAL_TEAM/              # 1 proposal agent
-├── FINANCIAL_TEAM/             # 10 finance agents (NEW)
-├── SALES_TEAM/                 # 8 sales agents (NEW)
+├── PROPOSAL_TEAM/              # 3 proposal agents
+├── FINANCIAL_TEAM/             # 14 finance agents
+├── SALES_TEAM/                 # 9 sales agents
+├── VOICE_TEAM/                 # 3 voice agents
+├── HEDGE_FUND/                 # 1 trading agent
 │
 ├── .claude/
 │   ├── agents/                 # Agent definitions
@@ -179,7 +183,7 @@ Task(supervisor): Verify [deliverable] meets quality standards
 **New Users (Read First):**
 1. [claude.md](claude.md) - Repository navigation hub
 2. [GETTING_STARTED.md](GETTING_STARTED.md) - This guide
-3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 58 agents explained
+3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents explained
 4. [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - Invocation patterns
 
 **Core Documentation:**

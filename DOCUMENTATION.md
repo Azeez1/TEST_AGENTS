@@ -7,7 +7,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 **First-time setup (5 minutes):**
 1. [GETTING_STARTED.md](GETTING_STARTED.md) - Quick start guide
 2. [MARKETING_TEAM/docs/getting-started/api-setup.md](MARKETING_TEAM/docs/getting-started/api-setup.md) - Configure API keys (if needed)
-3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Browse all 58 agents
+3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Browse all 73 agents across 8 teams (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts)
 
 **Learn the basics:**
 - [claude.md](claude.md) - Repository navigation hub
@@ -27,7 +27,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 - [CHANGELOG.md](CHANGELOG.md) - Version history
 
 **Agent System:**
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 58 agents explained
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents explained
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - How to invoke agents
 - [AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md) - Agent-specific rules
 - [SUPERVISOR_ARCHITECTURE.md](SUPERVISOR_ARCHITECTURE.md) - Quality verification system

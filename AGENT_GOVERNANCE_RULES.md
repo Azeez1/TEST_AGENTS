@@ -1,7 +1,7 @@
 # AGENT GOVERNANCE RULES
 
 **Last Updated:** 2025-11-26
-**Applies To:** All 58 agents across 6 teams (MARKETING, ENGINEERING, QA, PROPOSAL, FINANCIAL, SALES)
+**Applies To:** All 73 agents across 8 teams (MARKETING, ENGINEERING, QA, PROPOSAL, FINANCIAL, SALES, VOICE, HEDGE_FUND — see [CLAUDE.md](CLAUDE.md), single source of truth for roster counts)
 **Enforced By:** CTO agent + security-auditor (quarterly audits)
 
 ---

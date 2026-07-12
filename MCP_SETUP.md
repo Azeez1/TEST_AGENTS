@@ -173,4 +173,4 @@ success, stories, msg = await agent.generate_from_notes(
 
 For more details, see:
 - [.mcp.json](.mcp.json) - MCP configuration
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 58 agents with browser capabilities
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents with browser capabilities

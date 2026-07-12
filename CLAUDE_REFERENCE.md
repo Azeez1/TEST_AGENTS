@@ -10,7 +10,7 @@ Detailed reference material for the TEST_AGENTS repository. This file is NOT loa
 TEST_AGENTS/
 ├── claude.md                          ← Lean behavioral directives (loaded every turn)
 ├── CLAUDE_REFERENCE.md                ← THIS FILE (read on demand)
-├── MULTI_AGENT_GUIDE.md               ← Master guide for all 64 agents
+├── MULTI_AGENT_GUIDE.md               ← Master guide for all 73 agents
 ├── AGENT_INVOCATION_BEST_PRACTICES.md
 ├── MEMORY_SYSTEM.md
 ├── MCP_SETUP.md
@@ -135,7 +135,7 @@ Full setup: [MCP_SETUP.md](MCP_SETUP.md)
 
 ## Documentation Map
 
-- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) — Master guide for all 64 agents
+- [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) — Master guide for all 73 agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) — Invocation patterns
 - [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) — Memory config, Drive/email strategies
 - [TOOL_REGISTRY.md](TOOL_REGISTRY.md) — Complete tool inventory

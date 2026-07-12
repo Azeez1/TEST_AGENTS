@@ -31,7 +31,7 @@ asked.
 
 ## Project Overview
 
-This is a **62-agent multi-team AI system** built on the Claude Agent SDK, organized into 6 autonomous teams plus a root supervisor. Codex also has a Codex-native `CODEX_TEAM` for maintaining the local Codex sidecar. The Claude system is orchestrated through Claude Code — no Python orchestrators.
+This is a **73-agent multi-team AI system** built on the Claude Agent SDK, organized into 8 autonomous teams plus 5 root-level agents (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts). Codex also has a Codex-native `CODEX_TEAM` for maintaining the local Codex sidecar. The Claude system is orchestrated through Claude Code — no Python orchestrators.
 
 **Owner:** Dux Machina (duxmachina.com) — Hybrid AI consultancy
 **Primary operator:** Azeez (@EZdaArchitect)
@@ -42,7 +42,7 @@ This is a **62-agent multi-team AI system** built on the Claude Agent SDK, organ
 TEST_AGENTS/
 ├── CLAUDE.md                    ← Claude Code instructions (parallel to this file)
 ├── AGENTS.md                    ← YOU ARE HERE (Codex instructions)
-├── .claude/agents/              ← 1 root supervisor agent
+├── .claude/agents/              ← 5 root-level agents (supervisor, oracle, reviewers, validator)
 │
 ├── MARKETING_TEAM/              ← 18 agents (content, social, images, video, email, lead gen)
 │   ├── .claude/agents/          ← Agent definitions (YAML frontmatter + markdown)
@@ -60,18 +60,21 @@ TEST_AGENTS/
 │   ├── .claude/agents/          ← Unit test, integration, edge case, fixture agents
 │   └── tools/                   ← Test generation, coverage analysis
 │
-├── PROPOSAL_TEAM/               ← 1 agent (RFP automation)
+├── PROPOSAL_TEAM/               ← 3 agents (RFP automation)
 │   ├── .claude/agents/          ← rfp-agent (7-stage pipeline, 30+ compliance frameworks)
 │   ├── dux_rfp_agent/           ← Core Python package
 │   └── kb/                      ← Pinecone knowledge base
 │
-├── FINANCIAL_TEAM/              ← 13 agents (PE/M&A + general finance)
+├── FINANCIAL_TEAM/              ← 14 agents (PE/M&A + general finance)
 │   ├── .claude/agents/          ← Deal analyst, valuation, FP&A, CFO, tax, treasury, etc.
 │   └── memory/                  ← Financial assumptions, historical data
 │
 ├── SALES_TEAM/                  ← 9 agents (full sales lifecycle)
 │   ├── .claude/agents/          ← SDR, AE, sales ops, proposals, CSM, analytics, outreach
 │   └── memory/                  ← CRM configs, templates, target lists
+│
+├── VOICE_TEAM/                  ← 3 agents (voice agent deployment + onboarding)
+├── HEDGE_FUND/                  ← 1 agent (ICT trading)
 │
 ├── tools/                       ← Shared production tools (Python)
 ├── scripts/                     ← One-off utilities and test scripts
@@ -107,10 +110,14 @@ skills:
 
 **Important:** The `tools:` and `skills:` in YAML frontmatter are **Claude Code runtime bindings**. When Codex reads these files, treat them as documentation of what the agent can do — not as executable tool declarations.
 
-## Team Roster (62 Claude Agents + 6 Codex-Native Agents)
+## Team Roster (73 Claude Agents + 6 Codex-Native Agents)
 
-### ROOT (1)
+### ROOT (5)
 - **supervisor** — Cross-team quality assurance, conflict resolution
+- **oracle** — Personal knowledge base (Obsidian wiki) manager
+- **linkedin-brand-reviewer** — Scores LinkedIn drafts against brand voice rules
+- **pe-diagnosis-validator** — Validates PE diagnosis PDFs before send
+- **pe-diagnosis-visual-reviewer** — Scores PE diagnoses against visual quality bar
 
 ### MARKETING_TEAM (18)
 - **router-agent** — Campaign orchestrator, delegates to specialists
@@ -156,10 +163,12 @@ skills:
 - **edge-case-agent** — Edge case identification and testing
 - **fixture-agent** — Test fixtures and mock data
 
-### PROPOSAL_TEAM (1)
+### PROPOSAL_TEAM (3)
 - **rfp-agent** — 7-stage RFP pipeline, 30+ compliance frameworks
+- **proposal-tracker** — Proposal pipeline and deadline tracking
+- **sbir-validator** — SBIR/STTR compliance validation
 
-### FINANCIAL_TEAM (13)
+### FINANCIAL_TEAM (14)
 - **cfo-agent** — Financial strategy orchestrator
 - **deal-analyst** — PE/M&A deal analysis
 - **valuation-agent** — Business valuations, DCF models
@@ -173,6 +182,7 @@ skills:
 - **treasury-agent** — Cash management, liquidity
 - **financial-data-analyst** — Data analysis, visualization
 - **investor-relations-agent** — IR communications, reporting
+- **trading-optimizer** — ICT strategy optimization, Pine Script, backtesting
 
 ### SALES_TEAM (9)
 - **sales-manager** — Sales team orchestrator
@@ -184,6 +194,14 @@ skills:
 - **customer-success-manager** — Client retention, upsells
 - **outbound-specialist** — Cold outreach, sequences
 - **pe-outreach-agent** — PE investor outreach campaigns
+
+### VOICE_TEAM (3)
+- **voice-deployer** — Voice agent deployment
+- **voice-onboarder** — Voice agent onboarding flows
+- **voice-email-validator** — Email validation for voice workflows
+
+### HEDGE_FUND (1)
+- **ict-trader** — ICT trading strategy execution and journaling
 
 ### CODEX_TEAM (6, Codex-native)
 - **codex-team-manager** — Codex sidecar orchestrator and L1-L13 roadmap owner
@@ -214,6 +232,14 @@ skills:
 - Custom Python tools are in `tools/` folders
 - Check `memory/` folders for configuration context (brand voice, email settings, etc.)
 
+### Source Reading Completeness
+- When asked to read, summarize, analyze, extract, or transform an article, X post/article/thread, newsletter, PDF, webpage, or other long-form source, do not rely on search snippets, link previews, cards, SERP excerpts, or partial preview text.
+- Use the most complete source available: X MCP/API, authenticated browser, canonical publisher page, PDF/text extractor, or user-provided full text.
+- Before presenting analysis, verify full-body access by checking the source URL/access method, title, author/date when available, first paragraph, last paragraph, visible headings, and approximate paragraph or word count.
+- If only preview/snippet content is available, explicitly say: "I only have preview text, not the full article."
+- Do not claim to have read the full article unless the body text was available beyond the preview and passed the completeness check.
+- Respect copyright limits: summarize, outline, or quote only short excerpts unless the user provided the text or the content is otherwise safe to reproduce.
+
 ### Testing
 - Run `pytest tests/ --cov` for test validation
 - QA_TEAM agents generate pytest test suites
@@ -224,7 +250,7 @@ skills:
 - `email_config.json` — Email addresses for Gmail operations
 - `google_drive_config.json` — Drive folder IDs for uploads
 - `visual_guidelines.json` — Brand colors and design standards
-- `output_paths.json` — Canonical output directory paths (all 6 teams)
+- `output_paths.json` — Canonical output directory paths (all 8 teams)
 
 ## External Integrations
 

@@ -1,14 +1,14 @@
 # TOOL REGISTRY - Single Source of Truth
 
-**Last Updated:** 2026-02-20
-**Total Inventory:** 35 custom tools + 7 MCP servers + 23 skills
+**Last Updated:** 2026-07-12
+**Total Inventory:** 35 custom tools + 10 MCP servers + 54 skills (see CLAUDE.md — single source of truth for counts)
 **Maintained by:** Engineering Team (security-auditor + technical-writer)
 
 ---
 
 ## 📋 Overview
 
-This registry documents ALL tools, MCP servers, and skills available to the 59 agents across 6 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
+This registry documents ALL tools, MCP servers, and skills available to the 73 agents across 8 teams. Before creating a new tool, **CHECK THIS REGISTRY FIRST**.
 
 **Priority Hierarchy:** MCP Servers → Skills → Custom Tools → Create New Tool (last resort)
 
@@ -18,12 +18,12 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 
 | Capability | Skill | MCP Tool | Custom Tool | Priority Order | Agents Using | Status |
 |------------|-------|----------|-------------|----------------|--------------|--------|
-| **AI Image Generation (General)** | N/A | `mcp__marketing-tools__generate_gpt4o_image` | `openai_gpt4o_image.py` | 1. MCP → 2. Custom Tool | visual-designer | ✅ Active |
+| **AI Image Generation (General)** | N/A | `mcp__marketing-tools__generate_gpt4o_image` | ~~openai_gpt4o_image.py~~ (retired) | 1. MCP only | visual-designer | ✅ Active |
 | **AI Image Generation (UGC)** | N/A | `mcp__marketing-tools__generate_nano_banana_image` | N/A | 1. MCP only (Gemini 2.5 Flash Image) | visual-designer (PRIMARY for UGC) | ✅ Active |
 | **Image Analysis (UGC Consistency)** ⭐ **NEW** | N/A | `mcp__marketing-tools__analyze_ugc_image` | N/A | 1. MCP only (GPT-4o Vision) | visual-designer, video-producer | ✅ Active |
 | **Design-Focused Graphics** | `canvas-design` (50+ fonts, PNG/PDF) | N/A | N/A | 1. Skill only | visual-designer (PRIMARY), pdf-specialist, social-media-manager, presentation-designer | ✅ Active |
 | **Algorithmic Art** | `algorithmic-art` (p5.js, generative) | N/A | N/A | 1. Skill only | visual-designer, social-media-manager | ✅ Active |
-| **Video Generation (General + UGC)** | N/A | `mcp__marketing-tools__generate_sora_video` | `sora_video.py` | 1. MCP → 2. Custom Tool (multi-clip stitching) | video-producer (PRIMARY for UGC + general) | ✅ Active |
+| **Video Generation (General + UGC)** | `consistent-video-ads` (multi-clip) | `mcp__marketing-tools__generate_sora_video` | ~~sora_video.py~~ (retired) | 1. MCP → 2. Skill (multi-clip) | video-producer (PRIMARY for UGC + general) | ✅ Active |
 | **Video Generation (Text-to-Video)** | N/A | `mcp__marketing-tools__generate_veo_text_to_video` | N/A | 1. MCP only (Veo 3.1) | video-producer | ✅ Active |
 | **Video Generation (Image-to-Video UGC Backup)** | N/A | `mcp__marketing-tools__generate_veo_ugc_from_image` | N/A | 1. MCP only (Veo 3.1 + reference image) | video-producer (BACKUP for UGC) | ✅ Active |
 | **Slack GIFs** | `slack-gif-creator` (animated GIFs) | N/A | N/A | 1. Skill only | social-media-manager | ✅ Active |
@@ -32,7 +32,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 
 **Usage Notes:**
 - **canvas-design ownership:** visual-designer is PRIMARY owner; others use for specialized cases only
-- **Video stitching:** sora_video.py custom tool handles multi-clip workflows MCP can't do
+- **Video stitching:** `consistent-video-ads` skill (MARKETING_TEAM) handles multi-clip workflows MCP can't do
 - ⭐ **UGC Workflow:** Sora 2 is PRIMARY for UGC video generation (50 styles, $0.10/sec). Veo 3.1 is BACKUP (use when Sora fails or native audio is required)
 
 **UGC Workflow Options:**
@@ -165,8 +165,8 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 | **React Artifacts** | `artifacts-builder` (React + shadcn/ui) | N/A | N/A | 1. Skill only | landing-page-specialist | ✅ Active |
 | **MCP Server Creation** | `mcp-builder` (create MCP servers) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
 | **Skill Creation** | `skill-creator` (create new skills) | N/A | N/A | 1. Skill only | Engineering team | ✅ Active |
-| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 58 agents | ✅ Active (critical) |
-| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 58 agents | ✅ Active (critical) |
+| **Workspace Validation** ⭐ **NEW** | N/A | N/A | `workspace_enforcer.py` (validate_workspace, get_absolute_paths, ensure_team_context) | 1. Custom Tool only (MANDATORY for all agents) | ALL 73 agents | ✅ Active (critical) |
+| **Path Validation** ⭐ **NEW** | N/A | N/A | `path_validator.py` (validate_save_path, validate_read_path, validate_cross_team_path) | 1. Custom Tool only (MANDATORY for all agents) | ALL 73 agents | ✅ Active (critical) |
 
 **Workspace Management Priority:**
 
@@ -181,7 +181,7 @@ This registry documents ALL tools, MCP servers, and skills available to the 59 a
 **Usage Notes:**
 - **workspace_enforcer:** Validates agent is in correct team workspace (MARKETING_TEAM, QA_TEAM, ENGINEERING_TEAM)
 - **path_validator:** Converts relative paths to absolute paths, enforces cross-team boundaries
-- **Declaring agents:** ALL 58 agents MUST include in YAML frontmatter (automatically added to all agents)
+- **Declaring agents:** ALL 73 agents MUST include in YAML frontmatter (automatically added to all agents)
 
 ---
 

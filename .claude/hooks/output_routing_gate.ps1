@@ -31,6 +31,8 @@ $ROOT_ALLOWED = @(
     "MULTI_AGENT_GUIDE.md", "CLAUDE_REFERENCE.md", "MCP_SETUP.md",
     "TOOL_REGISTRY.md", "LLAR_CONFIG.json",
     "MEMORY_ROUTING.md",
+    "DOCUMENTATION.md", "FAQ.md", "GETTING_STARTED.md",
+    "AGENT_GOVERNANCE_RULES.md", "MEMORY_SYSTEM.md",
     ".gitignore", ".gitattributes",
     "package.json", "pnpm-lock.yaml", "package-lock.json",
     "MEMORY.md", "skills-lock.json"

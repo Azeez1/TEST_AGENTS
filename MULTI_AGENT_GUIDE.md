@@ -2,9 +2,9 @@
 
 ## The Simple Truth
 
-**You have 63 perfectly defined AI agents ready to use RIGHT NOW.**
+**You have 73 perfectly defined AI agents across 8 teams ready to use RIGHT NOW** (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts).
 
-This includes a **root-level Supervisor Agent** for quality assurance across all 6 teams.
+This includes a **root-level Supervisor Agent** for quality assurance across all 8 teams.
 
 🔥 **NEW: Automatic Quality Verification!** Team coordinators now automatically verify significant work is complete before delivery.
 
@@ -24,7 +24,7 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 4. **I use only the tools** specified for that agent
 5. **I can delegate to other agents** if needed
 
-### You Have 63 Agents
+### You Have 73 Agents
 
 **MARKETING_TEAM (18 agents):**
 - router-agent - Coordinator
@@ -70,8 +70,10 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - database-architect - Database design, data modeling, scalability (1.2K downloads)
 - debugger - Root cause analysis, troubleshooting, error investigation (1.7K downloads)
 
-**PROPOSAL_TEAM (1 agent):**
+**PROPOSAL_TEAM (3 agents):**
 - rfp-agent - RFP automation, compliance matrix generation, proposal writing with 30+ compliance frameworks
+- proposal-tracker - Proposal pipeline and deadline tracking
+- sbir-validator - SBIR/STTR compliance validation
 
 **FINANCIAL_TEAM (14 agents):**
 - cfo-agent - Strategic finance leadership, capital strategy, fundraising, board relations
@@ -100,7 +102,19 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 - customer-success-manager - Onboarding, retention, expansion
 - outbound-specialist - High-volume cold outreach campaigns
 
-**ROOT SUPERVISOR (1 agent):** ⭐ QUALITY ASSURANCE
+**VOICE_TEAM (3 agents):**
+- voice-deployer - Voice agent deployment
+- voice-onboarder - Voice agent onboarding flows
+- voice-email-validator - Email validation for voice workflows
+
+**HEDGE_FUND (1 agent):**
+- ict-trader - ICT trading strategy execution and journaling
+
+**ROOT (5 agents):** ⭐ QUALITY ASSURANCE
+- **oracle** - Personal knowledge base (Obsidian wiki) manager
+- **linkedin-brand-reviewer** - Scores LinkedIn drafts against brand voice rules
+- **pe-diagnosis-validator** - Validates PE diagnosis PDFs before send
+- **pe-diagnosis-visual-reviewer** - Scores PE diagnoses against visual quality bar
 - **supervisor** - Root-level quality assurance agent that verifies task completion across ALL teams
   - **Location**: `/home/user/TEST_AGENTS/.claude/agents/supervisor.md`
   - **Purpose**: Independent verification that tasks agents claim to have completed are actually done
@@ -121,11 +135,11 @@ Just **talk to Claude Code (me)** and I'll become those agents.
 
 ## 🏢 Agent Workspace Assignments
 
-All 63 agents are organized into 6 team workspaces with strict folder boundaries and **automatic workspace awareness**:
+All 73 agents are organized into 8 team workspaces with strict folder boundaries and **automatic workspace awareness**:
 
 ### MARKETING_TEAM (18 agents)
 **Location:** `MARKETING_TEAM/.claude/agents/`
-**Memory:** `MARKETING_TEAM/memory/` (15 config files)
+**Memory:** `MARKETING_TEAM/memory/` (13 config files)
 **Outputs:** `MARKETING_TEAM/outputs/` (blog_posts, images, videos, etc.)
 **Agents:** router-agent, content-strategist, research-agent, lead-gen-agent, automation-agent, copywriter, editor, social-media-manager, visual-designer, video-producer, seo-specialist, email-specialist, gmail-agent, landing-page-specialist, pdf-specialist, presentation-designer, analyst, newsletter-agent
 
@@ -150,12 +164,13 @@ All 63 agents are organized into 6 team workspaces with strict folder boundaries
 **Full workspace access:** Can work with all 4 systems for optimization, deployment, review
 **Workspace enforcement:** ✅ ENABLED
 
-### PROPOSAL_TEAM (1 agent)
+### PROPOSAL_TEAM (3 agents)
 **Location:** `PROPOSAL_TEAM/.claude/agents/`
 **Memory:** Pinecone vector database + `PROPOSAL_TEAM/kb/` (Knowledge Base)
 **Output:** `PROPOSAL_TEAM/outputs/` (proposals, compliance matrices)
 **Config:** `PROPOSAL_TEAM/dux_rfp_agent/config/.env`
 **Type:** 7-stage RFP processing pipeline
+**Agents:** rfp-agent, proposal-tracker, sbir-validator
 
 **Key capabilities:** RFP parsing, compliance matrix generation, proposal writing
 **Workspace enforcement:** ✅ ENABLED
@@ -177,6 +192,16 @@ All 63 agents are organized into 6 team workspaces with strict folder boundaries
 
 **Key capabilities:** Full sales lifecycle (prospecting, closing, retention, analytics)
 **Workspace enforcement:** ✅ ENABLED
+
+### VOICE_TEAM (3 agents)
+**Location:** `VOICE_TEAM/.claude/agents/`
+**Memory:** `VOICE_TEAM/memory/` (voice config, output paths)
+**Agents:** voice-deployer, voice-onboarder, voice-email-validator
+
+### HEDGE_FUND (1 agent)
+**Location:** `HEDGE_FUND/.claude/agents/`
+**Memory:** `HEDGE_FUND/memory/` (ICT playbook, risk rules, account/markets config)
+**Agents:** ict-trader
 
 ---
 
@@ -552,10 +577,12 @@ Each agent invocation happens in a **separate context window**:
 - `MARKETING_TEAM/.claude/agents/` - 18 marketing agents
 - `QA_TEAM/.claude/agents/` - 5 testing agents
 - `ENGINEERING_TEAM/.claude/agents/` - 15 engineering agents
-- `PROPOSAL_TEAM/.claude/agents/` - 1 RFP agent
-- `FINANCIAL_TEAM/.claude/agents/` - 10 finance agents
-- `SALES_TEAM/.claude/agents/` - 8 sales agents
-- `.claude/agents/` - 1 root supervisor
+- `PROPOSAL_TEAM/.claude/agents/` - 3 proposal agents
+- `FINANCIAL_TEAM/.claude/agents/` - 14 finance agents
+- `SALES_TEAM/.claude/agents/` - 9 sales agents
+- `VOICE_TEAM/.claude/agents/` - 3 voice agents
+- `HEDGE_FUND/.claude/agents/` - 1 trading agent
+- `.claude/agents/` - 5 root-level agents
 
 ### Q: Can I create my own agents?
 **A: YES!** Create a new `.md` file in `.claude/agents/` with:
@@ -860,13 +887,15 @@ For comprehensive guide on proper agent invocation:
 
 ✅ **Verify agents exist:**
 ```bash
-ls .claude/agents/                   # Should show 1 .md file (supervisor)
+ls .claude/agents/                   # Should show 5 .md files (supervisor, oracle, reviewers)
 ls MARKETING_TEAM/.claude/agents/    # Should show 18 .md files
 ls QA_TEAM/.claude/agents/           # Should show 5 .md files
 ls ENGINEERING_TEAM/.claude/agents/  # Should show 15 .md files
-ls PROPOSAL_TEAM/.claude/agents/     # Should show 1 .md file
+ls PROPOSAL_TEAM/.claude/agents/     # Should show 3 .md files
 ls FINANCIAL_TEAM/.claude/agents/    # Should show 14 .md files
 ls SALES_TEAM/.claude/agents/        # Should show 9 .md files
+ls VOICE_TEAM/.claude/agents/        # Should show 3 .md files
+ls HEDGE_FUND/.claude/agents/        # Should show 1 .md file
 ```
 
 ✅ **Try your first agent:**
@@ -890,8 +919,8 @@ You: "Use router-agent to create a mini social media campaign"
 
 **Your agent systems are READY TO USE right now.**
 
-- ✅ 63 agents perfectly defined across 6 teams
-  - 18 MARKETING + 5 QA + 15 ENGINEERING + 1 PROPOSAL + 14 FINANCIAL + 9 SALES + 1 ROOT SUPERVISOR
+- ✅ 73 agents perfectly defined across 8 teams
+  - 18 MARKETING + 5 QA + 15 ENGINEERING + 3 PROPOSAL + 14 FINANCIAL + 9 SALES + 3 VOICE + 1 HEDGE_FUND + 5 ROOT
 - ✅ Tools properly registered
 - ✅ No setup required
 - ✅ No Python code to run

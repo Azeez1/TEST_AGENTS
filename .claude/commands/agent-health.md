@@ -41,27 +41,33 @@ Performs a complete diagnostic scan of the multi-agent workspace including:
 
 This command runs diagnostic checks across all workspace components:
 
-### 1. Agent Definition Validation
+### 1. Agent Definition Validation (EXECUTABLE — run this first)
 
-**Check each agent file (.md) for:**
+**Run the declaration linter — this is the mandatory first step, not optional:**
+
+```bash
+python tools/lint_agent_declarations.py
+```
+
+It scans all 73 agent files and verifies every declaration against reality:
+- `mcp__server__*` entries → server exists in `.mcp.json` and is not disabled
+- snake_case entries → `tools/<name>.py` exists (root or team)
+- kebab-case / `plugin:skill` entries → `SKILL.md` exists (root, document-skills, or team)
+- `name:` field is kebab-case and matches the filename stem
+
+Exit code 1 = violations (report them verbatim as CRITICAL findings). Also check:
 - Valid YAML frontmatter format
-- Required fields (name, description, model)
-- Tool declarations are valid
-- Skill declarations exist
-- Agent file permissions
+- Required fields (name, description, tools)
 - Syntax and formatting issues
 
-**Teams checked:**
-- ROOT (supervisor)
-- ENGINEERING_TEAM (15 agents)
-- MARKETING_TEAM (18 agents)
-- QA_TEAM (5 agents)
-- FINANCIAL_TEAM (10 agents)
-- SALES_TEAM (8 agents)
+**Teams checked (73 agents across 8 teams + ROOT — see CLAUDE.md, single source of truth):**
+- ROOT (5 agents incl. supervisor, oracle)
+- MARKETING_TEAM (18), ENGINEERING_TEAM (15), FINANCIAL_TEAM (14), SALES_TEAM (9)
+- QA_TEAM (5), VOICE_TEAM (3), PROPOSAL_TEAM (3), HEDGE_FUND (1)
 
 **Report includes:**
-- Total agents: 58
-- Agents with issues
+- Total agents: 73
+- Agents with issues (from linter output)
 - Missing required fields
 - Invalid tool references
 - Orphaned or unused agents
@@ -76,8 +82,8 @@ This command runs diagnostic checks across all workspace components:
 - Tool permissions are correct
 
 **Tool locations:**
-- `/home/user/TEST_AGENTS/.claude/tools/` (root-level)
-- `TEAM_NAME/.claude/tools/` (team-specific)
+- `tools/` (root-level)
+- `TEAM_NAME/tools/` (team-specific)
 
 **Check against TOOL_REGISTRY.md:**
 - All registered tools exist
@@ -94,14 +100,10 @@ This command runs diagnostic checks across all workspace components:
 - Response time is acceptable
 - Error rates are normal
 
-**MCP servers checked:**
-- Google Workspace MCP
-- Perplexity MCP
-- Bright Data MCP
-- n8n MCP
-- Supervisor MCP
-- Sequential Thinking MCP
-- Others as configured
+**MCP servers checked (10 in `.mcp.json`):**
+- Google Workspace, Perplexity, Bright Data, n8n, Sequential Thinking
+- Marketing Tools, Playwright, Microsoft Learn, Azure, TradingView
+- Plus session-level: claude-in-chrome (via /chrome, not in .mcp.json)
 
 **Report includes:**
 - Server status (UP/DOWN/DEGRADED)
@@ -177,7 +179,7 @@ This command runs diagnostic checks across all workspace components:
 🏥 AGENT WORKSPACE HEALTH REPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ AGENTS: 58/58 healthy
+✅ AGENTS: 73/73 healthy (declaration linter: CLEAN)
 ✅ TOOLS: 20/20 registered
 ⚠️  MCP SERVERS: 6/7 healthy (1 degraded)
 ✅ CONFIGURATION: Valid
@@ -232,13 +234,10 @@ When run with `fix-issues` option:
 ```bash
 🏥 Running Agent Health Check (full diagnostic)...
 
-[1/7] Validating agent definitions...
-  ✅ ROOT: supervisor (healthy)
-  ✅ ENGINEERING_TEAM: 15 agents (all healthy)
-  ✅ MARKETING_TEAM: 18 agents (all healthy)
-  ✅ QA_TEAM: 5 agents (all healthy)
-  ✅ FINANCIAL_TEAM: 10 agents (all healthy)
-  ✅ SALES_TEAM: 8 agents (all healthy)
+[1/7] Validating agent definitions (python tools/lint_agent_declarations.py)...
+  ✅ Scanned 73 agent files against 10 MCP servers — CLEAN
+  ✅ ROOT: 5 agents | ENGINEERING: 15 | MARKETING: 18 | FINANCIAL: 14
+  ✅ SALES: 9 | QA: 5 | VOICE: 3 | PROPOSAL: 3 | HEDGE_FUND: 1
 
 [2/7] Checking tool registration...
   ✅ 20 custom tools registered

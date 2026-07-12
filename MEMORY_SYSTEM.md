@@ -2,7 +2,7 @@
 
 **For AI Assistants and Developers**
 
-This guide explains how the memory system works across all 62 agents in the repository, ensuring consistent configuration without hardcoding values.
+This guide explains how the memory system works across all 73 agents across 8 teams (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts), ensuring consistent configuration without hardcoding values.
 
 ---
 
@@ -13,6 +13,8 @@ All agents are instructed in their definitions to read memory configuration file
 - ✅ Consistent Drive folder structure for uploads
 - ✅ Consistent brand voice and visual guidelines
 - ✅ Single source of truth (update once, affects all agents)
+
+> **Scope note:** `email_config.json`, `google_drive_config.json`, `brand_voice.json`, and `visual_guidelines.json` exist only in `MARKETING_TEAM/memory/`. `output_paths.json` is the only config file present in all 8 team memory folders — each team reads its own copy.
 
 ---
 
@@ -46,12 +48,12 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 - `visual_guidelines.json` - Brand colors and design
 - `output_paths.json` - Where to save content
 - `docs_folder_structure.json` - Documentation organization
-- `seo_config.json` - SEO keywords and settings
-- `campaign_templates.json` - Reusable campaign structures
-- `voice_interface_config.json` - Voice settings
-- `learned_preferences.json` - User preferences
-- `social_media_accounts.json` - Social accounts
-- `content_calendar.json` - Publishing schedule
+- `email_templates.json` - Reusable email templates
+- `default_email_recipients.json` - Default recipients for outbound email
+- `linkedin_config.json` - LinkedIn account and posting configuration
+- `twitter_config.json` - X/Twitter account and posting configuration
+- `skill_ownership.json` - Skill-to-agent primary ownership map
+- `ugc_prompt_templates.json` - UGC image/video prompt templates
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
 **Access:** All 18 MARKETING_TEAM agents read automatically
@@ -59,9 +61,11 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### QA_TEAM Memory
 **Location:** `QA_TEAM/memory/`
 
-**Files (4 total):**
+**Files (6 total):**
 - `learned_patterns.json` - Common edge cases and test patterns
 - `test_settings.json` - Testing preferences and configurations
+- `test_history.json` - Record of previous test runs
+- `test_preferences.json` - Test generation preferences learned from feedback
 - `output_paths.json` - Canonical output directory paths for all QA_TEAM test outputs
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
 
@@ -81,8 +85,9 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### PROPOSAL_TEAM Memory
 **Location:** `PROPOSAL_TEAM/memory/`
 
-**Files (2 total):**
+**Files (3 total):**
 - `output_paths.json` - Canonical output directory paths for all PROPOSAL_TEAM outputs
+- `proposal_framework.json` - Proposal structure and framework definitions
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, compliance frameworks)
 
 **Access:** rfp-agent reads at task start
@@ -90,20 +95,52 @@ Memory configuration is now **team-scoped** with workspace enforcement. Each tea
 ### FINANCIAL_TEAM Memory
 **Location:** `FINANCIAL_TEAM/memory/`
 
-**Files (2 total):**
+**Files (6 total):**
 - `output_paths.json` - Canonical output directory paths for all FINANCIAL_TEAM outputs
+- `chart_of_accounts.json` - Chart of accounts
+- `financial_assumptions.json` - Financial modeling assumptions
+- `historical_financials.json` - Historical financial data
+- `trading_config.json` - Trading configuration (purpose: TBD)
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, financial standards)
 
-**Access:** All 13 FINANCIAL_TEAM agents read automatically
+**Access:** All 14 FINANCIAL_TEAM agents read automatically
 
 ### SALES_TEAM Memory
 **Location:** `SALES_TEAM/memory/`
 
-**Files (2 total):**
+**Files (6 total):**
 - `output_paths.json` - Canonical output directory paths for all SALES_TEAM outputs
+- `crm_config.json` - CRM configuration
+- `outreach_templates.json` - Outreach message templates
+- `target_lists.json` - Prospect and target account lists
+- `pe_investor_outreach.json` - PE investor outreach data
 - `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies, CRM configs)
 
 **Access:** All 9 SALES_TEAM agents read automatically
+
+### VOICE_TEAM Memory
+**Location:** `VOICE_TEAM/memory/`
+
+**Files (2 total):**
+- `voice_config.json` - Voice agent configuration
+- `output_paths.json` - Canonical output directory paths for all VOICE_TEAM outputs
+
+**Access:** All 3 VOICE_TEAM agents read automatically
+
+### HEDGE_FUND Memory
+**Location:** `HEDGE_FUND/memory/`
+
+**Files (8 total):**
+- `ict_playbook.json` - ICT trading playbook
+- `risk_rules.json` - Risk management rules
+- `account_config.json` - Trading account configuration
+- `markets_config.json` - Markets and instruments configuration
+- `tradingview_config.json` - TradingView integration configuration
+- `user_chart_setup.json` - User chart setup preferences
+- `output_paths.json` - Canonical output directory paths for all HEDGE_FUND outputs
+- `llar_memory.json` - LLAR governance memory (team preferences, goals, strategies)
+
+**Access:** ict-trader reads at task start
 
 ---
 
@@ -475,7 +512,7 @@ Best regards
 ## See Also
 
 - **[claude.md](claude.md)** - Repository navigation guide
-- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 62 agents
+- **[MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md)** - Master guide for all 73 agents
 - **Agent Definitions:** `.claude/agents/*.md` files in each system folder
 
 ---
