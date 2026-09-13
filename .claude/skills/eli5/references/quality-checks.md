@@ -2,6 +2,12 @@
 
 The pass condition is a correct explanation with an artifact the user can use.
 
+For codebase lessons, run `scripts/source_evidence.py --root <repo> --verify
+<evidence.json>` before delivery. Confirm major diagram edges map to inspected
+call sites, inferences are labeled, the scope is stated, and inline evidence
+links work without absolute machine paths. Test the helper itself with
+`python scripts/test_source_evidence.py` when changing it.
+
 When changing the builder or bundled assets, run `python scripts/test_build.py`
 from the skill directory. These checks cover packaging and overwrite behavior;
 they do not replace the browser and teaching checks below.

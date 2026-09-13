@@ -1,0 +1,53 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>From source to suitcase — explore the ELI5 builder</title>
+<!-- ELI5:STYLE -->
+<style>
+header{padding:56px 0 30px}h1{font-size:clamp(45px,7vw,82px);max-width:900px}header p{margin-top:22px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:30px 0}
+.flow a{position:relative;border:1px solid var(--line);padding:22px;border-radius:16px;text-decoration:none;background:var(--panel);color:var(--ink)}
+.flow a:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:45%;color:var(--accent);z-index:1;font-size:21px}
+.flow b{display:block;font:12px var(--mono);color:var(--accent);margin-bottom:16px}.flow strong{display:block;font:26px var(--display);margin-bottom:12px}
+.flow span{font-size:14px;line-height:1.4;display:block}.claim{display:inline-block;padding:4px 8px;border:1px solid var(--line);border-radius:5px;font:11px var(--mono);margin-bottom:14px}
+pre{overflow:auto;padding:20px;background:var(--ink);color:var(--paper);border-radius:12px;font:13px/1.7 var(--mono);max-width:100%}
+section{padding:22px 0}h2{font-size:35px;margin:10px 0 20px}footer{padding:35px 0}details:target{outline:3px solid var(--accent);outline-offset:8px}
+@media(max-width:760px){.flow{grid-template-columns:1fr 1fr}.flow a:nth-child(2)::after{display:none}}@media(max-width:420px){.flow{grid-template-columns:1fr}.flow a:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-24px;display:block}}
+</style></head><body><div class="wrap"><header><p class="eyebrow">CODEBASE WALKTHROUGH / STATIC SOURCE INSPECTION</p><h1>A lesson goes in.<br><em class="accent">One file comes out.</em></h1><p class="lede">Explore the actual ELI5 builder. Follow the four stages, then open the source behind each claim.</p><p class="note">Scope: build.py and its tests. This is an illustrative flow, not a live debugger.</p></header>
+<main><nav class="flow" aria-label="Trace the builder">
+<a href="#E1"><b>01 · INPUT</b><strong>Take the request.</strong><span>Parse source, output, and the optional force flag.</span></a>
+<a href="#E2"><b>02 · CHECK</b><strong>Protect the source.</strong><span>Resolve paths. Refuse to write over the input.</span></a>
+<a href="#E3"><b>03 · PACK</b><strong>Put assets inside.</strong><span>Replace exactly two markers with CSS and JavaScript.</span></a>
+<a href="#E4"><b>04 · WRITE</b><strong>Save the lesson.</strong><span>Create a new output, or replace it only with force.</span></a>
+</nav><section class="prediction" data-prediction><h2>Can --force overwrite the source itself?</h2><div class="choices"><button type="button" data-choice="wrong">Yes, force overrides every check</button><button type="button" data-choice="correct">No, that check happens first</button></div><p data-feedback role="status"></p><div data-answer>The same-path check runs before the output mode is chosen. It raises ValueError even when force is true. <a href="#E2">Read the condition.</a></div></section>
+<section><span class="claim">OBSERVED IN SOURCE</span><h2>Open the evidence.</h2><p>References use repository-relative paths. The small excerpts below travel with this page.</p>
+<details id="E1" open><summary>E1 · build.py:32–41 — the entrypoint</summary><p>CODEX_TEAM/skills/eli5/scripts/build.py</p><pre><code>def main() -&gt; None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("source", type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--force", action="store_true")
+    args = parser.parse_args()
+    try:
+        print(build(args.source, args.output, force=args.force))
+    except (OSError, ValueError) as exc:
+        parser.exit(1, f"Build failed: {exc}\n")</code></pre></details>
+<details id="E2"><summary>E2 · build.py:12–15 — the boundary</summary><p>CODEX_TEAM/skills/eli5/scripts/build.py</p><pre><code>source, output = source.resolve(), output.resolve()
+if source == output:
+    raise ValueError("Choose an output different from the source.")
+html = source.read_text(encoding="utf-8")</code></pre></details>
+<details id="E3"><summary>E3 · build.py:20–25 — the transformation</summary><p>CODEX_TEAM/skills/eli5/scripts/build.py</p><pre><code>for marker, (tag, path) in assets.items():
+    if html.count(marker) != 1:
+        raise ValueError(f"Expected exactly one {marker}")
+    html = html.replace(marker, f"&lt;{tag}&gt;\n{path.read_text(encoding='utf-8')}\n&lt;/{tag}&gt;")
+if "&lt;!-- ELI5:" in html:
+    raise ValueError("Unresolved ELI5 build marker.")</code></pre></details>
+<details id="E4"><summary>E4 · build.py:26–29 — the side effect</summary><p>CODEX_TEAM/skills/eli5/scripts/build.py</p><pre><code>output.parent.mkdir(parents=True, exist_ok=True)
+with output.open("w" if force else "x", encoding="utf-8", newline="\n") as handle:
+    handle.write(html)
+return output</code></pre></details></section>
+<section><span class="claim">INFERRED INTENT</span><h2>A suitcase, not a shipping service.</h2><p>The builder packs local assets into one file. Its strict marker counts appear intended to catch incomplete or ambiguous source templates. That intent is an interpretation; the checks themselves are observed.</p></section>
+<section><span class="claim">UNVERIFIED BY THE BUILDER</span><h2>A successful build is not a correct lesson.</h2><p>The builder does not check whether your explanation is true, whether arbitrary JavaScript works, or whether your custom HTML uses external resources. Inspect and test those separately.</p></section>
+<section><h2>Where to read next</h2><p>main() → build() → test_build.py → your lesson HTML. The five bundled packaging tests were executed successfully. They cover the included cases, not every possible input.</p></section></main>
+<footer class="rule"><p class="eyebrow">LOCAL SOURCE · PORTABLE REFERENCES · NO EXTERNAL ASSETS</p></footer></div>
+<!-- ELI5:SCRIPT -->
+<script>
+function revealEvidence(){const id=location.hash.slice(1);if(!/^E[1-4]$/.test(id))return;const section=document.getElementById(id);if(section)section.open=true}
+window.addEventListener('hashchange',revealEvidence);revealEvidence();
+</script></body></html>

@@ -46,7 +46,9 @@ it is not an HTML sanitizer.
 
 ## Codebase exploration
 
-Use this as an explanation layer over inspected source. Focused prompts work best:
+Codebase mode now routes to a dedicated inspection workflow, with observed /
+inferred / unknown labels, scoped request traces, a source evidence ledger, and
+portable inline citations. Focused prompts work best:
 
 - Trace one request from a UI action to the backend and back.
 - Explain how three modules cooperate, citing the real files and functions.
@@ -57,6 +59,35 @@ inference, and retain navigable source references. A simplified diagram does not
 replace an exhaustive architecture review, dependency audit, or execution test.
 The bundled example is about caching; it should not dictate every lesson's
 subject, aesthetic, or interaction pattern.
+
+Use [the installation guide](../skills/ELI5_INSTALL.md) to move both complete
+packages to another computer. The optional installer needs only Python 3.10+.
+Build a portable ZIP with:
+
+```sh
+python CODEX_TEAM/skills/package_eli5.py --output CODEX_TEAM/outputs/eli5-work-laptop.zip
+```
+
+The [builder walkthrough](../examples/eli5-builder-walkthrough.md) demonstrates
+a real source trace and its limits. Build its interactive companion with:
+
+```sh
+python CODEX_TEAM/skills/eli5/scripts/build.py CODEX_TEAM/examples/builder-walkthrough.source.html --output CODEX_TEAM/outputs/eli5/builder-walkthrough.html
+```
+
+Capture and check selected source citations:
+
+```sh
+python CODEX_TEAM/skills/eli5/scripts/source_evidence.py --root . --ref CODEX_TEAM/skills/eli5/scripts/build.py:10:29 --output CODEX_TEAM/outputs/evidence.json
+python CODEX_TEAM/skills/eli5/scripts/source_evidence.py --root . --verify CODEX_TEAM/outputs/evidence.json
+python CODEX_TEAM/skills/eli5/scripts/test_source_evidence.py
+```
+
+The helper checks bytes and excerpts, not whether an explanation is correct.
+It rejects common credential filenames and paths outside the selected repo;
+it is not a general secret detector. Keep manifests and generated work-code
+explanations local. Hosted model context is governed by your employer's AI
+configuration, independently of these local-only helpers.
 
 ## Verification scope
 
@@ -69,3 +100,12 @@ checks passed and no console errors or warnings were observed.
 Reduced-motion and no-JavaScript fallbacks are implemented but were not separately
 exercised in that browser session. These checks establish the bundled example's
 behavior, not the quality of every future generated lesson.
+
+Codebase upgrade checks: eleven evidence tests pass per runtime, covering
+exact excerpts, stale files, tampering, missing files, excluded paths, binary
+input, malformed data, symlink escape, and relocated identical source. The
+builder walkthrough's four embedded excerpts match their current source lines
+exactly. All four evidence links and the prediction control were tested in the
+browser; desktop and 390px layouts were inspected without page overflow or
+console warnings/errors. Fresh-directory installation and conflict preservation
+were also tested.

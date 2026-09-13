@@ -1,6 +1,6 @@
 ---
 name: eli5
-description: Create beautiful visual HTML lessons with simple explanations and meaningful interactive diagrams. Use for $eli5, explain-like-I-am-five requests, or beginner-friendly visual explanations of concepts, code, and systems.
+description: Create source-backed codebase walkthroughs and visual HTML lessons with simple explanations and meaningful diagrams. Use for $eli5, repository orientation, request-flow explanations, or beginner-friendly explanations of concepts and systems.
 ---
 
 # ELI5 — a small museum of one idea
@@ -8,6 +8,15 @@ description: Create beautiful visual HTML lessons with simple explanations and m
 Make the reader understand something they could not explain a minute ago.
 Default to an illustrated, interactive HTML lesson: big visuals, few words,
 one memorable insight. Treat the reader as an intelligent newcomer.
+
+## Codebase exploration mode
+
+For repository orientation, request traces, module relationships, or unfamiliar
+code, read [codebase exploration](references/codebase-exploration.md) first.
+Inspect local source, cite real files/functions/lines, label observed versus
+inferred behavior, and state the coverage boundary. Use the bundled source
+evidence helper for selected citations and freshness checks. Do not execute
+the application or upload code as a side effect of exploration.
 
 ## Plan the insight before the page
 
