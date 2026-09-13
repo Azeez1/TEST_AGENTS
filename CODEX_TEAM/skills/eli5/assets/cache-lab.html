@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The shortcut — an interactive lesson about caching</title>
+<!-- ELI5:STYLE -->
+<style>
+.top{height:86px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.brand{font-size:14px;font-weight:bold;letter-spacing:.05em}.brand i{display:inline-block;width:12px;height:12px;background:var(--accent);border-radius:50%;margin-right:10px}.folio{font:12px var(--mono);color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:60px;align-items:end;padding:52px 0 42px}.hero .eyebrow{margin-bottom:22px}.hero h1 em{font-weight:400;color:var(--accent)}.hero-side{padding-bottom:7px}.hero-side .lede{margin-bottom:20px}.note{font:12px/1.5 var(--mono);color:var(--muted)}
+.lab{background:var(--panel);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 18px 50px #20272507}.lab-top{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--line);gap:14px;flex-wrap:wrap}.status-chip{display:flex;align-items:center;gap:8px;font:12px var(--mono);text-transform:uppercase}.status-chip:before{content:'';width:7px;height:7px;background:var(--warm);border-radius:50%}
+.scene{padding:34px 34px 20px;position:relative}.scene-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:10px}.scene-heading p{font:12px var(--mono);color:var(--muted)}.world{display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;align-items:center;position:relative;min-height:215px}.route{position:absolute;top:110px;left:15%;right:15%;border-top:2px dashed var(--line)}.node{position:relative;z-index:1;text-align:center;min-width:0}.node svg{width:125px;height:120px;max-width:100%;display:block;margin:auto}.node .label{display:block;font-size:15px;font-weight:bold}.node .sub{display:block;font:12px/1.6 var(--mono);color:var(--muted);margin-top:5px}.node .value{display:inline-block;font:11px var(--mono);background:var(--soft);color:var(--accent);padding:5px 9px;border-radius:5px;margin-top:7px}
+svg .outline{stroke:var(--ink);stroke-width:2;fill:var(--panel)}svg .color{fill:var(--accent)}svg .warm{fill:var(--warm)}svg .light{fill:var(--soft)}svg .wire{fill:none;stroke:var(--ink);stroke-width:2}
+.node.active svg{filter:drop-shadow(0 0 14px #2449d82a)}.parcel{position:absolute;left:15%;top:101px;width:22px;height:22px;border-radius:6px;background:var(--warm);border:3px solid var(--panel);z-index:2;opacity:0;pointer-events:none}.parcel.travel{animation:journey 1.1s ease-in-out}.parcel.short{animation:shortcut .65s ease-in-out}
+@keyframes journey{0%{left:15%;opacity:1}45%{left:83%;opacity:1}100%{left:15%;opacity:1}}
+@keyframes shortcut{0%{left:15%;opacity:1}45%{left:49%;opacity:1}100%{left:15%;opacity:1}}
+.result-line{display:flex;align-items:center;gap:14px;margin:12px 0 4px;padding:18px 20px;background:var(--soft);border-radius:12px;color:var(--accent);min-height:76px}.result-line strong{font-family:var(--display);font-size:25px;letter-spacing:-.025em;white-space:nowrap}.result-line p{font-size:14px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:16px}.stat{padding:21px 26px;display:flex;align-items:center;gap:14px}.stat+.stat{border-left:1px solid var(--line)}.stat strong{font-family:var(--display);font-size:42px;line-height:1;color:var(--ink);font-weight:400}.stat span{font:11px/1.5 var(--mono);text-transform:uppercase;color:var(--muted);max-width:80px}
+.lab-bottom{padding:22px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.toggle{display:flex;gap:9px;align-items:center;font-size:14px;min-height:44px;cursor:pointer}.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+.fine{padding:15px 3px;font:11px/1.6 var(--mono);color:var(--muted)}.chapters{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:54px 0}.chapters .eyebrow{margin-bottom:18px}.chapters h2{margin-bottom:19px}.experiment{border-top:1px solid var(--line);padding-top:22px;margin-top:24px}.experiment p{font-size:15px;margin-bottom:14px}
+.takeaway{display:grid;grid-template-columns:100px 1fr;gap:24px;align-items:center;background:var(--accent);color:var(--on-accent);padding:35px;border-radius:20px;margin:14px 0 44px}.takeaway .seal{border:1px solid currentColor;border-radius:50%;width:80px;height:80px;display:grid;place-items:center;font-size:38px}.takeaway h2{font-size:clamp(28px,3vw,40px);letter-spacing:-.035em}.takeaway p{font-size:14px;opacity:.9;margin-top:12px}
+.footer{padding:24px 0 35px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px}.reset{border:0;background:none;color:var(--muted);text-decoration:underline;min-height:44px;padding:0 6px}.static-note{padding:20px;border:2px solid var(--warm);margin-bottom:20px}
+@media(max-width:850px){.hero{gap:24px;grid-template-columns:1fr .8fr}.stat{padding:20px 15px;gap:9px}.stat strong{font-size:35px}.chapters{gap:28px}}
+@media(max-width:600px){.top{height:65px}.hero{grid-template-columns:1fr;gap:23px;padding:36px 0 30px}.hero .eyebrow{margin-bottom:16px}.hero-side .lede{margin-bottom:10px}.folio{font-size:10px}.lab-top,.lab-bottom{padding:18px}.scene{padding:22px 12px 15px}.world{gap:4px;min-height:185px}.node svg{width:92px;height:98px}.node .label{font-size:12px}.node .sub{font-size:9px}.node .value{font-size:10px}.scene-heading{align-items:start}.scene-heading p{font-size:10px}.route{top:93px}.parcel{top:84px}.result-line{display:block;padding:14px}.result-line p{margin-top:5px;font-size:13px}.result-line strong{font-size:23px}.stat{padding:15px 8px;display:block;text-align:center}.stat strong{font-size:32px}.stat span{display:block;font-size:9px;margin:5px auto 0}.chapters{grid-template-columns:1fr;gap:30px;padding:36px 0}.takeaway{grid-template-columns:1fr;padding:25px;gap:20px}.takeaway .seal{width:52px;height:52px;font-size:25px}.footer{flex-direction:column}.lab-bottom .btn{padding:11px 15px;font-size:14px}.lab-bottom .row{gap:8px}}
+@media print{.lab{box-shadow:none}.parcel{display:none}.chapters{display:block}.takeaway{background:white;color:black;border:1px solid}.hero{padding:20px 0}.world{min-height:180px}.prediction{margin-top:20px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#lesson">Skip to the lesson</a>
+<div class="wrap">
+<header class="top"><div class="brand"><i></i>THE SMALL EXPLAINER</div><div class="folio">ELI5 / 001 &nbsp; · &nbsp; A LITTLE COMPUTER SCIENCE</div></header>
+<main id="lesson">
+<section class="hero" aria-labelledby="title">
+<div><p class="eyebrow">An idea you can play with</p><h1 id="title">Take the<br><em>short way.</em></h1></div>
+<div class="hero-side"><p class="lede">Why fetch the same thing twice?<br>A cache keeps a copy nearby.<br>That is the shortcut.</p><p class="note">TRY IT ↓ Send a request. Then send another.</p></div>
+</section>
+<noscript><p class="static-note">This simulation needs JavaScript. The idea: the first request fetches the original and saves a copy. Later requests can reuse it. If the original changes, the saved copy can become stale until it is refreshed.</p></noscript>
+<section class="lab" aria-label="Interactive caching model">
+<div class="lab-top"><span class="eyebrow">01 / The experiment</span><span class="status-chip" id="status">Ready for the first request</span></div>
+<div class="lab-bottom"><div class="row"><button class="btn primary" id="send" type="button">Send a request ↗</button><button class="reset" id="reset" type="button">Reset</button></div><label class="toggle"><input type="checkbox" id="enabled" checked>Use the cache</label></div>
+<div class="scene">
+<div class="scene-heading"><p>YOU WANT: THE MENU</p><p id="trip-note">A saved copy can avoid the long trip.</p></div>
+<div class="world">
+<div class="route" aria-hidden="true"></div><div class="parcel" id="parcel" aria-hidden="true"></div>
+<div class="node" id="you">
+<svg viewBox="0 0 140 130" role="img" aria-labelledby="you-title"><title id="you-title">Your device requesting a menu</title><ellipse cx="70" cy="115" rx="53" ry="8" class="light"/><rect x="20" y="22" width="100" height="69" rx="7" class="outline"/><rect x="28" y="30" width="84" height="50" rx="2" class="light"/><path d="M57 91v15m26-15v15m-39 1h52" class="wire"/><path d="m58 47 12 10-12 10m19 0h12" fill="none" stroke="var(--accent)" stroke-width="3"/></svg>
+<span class="label">Your device</span><span class="sub">“Can I see the menu?”</span><span class="value" id="shown">No answer yet</span></div>
+<div class="node" id="cache-node">
+<svg viewBox="0 0 140 130" role="img" aria-labelledby="cache-title"><title id="cache-title">A nearby shelf holding a saved copy</title><ellipse cx="70" cy="115" rx="53" ry="8" class="light"/><rect x="30" y="18" width="80" height="91" rx="4" class="outline"/><path d="M30 65h80M40 109v8m60-8v8" class="wire"/><g id="stored-paper" opacity=".15"><rect x="47" y="31" width="32" height="33" rx="3" class="color"/><path d="M53 40h18m-18 7h18m-18 7h10" stroke="var(--on-accent)" stroke-width="2"/></g><circle cx="83" cy="86" r="7" class="warm"/></svg>
+<span class="label">The cache</span><span class="sub">A nearby saved copy</span><span class="value" id="cached">Empty shelf</span></div>
+<div class="node" id="origin-node">
+<svg viewBox="0 0 140 130" role="img" aria-labelledby="origin-title"><title id="origin-title">The server holding the original menu</title><ellipse cx="70" cy="115" rx="53" ry="8" class="light"/><path d="M24 47 70 19l46 28v61H24Z" class="outline"/><path d="M34 48h72" class="wire"/><rect x="38" y="58" width="64" height="19" rx="3" class="light"/><rect x="38" y="83" width="64" height="18" rx="3" class="light"/><circle cx="47" cy="67" r="3" class="color"/><circle cx="47" cy="92" r="3" class="warm"/><path d="M57 67h34m-34 25h34" class="wire"/></svg>
+<span class="label">The original</span><span class="sub">The server’s menu</span><span class="value" id="origin">Menu v1</span></div>
+</div>
+<div class="result-line" role="status" aria-live="polite" aria-atomic="true"><strong id="result-title">One long trip.</strong><p id="result">The shelf is empty. Your first request will need the original.</p></div>
+</div>
+<div class="stats" aria-label="Simulation counters"><div class="stat"><strong id="requests">0</strong><span>Requests made</span></div><div class="stat"><strong id="trips">0</strong><span>Trips to original</span></div><div class="stat"><strong id="hits">0</strong><span>Copies reused</span></div></div>
+</section>
+<p class="fine">A simplified model, running entirely in this page. Travel time is illustrative, not a speed benchmark.</p>
+<section class="chapters" aria-label="Explore the tradeoff">
+<div><p class="eyebrow">02 / The catch</p><h2>Fast can be<br><em>out of date.</em></h2><p class="muted">Change the original menu. The saved copy does not magically know. Send another request and see which version you get.</p>
+<div class="experiment"><p id="experiment-hint">Try this after your first request.</p><div class="row"><button type="button" class="btn" id="change">Change original</button><button type="button" class="btn" id="clear">Clear saved copy</button></div></div>
+</div>
+<div class="prediction" data-prediction><p class="eyebrow">03 / Make a prediction</p><h2>If the original changes,<br>does the copy change too?</h2><div class="choices"><button type="button" data-choice="wrong">Yes, automatically</button><button type="button" data-choice="correct">No, it can go stale</button></div><p data-feedback role="status"></p><div data-answer>Exactly the tradeoff: fewer trips, but possibly older information. Clearing the saved copy forces the next request to fetch the original.</div></div>
+</section>
+<section class="takeaway"><div class="seal" aria-hidden="true">↗</div><div><p class="eyebrow">The idea to keep</p><h2>A cache saves a trip.<br>A refresh keeps the copy honest.</h2><p>Reuse when you can. Refresh when it matters.</p></div></section>
+<section aria-label="A little more detail"><details><summary>Connect the picture to the real terms</summary><p>The shelf is a <strong>cache</strong>. Finding a usable copy is a <strong>cache hit</strong>; not finding one is a <strong>cache miss</strong>. The original lives at the <strong>origin</strong>. A saved copy that no longer matches the original is <strong>stale</strong>.</p></details>
+<details><summary>Where this little model stops</summary><p>This demo has one item, unlimited shelf life, and manual clearing. Real caches may expire entries, check whether an original changed, or receive explicit updates. Nearby is an analogy: caching can avoid computation or disk work as well as network travel. Some data should not be cached.</p></details></section>
+</main>
+<footer class="footer"><span class="eyebrow">One idea. Now you can see it.</span><span class="note">Built with ELI5 · No external assets · Works offline</span></footer>
+</div>
+<!-- ELI5:SCRIPT -->
+<script>
+(()=>{
+'use strict';
+const el=id=>document.getElementById(id);
+const state={origin:1,cache:null,shown:null,requests:0,trips:0,hits:0,enabled:true,busy:false};
+let timer=null;
+function render(){
+  ['requests','trips','hits'].forEach(key=>el(key).textContent=state[key]);
+  el('origin').textContent='Menu v'+state.origin;
+  el('cached').textContent=state.cache===null?'Empty shelf':'Menu v'+state.cache;
+  el('shown').textContent=state.shown===null?'No answer yet':'Received v'+state.shown;
+  el('stored-paper').setAttribute('opacity',state.cache===null?'.15':'1');
+  el('enabled').checked=state.enabled;
+  ['send','enabled','change','clear'].forEach(id=>el(id).disabled=state.busy);
+  el('cache-node').classList.toggle('active',state.enabled&&state.cache!==null);
+}
+function say(title,text,status){el('result-title').textContent=title;el('result').textContent=text;el('status').textContent=status}
+function finishRequest(hit){
+  state.requests++;
+  if(hit){state.hits++;state.shown=state.cache}
+  else{state.trips++;state.shown=state.origin;if(state.enabled)state.cache=state.origin}
+  state.busy=false;el('parcel').className='parcel';
+  const stale=state.shown!==state.origin;
+  if(stale)say('Quick. But stale.','You got menu v'+state.shown+'. The original is now v'+state.origin+'. Clear the saved copy and try again.','Cache hit · older copy');
+  else if(hit)say('The short way.','Same menu. No trip to the original. The nearby copy answered this request.','Cache hit · saved trip');
+  else if(state.enabled)say('Fetched. And saved.','The original supplied menu v'+state.shown+'. A copy is on the shelf. Send the same request again.','Cache miss · copy saved');
+  else say('Another long trip.','Caching is off, so every request fetches the original. Nothing on the shelf was used or updated.','Cache bypassed');
+  el('experiment-hint').textContent='Now try changing the original, then send another request.';
+  render();
+}
+el('send').addEventListener('click',()=>{
+  if(state.busy)return;
+  state.busy=true;const hit=state.enabled&&state.cache!==null;
+  say(hit?'Checking the copy…':'Fetching the original…',hit?'The request stops at the nearby shelf.':'The request goes all the way to the original.',hit?'Taking the shortcut':'Going to the original');
+  render();
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el('parcel').className='parcel '+(hit?'short':'travel');
+  timer=setTimeout(()=>{timer=null;finishRequest(hit)},reduced?0:(hit?650:1100));
+});
+el('enabled').addEventListener('change',()=>{state.enabled=el('enabled').checked;say(state.enabled?'Shortcut enabled.':'Shortcut switched off.',state.enabled?'The next request checks the shelf first.':'The next request goes to the original, even if a saved copy exists.',state.enabled?'Cache enabled':'Cache bypassed');render()});
+el('change').addEventListener('click',()=>{state.origin++;say('The original changed.','The original is now menu v'+state.origin+'. '+(state.cache===null?'The shelf is still empty.':'The saved copy is still v'+state.cache+'.'),'Original updated');render()});
+el('clear').addEventListener('click',()=>{state.cache=null;say('A fresh start.','The shelf is empty. Your next request will fetch the current original.','Saved copy cleared');render()});
+el('reset').addEventListener('click',()=>{clearTimeout(timer);timer=null;Object.assign(state,{origin:1,cache:null,shown:null,requests:0,trips:0,hits:0,enabled:true,busy:false});el('parcel').className='parcel';say('One long trip.','The shelf is empty. Your first request will need the original.','Ready for the first request');el('experiment-hint').textContent='Try this after your first request.';document.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed','false'));document.querySelector('[data-feedback]').textContent='';document.querySelector('[data-answer]').hidden=true;render()});
+render();
+})();
+</script>
+</body></html>
