@@ -48,7 +48,7 @@ label each important edge with its call, data, event, or dependency.
 A control that steps through a static trace must say "illustrative trace"; it
 is not a debugger. Do not fabricate live values or measured performance.
 
-## Evidence that survives moving laptops
+## Portable source evidence
 
 Keep a compact ledger for consequential claims:
 claim | observed / inferred / unknown | repo-relative file:line | evidence.
@@ -77,7 +77,7 @@ manifests local; an HTML explanation can itself contain confidential code.
 If a selected file is not UTF-8, explain the limitation and read it through an
 appropriate safe text tool. Do not silently omit it or install extra parsers.
 
-## Work-laptop behavior
+## Privacy and execution boundaries
 
 Default codebase mode uses local source and produces local artifacts. Do not
 send code, snippets, internal names, or private repository URLs to search engines,
@@ -86,9 +86,10 @@ research is optional and separate; use generic queries only when needed and
 permitted. Do not fetch remote fonts/scripts/assets in the lesson.
 
 This skill does not make a hosted model run locally. Inspected code may enter
-the AI provider's context according to the selected client's organizational
-configuration. Use the employer-approved environment; do not claim that an
-offline helper provides a zero-upload guarantee for Claude/Codex itself.
+the AI provider's context according to the selected client's privacy settings
+and applicable data policies. Use an environment permitted for the source;
+do not claim that an offline helper provides a zero-upload guarantee for
+Claude/Codex itself.
 
 Exploration does not authorize editing the application, committing changes,
 posting an explanation, or deploying anything. Save generated evidence to the

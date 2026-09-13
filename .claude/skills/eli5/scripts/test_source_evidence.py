@@ -61,7 +61,7 @@ class EvidenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             evidence.capture(self.root, ["binary.txt:1:1"])
 
-    def test_move_to_another_laptop_path(self):
+    def test_relocated_repository_path(self):
         doc = self.snapshot()
         with tempfile.TemporaryDirectory() as folder:
             moved = Path(folder)

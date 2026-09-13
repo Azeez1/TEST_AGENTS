@@ -65,7 +65,7 @@ packages to another computer. The optional installer needs only Python 3.10+.
 Build a portable ZIP with:
 
 ```sh
-python CODEX_TEAM/skills/package_eli5.py --output CODEX_TEAM/outputs/eli5-work-laptop.zip
+python CODEX_TEAM/skills/package_eli5.py --output CODEX_TEAM/outputs/eli5-portable.zip
 ```
 
 The [builder walkthrough](../examples/eli5-builder-walkthrough.md) demonstrates
@@ -85,9 +85,10 @@ python CODEX_TEAM/skills/eli5/scripts/test_source_evidence.py
 
 The helper checks bytes and excerpts, not whether an explanation is correct.
 It rejects common credential filenames and paths outside the selected repo;
-it is not a general secret detector. Keep manifests and generated work-code
-explanations local. Hosted model context is governed by your employer's AI
-configuration, independently of these local-only helpers.
+it is not a general secret detector. Keep manifests and generated explanations
+containing private source local unless sharing is authorized. Hosted model
+context is governed by the selected client's privacy settings and applicable
+data policies, independently of these local-only helpers.
 
 ## Verification scope
 

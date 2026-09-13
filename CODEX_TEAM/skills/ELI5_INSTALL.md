@@ -1,11 +1,11 @@
-# Take ELI5 to another computer
+# Install ELI5
 
 This package contains separate Claude and Codex skills, all local visual assets,
 and standard-library Python helpers. No API keys or private code are included.
 
 ## Install
 
-Use Python 3.10+ from your organization's approved environment. From the root
+Use Python 3.10+ in your chosen environment. From the root
 of this checkout or extracted ELI5 bundle:
 
 ```sh
@@ -45,11 +45,12 @@ Useful follow-ups:
 Evidence is based on the files actually inspected. Use a focused subsystem for
 deep traces; a broad initial map is explicitly partial.
 
-## Work code stays in the approved workflow
+## Source privacy
 
 The helpers operate locally and the generated HTML needs no remote assets.
 The skill does not browse/search using private code or publish it by default.
 This does not make the Claude/Codex model itself offline: source text read by
-the agent may enter its provider's context under your organization's settings.
-Use the approved client/account. Keep generated HTML and evidence JSON local;
-they can contain internal code snippets.
+the agent may enter its provider's context under the selected client's privacy
+settings and applicable data policies. Use a client/account permitted for that
+source. Keep generated HTML and evidence JSON local unless sharing is authorized;
+they can contain confidential code snippets.
