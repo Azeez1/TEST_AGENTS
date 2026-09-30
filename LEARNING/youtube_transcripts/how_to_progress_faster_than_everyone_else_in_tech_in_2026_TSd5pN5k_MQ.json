@@ -1,0 +1,2436 @@
+{
+  "metadata": {
+    "title": "how to progress faster than everyone else (in tech, in 2026)",
+    "author_name": "Phillip Choi",
+    "provider_name": "YouTube",
+    "author_url": "https://www.youtube.com/@letphil",
+    "type": "video",
+    "height": 113,
+    "width": 200,
+    "version": "1.0",
+    "provider_url": "https://www.youtube.com/",
+    "thumbnail_height": 360,
+    "thumbnail_width": 480,
+    "thumbnail_url": "https://i.ytimg.com/vi/TSd5pN5k_MQ/hqdefault.jpg",
+    "html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/TSd5pN5k_MQ?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"how to progress faster than everyone else (in tech, in 2026)\"></iframe>"
+  },
+  "video_id": "TSd5pN5k_MQ",
+  "url": "https://youtu.be/TSd5pN5k_MQ?is=peN-tnSuOp0IpT4C",
+  "segments": [
+    {
+      "start": 0.0,
+      "duration": 4.36,
+      "text": "Most people trying to break into tech in"
+    },
+    {
+      "start": 1.8,
+      "duration": 5.2,
+      "text": "2026 are going to spend the next 12"
+    },
+    {
+      "start": 4.36,
+      "duration": 4.0,
+      "text": "months making almost zero real progress."
+    },
+    {
+      "start": 7.0,
+      "duration": 3.4,
+      "text": "They'll watch hundreds of hours of"
+    },
+    {
+      "start": 8.36,
+      "duration": 4.12,
+      "text": "tutorials. They'll start three different"
+    },
+    {
+      "start": 10.4,
+      "duration": 4.04,
+      "text": "courses. They'll tell themselves they're"
+    },
+    {
+      "start": 12.48,
+      "duration": 4.0,
+      "text": "learning. And a year from now, they'll"
+    },
+    {
+      "start": 14.44,
+      "duration": 4.24,
+      "text": "be in the exact same spot they are"
+    },
+    {
+      "start": 16.48,
+      "duration": 4.08,
+      "text": "today. Not because they're lazy, not"
+    },
+    {
+      "start": 18.68,
+      "duration": 4.64,
+      "text": "because they're not smart enough, but"
+    },
+    {
+      "start": 20.56,
+      "duration": 5.28,
+      "text": "because they fundamentally misunderstand"
+    },
+    {
+      "start": 23.32,
+      "duration": 4.48,
+      "text": "what progress actually is. I've helped"
+    },
+    {
+      "start": 25.84,
+      "duration": 4.48,
+      "text": "over 50 people transition into tech"
+    },
+    {
+      "start": 27.8,
+      "duration": 4.44,
+      "text": "careers in the last 2 years alone. And I"
+    },
+    {
+      "start": 30.32,
+      "duration": 3.68,
+      "text": "can tell you the single biggest"
+    },
+    {
+      "start": 32.24,
+      "duration": 3.68,
+      "text": "difference between the people who land"
+    },
+    {
+      "start": 34.0,
+      "duration": 4.76,
+      "text": "six-figure roles at companies like"
+    },
+    {
+      "start": 35.92,
+      "duration": 5.36,
+      "text": "Zillow, American Express, and NatWest"
+    },
+    {
+      "start": 38.76,
+      "duration": 4.6,
+      "text": "and the people who are still stuck has"
+    },
+    {
+      "start": 41.28,
+      "duration": 4.36,
+      "text": "nothing to do with talent or how many"
+    },
+    {
+      "start": 43.36,
+      "duration": 5.08,
+      "text": "hours they study. It has everything to"
+    },
+    {
+      "start": 45.64,
+      "duration": 4.92,
+      "text": "do with how they learn. Today, I'm going"
+    },
+    {
+      "start": 48.44,
+      "duration": 4.76,
+      "text": "to give you the exact framework for"
+    },
+    {
+      "start": 50.56,
+      "duration": 4.64,
+      "text": "making progress faster than 99% of"
+    },
+    {
+      "start": 53.2,
+      "duration": 4.24,
+      "text": "people trying to break into tech. This"
+    },
+    {
+      "start": 55.2,
+      "duration": 4.96,
+      "text": "isn't some motivational fluff piece."
+    },
+    {
+      "start": 57.44,
+      "duration": 4.72,
+      "text": "This is the system, step-by-step, and if"
+    },
+    {
+      "start": 60.16,
+      "duration": 4.32,
+      "text": "you actually apply it, you'll accomplish"
+    },
+    {
+      "start": 62.16,
+      "duration": 5.08,
+      "text": "in 90 days what takes most people a"
+    },
+    {
+      "start": 64.48,
+      "duration": 4.48,
+      "text": "year. Let's get into it. But before I"
+    },
+    {
+      "start": 67.24,
+      "duration": 3.88,
+      "text": "give you the framework, you need to"
+    },
+    {
+      "start": 68.96,
+      "duration": 4.76,
+      "text": "understand why I'm qualified to teach"
+    },
+    {
+      "start": 71.12,
+      "duration": 5.16,
+      "text": "it. Eight years ago, I was a 30-year-old"
+    },
+    {
+      "start": 73.72,
+      "duration": 5.04,
+      "text": "English teacher. Zero coding experience,"
+    },
+    {
+      "start": 76.28,
+      "duration": 4.72,
+      "text": "zero connections in tech. I was the last"
+    },
+    {
+      "start": 78.76,
+      "duration": 4.6,
+      "text": "person anyone would have bet on to"
+    },
+    {
+      "start": 81.0,
+      "duration": 4.56,
+      "text": "become a developer. I remember sitting"
+    },
+    {
+      "start": 83.36,
+      "duration": 4.76,
+      "text": "at my desk, grading papers, looking at"
+    },
+    {
+      "start": 85.56,
+      "duration": 4.56,
+      "text": "my paycheck, and thinking, \"This is it."
+    },
+    {
+      "start": 88.12,
+      "duration": 4.16,
+      "text": "This is the ceiling.\" I didn't have a"
+    },
+    {
+      "start": 90.12,
+      "duration": 4.52,
+      "text": "computer science degree. I didn't have a"
+    },
+    {
+      "start": 92.28,
+      "duration": 5.68,
+      "text": "friend at Google who could refer me. I"
+    },
+    {
+      "start": 94.64,
+      "duration": 5.64,
+      "text": "didn't have a clear plan. What I had was"
+    },
+    {
+      "start": 97.96,
+      "duration": 4.44,
+      "text": "a growing sense that if I didn't make a"
+    },
+    {
+      "start": 100.28,
+      "duration": 4.4,
+      "text": "change, I'd spend the rest of my career"
+    },
+    {
+      "start": 102.4,
+      "duration": 4.84,
+      "text": "watching other people build the life I"
+    },
+    {
+      "start": 104.68,
+      "duration": 5.24,
+      "text": "wanted. So, I started learning to code,"
+    },
+    {
+      "start": 107.24,
+      "duration": 4.8,
+      "text": "and I did everything wrong. I bounced"
+    },
+    {
+      "start": 109.92,
+      "duration": 4.72,
+      "text": "between YouTube tutorials. I started"
+    },
+    {
+      "start": 112.04,
+      "duration": 4.76,
+      "text": "four different courses and finished none"
+    },
+    {
+      "start": 114.64,
+      "duration": 4.24,
+      "text": "of them. I built the same generic"
+    },
+    {
+      "start": 116.8,
+      "duration": 4.52,
+      "text": "weather app and to-do lists that a"
+    },
+    {
+      "start": 118.88,
+      "duration": 5.08,
+      "text": "thousand other beginners were building."
+    },
+    {
+      "start": 121.32,
+      "duration": 5.28,
+      "text": "Months passed. I had nothing to show for"
+    },
+    {
+      "start": 123.96,
+      "duration": 5.64,
+      "text": "it. Here's the part most people don't"
+    },
+    {
+      "start": 126.6,
+      "duration": 5.72,
+      "text": "talk about. I wasn't just wasting time."
+    },
+    {
+      "start": 129.6,
+      "duration": 5.32,
+      "text": "I was actively building bad habits."
+    },
+    {
+      "start": 132.32,
+      "duration": 5.04,
+      "text": "Passive learning, tutorial dependence,"
+    },
+    {
+      "start": 134.92,
+      "duration": 4.48,
+      "text": "the illusion of progress without any"
+    },
+    {
+      "start": 137.36,
+      "duration": 4.88,
+      "text": "real skill development. My breakthrough"
+    },
+    {
+      "start": 139.4,
+      "duration": 5.92,
+      "text": "came when I finally understood something"
+    },
+    {
+      "start": 142.24,
+      "duration": 5.64,
+      "text": "critical. The speed of your progress is"
+    },
+    {
+      "start": 145.32,
+      "duration": 5.4,
+      "text": "determined by the quality of your"
+    },
+    {
+      "start": 147.88,
+      "duration": 5.28,
+      "text": "learning, not the quantity of hours. I"
+    },
+    {
+      "start": 150.72,
+      "duration": 4.84,
+      "text": "stopped studying more and started"
+    },
+    {
+      "start": 153.16,
+      "duration": 4.56,
+      "text": "studying differently. I found mentors"
+    },
+    {
+      "start": 155.56,
+      "duration": 4.04,
+      "text": "who had actually walked the path. I"
+    },
+    {
+      "start": 157.72,
+      "duration": 4.04,
+      "text": "focused on the skills that actually"
+    },
+    {
+      "start": 159.6,
+      "duration": 4.28,
+      "text": "mattered to hiring managers, not the"
+    },
+    {
+      "start": 161.76,
+      "duration": 5.04,
+      "text": "ones that feel productive. Within"
+    },
+    {
+      "start": 163.88,
+      "duration": 5.28,
+      "text": "months, not years, I landed my first"
+    },
+    {
+      "start": 166.8,
+      "duration": 4.44,
+      "text": "developer role. I went on to become a"
+    },
+    {
+      "start": 169.16,
+      "duration": 3.8,
+      "text": "senior developer, then a tech lead"
+    },
+    {
+      "start": 171.24,
+      "duration": 3.68,
+      "text": "working at companies doing seven to"
+    },
+    {
+      "start": 172.96,
+      "duration": 5.48,
+      "text": "eight figures in revenue, earning over"
+    },
+    {
+      "start": 174.92,
+      "duration": 5.6,
+      "text": "$500,000 in total compensation. And now,"
+    },
+    {
+      "start": 178.44,
+      "duration": 4.76,
+      "text": "I spent the last several years helping"
+    },
+    {
+      "start": 180.52,
+      "duration": 5.48,
+      "text": "others do the same thing faster. The"
+    },
+    {
+      "start": 183.2,
+      "duration": 5.08,
+      "text": "framework I'm about to share with you is"
+    },
+    {
+      "start": 186.0,
+      "duration": 4.48,
+      "text": "the distilled version of everything I've"
+    },
+    {
+      "start": 188.28,
+      "duration": 4.48,
+      "text": "learned from my own career, from"
+    },
+    {
+      "start": 190.48,
+      "duration": 4.68,
+      "text": "mentoring dozens of successful career"
+    },
+    {
+      "start": 192.76,
+      "duration": 4.52,
+      "text": "changers, and from studying the science"
+    },
+    {
+      "start": 195.16,
+      "duration": 4.64,
+      "text": "of how people actually get good at"
+    },
+    {
+      "start": 197.28,
+      "duration": 4.84,
+      "text": "things. Here's the uncomfortable truth"
+    },
+    {
+      "start": 199.8,
+      "duration": 4.68,
+      "text": "that most coding influencers won't tell"
+    },
+    {
+      "start": 202.12,
+      "duration": 4.96,
+      "text": "you. The reason most people make slow"
+    },
+    {
+      "start": 204.48,
+      "duration": 4.6,
+      "text": "progress has nothing to do with which"
+    },
+    {
+      "start": 207.08,
+      "duration": 3.84,
+      "text": "programming language they choose or"
+    },
+    {
+      "start": 209.08,
+      "duration": 3.2,
+      "text": "which tutorial they're following or"
+    },
+    {
+      "start": 210.92,
+      "duration": 3.6,
+      "text": "whether they're using the right"
+    },
+    {
+      "start": 212.28,
+      "duration": 5.16,
+      "text": "bootcamp. Those are surface-level"
+    },
+    {
+      "start": 214.52,
+      "duration": 4.76,
+      "text": "decisions. The real reason is this. Most"
+    },
+    {
+      "start": 217.44,
+      "duration": 4.12,
+      "text": "people are studying, but they're not"
+    },
+    {
+      "start": 219.28,
+      "duration": 4.84,
+      "text": "actually learning. There's a massive"
+    },
+    {
+      "start": 221.56,
+      "duration": 5.2,
+      "text": "difference. Studying is watching a"
+    },
+    {
+      "start": 224.12,
+      "duration": 4.84,
+      "text": "3-hour course and feeling productive."
+    },
+    {
+      "start": 226.76,
+      "duration": 4.88,
+      "text": "Learning is struggling through a bug for"
+    },
+    {
+      "start": 228.96,
+      "duration": 4.84,
+      "text": "45 minutes and actually understanding"
+    },
+    {
+      "start": 231.64,
+      "duration": 4.72,
+      "text": "why your code broke. Studying is"
+    },
+    {
+      "start": 233.8,
+      "duration": 4.92,
+      "text": "following along with a tutorial, copying"
+    },
+    {
+      "start": 236.36,
+      "duration": 3.88,
+      "text": "code line by line, getting a working app"
+    },
+    {
+      "start": 238.72,
+      "duration": 3.44,
+      "text": "at the end, and thinking you built"
+    },
+    {
+      "start": 240.24,
+      "duration": 4.12,
+      "text": "something. Learning is closing the"
+    },
+    {
+      "start": 242.16,
+      "duration": 4.6,
+      "text": "tutorial, opening a blank editor, and"
+    },
+    {
+      "start": 244.36,
+      "duration": 4.6,
+      "text": "trying to build it from memory, and"
+    },
+    {
+      "start": 246.76,
+      "duration": 3.84,
+      "text": "realizing you can't. Studying feels"
+    },
+    {
+      "start": 248.96,
+      "duration": 4.12,
+      "text": "comfortable. Learning feels"
+    },
+    {
+      "start": 250.6,
+      "duration": 5.639,
+      "text": "uncomfortable. And that discomfort is"
+    },
+    {
+      "start": 253.08,
+      "duration": 5.24,
+      "text": "exactly why most people avoid it. Dr."
+    },
+    {
+      "start": 256.239,
+      "duration": 4.641,
+      "text": "Justin Sung, a learning science"
+    },
+    {
+      "start": 258.32,
+      "duration": 5.36,
+      "text": "researcher, talks about this concept of"
+    },
+    {
+      "start": 260.88,
+      "duration": 4.88,
+      "text": "higher-order learning versus lower-order"
+    },
+    {
+      "start": 263.68,
+      "duration": 4.24,
+      "text": "learning. Lower-order learning is"
+    },
+    {
+      "start": 265.76,
+      "duration": 4.28,
+      "text": "memorizing syntax, copying patterns,"
+    },
+    {
+      "start": 267.92,
+      "duration": 4.2,
+      "text": "collecting information. It feels"
+    },
+    {
+      "start": 270.04,
+      "duration": 4.76,
+      "text": "productive because you're busy, but it"
+    },
+    {
+      "start": 272.12,
+      "duration": 5.28,
+      "text": "produces almost zero retention, zero"
+    },
+    {
+      "start": 274.8,
+      "duration": 4.8,
+      "text": "transferable skill, and zero ability to"
+    },
+    {
+      "start": 277.4,
+      "duration": 5.4,
+      "text": "solve real problems. Higher-order"
+    },
+    {
+      "start": 279.6,
+      "duration": 5.4,
+      "text": "learning is the opposite. It's messy."
+    },
+    {
+      "start": 282.8,
+      "duration": 3.84,
+      "text": "It's frustrating. It's the kind of"
+    },
+    {
+      "start": 285.0,
+      "duration": 3.96,
+      "text": "learning where you're constantly asking"
+    },
+    {
+      "start": 286.64,
+      "duration": 3.8,
+      "text": "yourself, \"Why does this work? And how"
+    },
+    {
+      "start": 288.96,
+      "duration": 4.16,
+      "text": "does this connect to what I already"
+    },
+    {
+      "start": 290.44,
+      "duration": 5.64,
+      "text": "know?\" It's slower in the moment, but it"
+    },
+    {
+      "start": 293.12,
+      "duration": 5.16,
+      "text": "compounds exponentially over time. Think"
+    },
+    {
+      "start": 296.08,
+      "duration": 4.56,
+      "text": "of it like compound interest."
+    },
+    {
+      "start": 298.28,
+      "duration": 4.08,
+      "text": "Lower-order learning gives you pennies"
+    },
+    {
+      "start": 300.64,
+      "duration": 3.44,
+      "text": "today that evaporate tomorrow."
+    },
+    {
+      "start": 302.36,
+      "duration": 3.88,
+      "text": "Higher-order learning builds a"
+    },
+    {
+      "start": 304.08,
+      "duration": 5.16,
+      "text": "foundation that makes everything you"
+    },
+    {
+      "start": 306.24,
+      "duration": 5.28,
+      "text": "learn afterward easier and faster. This"
+    },
+    {
+      "start": 309.24,
+      "duration": 5.44,
+      "text": "is the fundamental shift you need to"
+    },
+    {
+      "start": 311.52,
+      "duration": 5.6,
+      "text": "make. Stop optimizing for hours studied."
+    },
+    {
+      "start": 314.68,
+      "duration": 5.6,
+      "text": "Start optimizing for the quality of each"
+    },
+    {
+      "start": 317.12,
+      "duration": 6.0,
+      "text": "hour. Now, let me show you exactly how"
+    },
+    {
+      "start": 320.28,
+      "duration": 5.72,
+      "text": "to do that. I call this the compound"
+    },
+    {
+      "start": 323.12,
+      "duration": 5.16,
+      "text": "progress framework. Five steps, each"
+    },
+    {
+      "start": 326.0,
+      "duration": 4.28,
+      "text": "building on the last. If you follow this"
+    },
+    {
+      "start": 328.28,
+      "duration": 3.44,
+      "text": "in order, you will move faster than"
+    },
+    {
+      "start": 330.28,
+      "duration": 4.88,
+      "text": "almost everyone else trying to break"
+    },
+    {
+      "start": 331.72,
+      "duration": 5.6,
+      "text": "into tech right now. Step one, solve,"
+    },
+    {
+      "start": 335.16,
+      "duration": 4.96,
+      "text": "don't study. The first and most"
+    },
+    {
+      "start": 337.32,
+      "duration": 5.6,
+      "text": "important shift is this. Stop consuming,"
+    },
+    {
+      "start": 340.12,
+      "duration": 5.4,
+      "text": "start solving. Most beginners spend 80%"
+    },
+    {
+      "start": 342.92,
+      "duration": 5.48,
+      "text": "of their time watching content and 20%"
+    },
+    {
+      "start": 345.52,
+      "duration": 5.44,
+      "text": "building. Flip that ratio. You should be"
+    },
+    {
+      "start": 348.4,
+      "duration": 5.24,
+      "text": "spending 80% of your time wrestling with"
+    },
+    {
+      "start": 350.96,
+      "duration": 4.72,
+      "text": "actual problems and only 20% consuming"
+    },
+    {
+      "start": 353.64,
+      "duration": 5.28,
+      "text": "new information. Here's why this"
+    },
+    {
+      "start": 355.68,
+      "duration": 5.32,
+      "text": "matters. Right now, in April 2026, the"
+    },
+    {
+      "start": 358.92,
+      "duration": 4.6,
+      "text": "hiring landscape has fundamentally"
+    },
+    {
+      "start": 361.0,
+      "duration": 4.28,
+      "text": "changed. AI tools like GitHub Copilot"
+    },
+    {
+      "start": 363.52,
+      "duration": 4.16,
+      "text": "can write basic code faster than you"
+    },
+    {
+      "start": 365.28,
+      "duration": 4.44,
+      "text": "ever will. Companies know this. When"
+    },
+    {
+      "start": 367.68,
+      "duration": 4.12,
+      "text": "they hire a junior developer, they're"
+    },
+    {
+      "start": 369.72,
+      "duration": 4.32,
+      "text": "not looking for someone who can write a"
+    },
+    {
+      "start": 371.8,
+      "duration": 4.28,
+      "text": "for loop. AI handles that. They're"
+    },
+    {
+      "start": 374.04,
+      "duration": 4.28,
+      "text": "looking for someone who can think"
+    },
+    {
+      "start": 376.08,
+      "duration": 4.8,
+      "text": "through problems, debug unexpected"
+    },
+    {
+      "start": 378.32,
+      "duration": 4.36,
+      "text": "behavior, and make decisions about how"
+    },
+    {
+      "start": 380.88,
+      "duration": 4.24,
+      "text": "systems should be designed. A recent"
+    },
+    {
+      "start": 382.68,
+      "duration": 4.88,
+      "text": "survey of 400 engineering leaders found"
+    },
+    {
+      "start": 385.12,
+      "duration": 5.64,
+      "text": "that AI increases developer productivity"
+    },
+    {
+      "start": 387.56,
+      "duration": 5.56,
+      "text": "by an average of 34%. But this boost"
+    },
+    {
+      "start": 390.76,
+      "duration": 4.64,
+      "text": "doesn't apply evenly. It widens the gap"
+    },
+    {
+      "start": 393.12,
+      "duration": 5.04,
+      "text": "between strong and weak engineers."
+    },
+    {
+      "start": 395.4,
+      "duration": 4.36,
+      "text": "Strong engineers who know how to think"
+    },
+    {
+      "start": 398.16,
+      "duration": 3.72,
+      "text": "are worth three times their"
+    },
+    {
+      "start": 399.76,
+      "duration": 3.88,
+      "text": "compensation. Weak engineers who just"
+    },
+    {
+      "start": 401.88,
+      "duration": 4.28,
+      "text": "follow instructions, they're being"
+    },
+    {
+      "start": 403.64,
+      "duration": 5.16,
+      "text": "replaced. So, here's what step one looks"
+    },
+    {
+      "start": 406.16,
+      "duration": 4.96,
+      "text": "like in practice. Pick a real problem"
+    },
+    {
+      "start": 408.8,
+      "duration": 4.8,
+      "text": "that matters to you. Not a weather app,"
+    },
+    {
+      "start": 411.12,
+      "duration": 4.84,
+      "text": "not a to-do list, something connected to"
+    },
+    {
+      "start": 413.6,
+      "duration": 5.12,
+      "text": "your life, your previous career, your"
+    },
+    {
+      "start": 415.96,
+      "duration": 5.08,
+      "text": "hobbies, or your frustrations. Were you"
+    },
+    {
+      "start": 418.72,
+      "duration": 4.56,
+      "text": "an insurance agent? Build a tool that"
+    },
+    {
+      "start": 421.04,
+      "duration": 4.28,
+      "text": "automates the quoting process you hated"
+    },
+    {
+      "start": 423.28,
+      "duration": 3.72,
+      "text": "doing manually. Were you a teacher?"
+    },
+    {
+      "start": 425.32,
+      "duration": 3.36,
+      "text": "Build a platform that solves a real"
+    },
+    {
+      "start": 427.0,
+      "duration": 4.12,
+      "text": "problem that you experienced in the"
+    },
+    {
+      "start": 428.68,
+      "duration": 4.56,
+      "text": "classroom. Were you in retail? Build an"
+    },
+    {
+      "start": 431.12,
+      "duration": 4.52,
+      "text": "inventory tracking system that addresses"
+    },
+    {
+      "start": 433.24,
+      "duration": 5.08,
+      "text": "pain points you personally witnessed."
+    },
+    {
+      "start": 435.64,
+      "duration": 5.12,
+      "text": "This does two things. First, it gives"
+    },
+    {
+      "start": 438.32,
+      "duration": 4.64,
+      "text": "you domain knowledge that separates you"
+    },
+    {
+      "start": 440.76,
+      "duration": 4.2,
+      "text": "from every other junior developer."
+    },
+    {
+      "start": 442.96,
+      "duration": 4.4,
+      "text": "Second, it forces you into"
+    },
+    {
+      "start": 444.96,
+      "duration": 5.0,
+      "text": "problem-solving mode from day one"
+    },
+    {
+      "start": 447.36,
+      "duration": 4.76,
+      "text": "because no tutorial is going to show you"
+    },
+    {
+      "start": 449.96,
+      "duration": 4.96,
+      "text": "how to build your specific thing. When"
+    },
+    {
+      "start": 452.12,
+      "duration": 4.96,
+      "text": "you hit a wall, and you will, that's not"
+    },
+    {
+      "start": 454.92,
+      "duration": 4.48,
+      "text": "a sign you're failing. That's where the"
+    },
+    {
+      "start": 457.08,
+      "duration": 4.52,
+      "text": "real learning happens. Every wall you"
+    },
+    {
+      "start": 459.4,
+      "duration": 4.56,
+      "text": "push through builds the problem-solving"
+    },
+    {
+      "start": 461.6,
+      "duration": 5.64,
+      "text": "muscle that hiring managers are actually"
+    },
+    {
+      "start": 463.96,
+      "duration": 6.2,
+      "text": "testing for. Step two, build the mental"
+    },
+    {
+      "start": 467.24,
+      "duration": 4.48,
+      "text": "model, not the notes. Here's where most"
+    },
+    {
+      "start": 470.16,
+      "duration": 4.16,
+      "text": "people go wrong with their learning"
+    },
+    {
+      "start": 471.72,
+      "duration": 4.24,
+      "text": "process. They watch a tutorial on React,"
+    },
+    {
+      "start": 474.32,
+      "duration": 3.84,
+      "text": "and they take notes. They highlight"
+    },
+    {
+      "start": 475.96,
+      "duration": 4.76,
+      "text": "syntax. They bookmark documentation"
+    },
+    {
+      "start": 478.16,
+      "duration": 5.24,
+      "text": "pages. They create color-coded Notion"
+    },
+    {
+      "start": 480.72,
+      "duration": 4.08,
+      "text": "databases of everything they've learned."
+    },
+    {
+      "start": 483.4,
+      "duration": 3.64,
+      "text": "Then they try to build something from"
+    },
+    {
+      "start": 484.8,
+      "duration": 4.52,
+      "text": "scratch, and they can't do it. All these"
+    },
+    {
+      "start": 487.04,
+      "duration": 4.4,
+      "text": "notes, useless in practice. This is"
+    },
+    {
+      "start": 489.32,
+      "duration": 4.44,
+      "text": "because they built a collection of"
+    },
+    {
+      "start": 491.44,
+      "duration": 4.24,
+      "text": "isolated facts instead of a connected"
+    },
+    {
+      "start": 493.76,
+      "duration": 4.12,
+      "text": "mental model. Think of learning to code"
+    },
+    {
+      "start": 495.68,
+      "duration": 4.12,
+      "text": "like learning to navigate a city. You"
+    },
+    {
+      "start": 497.88,
+      "duration": 4.36,
+      "text": "can memorize every street name and"
+    },
+    {
+      "start": 499.8,
+      "duration": 4.72,
+      "text": "intersection, but if someone drops you"
+    },
+    {
+      "start": 502.24,
+      "duration": 4.88,
+      "text": "on a random corner, you're lost because"
+    },
+    {
+      "start": 504.52,
+      "duration": 4.56,
+      "text": "you memorized labels, not relationships."
+    },
+    {
+      "start": 507.12,
+      "duration": 3.96,
+      "text": "The person who actually knows the city,"
+    },
+    {
+      "start": 509.08,
+      "duration": 4.24,
+      "text": "they understand that the river runs"
+    },
+    {
+      "start": 511.08,
+      "duration": 4.36,
+      "text": "east-west and the neighborhoods stack"
+    },
+    {
+      "start": 513.32,
+      "duration": 4.399,
+      "text": "north to south. They can navigate"
+    },
+    {
+      "start": 515.44,
+      "duration": 4.719,
+      "text": "anywhere because they understand the"
+    },
+    {
+      "start": 517.719,
+      "duration": 4.641,
+      "text": "structure, even if they don't remember"
+    },
+    {
+      "start": 520.159,
+      "duration": 4.481,
+      "text": "every street name. That's what a mental"
+    },
+    {
+      "start": 522.36,
+      "duration": 5.0,
+      "text": "model is. It's understanding how the"
+    },
+    {
+      "start": 524.64,
+      "duration": 5.28,
+      "text": "pieces connect, not memorizing each"
+    },
+    {
+      "start": 527.36,
+      "duration": 4.72,
+      "text": "piece in isolation. Here's how to build"
+    },
+    {
+      "start": 529.92,
+      "duration": 4.32,
+      "text": "a mental model when learning to code."
+    },
+    {
+      "start": 532.08,
+      "duration": 4.96,
+      "text": "After you learn a new concept, close the"
+    },
+    {
+      "start": 534.24,
+      "duration": 5.08,
+      "text": "tutorial and explain it out loud. If you"
+    },
+    {
+      "start": 537.04,
+      "duration": 3.8,
+      "text": "can't explain it simply, you don't"
+    },
+    {
+      "start": 539.32,
+      "duration": 3.92,
+      "text": "understand it yet. When you learn"
+    },
+    {
+      "start": 540.84,
+      "duration": 4.4,
+      "text": "something new, immediately connect it to"
+    },
+    {
+      "start": 543.24,
+      "duration": 4.36,
+      "text": "something you already know. React"
+    },
+    {
+      "start": 545.24,
+      "duration": 4.64,
+      "text": "components are like LEGO bricks. Each"
+    },
+    {
+      "start": 547.6,
+      "duration": 4.28,
+      "text": "one is self-contained. You snap them"
+    },
+    {
+      "start": 549.88,
+      "duration": 4.28,
+      "text": "together, and the combination creates"
+    },
+    {
+      "start": 551.88,
+      "duration": 4.0,
+      "text": "something bigger. That analogy does more"
+    },
+    {
+      "start": 554.16,
+      "duration": 4.08,
+      "text": "for your brain than memorizing the"
+    },
+    {
+      "start": 555.88,
+      "duration": 4.72,
+      "text": "component life cycle API. And most"
+    },
+    {
+      "start": 558.24,
+      "duration": 4.48,
+      "text": "importantly, test yourself constantly."
+    },
+    {
+      "start": 560.6,
+      "duration": 4.12,
+      "text": "After every learning session, open a"
+    },
+    {
+      "start": 562.72,
+      "duration": 4.44,
+      "text": "blank file and try to recreate what you"
+    },
+    {
+      "start": 564.72,
+      "duration": 4.24,
+      "text": "just learned without any reference. The"
+    },
+    {
+      "start": 567.16,
+      "duration": 4.4,
+      "text": "struggle of retrieval is where the"
+    },
+    {
+      "start": 568.96,
+      "duration": 4.96,
+      "text": "neural connections actually form. This"
+    },
+    {
+      "start": 571.56,
+      "duration": 4.8,
+      "text": "approach takes longer per concept, but"
+    },
+    {
+      "start": 573.92,
+      "duration": 4.68,
+      "text": "here's the thing. You learn 20 concepts"
+    },
+    {
+      "start": 576.36,
+      "duration": 4.52,
+      "text": "and actually retain all 20. The fast"
+    },
+    {
+      "start": 578.6,
+      "duration": 4.64,
+      "text": "approach learns 50 concepts and retain"
+    },
+    {
+      "start": 580.88,
+      "duration": 6.36,
+      "text": "three. The math is obvious once you see"
+    },
+    {
+      "start": 583.24,
+      "duration": 6.76,
+      "text": "it. Step three, master what AI can't do."
+    },
+    {
+      "start": 587.24,
+      "duration": 4.44,
+      "text": "In 2026, if your entire skill set is"
+    },
+    {
+      "start": 590.0,
+      "duration": 3.8,
+      "text": "writing code that works, you're"
+    },
+    {
+      "start": 591.68,
+      "duration": 4.08,
+      "text": "competing directly with AI, and you're"
+    },
+    {
+      "start": 593.8,
+      "duration": 4.24,
+      "text": "going to lose. Here's what's actually"
+    },
+    {
+      "start": 595.76,
+      "duration": 5.12,
+      "text": "happening in the job market right now."
+    },
+    {
+      "start": 598.04,
+      "duration": 5.76,
+      "text": "Software engineer jobs listings are up"
+    },
+    {
+      "start": 600.88,
+      "duration": 5.0,
+      "text": "11% year-over-year. AI-related job"
+    },
+    {
+      "start": 603.8,
+      "duration": 3.68,
+      "text": "postings have grown 74%."
+    },
+    {
+      "start": 605.88,
+      "duration": 4.56,
+      "text": "Companies are expanding engineering"
+    },
+    {
+      "start": 607.48,
+      "duration": 4.8,
+      "text": "headcounts, not shrinking them. But, and"
+    },
+    {
+      "start": 610.44,
+      "duration": 3.68,
+      "text": "this is critical, they're not hiring"
+    },
+    {
+      "start": 612.28,
+      "duration": 4.08,
+      "text": "people who can only write code. They're"
+    },
+    {
+      "start": 614.12,
+      "duration": 4.52,
+      "text": "hiring people who can do things AI still"
+    },
+    {
+      "start": 616.36,
+      "duration": 4.48,
+      "text": "can't. There are four specific skills"
+    },
+    {
+      "start": 618.64,
+      "duration": 4.36,
+      "text": "that companies are desperate for. These"
+    },
+    {
+      "start": 620.84,
+      "duration": 4.44,
+      "text": "are the skills that separate candidates"
+    },
+    {
+      "start": 623.0,
+      "duration": 4.04,
+      "text": "who get multiple offers from candidates"
+    },
+    {
+      "start": 625.28,
+      "duration": 4.68,
+      "text": "who get ghosted. Focus on these"
+    },
+    {
+      "start": 627.04,
+      "duration": 4.76,
+      "text": "deliberately. Skill one, system design"
+    },
+    {
+      "start": 629.96,
+      "duration": 3.6,
+      "text": "thinking. This is the ability to"
+    },
+    {
+      "start": 631.8,
+      "duration": 3.92,
+      "text": "architect a solution before writing a"
+    },
+    {
+      "start": 633.56,
+      "duration": 4.96,
+      "text": "single line of code. How should the data"
+    },
+    {
+      "start": 635.72,
+      "duration": 4.76,
+      "text": "flow? What happens when 10,000 users hit"
+    },
+    {
+      "start": 638.52,
+      "duration": 4.72,
+      "text": "this at the same time? Where are the"
+    },
+    {
+      "start": 640.48,
+      "duration": 4.6,
+      "text": "failure points? AI can write a function,"
+    },
+    {
+      "start": 643.24,
+      "duration": 3.88,
+      "text": "it cannot design a system. This is"
+    },
+    {
+      "start": 645.08,
+      "duration": 4.08,
+      "text": "constantly the number one skill gap"
+    },
+    {
+      "start": 647.12,
+      "duration": 4.68,
+      "text": "hiring managers identify in junior"
+    },
+    {
+      "start": 649.16,
+      "duration": 5.36,
+      "text": "candidates. Start practicing this now,"
+    },
+    {
+      "start": 651.8,
+      "duration": 4.8,
+      "text": "even at a basic level. Before you build"
+    },
+    {
+      "start": 654.52,
+      "duration": 4.04,
+      "text": "any feature, sketch out the architecture"
+    },
+    {
+      "start": 656.6,
+      "duration": 3.84,
+      "text": "on paper first. How do the components"
+    },
+    {
+      "start": 658.56,
+      "duration": 3.52,
+      "text": "talk to each other? Where does the data"
+    },
+    {
+      "start": 660.44,
+      "duration": 2.64,
+      "text": "live? What happens when something"
+    },
+    {
+      "start": 662.08,
+      "duration": 3.36,
+      "text": "breaks?"
+    },
+    {
+      "start": 663.08,
+      "duration": 4.4,
+      "text": "Skill two, debugging and root cause"
+    },
+    {
+      "start": 665.44,
+      "duration": 5.0,
+      "text": "analysis. When something breaks in"
+    },
+    {
+      "start": 667.48,
+      "duration": 5.4,
+      "text": "production, AI can suggest fixes, but it"
+    },
+    {
+      "start": 670.44,
+      "duration": 4.56,
+      "text": "can't systematically isolate a problem."
+    },
+    {
+      "start": 672.88,
+      "duration": 4.76,
+      "text": "Understand why it happened and prevent"
+    },
+    {
+      "start": 675.0,
+      "duration": 5.6,
+      "text": "it from happening again. This requires"
+    },
+    {
+      "start": 677.64,
+      "duration": 5.04,
+      "text": "human reasoning and context. Most people"
+    },
+    {
+      "start": 680.6,
+      "duration": 4.6,
+      "text": "avoid debugging practice because it's"
+    },
+    {
+      "start": 682.68,
+      "duration": 5.28,
+      "text": "frustrating. That's exactly why it's so"
+    },
+    {
+      "start": 685.2,
+      "duration": 5.44,
+      "text": "valuable. Engineers who can calmly and"
+    },
+    {
+      "start": 687.96,
+      "duration": 5.12,
+      "text": "methodically diagnose problems are worth"
+    },
+    {
+      "start": 690.64,
+      "duration": 4.88,
+      "text": "their weight in gold. Practice this by"
+    },
+    {
+      "start": 693.08,
+      "duration": 4.36,
+      "text": "intentionally breaking your own code and"
+    },
+    {
+      "start": 695.52,
+      "duration": 4.72,
+      "text": "then fixing it without looking at what"
+    },
+    {
+      "start": 697.44,
+      "duration": 4.84,
+      "text": "you changed. It sounds simple, but it"
+    },
+    {
+      "start": 700.24,
+      "duration": 5.16,
+      "text": "builds a skill that most junior"
+    },
+    {
+      "start": 702.28,
+      "duration": 5.8,
+      "text": "developers completely lack. Skill three,"
+    },
+    {
+      "start": 705.4,
+      "duration": 4.52,
+      "text": "technical communication. Can you explain"
+    },
+    {
+      "start": 708.08,
+      "duration": 4.12,
+      "text": "your code to a non-technical product"
+    },
+    {
+      "start": 709.92,
+      "duration": 4.28,
+      "text": "manager? Can you write a pull request"
+    },
+    {
+      "start": 712.2,
+      "duration": 4.68,
+      "text": "description that another engineer can"
+    },
+    {
+      "start": 714.2,
+      "duration": 4.72,
+      "text": "understand in 30 seconds? Can you walk"
+    },
+    {
+      "start": 716.88,
+      "duration": 4.68,
+      "text": "through your technical decisions in an"
+    },
+    {
+      "start": 718.92,
+      "duration": 4.52,
+      "text": "interview clearly and concisely? When"
+    },
+    {
+      "start": 721.56,
+      "duration": 3.6,
+      "text": "new hires don't work out, study show"
+    },
+    {
+      "start": 723.44,
+      "duration": 3.2,
+      "text": "it's because of soft skills, not"
+    },
+    {
+      "start": 725.16,
+      "duration": 3.36,
+      "text": "technical ability,"
+    },
+    {
+      "start": 726.64,
+      "duration": 4.48,
+      "text": "89% of the time."
+    },
+    {
+      "start": 728.52,
+      "duration": 5.16,
+      "text": "Start practicing technical communication"
+    },
+    {
+      "start": 731.12,
+      "duration": 4.6,
+      "text": "today. Record yourself explaining your"
+    },
+    {
+      "start": 733.68,
+      "duration": 3.68,
+      "text": "code. Write documentation for your"
+    },
+    {
+      "start": 735.72,
+      "duration": 2.92,
+      "text": "projects as if someone else will"
+    },
+    {
+      "start": 737.36,
+      "duration": 4.32,
+      "text": "maintain them."
+    },
+    {
+      "start": 738.64,
+      "duration": 6.48,
+      "text": "Skill four, business context awareness."
+    },
+    {
+      "start": 741.68,
+      "duration": 5.72,
+      "text": "For every feature you build, ask, \"Why"
+    },
+    {
+      "start": 745.12,
+      "duration": 4.48,
+      "text": "does this matter to the business? How"
+    },
+    {
+      "start": 747.4,
+      "duration": 4.0,
+      "text": "does this create value for users? What's"
+    },
+    {
+      "start": 749.6,
+      "duration": 3.28,
+      "text": "the cost of getting this wrong?\""
+    },
+    {
+      "start": 751.4,
+      "duration": 4.0,
+      "text": "Engineers who understand business"
+    },
+    {
+      "start": 752.88,
+      "duration": 5.0,
+      "text": "context don't just get hired, they get"
+    },
+    {
+      "start": 755.4,
+      "duration": 4.88,
+      "text": "promoted. They become the person in the"
+    },
+    {
+      "start": 757.88,
+      "duration": 4.4,
+      "text": "room who can bridge the gap between what"
+    },
+    {
+      "start": 760.28,
+      "duration": 4.68,
+      "text": "the business needs and what the"
+    },
+    {
+      "start": 762.28,
+      "duration": 5.88,
+      "text": "technology can deliver. This is what"
+    },
+    {
+      "start": 764.96,
+      "duration": 5.12,
+      "text": "product-minded engineer means, and it's"
+    },
+    {
+      "start": 768.16,
+      "duration": 3.76,
+      "text": "one of the most sought-after profiles in"
+    },
+    {
+      "start": 770.08,
+      "duration": 4.36,
+      "text": "2026."
+    },
+    {
+      "start": 771.92,
+      "duration": 5.4,
+      "text": "Step four, use AI as your multiplier,"
+    },
+    {
+      "start": 774.44,
+      "duration": 5.0,
+      "text": "not your crutch. Here's the nuance most"
+    },
+    {
+      "start": 777.32,
+      "duration": 4.96,
+      "text": "people miss completely. The solution to"
+    },
+    {
+      "start": 779.44,
+      "duration": 4.64,
+      "text": "AI isn't to ignore it, and it's not to"
+    },
+    {
+      "start": 782.28,
+      "duration": 3.96,
+      "text": "depend on it. It's to use it"
+    },
+    {
+      "start": 784.08,
+      "duration": 4.4,
+      "text": "strategically to multiply your own"
+    },
+    {
+      "start": 786.24,
+      "duration": 4.48,
+      "text": "abilities. Companies are now asking"
+    },
+    {
+      "start": 788.48,
+      "duration": 4.92,
+      "text": "candidates in interviews, \"How do you"
+    },
+    {
+      "start": 790.72,
+      "duration": 4.92,
+      "text": "use AI tools? When do you choose not to"
+    },
+    {
+      "start": 793.4,
+      "duration": 4.64,
+      "text": "use them? How do you validate"
+    },
+    {
+      "start": 795.64,
+      "duration": 5.0,
+      "text": "AI-generated code?\" The engineers who"
+    },
+    {
+      "start": 798.04,
+      "duration": 4.92,
+      "text": "thrive are the ones who use AI to handle"
+    },
+    {
+      "start": 800.64,
+      "duration": 4.84,
+      "text": "the boring parts, boilerplate code,"
+    },
+    {
+      "start": 802.96,
+      "duration": 4.32,
+      "text": "writing tests, generating documentation."
+    },
+    {
+      "start": 805.48,
+      "duration": 3.68,
+      "text": "While they focus on the hard parts that"
+    },
+    {
+      "start": 807.28,
+      "duration": 4.08,
+      "text": "AI can't do well, like designing the"
+    },
+    {
+      "start": 809.16,
+      "duration": 5.12,
+      "text": "architecture, making product decisions,"
+    },
+    {
+      "start": 811.36,
+      "duration": 5.88,
+      "text": "and debugging complex issues. Here's my"
+    },
+    {
+      "start": 814.28,
+      "duration": 5.4,
+      "text": "rule. Use AI to go faster on things you"
+    },
+    {
+      "start": 817.24,
+      "duration": 4.44,
+      "text": "already understand. Never use it to skip"
+    },
+    {
+      "start": 819.68,
+      "duration": 4.44,
+      "text": "things you don't understand yet. If you"
+    },
+    {
+      "start": 821.68,
+      "duration": 4.52,
+      "text": "can write a for loop, but it's tedious,"
+    },
+    {
+      "start": 824.12,
+      "duration": 4.12,
+      "text": "let Copilot complete it. If you don't"
+    },
+    {
+      "start": 826.2,
+      "duration": 4.08,
+      "text": "understand how a for loop works, write"
+    },
+    {
+      "start": 828.24,
+      "duration": 3.72,
+      "text": "50 of them by hand until you do. The"
+    },
+    {
+      "start": 830.28,
+      "duration": 3.32,
+      "text": "moment you use AI to bypass"
+    },
+    {
+      "start": 831.96,
+      "duration": 4.24,
+      "text": "understanding, you're building your"
+    },
+    {
+      "start": 833.6,
+      "duration": 4.6,
+      "text": "career on a foundation of sand. The"
+    },
+    {
+      "start": 836.2,
+      "duration": 4.0,
+      "text": "first technical interview will expose"
+    },
+    {
+      "start": 838.2,
+      "duration": 4.16,
+      "text": "it. The first real production bug will"
+    },
+    {
+      "start": 840.2,
+      "duration": 5.24,
+      "text": "expose it. The first time you need to"
+    },
+    {
+      "start": 842.36,
+      "duration": 5.479,
+      "text": "debug AI-generated code, and you will,"
+    },
+    {
+      "start": 845.44,
+      "duration": 4.72,
+      "text": "it will expose it. Be the developer who"
+    },
+    {
+      "start": 847.839,
+      "duration": 3.961,
+      "text": "uses AI because they're strong, not the"
+    },
+    {
+      "start": 850.16,
+      "duration": 4.679,
+      "text": "developer who uses AI because they're"
+    },
+    {
+      "start": 851.8,
+      "duration": 5.159,
+      "text": "weak. Step five, compress your timeline"
+    },
+    {
+      "start": 854.839,
+      "duration": 4.841,
+      "text": "with structure and accountability."
+    },
+    {
+      "start": 856.959,
+      "duration": 4.521,
+      "text": "Here's the final piece, and honestly,"
+    },
+    {
+      "start": 859.68,
+      "duration": 3.92,
+      "text": "it's the one that makes the biggest"
+    },
+    {
+      "start": 861.48,
+      "duration": 4.92,
+      "text": "difference. Everything I've described so"
+    },
+    {
+      "start": 863.6,
+      "duration": 4.92,
+      "text": "far, solving real problems, building"
+    },
+    {
+      "start": 866.4,
+      "duration": 5.08,
+      "text": "mental models, mastering AI-proof"
+    },
+    {
+      "start": 868.52,
+      "duration": 5.559,
+      "text": "skills, using AI strategically, this is"
+    },
+    {
+      "start": 871.48,
+      "duration": 5.56,
+      "text": "the what. But the what doesn't matter if"
+    },
+    {
+      "start": 874.079,
+      "duration": 5.361,
+      "text": "you don't have the how and the when. The"
+    },
+    {
+      "start": 877.04,
+      "duration": 4.76,
+      "text": "number one reason career changers or CS"
+    },
+    {
+      "start": 879.44,
+      "duration": 4.56,
+      "text": "students fail isn't lack of knowledge,"
+    },
+    {
+      "start": 881.8,
+      "duration": 4.279,
+      "text": "it's the lack of structure. They don't"
+    },
+    {
+      "start": 884.0,
+      "duration": 4.32,
+      "text": "know what to focus on this week versus"
+    },
+    {
+      "start": 886.079,
+      "duration": 4.201,
+      "text": "next month. They don't know if they're"
+    },
+    {
+      "start": 888.32,
+      "duration": 4.32,
+      "text": "making real progress or just spinning"
+    },
+    {
+      "start": 890.28,
+      "duration": 4.88,
+      "text": "their wheels. They don't have anyone to"
+    },
+    {
+      "start": 892.64,
+      "duration": 4.72,
+      "text": "tell them when they're wasting time on"
+    },
+    {
+      "start": 895.16,
+      "duration": 4.76,
+      "text": "the wrong thing. And here's the hidden"
+    },
+    {
+      "start": 897.36,
+      "duration": 5.0,
+      "text": "cost that nobody talks about. Every"
+    },
+    {
+      "start": 899.92,
+      "duration": 4.68,
+      "text": "month you spend learning inefficiently"
+    },
+    {
+      "start": 902.36,
+      "duration": 4.68,
+      "text": "isn't just a month of lost time, it's a"
+    },
+    {
+      "start": 904.6,
+      "duration": 5.92,
+      "text": "month of lost income. If a developer"
+    },
+    {
+      "start": 907.04,
+      "duration": 5.72,
+      "text": "role pays 70k to 110k per year, every"
+    },
+    {
+      "start": 910.52,
+      "duration": 4.96,
+      "text": "month of delay costs you $6,000 to"
+    },
+    {
+      "start": 912.76,
+      "duration": 5.0,
+      "text": "$9,000 in potential earnings. Three"
+    },
+    {
+      "start": 915.48,
+      "duration": 5.32,
+      "text": "months of unfocused learning, that's"
+    },
+    {
+      "start": 917.76,
+      "duration": 5.48,
+      "text": "potentially 27 grand left on the table."
+    },
+    {
+      "start": 920.8,
+      "duration": 4.72,
+      "text": "This is why structured mentorship isn't"
+    },
+    {
+      "start": 923.24,
+      "duration": 4.12,
+      "text": "an expense, it's the highest return"
+    },
+    {
+      "start": 925.52,
+      "duration": 4.28,
+      "text": "investment you can make in your career"
+    },
+    {
+      "start": 927.36,
+      "duration": 4.96,
+      "text": "transition. I'm not saying you can't do"
+    },
+    {
+      "start": 929.8,
+      "duration": 5.0,
+      "text": "this alone. Some people can, but the"
+    },
+    {
+      "start": 932.32,
+      "duration": 4.72,
+      "text": "data is clear. The people who have"
+    },
+    {
+      "start": 934.8,
+      "duration": 4.2,
+      "text": "structured guidance, clear milestones,"
+    },
+    {
+      "start": 937.04,
+      "duration": 4.6,
+      "text": "and someone who has already walked the"
+    },
+    {
+      "start": 939.0,
+      "duration": 5.04,
+      "text": "path consistently get there faster. It's"
+    },
+    {
+      "start": 941.64,
+      "duration": 4.64,
+      "text": "the same reason elite athletes have"
+    },
+    {
+      "start": 944.04,
+      "duration": 3.919,
+      "text": "coaches, not because they're weak,"
+    },
+    {
+      "start": 946.28,
+      "duration": 4.08,
+      "text": "because they're serious about getting"
+    },
+    {
+      "start": 947.959,
+      "duration": 4.88,
+      "text": "results as fast as possible."
+    },
+    {
+      "start": 950.36,
+      "duration": 4.36,
+      "text": "Let me bring this all together. If you"
+    },
+    {
+      "start": 952.839,
+      "duration": 4.041,
+      "text": "want to make progress faster than"
+    },
+    {
+      "start": 954.72,
+      "duration": 5.48,
+      "text": "everyone else trying to break into tech,"
+    },
+    {
+      "start": 956.88,
+      "duration": 6.24,
+      "text": "here's the system. One, solve, don't"
+    },
+    {
+      "start": 960.2,
+      "duration": 5.36,
+      "text": "study. Spend 80% of your time building"
+    },
+    {
+      "start": 963.12,
+      "duration": 4.4,
+      "text": "and wrestling with real problems. Pick a"
+    },
+    {
+      "start": 965.56,
+      "duration": 3.519,
+      "text": "project tied to your personal"
+    },
+    {
+      "start": 967.52,
+      "duration": 4.84,
+      "text": "experience."
+    },
+    {
+      "start": 969.079,
+      "duration": 5.681,
+      "text": "Two, build mental models, not notes."
+    },
+    {
+      "start": 972.36,
+      "duration": 4.52,
+      "text": "Connect concepts to each other. Test"
+    },
+    {
+      "start": 974.76,
+      "duration": 4.12,
+      "text": "yourself constantly. If you can't"
+    },
+    {
+      "start": 976.88,
+      "duration": 5.84,
+      "text": "explain it from memory, you don't know"
+    },
+    {
+      "start": 978.88,
+      "duration": 6.04,
+      "text": "it yet. Three, master what AI can't do."
+    },
+    {
+      "start": 982.72,
+      "duration": 4.88,
+      "text": "System design, debugging, technical"
+    },
+    {
+      "start": 984.92,
+      "duration": 4.56,
+      "text": "communication, business context. These"
+    },
+    {
+      "start": 987.6,
+      "duration": 3.479,
+      "text": "are the skills that get you hired and"
+    },
+    {
+      "start": 989.48,
+      "duration": 5.04,
+      "text": "keep you employed."
+    },
+    {
+      "start": 991.079,
+      "duration": 5.961,
+      "text": "Four, use AI as a multiplier, not a"
+    },
+    {
+      "start": 994.52,
+      "duration": 4.6,
+      "text": "crutch. Automate the parts you already"
+    },
+    {
+      "start": 997.04,
+      "duration": 5.36,
+      "text": "understand. Never skip the parts you"
+    },
+    {
+      "start": 999.12,
+      "duration": 5.6,
+      "text": "don't. And five, compress your timeline"
+    },
+    {
+      "start": 1002.4,
+      "duration": 4.64,
+      "text": "with structure. Get clear milestones,"
+    },
+    {
+      "start": 1004.72,
+      "duration": 4.44,
+      "text": "expert feedback, and accountability so"
+    },
+    {
+      "start": 1007.04,
+      "duration": 3.08,
+      "text": "you stop wasting months on the wrong"
+    },
+    {
+      "start": 1009.16,
+      "duration": 2.88,
+      "text": "things."
+    },
+    {
+      "start": 1010.12,
+      "duration": 4.76,
+      "text": "This framework isn't theory, it's the"
+    },
+    {
+      "start": 1012.04,
+      "duration": 5.08,
+      "text": "exact system that my students use to go"
+    },
+    {
+      "start": 1014.88,
+      "duration": 4.64,
+      "text": "from zero to hired at companies that"
+    },
+    {
+      "start": 1017.12,
+      "duration": 4.4,
+      "text": "most people dream about. And speaking of"
+    },
+    {
+      "start": 1019.52,
+      "duration": 4.2,
+      "text": "that, if you're serious about making"
+    },
+    {
+      "start": 1021.52,
+      "duration": 5.36,
+      "text": "this transition, I want to tell you"
+    },
+    {
+      "start": 1023.72,
+      "duration": 5.04,
+      "text": "about something. Last year, 40 people"
+    },
+    {
+      "start": 1026.88,
+      "duration": 4.079,
+      "text": "went through my mentorship program and"
+    },
+    {
+      "start": 1028.76,
+      "duration": 5.04,
+      "text": "broke into tech. This year, we've"
+    },
+    {
+      "start": 1030.959,
+      "duration": 5.281,
+      "text": "already helped a dozen more land roles."
+    },
+    {
+      "start": 1033.8,
+      "duration": 5.159,
+      "text": "These are people who are exactly where"
+    },
+    {
+      "start": 1036.24,
+      "duration": 4.92,
+      "text": "you are right now, career changers with"
+    },
+    {
+      "start": 1038.959,
+      "duration": 3.88,
+      "text": "no coding background wondering if they"
+    },
+    {
+      "start": 1041.16,
+      "duration": 3.84,
+      "text": "could actually pull this off. They"
+    },
+    {
+      "start": 1042.839,
+      "duration": 4.281,
+      "text": "landed roles at companies like Zillow,"
+    },
+    {
+      "start": 1045.0,
+      "duration": 6.16,
+      "text": "American Express, and NatWest with"
+    },
+    {
+      "start": 1047.12,
+      "duration": 6.52,
+      "text": "salaries ranging from 70 to 110k a year."
+    },
+    {
+      "start": 1051.16,
+      "duration": 5.44,
+      "text": "Not because they're geniuses, because"
+    },
+    {
+      "start": 1053.64,
+      "duration": 5.2,
+      "text": "they followed a proven system with real"
+    },
+    {
+      "start": 1056.6,
+      "duration": 4.64,
+      "text": "support, real accountability, and a"
+    },
+    {
+      "start": 1058.84,
+      "duration": 3.76,
+      "text": "mentor who has actually done what"
+    },
+    {
+      "start": 1061.24,
+      "duration": 3.08,
+      "text": "they're trying to do."
+    },
+    {
+      "start": 1062.6,
+      "duration": 4.16,
+      "text": "I'm not going to pressure you, but I"
+    },
+    {
+      "start": 1064.32,
+      "duration": 4.76,
+      "text": "will say this. The people who joined"
+    },
+    {
+      "start": 1066.76,
+      "duration": 4.2,
+      "text": "this program have one thing in common."
+    },
+    {
+      "start": 1069.08,
+      "duration": 4.08,
+      "text": "They stopped telling themselves, \"I'll"
+    },
+    {
+      "start": 1070.96,
+      "duration": 4.92,
+      "text": "figure it out later.\" and started taking"
+    },
+    {
+      "start": 1073.16,
+      "duration": 4.64,
+      "text": "action today. If that sounds like you,"
+    },
+    {
+      "start": 1075.88,
+      "duration": 3.76,
+      "text": "there's a link in the description. You"
+    },
+    {
+      "start": 1077.8,
+      "duration": 4.48,
+      "text": "can check out the details, see the"
+    },
+    {
+      "start": 1079.64,
+      "duration": 4.88,
+      "text": "results from real students, and decide"
+    },
+    {
+      "start": 1082.28,
+      "duration": 4.64,
+      "text": "if it's the right fit. And if you're not"
+    },
+    {
+      "start": 1084.52,
+      "duration": 4.8,
+      "text": "ready for that yet, that's totally fine."
+    },
+    {
+      "start": 1086.92,
+      "duration": 5.0,
+      "text": "Take this framework, apply it today, and"
+    },
+    {
+      "start": 1089.32,
+      "duration": 4.52,
+      "text": "start making real progress. But don't"
+    },
+    {
+      "start": 1091.92,
+      "duration": 4.64,
+      "text": "let this video be another thing you"
+    },
+    {
+      "start": 1093.84,
+      "duration": 4.52,
+      "text": "watched and forgot about. Pick one step"
+    },
+    {
+      "start": 1096.56,
+      "duration": 4.0,
+      "text": "from this framework and implement it"
+    },
+    {
+      "start": 1098.36,
+      "duration": 4.04,
+      "text": "before you go to bed tonight. If you"
+    },
+    {
+      "start": 1100.56,
+      "duration": 3.6,
+      "text": "found this valuable, leave a comment"
+    },
+    {
+      "start": 1102.4,
+      "duration": 4.04,
+      "text": "telling me which step hit hardest for"
+    },
+    {
+      "start": 1104.16,
+      "duration": 4.2,
+      "text": "you. And if you know someone who's been"
+    },
+    {
+      "start": 1106.44,
+      "duration": 4.32,
+      "text": "stuck in tutorial hell trying to break"
+    },
+    {
+      "start": 1108.36,
+      "duration": 4.0,
+      "text": "into tech, send them this video. It"
+    },
+    {
+      "start": 1110.76,
+      "duration": 3.28,
+      "text": "might be the thing that finally gets"
+    },
+    {
+      "start": 1112.36,
+      "duration": 3.92,
+      "text": "them moving. I'll see you in the next"
+    },
+    {
+      "start": 1114.04,
+      "duration": 6.2,
+      "text": "one. And just remember, if I can do it,"
+    },
+    {
+      "start": 1116.28,
+      "duration": 3.96,
+      "text": "you can do it, too. Coding saves lives."
+    }
+  ]
+}

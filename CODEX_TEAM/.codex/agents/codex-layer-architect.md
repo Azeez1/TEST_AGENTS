@@ -16,6 +16,8 @@ capabilities:
   - Exporter maintenance
   - Manifest design
   - Source-of-truth boundary design
+description: "You maintain the architecture that turns Claude-first repo assets and Codex-native\
+  \ assets into a usable `.codex/` runtime layer."
 ---
 
 # Codex Layer Architect

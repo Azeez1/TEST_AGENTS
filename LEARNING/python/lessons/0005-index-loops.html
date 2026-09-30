@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python syntax 03: loop over positions</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f7fb; color: #15233a; }
+    body { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; line-height: 1.55; }
+    main { background: white; padding: 28px; border: 1px solid #dce4ed; border-radius: 16px; box-shadow: 0 8px 28px #1020300b; }
+    h1 { line-height: 1.15; margin-top: 0; }
+    h2 { margin-top: 32px; }
+    .eyebrow { color: #146b70; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    pre { background: #101d30; color: #e8f4ff; padding: 16px; border-radius: 10px; overflow-x: auto; }
+    .task { background: #e9f7f4; border-left: 4px solid #14846f; padding: 14px 18px; border-radius: 8px; }
+    a { color: #075c91; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">FDE Python prep · syntax 03 · about 5 minutes</p>
+  <h1>Loop over positions</h1>
+  <p><strong>The basic fact:</strong> if a string has 4 characters, its positions are <code>0</code>, <code>1</code>, <code>2</code>, and <code>3</code>. The position <code>4</code> is past the end.</p>
+  <p><code>len(s)</code> gives the number of characters. <code>range(len(s))</code> supplies each valid position, stopping before the length. The loop variable is a number; <code>s[i]</code> uses that number to read the character.</p>
+  <pre><code>s = "code"
+for i in range(len(s)):
+    print(i, s[i])</code></pre>
+  <p>This visits <code>0/c</code>, <code>1/o</code>, <code>2/d</code>, then <code>3/e</code>. See the <a href="https://docs.python.org/3/tutorial/controlflow.html#the-range-function">official Python tutorial on <code>range()</code></a>.</p>
+  <h2>Your turn</h2>
+  <div class="task">
+    <p>For <code>s = "sun"</code>, what values will <code>i</code> take in <code>for i in range(len(s))</code>? What will <code>s[i]</code> be on the second pass? Explain why <code>i</code> never becomes <code>3</code>.</p>
+  </div>
+  <p>Send your answer to your tutor before writing an index loop from memory.</p>
+</main>
+</body>
+</html>

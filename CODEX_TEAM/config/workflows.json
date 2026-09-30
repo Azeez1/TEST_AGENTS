@@ -1,0 +1,166 @@
+{
+  "schema": "test-agents/workflows/v1",
+  "mode": "compatibility_pilot",
+  "model_policy": "inherit_session_unless_user_selects",
+  "delegation": "only_if_user_authorizes",
+  "workflows": {
+    "linkedin_draft": {
+      "team": "MARKETING_TEAM",
+      "owner": "social-media-manager",
+      "related_roles": [
+        "content-strategist"
+      ],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "brand_review",
+        "source_grounding"
+      ]
+    },
+    "source_research": {
+      "team": "MARKETING_TEAM",
+      "owner": "research-agent",
+      "related_roles": [],
+      "required_capabilities": [
+        "source_reader"
+      ],
+      "external_actions": [],
+      "acceptance_checks": [
+        "full_body_access",
+        "citations"
+      ]
+    },
+    "lead_enrichment": {
+      "team": "MARKETING_TEAM",
+      "owner": "lead-gen-agent",
+      "related_roles": [],
+      "required_capabilities": [
+        "lead_lookup"
+      ],
+      "external_actions": [],
+      "acceptance_checks": [
+        "deduplicate",
+        "source_links"
+      ]
+    },
+    "proposal_evidence": {
+      "team": "PROPOSAL_TEAM",
+      "owner": "rfp-agent",
+      "related_roles": [],
+      "required_capabilities": [
+        "evidence_retrieval"
+      ],
+      "external_actions": [],
+      "acceptance_checks": [
+        "evidence_grounding",
+        "missing_evidence_report"
+      ]
+    },
+    "voice_voicemail": {
+      "team": "VOICE_TEAM",
+      "owner": "voice-onboarder",
+      "related_roles": [],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "offline_flow",
+        "privacy"
+      ]
+    },
+    "code_change": {
+      "team": "ENGINEERING_TEAM",
+      "owner": "backend-architect",
+      "related_roles": [],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "relevant_tests",
+        "diff_review"
+      ]
+    },
+    "document": {
+      "team": "MARKETING_TEAM",
+      "owner": "pdf-specialist",
+      "related_roles": [],
+      "required_capabilities": [
+        "pdf_renderer"
+      ],
+      "external_actions": [],
+      "acceptance_checks": [
+        "rendered_pages",
+        "content_review"
+      ]
+    },
+    "resume_task": {
+      "team": "CODEX_TEAM",
+      "owner": "codex-team-manager",
+      "related_roles": [],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "artifact_hashes",
+        "next_step"
+      ]
+    },
+    "email_campaign": {
+      "team": "MARKETING_TEAM",
+      "owner": "email-specialist",
+      "related_roles": [
+        "newsletter-agent"
+      ],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "brand_review",
+        "recipient_review"
+      ]
+    },
+    "gmail_send": {
+      "team": "MARKETING_TEAM",
+      "owner": "gmail-agent",
+      "related_roles": [],
+      "required_capabilities": [
+        "google_workspace_gmail"
+      ],
+      "external_actions": [
+        "send_email"
+      ],
+      "acceptance_checks": [
+        "recipient",
+        "attachment",
+        "send_result"
+      ]
+    },
+    "qa_suite": {
+      "team": "QA_TEAM",
+      "owner": "test-orchestrator",
+      "related_roles": [
+        "unit-test-agent",
+        "integration-test-agent",
+        "edge-case-agent",
+        "fixture-agent"
+      ],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "meaningful_assertions",
+        "offline_tests"
+      ]
+    },
+    "financial_plan": {
+      "team": "FINANCIAL_TEAM",
+      "owner": "fpna-agent",
+      "related_roles": [
+        "forecasting-agent",
+        "financial-analyst"
+      ],
+      "required_capabilities": [],
+      "external_actions": [],
+      "acceptance_checks": [
+        "assumptions",
+        "reconciliation",
+        "sensitivity"
+      ]
+    }
+  }
+}

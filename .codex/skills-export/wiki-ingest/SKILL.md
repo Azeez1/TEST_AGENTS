@@ -1,6 +1,6 @@
 ---
 name: "wiki-ingest"
-description: ">"
+description: "Process raw source files (articles, transcripts, papers, notes) into structured wiki articles in the Obsidian vault. Reads raw files, generates summaries with YAML frontmatter, extracts key concepts, creates backlinks, and updates the master index. Use when the user drops new files into raw/ or says \"ingest\", \"process\", \"add to wiki\", or \"compile this into the wiki\"."
 ---
 
 # Wiki Ingest — Raw Data → Wiki Articles

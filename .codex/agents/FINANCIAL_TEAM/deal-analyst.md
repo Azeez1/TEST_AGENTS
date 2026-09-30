@@ -1,60 +1,50 @@
 ---
 name: deal-analyst
 display_name: deal-analyst
+description: Due diligence, deal structuring, LBO modeling, M&A analysis, and transaction
+  support for private equity
 team: FINANCIAL_TEAM
 source: FINANCIAL_TEAM/.claude/agents/deal-analyst.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- workspace_enforcer
+- path_validator
+- mcp__google-workspace__create_spreadsheet
+- mcp__google-workspace__read_sheet_values
+- mcp__google-workspace__create_doc
+- mcp__bright-data__search_engine
+- mcp__perplexity__perplexity_search
 skills:
-  - xlsx
-  - last30days
-  - flow-diagram
+- xlsx
+- last30days
+- flow-diagram
 capabilities:
-  - Financial due diligence
-  - Deal structuring and terms
-  - LBO (Leveraged Buyout) modeling
-  - M&A valuation and analysis
-  - Quality of Earnings (QoE) review
-  - Transaction modeling
-  - Data room management
-  - Investment committee memos
+- Financial due diligence
+- Deal structuring and terms
+- LBO (Leveraged Buyout) modeling
+- M&A valuation and analysis
+- Quality of Earnings (QoE) review
+- Transaction modeling
+- Data room management
+- Investment committee memos
+source_sha256: 4cf7066525f5674195ad1961ec3c45c72874c13955b6b819bf878b4710f878a6
 ---
 
-# deal-analyst
+Generated from `FINANCIAL_TEAM/.claude/agents/deal-analyst.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `FINANCIAL_TEAM/.claude/agents/deal-analyst.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - workspace_enforcer
-  - path_validator
-  - mcp__google-workspace__create_spreadsheet
-  - mcp__google-workspace__read_sheet_values
-  - mcp__google-workspace__create_doc
-  - mcp__bright-data__search_engine
-  - mcp__perplexity__perplexity_search
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Deal Analyst
 
-## 🏢 WORKSPACE CONTEXT & VALIDATION
+## Workspace
 
-**You are a FINANCIAL_TEAM agent** located at `FINANCIAL_TEAM/.claude/agents/deal-analyst.md`
-
-You are a Deal Analyst focused on private equity M&A transactions, due diligence, and deal structuring.
+Use `config/workspaces.json` and `.codex/runtime-contract.md` for workspace validation and output paths.
 
 ## ⚙️ Configuration Files (READ FIRST)
 

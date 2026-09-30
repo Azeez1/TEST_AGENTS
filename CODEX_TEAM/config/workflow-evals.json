@@ -1,0 +1,140 @@
+{
+  "schema": "test-agents/workflow-evals/v1",
+  "scope": "Deterministic routing contract checks; not an LLM quality benchmark",
+  "cases": [
+    {
+      "id": "linkedin_draft",
+      "workflow": "linkedin_draft",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "social-media-manager",
+      "expected_status": "ready"
+    },
+    {
+      "id": "source_research",
+      "workflow": "source_research",
+      "available_capabilities": [
+        "source_reader"
+      ],
+      "authorized_actions": [],
+      "expected_owner": "research-agent",
+      "expected_status": "ready"
+    },
+    {
+      "id": "lead_enrichment",
+      "workflow": "lead_enrichment",
+      "available_capabilities": [
+        "lead_lookup"
+      ],
+      "authorized_actions": [],
+      "expected_owner": "lead-gen-agent",
+      "expected_status": "ready"
+    },
+    {
+      "id": "proposal_evidence",
+      "workflow": "proposal_evidence",
+      "available_capabilities": [
+        "evidence_retrieval"
+      ],
+      "authorized_actions": [],
+      "expected_owner": "rfp-agent",
+      "expected_status": "ready"
+    },
+    {
+      "id": "voice_voicemail",
+      "workflow": "voice_voicemail",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "voice-onboarder",
+      "expected_status": "ready"
+    },
+    {
+      "id": "code_change",
+      "workflow": "code_change",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "backend-architect",
+      "expected_status": "ready"
+    },
+    {
+      "id": "document",
+      "workflow": "document",
+      "available_capabilities": [
+        "pdf_renderer"
+      ],
+      "authorized_actions": [],
+      "expected_owner": "pdf-specialist",
+      "expected_status": "ready"
+    },
+    {
+      "id": "resume_task",
+      "workflow": "resume_task",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "codex-team-manager",
+      "expected_status": "ready"
+    },
+    {
+      "id": "email_campaign",
+      "workflow": "email_campaign",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "email-specialist",
+      "expected_status": "ready"
+    },
+    {
+      "id": "gmail_send",
+      "workflow": "gmail_send",
+      "available_capabilities": [
+        "google_workspace_gmail"
+      ],
+      "authorized_actions": [
+        "send_email"
+      ],
+      "expected_owner": "gmail-agent",
+      "expected_status": "ready"
+    },
+    {
+      "id": "qa_suite",
+      "workflow": "qa_suite",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "test-orchestrator",
+      "expected_status": "ready"
+    },
+    {
+      "id": "financial_plan",
+      "workflow": "financial_plan",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "fpna-agent",
+      "expected_status": "ready"
+    },
+    {
+      "id": "email_without_authorization",
+      "workflow": "gmail_send",
+      "available_capabilities": [
+        "google_workspace_gmail"
+      ],
+      "authorized_actions": [],
+      "expected_owner": "gmail-agent",
+      "expected_status": "blocked"
+    },
+    {
+      "id": "proposal_without_retrieval",
+      "workflow": "proposal_evidence",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "rfp-agent",
+      "expected_status": "blocked"
+    },
+    {
+      "id": "research_without_full_source_tool",
+      "workflow": "source_research",
+      "available_capabilities": [],
+      "authorized_actions": [],
+      "expected_owner": "research-agent",
+      "expected_status": "blocked"
+    }
+  ]
+}

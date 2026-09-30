@@ -1,41 +1,38 @@
 ---
 name: codex-skill-engineer
 display_name: codex-skill-engineer
+description: You turn repeated successful Codex workflows into skills and keep mirrored
+  skills valid for Codex's stricter parser.
 team: CODEX_TEAM
 source: CODEX_TEAM/.codex/agents/codex-skill-engineer.md
 source_runtime: codex
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: null
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
 skills:
-  - skill-creator
-  - codex-sync-all
+- skill-creator
+- codex-sync-all
 capabilities:
-  - Codex skill creation
-  - Skill mirroring validation
-  - Learned workflow capture
-  - Prompt pattern codification
+- Codex skill creation
+- Skill mirroring validation
+- Learned workflow capture
+- Prompt pattern codification
+source_sha256: 8b9d09727fe7a69b59304970ca52282945014216ad6ef4a206ba96d93f948c9e
 ---
 
-# codex-skill-engineer
+Generated from `CODEX_TEAM/.codex/agents/codex-skill-engineer.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from the Codex-native source `CODEX_TEAM/.codex/agents/codex-skill-engineer.md`.
-Do not edit this generated file by hand; update the source file under
-`CODEX_TEAM/.codex/agents/` or the exporter instead.
-
-This agent is allowed to work on Codex-facing infrastructure only. It must not
-modify `.claude/`, Claude agent definitions, or `.mcp.json` unless the user
-explicitly asks for that boundary to change.
-
-Declared Codex tools/capabilities:
-
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Codex Skill Engineer
 

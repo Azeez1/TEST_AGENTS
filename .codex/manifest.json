@@ -1,7 +1,9 @@
 {
-  "schema": "test-agents/codex-layer/v1",
+  "schema": "test-agents/codex-layer/v2",
   "sourceRuntime": "claude+codex-native",
   "targetRuntime": "codex",
+  "runtimeContract": ".codex/runtime-contract.md",
+  "workspaceRegistry": "config/workspaces.json",
   "notes": [
     "Generated without modifying .claude infrastructure.",
     "Codex-native agents are loaded from CODEX_TEAM/.codex/agents.",
@@ -16,15 +18,20 @@
       "source": ".claude/agents/linkedin-brand-reviewer.md",
       "codex_instructions": ".codex/agents/ROOT/linkedin-brand-reviewer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Grep",
         "Glob"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Independent reviewer subagent that scores a draft LinkedIn post against Dux Machina brand voice rules and structural requirements. Returns a structured verdict as its final message. Read-only by design \u2014 cannot modify the post being reviewed.",
+      "source_sha256": "5f61e5620809d20fa1567a30a10c5e53e83d4459d8ff2c4048d4463303c5202c",
+      "rendered_sha256": "356c04f283c9cdde70c4da7cf1b52c8e0e92b2229cc186208879c34a3052c672",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "oracle",
@@ -33,8 +40,8 @@
       "source": ".claude/agents/oracle.md",
       "codex_instructions": ".codex/agents/ROOT/oracle.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -49,7 +56,12 @@
         "wiki-lint"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Personal knowledge base (second brain) manager \u2014 ingests sources (YouTube, articles, notes) into an Obsidian-based knowledge wiki, maintains indexes and cross-references, answers questions against the entire knowledge base, and runs health checks. Single entry point for all knowledge operations.",
+      "source_sha256": "d9997192ce66ab6d5e64c4ab65964146add89e56b93c04c146513dacd11ca99e",
+      "rendered_sha256": "ba5f5cc4b370354f38f84df88eac3c00d4e2b96e8a0004ff6649706349018568",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "pe-diagnosis-validator",
@@ -58,8 +70,8 @@
       "source": ".claude/agents/pe-diagnosis-validator.md",
       "codex_instructions": ".codex/agents/ROOT/pe-diagnosis-validator.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -68,7 +80,12 @@
         "mcp__bright-data__search_engine"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Validates PE Operating Partner diagnosis PDFs against the 7-rule Verification Framework before send. Writes a .validation_pass marker file on success. The Drive upload hook blocks uploads without this marker.",
+      "source_sha256": "47fe3a534915fc387d50ae6003fde09ce9a65291822ebf4c499d742a507ebf36",
+      "rendered_sha256": "2426b120cb279350ff459c303373cbdd295cd8d6d1370a8a725694a599a503c4",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "pe-diagnosis-visual-reviewer",
@@ -77,15 +94,20 @@
       "source": ".claude/agents/pe-diagnosis-visual-reviewer.md",
       "codex_instructions": ".codex/agents/ROOT/pe-diagnosis-visual-reviewer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Grep",
         "Glob"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Independent reviewer subagent that scores a newly-generated PE diagnosis against the canonical visual + content quality bar set by past approved diagnoses. Returns a structured verdict as its final message. Read-only by design \u2014 cannot modify the content being reviewed.",
+      "source_sha256": "c588724886aa63b89dcc04db44caa542c7511f5e80ec57533b7240d94894fea0",
+      "rendered_sha256": "aa222064bbd5e9116b11ce32808d5b019949ef7966358d2bb985a093ceb11684",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "supervisor",
@@ -94,8 +116,8 @@
       "source": ".claude/agents/supervisor.md",
       "codex_instructions": ".codex/agents/ROOT/supervisor.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Grep",
@@ -113,7 +135,12 @@
         "Documentation completeness checks",
         "Cross-team coordination verification",
         "Comprehensive verification reporting"
-      ]
+      ],
+      "description": "Root-level quality assurance supervisor that verifies task completion across all teams",
+      "source_sha256": "422cd564123a01af651b0867cc3801c5c8a4f06bde5470dfba3f292d4206e546",
+      "rendered_sha256": "3ffa70f279288b5b9c42af55a28cac0f2a8994782003ab66356f7a1588192e3d",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "analyst",
@@ -122,8 +149,8 @@
       "source": "MARKETING_TEAM/.claude/agents/analyst.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/analyst.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -146,6 +173,13 @@
         "A/B test analysis",
         "Trend identification",
         "Market data collection"
+      ],
+      "description": "Marketing performance analysis, competitive benchmarking, and metrics tracking",
+      "source_sha256": "ba085520dead7875a7fbe7622e269aecb25119018bec60cadd9519500da76758",
+      "rendered_sha256": "3d365395165a2dafd063c55186d83f2de4d4cea6f0d9e5a64e1b42630e621c39",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -155,8 +189,8 @@
       "source": "MARKETING_TEAM/.claude/agents/automation-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/automation-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "mcp__n8n-mcp__n8n_list_workflows",
         "mcp__n8n-mcp__n8n_get_workflow",
@@ -178,6 +212,13 @@
         "Change management and runbook creation",
         "Collaboration with router and campaign agents",
         "Deliverable packaging for stakeholders"
+      ],
+      "description": "Designs and manages marketing automations by orchestrating n8n workflows through the n8n MCP interface",
+      "source_sha256": "9421c0fa02154475cfc7d511ff71aec68cc86db851f54ee08d9aa7677ad7fc7f",
+      "rendered_sha256": "d65fae78b33c5eb9864104ea29070539c16265d44e816df336af0e3eee6c9d94",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -187,8 +228,8 @@
       "source": "MARKETING_TEAM/.claude/agents/content-strategist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/content-strategist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -205,6 +246,13 @@
         "Subagent coordination",
         "Quality oversight",
         "Multi-channel strategy"
+      ],
+      "description": "Lead agent that plans and coordinates marketing campaigns",
+      "source_sha256": "69c12bd9ffa81fe2c7c68069e2e444213b1ea92ddc8aeaf0a37de8113883a044",
+      "rendered_sha256": "533a60a4d6fefc366f8cfe4cec793283435339a3ab219c54bbc8ddb0f8082f9e",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -214,8 +262,8 @@
       "source": "MARKETING_TEAM/.claude/agents/copywriter.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/copywriter.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -233,6 +281,13 @@
         "Web copy",
         "Ad copy",
         "Internal communications (status reports, newsletters, FAQs)"
+      ],
+      "description": "Content writing specialist for blogs, articles, copy, and internal communications",
+      "source_sha256": "90249b6f7d3d7e37f722752fa3491cd70b0b5aa2f0aa55ebc49cfd1691970e9f",
+      "rendered_sha256": "be2b00cbc181f1382e132bb1517face3cd5c6bb027bac95fb7f0d062b30cdc40",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -242,8 +297,8 @@
       "source": "MARKETING_TEAM/.claude/agents/editor.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/editor.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -258,6 +313,13 @@
         "Brand voice compliance",
         "Grammar and style checking",
         "Presentation QA review"
+      ],
+      "description": "Content review, QA specialist for documents and presentations",
+      "source_sha256": "d777644979017de1f0d220055286d6bef6bc3a1da70907cdd6bac87bb68ffbaa",
+      "rendered_sha256": "c8c6ec673c8f8765a17fd5231e16dad06a6b25a5c7f63e9c0a2d670c3edf0fd7",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -267,8 +329,8 @@
       "source": "MARKETING_TEAM/.claude/agents/email-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/email-specialist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -281,6 +343,13 @@
         "Subject line optimization",
         "Email sequences",
         "Newsletter creation"
+      ],
+      "description": "Creates email campaigns, sequences, and newsletters",
+      "source_sha256": "9c95ea087ed7d87cac0721f8ff09cc4ad68ebc60ee633609e0c66c8f7b28e297",
+      "rendered_sha256": "6d096da5226d1bc6df3912d01e624d2174387c92622148167d60dd61dbbd9524",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -290,8 +359,8 @@
       "source": "MARKETING_TEAM/.claude/agents/gmail-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/gmail-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -308,6 +377,13 @@
         "Send email campaigns",
         "Email automation",
         "Send emails with attachments"
+      ],
+      "description": "Sends emails, creates drafts, manages Gmail operations",
+      "source_sha256": "b2acfd0eaf1d7875df6a789fc98b19b1953bd645892f7c3e0899e52b1363c27f",
+      "rendered_sha256": "a323fbb11c580112434d6b8e6b41e2103aeca28b35a869a6fe00571e7f2fe488",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -317,8 +393,8 @@
       "source": "MARKETING_TEAM/.claude/agents/landing-page-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/landing-page-specialist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -346,6 +422,13 @@
         "CRO experimentation planning",
         "Accessibility compliance",
         "Analytics and tracking recommendations"
+      ],
+      "description": "Research-driven landing page strategist who delivers conversion-optimized UX plans and production-ready code with React artifacts and themes",
+      "source_sha256": "0966007d3fb61db781d903363fd549357ce18390913995893e2f91f596095926",
+      "rendered_sha256": "e66cb8b12bacbc56c0927aecc8c44224be0482c7ad8ee3ec6415dad7d490b12e",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -355,8 +438,8 @@
       "source": "MARKETING_TEAM/.claude/agents/lead-gen-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/lead-gen-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -382,6 +465,13 @@
         "Contact enrichment (business emails, phone numbers)",
         "Lead export (CSV, Google Sheets, CRM formats)",
         "Lead qualification and filtering"
+      ],
+      "description": "Business lead generation specialist using advanced web scraping for B2B and local lead discovery",
+      "source_sha256": "e50715f210b75fdf55cabea2a32e79d80addec438e1460a9dd84684525484e70",
+      "rendered_sha256": "17addfcef5bfbae583b246cfeb8735167979a554c35545ba54f5d56ddee1acc9",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -391,8 +481,8 @@
       "source": "MARKETING_TEAM/.claude/agents/newsletter-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/newsletter-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -425,6 +515,13 @@
         "Newsletter series planning",
         "Audience segmentation strategies",
         "Cross-client responsive email design"
+      ],
+      "description": "Creative newsletter specialist for marketing campaigns, company updates, and engaging email content",
+      "source_sha256": "1551780ad0d7035f25b59adf798c1a8743fd7e83f1fc99f0c6a4845b17f439d7",
+      "rendered_sha256": "b0ad9397771066bc9b08a0163f746b3638f34678a36e2000648005b114694e22",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -434,8 +531,8 @@
       "source": "MARKETING_TEAM/.claude/agents/pdf-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/pdf-specialist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -454,6 +551,13 @@
         "eBook formatting",
         "PDF form filling",
         "Beautiful PDF document design"
+      ],
+      "description": "Creates PDFs like whitepapers, lead magnets, reports, and fillable forms",
+      "source_sha256": "8432040c29096c0c2d1c3991c5b71b7dfcb4d158029b13f864feab0a6b160a26",
+      "rendered_sha256": "16467c9cd60d3995fe2b435d6f63179ff757e29adb9a5b63084b35236c845726",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -463,8 +567,8 @@
       "source": "MARKETING_TEAM/.claude/agents/presentation-designer.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/presentation-designer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -486,6 +590,13 @@
         "Interactive React presentations with artifacts-builder",
         "Image generation via GPT-4o",
         "Google Drive upload integration"
+      ],
+      "description": "Creates professional PowerPoint presentations using pptx skill, theme-factory, and GPT-4o images",
+      "source_sha256": "3df754599dd8f2cbdc328f028c412c65fe8d968420ef9bc950710f9506ca1038",
+      "rendered_sha256": "75b8db1c30b730ee542c36bdd6b90e9f60ff791419481017a96f43f6e6bcbe02",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -495,8 +606,8 @@
       "source": "MARKETING_TEAM/.claude/agents/research-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/research-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -521,6 +632,13 @@
         "Market research",
         "Trend identification",
         "Competitor website analysis"
+      ],
+      "description": "Deep research specialist using Perplexity AI and Bright Data for comprehensive, cited analysis and competitive intelligence",
+      "source_sha256": "3633024620448606d74afb4d9ef2eedac58b51ef7c49a5f78df016a8a5308c19",
+      "rendered_sha256": "54614e4c67559e5ac2079918523fa0d5b0c5e88a2a62af15738b5c4f23be4466",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -530,8 +648,8 @@
       "source": "MARKETING_TEAM/.claude/agents/router-agent.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/router-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Task",
         "workspace_enforcer",
@@ -547,6 +665,13 @@
         "Conversation management",
         "Multi-turn dialogue",
         "Clarification questions"
+      ],
+      "description": "Conversational router that classifies user intent and orchestrates specialist agents",
+      "source_sha256": "8747354b090ac2753c582e227322680917b79c4a30f55ee68011353b6a73b59b",
+      "rendered_sha256": "47b92b3a2680ddc7ab853439ea06c31b64d2a24777f7800d0d8a8c966fa17b3d",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -556,8 +681,8 @@
       "source": "MARKETING_TEAM/.claude/agents/seo-specialist.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/seo-specialist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -581,6 +706,13 @@
         "Competitor SEO analysis",
         "Web research via Perplexity",
         "Strategic browser automation"
+      ],
+      "description": "Keyword research and SEO analysis using Perplexity AI, Bright Data SERP scraping, and selective web research",
+      "source_sha256": "1e6c21f84d71286d9164738fcd78965db49d0543cf64a898587daeeb3e65e3f3",
+      "rendered_sha256": "4a5bac6a59102c5f0a44f1a56a62a8c635ce0420bb074ab251c7d4d494bfeb96",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -590,8 +722,8 @@
       "source": "MARKETING_TEAM/.claude/agents/social-media-manager.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/social-media-manager.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -612,6 +744,13 @@
         "Visual content pairing",
         "Generative art creation",
         "Animated GIF creation for Slack"
+      ],
+      "description": "Creates platform-optimized posts for X/Twitter and LinkedIn with generative art and animated GIFs",
+      "source_sha256": "f158b5bce04c2fc567ce24c62d34029fe91624bd2cc6154f48fcb9f0cb43765b",
+      "rendered_sha256": "f7e52c388fe53292d51be0b07fb3f3b8dc160d79b1ba5089a51d030c1a3eec66",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -621,8 +760,8 @@
       "source": "MARKETING_TEAM/.claude/agents/video-producer.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/video-producer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -645,6 +784,13 @@
         "Video specifications",
         "Platform optimization (TikTok, Instagram, Facebook)",
         "Cost estimation"
+      ],
+      "description": "Video ad creation using Veo 3.1 (image-to-video UGC ads) and Sora-2 (text-to-video) - $0.75/sec for Veo, $0.10/sec for Sora",
+      "source_sha256": "59f65680b7fb2ce112e9511229fde669e92b60885b5d1ed238e422b14fd6e9d2",
+      "rendered_sha256": "391184c80fa6f4bd02224b97ea13527bcd80cf6f70e20a93eeb890f77aae1b8a",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -654,8 +800,8 @@
       "source": "MARKETING_TEAM/.claude/agents/visual-designer.md",
       "codex_instructions": ".codex/agents/MARKETING_TEAM/visual-designer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -689,6 +835,13 @@
         "Design theme application",
         "Figma design extraction",
         "Flow diagrams and LinkedIn carousels (glassmorphism, neon, hand-drawn styles)"
+      ],
+      "description": "Creates product images for UGC ads via Nano Banana (Gemini 2.5 Flash), general images via GPT-4o, plus generative art and themed artifacts",
+      "source_sha256": "1a38b9406038bad09cc8fc5851504381e907b199d53a6bb3adf60558b7c6b1f7",
+      "rendered_sha256": "7688ce21f19e1ed54988f7e5c2132322a20bcc6eda584f326b099c27ba0f5cb9",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -698,8 +851,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/ai-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/ai-engineer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -711,7 +864,14 @@
       "skills": [
         "last30days"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "LLM application and RAG system specialist. Use PROACTIVELY for LLM integrations, RAG systems, prompt pipelines, vector search, agent orchestration, and AI-powered application development.",
+      "source_sha256": "ed81534f4c1f98cc05e498ce5115c0fb2abe316aa15ed1a6dbe3d116b72458c1",
+      "rendered_sha256": "138d00a53885e4746ccadca699f9d0d74526c9ffc19d12f2948c7bdd6a9ddee4",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "analytics-dashboard-agent",
@@ -720,8 +880,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/analytics-dashboard-agent.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/analytics-dashboard-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -735,7 +895,14 @@
         "infographic-creator:infographic-creator",
         "frontend-design:frontend-design"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Real-time analytics dashboard specialist for client data visualization. Use PROACTIVELY for building interactive dashboards, data visualization, real-time metrics, multi-source data integration, and client-specific analytics solutions.",
+      "source_sha256": "01371bc4076f82368fa83dac0589dd8cdf45d385156bf41855963586fd4cee5d",
+      "rendered_sha256": "04d628a9ebbe60e9ba03d8fe08621e9d92bab83dea008ccc74ac71fb6e5da95a",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "backend-architect",
@@ -744,8 +911,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/backend-architect.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/backend-architect.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -758,7 +925,14 @@
         "excalidraw-diagrams",
         "flow-diagram"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Backend system architecture and API design specialist. Use PROACTIVELY for RESTful APIs, microservice boundaries, database schemas, scalability planning, and performance optimization.",
+      "source_sha256": "0ef489ec667245316549a4b636f7c5109a128231f70102a328e8701c6544658f",
+      "rendered_sha256": "6030180ba5665093a82e5f1f8f0e4a225f0eb54fa9bceafa936d7f5b064a96a3",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "code-reviewer",
@@ -767,8 +941,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/code-reviewer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/code-reviewer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -779,7 +953,14 @@
         "path_validator"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Expert code review specialist for quality, security, and maintainability. Use PROACTIVELY after writing or modifying code to ensure high development standards.",
+      "source_sha256": "fd8c64b1741cfab4616f17b1ab7c0697f0888a12c33b1e7b5ed3c6c73afa0eb3",
+      "rendered_sha256": "f3e1be9252fd6eed07b4cf06ca255e2f74c1d3907474922fe5a9a940574e3828",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "cto",
@@ -788,8 +969,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/cto.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/cto.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -804,6 +985,13 @@
         "Quality gate coordination",
         "Dependency tracking and sequencing",
         "Cross-functional team coordination"
+      ],
+      "description": "Chief Technology Officer - Strategic coordinator for all 14 ENGINEERING_TEAM specialist agents (15 total including CTO)",
+      "source_sha256": "b1434c9bf35591e76af30ff80aad945f739fcec6b8430789cc5bc65e47da184f",
+      "rendered_sha256": "a256702e040933f8e45cefa802f91c3287b12c79192c298c54348d8d5859d81f",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -813,8 +1001,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/database-architect.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/database-architect.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -824,7 +1012,12 @@
         "path_validator"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Database architecture and design specialist. Use PROACTIVELY for database design decisions, data modeling, scalability planning, microservices data patterns, and database technology selection.",
+      "source_sha256": "e0c1088bfa76a84415fd325f6cfd9e3e1b0bfc8b7ff200838bbb2650e69bc454",
+      "rendered_sha256": "1b5931469f2003bfa1255aeda740c9b284e8aad5f26a17974fc3a561ca910016",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "debugger",
@@ -833,8 +1026,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/debugger.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/debugger.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -845,7 +1038,14 @@
         "path_validator"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Debugging specialist for errors, test failures, and unexpected behavior. Use PROACTIVELY when encountering issues, analyzing stack traces, or investigating system problems.",
+      "source_sha256": "7e593e190bca92a7f76f2ad4c83db7069172e5b2483dbb8c59a9ccf1efd187ad",
+      "rendered_sha256": "9f2785f18d25956863e4adf505dc1373ae602350222e2febc9cdfcffc3025010",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "devops-engineer",
@@ -854,8 +1054,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/devops-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/devops-engineer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -868,7 +1068,12 @@
         "excalidraw-diagrams",
         "flow-diagram"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "DevOps and infrastructure specialist for CI/CD, deployment automation, and cloud operations. Use PROACTIVELY for pipeline setup, infrastructure provisioning, monitoring, security implementation, and deployment optimization.",
+      "source_sha256": "94c90e606a3495674dcd15c11edfabe1c76c7967ef9b3b15fccf27c0ce0c5767",
+      "rendered_sha256": "c9c84d9aa609b98ee97e45529095100934e548153abbc61ffd9b516a9c7e3e8d",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "frontend-developer",
@@ -877,8 +1082,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/frontend-developer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/frontend-developer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -890,7 +1095,14 @@
       "skills": [
         "frontend-design:frontend-design"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Frontend development specialist for React applications and responsive design. Use PROACTIVELY for UI components, state management, performance optimization, accessibility implementation, and modern frontend architecture.",
+      "source_sha256": "1ff067cfb30fb04cc30e6f30b34b8b903437f6e9a71e6cea8db1dcf3401a67c9",
+      "rendered_sha256": "c038e975a1b9299970ffaff72bed5215fea7d42df656d0f040dde037fed8c245",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "prompt-engineer",
@@ -899,8 +1111,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/prompt-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/prompt-engineer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -911,7 +1123,14 @@
       "skills": [
         "last30days"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Expert prompt optimization for LLMs and AI systems. Use PROACTIVELY when building AI features, improving agent performance, or crafting system prompts. Masters prompt patterns and techniques.",
+      "source_sha256": "b67bdadaeb65602b3eb2e983c75f01fd44c3fbcb7c519b4bde89536fe9914c14",
+      "rendered_sha256": "5bcf8343edac50f531998f0a668ab04a092fa4b8b0649a97943fb2497f6c400d",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "security-auditor",
@@ -920,8 +1139,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/security-auditor.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/security-auditor.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -933,7 +1152,14 @@
         "path_validator"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Code security analysis, vulnerability scanning, penetration testing, compliance audits",
+      "source_sha256": "fe43af76c54dc360e2629782cf834ff55994662fa83d51b46bba36a370331ca1",
+      "rendered_sha256": "23b7388631d05ef829836d6354ba20ba6222c49cc9f78a171d86ae4febc50cb7",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "system-architect",
@@ -942,8 +1168,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/system-architect.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/system-architect.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -961,7 +1187,14 @@
         "docx",
         "theme-factory"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Design system architectures, create flow diagrams, visualize data flows, document technical systems using professional interactive diagrams. Specializes in Mermaid diagrams for microservices, APIs, databases, CI/CD pipelines, and technical documentation.",
+      "source_sha256": "34633b826f1fc9fd2f9dc853db40d2a9ecff89b9dd78ee88e0856e3a796afa24",
+      "rendered_sha256": "9f887a2756710a11db57e5f4987e85b499b7c27d15a67eb3e7763cde43af3686",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "technical-writer",
@@ -970,8 +1203,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/technical-writer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/technical-writer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -985,7 +1218,14 @@
         "excalidraw-diagrams",
         "flow-diagram"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Documentation, PRDs, technical specs, API docs, user guides, architecture diagrams",
+      "source_sha256": "84c121450df6bc96dad06cd725f9843f5da4a295badee83e0f746412f58cd1be",
+      "rendered_sha256": "7d1fe2cbf472df6eaa71199be89713b77c88319d94e7230b4a1f2b674470fde7",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "test-engineer",
@@ -994,8 +1234,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/test-engineer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/test-engineer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -1005,7 +1245,12 @@
         "path_validator"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Test automation and quality assurance specialist. Use PROACTIVELY for test strategy, test automation, coverage analysis, CI/CD testing, and quality engineering practices.",
+      "source_sha256": "6d9c7a6703683f6099b36f0b73101f18c67989f7f76fe4f89050374b76b5aa3f",
+      "rendered_sha256": "04331f5061c5ac29264e88405b1399f62b20f58efd9d0f9906002333c093ea12",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "ui-ux-designer",
@@ -1014,8 +1259,8 @@
       "source": "ENGINEERING_TEAM/.claude/agents/ui-ux-designer.md",
       "codex_instructions": ".codex/agents/ENGINEERING_TEAM/ui-ux-designer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -1026,7 +1271,14 @@
       "skills": [
         "frontend-design:frontend-design"
       ],
-      "capabilities": []
+      "capabilities": [],
+      "description": "UI/UX design specialist for user-centered design and interface systems. Use PROACTIVELY for user research, wireframes, design systems, prototyping, accessibility standards, and user experience optimization.",
+      "source_sha256": "8d5458bc7e0fa34614917e931b11aa031f2dfab98ee7c861d347bf4f04c9dd0d",
+      "rendered_sha256": "914e4bdd04aea9bbaa4800b4bbda65f81d7693dd4abe0885b57550bb710387cd",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
+      ]
     },
     {
       "slug": "edge-case-agent",
@@ -1035,8 +1287,8 @@
       "source": "QA_TEAM/.claude/agents/edge-case-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/edge-case-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1049,6 +1301,13 @@
         "Boundary value analysis",
         "Error scenario testing",
         "Negative testing"
+      ],
+      "description": "Identifies and tests edge cases, boundary conditions, and error scenarios",
+      "source_sha256": "9ff78b211b277b925b1fadee54f167450b4be253ebf16d4254d98a42041cc2b6",
+      "rendered_sha256": "e58182f0e64573df8b4bbbcad2b741307ddefa8b19ec6fc57a11c4de98b51a95",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1058,8 +1317,8 @@
       "source": "QA_TEAM/.claude/agents/fixture-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/fixture-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1072,6 +1331,13 @@
         "Test data generation",
         "Mock object creation",
         "Shared test utilities"
+      ],
+      "description": "Creates pytest fixtures, test data, and mocks for reusable test components",
+      "source_sha256": "c3898ddf03b106c72a1b3e43a1c91d9b580eacfe3e2d137e5af5e3a037cea2bc",
+      "rendered_sha256": "34236e2f3f3dd95c03e9ad15e07e8703a92c1cf673e81063bff3b9ec04747c1b",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1081,8 +1347,8 @@
       "source": "QA_TEAM/.claude/agents/integration-test-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/integration-test-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1095,6 +1361,13 @@
         "Workflow testing",
         "Module interaction testing",
         "End-to-end scenarios"
+      ],
+      "description": "Creates integration tests for module interactions and workflows",
+      "source_sha256": "000ad384b0157749b849b48aaa4de6ea3707994dde632801974c59fd4c4dc019",
+      "rendered_sha256": "749ec8bb1d3bf8f6d678b04d1b4993c2fb8569920c6f790c18831f54b01e21ef",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1104,8 +1377,8 @@
       "source": "QA_TEAM/.claude/agents/test-orchestrator.md",
       "codex_instructions": ".codex/agents/QA_TEAM/test-orchestrator.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1120,6 +1393,13 @@
         "Test strategy planning",
         "Coordinating specialist test agents",
         "Test execution and reporting"
+      ],
+      "description": "Main testing agent that coordinates test generation and execution",
+      "source_sha256": "ffbb15a6693652836645fb4d8685c5f874340823280230a314f7d3626feaf60e",
+      "rendered_sha256": "41d0f0084a1fd313b953856f56ba53ef040c62e66db398907bcf95b1ce14d524",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1129,8 +1409,8 @@
       "source": "QA_TEAM/.claude/agents/unit-test-agent.md",
       "codex_instructions": ".codex/agents/QA_TEAM/unit-test-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1143,6 +1423,13 @@
         "Function/method testing",
         "Class testing",
         "Mock creation"
+      ],
+      "description": "Generates unit tests for individual functions and classes",
+      "source_sha256": "d7c6c537647d48b0cf688c3d36adb82aa7b221eb02e5d74ca0f9cad1d358d56e",
+      "rendered_sha256": "c4fb86db491465436727c0b89c700e9324339199433f2a72adaf242f90d039e9",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1152,8 +1439,8 @@
       "source": "PROPOSAL_TEAM/.claude/agents/proposal-tracker.md",
       "codex_instructions": ".codex/agents/PROPOSAL_TEAM/proposal-tracker.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Grep",
@@ -1162,7 +1449,12 @@
         "Write"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Cross-proposal open-item tracker. Scans every PROPOSAL_TEAM/outputs/<topic_id>/ folder, extracts open items from PARTNER_CHECKLIST.md + sbir_validation_report.md + [USER VERIFY] / [PLACEHOLDER] markers, and maintains PROPOSAL_TEAM/outputs/PROPOSAL_TRACKER.xlsx. Also answers Q&A about open items (\"what's open on NV004?\", \"what does Rasheed still owe?\"). Invoked manually by user OR automatically by hook on .sbir_validation_* writes.",
+      "source_sha256": "64d98275a5f08a3fb27c46b735012bfb387e01da38ccac1d03c0a9c4ce88dc14",
+      "rendered_sha256": "cd2288fc4b671f225179f4c649592350deebb14baef2546d719d3b02f209d027",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "rfp-agent",
@@ -1171,8 +1463,8 @@
       "source": "PROPOSAL_TEAM/.claude/agents/rfp-agent.md",
       "codex_instructions": ".codex/agents/PROPOSAL_TEAM/rfp-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "rfp_parser",
         "compliance_engine",
@@ -1204,7 +1496,12 @@
         "Document creation with PDF, DOCX, PPTX, XLSX skills",
         "Visual design with canvas-design and flow-diagram skills",
         "Professional styling with theme-factory and brand-guidelines"
-      ]
+      ],
+      "description": "RFP automation and proposal generation specialist",
+      "source_sha256": "83e669cc59778f0b93d203dc778495187ad513747b47945ef48a6eacff5f8d58",
+      "rendered_sha256": "8b8b486d71f0d0f099f306dea76db2d10d4f5fd5e09bde5393b0cbb8af7b0d9c",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "sbir-validator",
@@ -1213,8 +1510,8 @@
       "source": "PROPOSAL_TEAM/.claude/agents/sbir-validator.md",
       "codex_instructions": ".codex/agents/PROPOSAL_TEAM/sbir-validator.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Grep",
@@ -1223,7 +1520,12 @@
         "Bash"
       ],
       "skills": [],
-      "capabilities": []
+      "capabilities": [],
+      "description": "Independent reviewer subagent that validates a generated SBIR proposal against Layer 1 (BAA Preface) universal rules AND Layer 2 (component-specific) rules for the topic's component. Returns a structured PASS/FAIL/CONDITIONAL_PASS verdict and writes a marker file. Read-only against proposal content \u2014 cannot modify what rfp-agent produced.",
+      "source_sha256": "e02979c5519ea6d68132e3a994e3656c6a4234e16d84e28284d43edab5dc59fe",
+      "rendered_sha256": "e48c4d746c41698d090924df58efcd55ffd2e37e828df16c3a5388270b4af040",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "accountant",
@@ -1232,8 +1534,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/accountant.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/accountant.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1254,6 +1556,13 @@
         "Payroll processing support",
         "Month-end close procedures",
         "General ledger maintenance"
+      ],
+      "description": "Day-to-day accounting, bookkeeping, accounts payable/receivable, reconciliations, and transaction processing",
+      "source_sha256": "1e477172f133d4b51fb7732298350f27d88fbdd9d41adc3a24228327eb7d87b0",
+      "rendered_sha256": "1dea9ba8208d078e24f9885fb32b9a9664167527e55ed4b3d737d5947b2c6589",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1263,8 +1572,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/cfo-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/cfo-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1291,6 +1600,13 @@
         "Strategic planning",
         "Investor relations",
         "Exit planning"
+      ],
+      "description": "Strategic finance leadership - capital strategy, fundraising, board relations, M&A, and financial strategy",
+      "source_sha256": "1286a3cd73b9efef9eb63d0a5e7dc45bdb0dd62462438f50438929131a8d8283",
+      "rendered_sha256": "15545871d30c3c6687fc36aff39bdc2c6023e67e67dac8a9f6070c3ef9aa2715",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1300,8 +1616,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/controller.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/controller.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1322,6 +1638,13 @@
         "Lease accounting (ASC 842)",
         "Technical accounting guidance",
         "SOX compliance"
+      ],
+      "description": "Financial reporting, compliance, audit coordination, internal controls, and accounting operations management",
+      "source_sha256": "8d5d684c34cf27cd7b7fdee3975a4c54a5b31b12e82bd10deff73c08240d6ef2",
+      "rendered_sha256": "ce109a837b82b6b4a56c9d6d3e7ba6f768339e920f38ce1aabdf8e1d7b4a22ab",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1331,8 +1654,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/deal-analyst.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/deal-analyst.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1356,6 +1679,13 @@
         "Transaction modeling",
         "Data room management",
         "Investment committee memos"
+      ],
+      "description": "Due diligence, deal structuring, LBO modeling, M&A analysis, and transaction support for private equity",
+      "source_sha256": "4cf7066525f5674195ad1961ec3c45c72874c13955b6b819bf878b4710f878a6",
+      "rendered_sha256": "1a9c7ffe03fc66a12f0469c6311c369e3beb76539cebec1b36a72c465116f5e3",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1365,8 +1695,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/financial-analyst.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/financial-analyst.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1392,6 +1722,13 @@
         "Financial reporting and visualization",
         "Investment analysis",
         "Working capital analysis"
+      ],
+      "description": "Financial modeling, 3-statement models, DCF analysis, scenario planning, and business performance analysis",
+      "source_sha256": "3680010f6348bf58f27616812a3b4b2f3986f450f77374ef14a671ed62911fe8",
+      "rendered_sha256": "732f424930434b070cbc2c3a5c12c2301fc7c69b1e606d42e2b2d0e405857d48",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1401,8 +1738,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/financial-data-analyst.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1428,7 +1765,12 @@
         "ETL pipeline design for financial data",
         "Statistical analysis of financial metrics",
         "Automated reporting and data pipelines"
-      ]
+      ],
+      "description": "SQL-driven financial analysis, data visualization, interactive dashboards, and data quality assurance for financial reporting",
+      "source_sha256": "1bdd5ce997ea645aa917fee1a9a9354e0243cb85eaa458a5ff2b308f1f393c85",
+      "rendered_sha256": "e13eee7ec4d87ad08dcb88793b3abdafa0fa21f0010816e7111baabecf87ba33",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "forecasting-agent",
@@ -1437,8 +1779,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/forecasting-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/forecasting-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1461,6 +1803,13 @@
         "Sensitivity analysis",
         "Financial planning projections",
         "Variance analysis"
+      ],
+      "description": "Revenue and expense forecasting, scenario modeling, predictive analytics, and financial projections",
+      "source_sha256": "740d0b5139e7a81f4f722cc2576d0de68ba0ebf2f9ef41f066075196b266e5b1",
+      "rendered_sha256": "0e36c29d046489c14164d4411877a08129511cc88b5278bfb8fb51cce3425e14",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1470,8 +1819,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/fpna-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/fpna-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1493,6 +1842,13 @@
         "Strategic planning support",
         "Department budget management",
         "Long-range planning (3-5 years)"
+      ],
+      "description": "Financial Planning & Analysis - budgeting, variance analysis, rolling forecasts, and strategic planning",
+      "source_sha256": "fc5f18f738b9ad52555434c25fb9bc64093352d1d17480e8e5854c36953a06d1",
+      "rendered_sha256": "0d59af5aff3940898528742e44321f278695715964f931d6112af2d6e6fb5531",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1502,8 +1858,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/investor-relations-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/investor-relations-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1533,7 +1889,12 @@
         "Investor onboarding documentation",
         "ESG reporting for investors",
         "Co-investment opportunity memos"
-      ]
+      ],
+      "description": "LP communications, fund performance reporting, fundraising materials, capital calls, and investor data room management",
+      "source_sha256": "4710cc8d83693956487db2fbd53f5db0d69bd2ce2ccdbb68b6b2c165e9dd9c3d",
+      "rendered_sha256": "f5c8f077ff78c3f94f9cae4f0eb3c2a30eb6052ad94ab14bfa476525f7f85726",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "portfolio-manager",
@@ -1542,8 +1903,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/portfolio-manager.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/portfolio-manager.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1569,6 +1930,13 @@
         "Exit planning and readiness",
         "Fund-level reporting",
         "Portfolio analytics"
+      ],
+      "description": "Portfolio company performance tracking, KPI monitoring, value creation planning, and board reporting",
+      "source_sha256": "6078969f23b4a13b6c87d248a72e0d91d4d5cbf382d22120837387d781f00005",
+      "rendered_sha256": "82a0fc9ad26faf78016149cd92550edf64c7d80de07571e0c7a4d8b688854f49",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1578,8 +1946,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/tax-advisor.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/tax-advisor.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1602,6 +1970,13 @@
         "Transfer pricing",
         "R&D tax credits",
         "International tax planning"
+      ],
+      "description": "Tax planning, compliance, entity structure optimization, M&A tax strategy, and tax provision",
+      "source_sha256": "df38fa917009b20d2b790c026b6ed4fb046c88e05c0307336347b9bc11061375",
+      "rendered_sha256": "0afeb36f005e042e192e94579f489bac88d06f6b9afe37a93786ea9aaae8febf",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1611,8 +1986,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/trading-optimizer.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/trading-optimizer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1634,6 +2009,13 @@
         "Self-improving autoresearch loop (reason \u2192 modify \u2192 backtest \u2192 measure \u2192 keep/revert \u2192 repeat)",
         "Results tracking and experiment logging",
         "Cross-symbol and out-of-sample validation"
+      ],
+      "description": "ICT strategy autoresearch optimizer \u2014 iteratively modifies backtest parameters, runs local Python backtester, and tracks performance against Funding Pips risk constraints. Self-improving loop where Claude reasons about results between iterations.",
+      "source_sha256": "fa308cf0a465544b1f7c14881aa633f9f5dd419d5da306d96552a08c23f99510",
+      "rendered_sha256": "84a67019cdd1acd46c50460c0c09267168d290e39d306aa2b4c45bc7bd036369",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1643,8 +2025,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/treasury-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/treasury-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1668,7 +2050,12 @@
         "Capital structure optimization",
         "Cash pooling and intercompany funding",
         "Debt maturity management"
-      ]
+      ],
+      "description": "Cash management, working capital optimization, debt covenant monitoring, liquidity planning, and FX hedging",
+      "source_sha256": "298d7f466be748ff0ee02a262bdbf26e43930b185e2757270cfff6535eafc309",
+      "rendered_sha256": "b5ff74bd914c4f47d922873f6eb40fc8a9e1c8dc279f07fceec501a91f54d6e9",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "valuation-agent",
@@ -1677,8 +2064,8 @@
       "source": "FINANCIAL_TEAM/.claude/agents/valuation-agent.md",
       "codex_instructions": ".codex/agents/FINANCIAL_TEAM/valuation-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1702,6 +2089,13 @@
         "Terminal value analysis",
         "Fairness opinions",
         "Purchase price allocation"
+      ],
+      "description": "Business valuation using DCF, comparables, precedent transactions, and asset-based methods",
+      "source_sha256": "dff396a6d12977073f7f25d0f8d8166e2b7ac49f77346b1dd4b4aa2aa97405d1",
+      "rendered_sha256": "db377d9cd4518aeca5ec549c0748edde701bd62bc09150f5821d1d665fb75918",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1711,8 +2105,8 @@
       "source": "SALES_TEAM/.claude/agents/account-executive.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/account-executive.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1737,6 +2131,13 @@
         "Deal closing strategies",
         "Relationship building",
         "Pipeline management"
+      ],
+      "description": "Full-cycle sales - discovery, demos, proposals, negotiations, and deal closing",
+      "source_sha256": "e3da7c529bd35c7f6eb8360d728f7088147d5b573837bf8659b72fbbb9d6b67a",
+      "rendered_sha256": "77f9e9498553b382b48c24ad70032b5fb117f7d57d2fde4bc06aabc94d270b56",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1746,8 +2147,8 @@
       "source": "SALES_TEAM/.claude/agents/customer-success-manager.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/customer-success-manager.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1773,6 +2174,13 @@
         "Renewal management",
         "Customer advocacy and references",
         "QBR (Quarterly Business Review) facilitation"
+      ],
+      "description": "Customer onboarding, adoption, retention, upsell/cross-sell, and renewal management",
+      "source_sha256": "9aa0083f5903cdf26bc5418930db1b5a440a57f4afddfea0e9a97675f4940244",
+      "rendered_sha256": "4a047f1956e11cb551aeb4e7b640486c77812bee7f2dcd2928470e02dcc82066",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1782,8 +2190,8 @@
       "source": "SALES_TEAM/.claude/agents/outbound-specialist.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/outbound-specialist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1808,6 +2216,13 @@
         "Call coaching and script development",
         "Voicemail strategies",
         "Objection handling frameworks"
+      ],
+      "description": "Cold calling, email sequences, multi-channel outreach campaigns, and list building",
+      "source_sha256": "e38f0975cee707162583bc7de1e22fcb24bee193d6a6db48b1b87f1b9b808d88",
+      "rendered_sha256": "49126465affc4ebfbf35dc0da01cddba642123bd28be3b1f04386a7a345c8935",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1817,8 +2232,8 @@
       "source": "SALES_TEAM/.claude/agents/pe-outreach-agent.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/pe-outreach-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1848,6 +2263,13 @@
         "Investor relationship management",
         "Deal matching (sourced deals to investor criteria)",
         "Finder's fee facilitation"
+      ],
+      "description": "PE/Family Office investor outreach specialist - builds relationships with capital sources, learns buy boxes, facilitates deal sourcing and finder's fees",
+      "source_sha256": "435c4e987ae29fa6385ea8893e004a0653cd49bf7591719e15be53b6dce68bf4",
+      "rendered_sha256": "aba9403d089aa04779a61a62d739da25b3977f8c6afcab2ff2d6209b2df7ffdf",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1857,8 +2279,8 @@
       "source": "SALES_TEAM/.claude/agents/proposal-specialist.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/proposal-specialist.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1884,6 +2306,13 @@
         "Competitive positioning",
         "Value proposition development",
         "ROI calculations"
+      ],
+      "description": "Proposal writing, RFP responses, pricing/quote generation, and contract drafting",
+      "source_sha256": "903b08c7264f6681f5b59978243fc27e2a18b361455d5ddac849527bb5bb76a7",
+      "rendered_sha256": "f765d51bcf0f2138562584ad44fc59627ad08f6fba04577a306270b3c0b2a4e0",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1893,8 +2322,8 @@
       "source": "SALES_TEAM/.claude/agents/sales-analyst.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sales-analyst.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1920,6 +2349,13 @@
         "Dashboard creation and visualization",
         "Trend identification",
         "Revenue attribution"
+      ],
+      "description": "Sales forecasting, pipeline analysis, performance metrics, and data-driven insights",
+      "source_sha256": "36e7a0a5ead443e8bc870e4ed63362386bd7500e25328a72ec99eb803aef79fd",
+      "rendered_sha256": "dc2a9c1ad04b2aafdf16bb3d2e3c27952f5c4e77c9431ad231f5bbf3781871da",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1929,8 +2365,8 @@
       "source": "SALES_TEAM/.claude/agents/sales-manager.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sales-manager.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1954,6 +2390,13 @@
         "Quota setting and territory planning",
         "Strategic sales planning",
         "Cross-functional leadership"
+      ],
+      "description": "Team coaching, pipeline management, forecast accuracy, performance optimization, and strategic planning",
+      "source_sha256": "18c248549a7da5b967ee98f3cf9b1bd850ecb39adbbdaf7227fa038b1115615e",
+      "rendered_sha256": "2e892664435fd40baa99dfc5e082d0b4a783696e78cb9aeaf3528e8708d9ae07",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1963,8 +2406,8 @@
       "source": "SALES_TEAM/.claude/agents/sales-operations.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sales-operations.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -1989,6 +2432,13 @@
         "Reporting and dashboard creation",
         "Workflow automation",
         "Data quality management"
+      ],
+      "description": "CRM administration, sales process optimization, territory planning, and data management",
+      "source_sha256": "d10ddc0dc3b26193a21206daddf35c3bfa836921efba787b058b1037eeb569b3",
+      "rendered_sha256": "06537c285cda830653278ad81a8105f47398d1509b003d5e2fdb49f53e3ef2cc",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -1998,8 +2448,8 @@
       "source": "SALES_TEAM/.claude/agents/sdr-agent.md",
       "codex_instructions": ".codex/agents/SALES_TEAM/sdr-agent.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "workspace_enforcer",
         "path_validator",
@@ -2024,6 +2474,13 @@
         "CRM data entry and management",
         "A/B testing outreach messages",
         "Pipeline building"
+      ],
+      "description": "Sales Development Representative - prospecting, outbound outreach, lead qualification, and meeting booking",
+      "source_sha256": "43535b472a34c1902232256d8242771f37a57b97365d1d644a4e6d97e7a41100",
+      "rendered_sha256": "dd8a11c57d4b5cda8bc5800436f66e57bb7131092f325d33d2c2b7b69cc63052",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": [
+        "shared_workspace_contract"
       ]
     },
     {
@@ -2033,8 +2490,8 @@
       "source": "VOICE_TEAM/.claude/agents/voice-deployer.md",
       "codex_instructions": ".codex/agents/VOICE_TEAM/voice-deployer.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2054,7 +2511,12 @@
         "Use google-workspace MCP manage_event to actually create Google Calendar events",
         "Update booking intent files to status=completed (or failed with error reason)",
         "Verify deployment artifacts in VOICE_TEAM/outputs/deployments/"
-      ]
+      ],
+      "description": "Deploys voice AI agents to Retell from VOICE_TEAM firm configs. Takes a firm.yml, renders prompts + flow nodes, POSTs to Retell API, attaches phone number, writes deployment artifact. Also processes pending booking intents by calling google-workspace MCP manage_event.",
+      "source_sha256": "69266fc25bab78fbfebccbc8ff1e8bee1b920574ecd1ec57be983804225c8633",
+      "rendered_sha256": "63ef41290b9597959181ab0ad4be41a521654a032fba39a83e1fe1943363cbfd",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "voice-email-validator",
@@ -2064,7 +2526,7 @@
       "codex_instructions": ".codex/agents/VOICE_TEAM/voice-email-validator.md",
       "source_runtime": "claude",
       "claude_model": "claude-haiku-4-5-20251001",
-      "codex_model": "gpt-5.4",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Grep",
@@ -2076,7 +2538,12 @@
         "Validate against white-label rules (no vendor names) and structural rules (required sections, subject prefix)",
         "Return a structured verdict: APPROVE / REJECT with reasons",
         "Suggest exact text changes to fix rejections"
-      ]
+      ],
+      "description": "Independent reviewer subagent that validates a VOICE_TEAM intake-summary email intent BEFORE it's dispatched via mcp__google-workspace__send_gmail_message. Reads the email intent JSON file from outputs/emails/, scores it against white-label + structural rules, returns approve/reject. Read-only by design \u2014 cannot modify the intent.",
+      "source_sha256": "10faac52dda452830f61cc36e576a03969724f961f1665aa26c080866c9ebea9",
+      "rendered_sha256": "263656116b6073abdf5e4da8a5b3207b215cbffef5f0d422de2374577ce12e23",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "voice-onboarder",
@@ -2085,8 +2552,8 @@
       "source": "VOICE_TEAM/.claude/agents/voice-onboarder.md",
       "codex_instructions": ".codex/agents/VOICE_TEAM/voice-onboarder.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2101,7 +2568,12 @@
         "Generate firm-specific KB docs (about.md, faq.md, practice_areas.md)",
         "Recommend voice_id selection based on firm brand tone",
         "Output a deploy-ready firm config"
-      ]
+      ],
+      "description": "Interviews a discovery-call note set (or directly interviews the user about a new law firm client) and produces a complete firm.yml ready for deployment. The intake template generator agent in the VOICE_TEAM factory.",
+      "source_sha256": "14a212003af8956c1dcc7939428e5d80d856cec4997dcbeadd6d715bea4010ba",
+      "rendered_sha256": "b76af94999139ef85a1c4cd0248e3e50d61709804beb0fc06ed8dbddf6550840",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "ict-trader",
@@ -2110,8 +2582,8 @@
       "source": "HEDGE_FUND/.claude/agents/ict-trader.md",
       "codex_instructions": ".codex/agents/HEDGE_FUND/ict-trader.md",
       "source_runtime": "claude",
-      "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "claude_model": "None",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2147,7 +2619,12 @@
         "Risk-rule enforcement per risk_rules.json (1% default, 3% daily DD, 2.0 min R:R)",
         "Trade journal write-back to outputs/journal/trade_log.xlsx + postmortems",
         "TradingView integration via Chrome MCP (v1) or pluggable TV MCP (v2)"
-      ]
+      ],
+      "description": "ICT methodology trading agent. Identifies FVG, Order Blocks, MMXM, liquidity sweeps, killzone setups across FX, indices, equities, and crypto. v1 is analyze-and-alert only \u2014 no live execution.",
+      "source_sha256": "5cd514a77194fca29879b88bac4133f8d98a96c81ae90d815c07dcd2311fb02a",
+      "rendered_sha256": "743d81102238378f32241680507a30e77e45a368721548f45b80e96aed4b43cc",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "codex-agent-editor",
@@ -2157,7 +2634,7 @@
       "codex_instructions": ".codex/agents/CODEX_TEAM/codex-agent-editor.md",
       "source_runtime": "codex",
       "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2173,7 +2650,12 @@
         "Specialist scope cleanup",
         "Agent instruction quality control",
         "Domain boundary enforcement"
-      ]
+      ],
+      "description": "You edit Codex-native agent source files and generated-agent guidance patterns. You make agents narrower, clearer, and easier to route.",
+      "source_sha256": "3ca35af6bb925a769fee695af4f0a983ef54614b52a55fb4380dd7e77c44f789",
+      "rendered_sha256": "af13fdded941bd450b9d1d837dc266149172820f72fada5a22b06bbe7a8d4c0d",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "codex-layer-architect",
@@ -2183,7 +2665,7 @@
       "codex_instructions": ".codex/agents/CODEX_TEAM/codex-layer-architect.md",
       "source_runtime": "codex",
       "claude_model": null,
-      "codex_model": "gpt-5.5",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2201,7 +2683,12 @@
         "Exporter maintenance",
         "Manifest design",
         "Source-of-truth boundary design"
-      ]
+      ],
+      "description": "You maintain the architecture that turns Claude-first repo assets and Codex-native assets into a usable `.codex/` runtime layer.",
+      "source_sha256": "f1fdb456da59e34909009ba22c436f8d59a71ca9a4f48db86acf250452059055",
+      "rendered_sha256": "6fd81f6fc189f0113f1adf635cf7d56d8b3710a8696a608cc5850905bd023eea",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "codex-leverage-auditor",
@@ -2211,7 +2698,7 @@
       "codex_instructions": ".codex/agents/CODEX_TEAM/codex-leverage-auditor.md",
       "source_runtime": "codex",
       "claude_model": null,
-      "codex_model": "gpt-5.5",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2227,7 +2714,12 @@
         "Evidence mapping",
         "Gap analysis",
         "Implementation backlog generation"
-      ]
+      ],
+      "description": "You audit whether Codex has implemented the L1-L13 lessons in this repo and produce evidence-backed next actions.",
+      "source_sha256": "4fdc45749a1d91336e41954d99f6ca6902b6b1c97256f26bac87523fa49a6312",
+      "rendered_sha256": "1c3a2170ef03c26ecd548bf1653dcfd1e69af94cf084a6aa9d20f3a5270e4697",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "codex-mcp-hooks-engineer",
@@ -2237,7 +2729,7 @@
       "codex_instructions": ".codex/agents/CODEX_TEAM/codex-mcp-hooks-engineer.md",
       "source_runtime": "codex",
       "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2254,7 +2746,12 @@
         "Hook wiring",
         "Local automation setup",
         "Runtime validation"
-      ]
+      ],
+      "description": "You maintain Codex MCP setup, hooks, local automation, and deterministic gates.",
+      "source_sha256": "dc375ec3fa176cc313688e9f210acf86668ccc6618c4c79b228255e95be5096b",
+      "rendered_sha256": "b8f32e6efe399414f7b0a0d3eb62eefdf39e69d2b2a79ffb7612ffa2be240a50",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "codex-skill-engineer",
@@ -2264,7 +2761,7 @@
       "codex_instructions": ".codex/agents/CODEX_TEAM/codex-skill-engineer.md",
       "source_runtime": "codex",
       "claude_model": null,
-      "codex_model": "gpt-5.4",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2282,7 +2779,12 @@
         "Skill mirroring validation",
         "Learned workflow capture",
         "Prompt pattern codification"
-      ]
+      ],
+      "description": "You turn repeated successful Codex workflows into skills and keep mirrored skills valid for Codex's stricter parser.",
+      "source_sha256": "8b9d09727fe7a69b59304970ca52282945014216ad6ef4a206ba96d93f948c9e",
+      "rendered_sha256": "df9f4431f0495ec3aee6f595eddb9162eb25b87927ad9a5ffa346fa0cc440ec2",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     },
     {
       "slug": "codex-team-manager",
@@ -2292,7 +2794,7 @@
       "codex_instructions": ".codex/agents/CODEX_TEAM/codex-team-manager.md",
       "source_runtime": "codex",
       "claude_model": null,
-      "codex_model": "gpt-5.5",
+      "codex_model": "inherit",
       "tools": [
         "Read",
         "Write",
@@ -2310,10 +2812,20 @@
         "Codex sidecar governance",
         "L1-L13 roadmap sequencing",
         "Cross-specialist task decomposition"
-      ]
+      ],
+      "description": "You coordinate Codex-native improvements for this repo. Your job is to keep the Codex layer useful, durable, and separate from Claude source-of-truth files.",
+      "source_sha256": "b24feda24337d822302735492c5f84ea4b5a8215a22a9f6fdfd4c315771427c3",
+      "rendered_sha256": "02c5a32f6633736a93018ae24c8529cf0ad6db1489a70d27530cd6e11fcb0377",
+      "model_policy": "inherit_session_unless_user_selects",
+      "adaptations": []
     }
   ],
   "skills": [
+    {
+      "name": "agent-auditor",
+      "status": "codex_native",
+      "codexPath": ".codex/skills/agent-auditor/SKILL.md"
+    },
     {
       "name": "algorithmic-art",
       "status": "exported",
@@ -2357,6 +2869,41 @@
       "codexPath": ".codex/skills-export/careful/SKILL.md"
     },
     {
+      "name": "code-review",
+      "status": "codex_native",
+      "codexPath": ".codex/skills/code-review/SKILL.md"
+    },
+    {
+      "name": "codex-sync",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync/SKILL.md"
+    },
+    {
+      "name": "codex-sync-all",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync-all/SKILL.md"
+    },
+    {
+      "name": "codex-sync-mcps",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync-mcps/SKILL.md"
+    },
+    {
+      "name": "codex-sync-secrets",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-sync-secrets/SKILL.md"
+    },
+    {
+      "name": "codex-validate",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/codex-validate/SKILL.md"
+    },
+    {
       "name": "context7",
       "status": "native_or_external",
       "note": "Use web/docs lookup or a configured docs MCP equivalent"
@@ -2378,6 +2925,11 @@
       "status": "exported",
       "source": ".claude/skills/daily-social-round",
       "codexPath": ".codex/skills-export/daily-social-round/SKILL.md"
+    },
+    {
+      "name": "debug-investigator",
+      "status": "codex_native",
+      "codexPath": ".codex/skills/debug-investigator/SKILL.md"
     },
     {
       "name": "docx",
@@ -2595,6 +3147,12 @@
       "codexPath": ".codex/skills-export/teach/SKILL.md"
     },
     {
+      "name": "test-agents-router",
+      "status": "exported",
+      "source": "generated",
+      "codexPath": ".codex/skills-export/test-agents-router/SKILL.md"
+    },
+    {
       "name": "theme-factory",
       "status": "exported",
       "source": ".claude/skills/theme-factory",
@@ -2653,45 +3211,9 @@
       "status": "exported",
       "source": ".claude/skills/youtube-transcript",
       "codexPath": ".codex/skills-export/youtube-transcript/SKILL.md"
-    },
-    {
-      "name": "test-agents-router",
-      "status": "exported",
-      "source": "generated",
-      "codexPath": ".codex/skills-export/test-agents-router/SKILL.md"
-    },
-    {
-      "name": "codex-sync",
-      "status": "exported",
-      "source": "generated",
-      "codexPath": ".codex/skills-export/codex-sync/SKILL.md"
-    },
-    {
-      "name": "codex-sync-secrets",
-      "status": "exported",
-      "source": "generated",
-      "codexPath": ".codex/skills-export/codex-sync-secrets/SKILL.md"
-    },
-    {
-      "name": "codex-validate",
-      "status": "exported",
-      "source": "generated",
-      "codexPath": ".codex/skills-export/codex-validate/SKILL.md"
-    },
-    {
-      "name": "codex-sync-mcps",
-      "status": "exported",
-      "source": "generated",
-      "codexPath": ".codex/skills-export/codex-sync-mcps/SKILL.md"
-    },
-    {
-      "name": "codex-sync-all",
-      "status": "exported",
-      "source": "generated",
-      "codexPath": ".codex/skills-export/codex-sync-all/SKILL.md"
     }
   ],
-  "installedSkillsDir": "C:\\Users\\sabaa\\.codex\\skills",
+  "installedSkillsDir": "$CODEX_HOME/skills",
   "codexMcpConfig": {
     "projectConfig": ".codex/config.toml",
     "generatedConfig": ".codex/mcp.generated.toml",

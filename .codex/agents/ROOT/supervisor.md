@@ -1,47 +1,39 @@
 ---
 name: supervisor
 display_name: supervisor
+description: Root-level quality assurance supervisor that verifies task completion
+  across all teams
 team: ROOT
 source: .claude/agents/supervisor.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
-skills:[]
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- Read
+- Grep
+- Glob
+- Bash
+- mcp__sequential-thinking__sequentialthinking
+skills: []
 capabilities:
-  - Task completion verification across all teams
-  - Quality assurance and second-check validation
-  - Deliverable inspection and validation
-  - Git commit and code change verification
-  - Test execution and result validation
-  - Documentation completeness checks
-  - Cross-team coordination verification
-  - Comprehensive verification reporting
+- Task completion verification across all teams
+- Quality assurance and second-check validation
+- Deliverable inspection and validation
+- Git commit and code change verification
+- Test execution and result validation
+- Documentation completeness checks
+- Cross-team coordination verification
+- Comprehensive verification reporting
+source_sha256: 422cd564123a01af651b0867cc3801c5c8a4f06bde5470dfba3f292d4206e546
 ---
 
-# supervisor
+Generated from `.claude/agents/supervisor.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `.claude/agents/supervisor.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - Read
-  - Grep
-  - Glob
-  - Bash
-  - mcp__sequential-thinking__sequentialthinking
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Supervisor Agent
 

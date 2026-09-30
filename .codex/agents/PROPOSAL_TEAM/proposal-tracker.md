@@ -1,39 +1,35 @@
 ---
 name: proposal-tracker
 display_name: proposal-tracker
+description: Cross-proposal open-item tracker. Scans every PROPOSAL_TEAM/outputs/<topic_id>/
+  folder, extracts open items from PARTNER_CHECKLIST.md + sbir_validation_report.md
+  + [USER VERIFY] / [PLACEHOLDER] markers, and maintains PROPOSAL_TEAM/outputs/PROPOSAL_TRACKER.xlsx.
+  Also answers Q&A about open items ("what's open on NV004?", "what does Rasheed still
+  owe?"). Invoked manually by user OR automatically by hook on .sbir_validation_*
+  writes.
 team: PROPOSAL_TEAM
 source: PROPOSAL_TEAM/.claude/agents/proposal-tracker.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
-skills:[]
-capabilities:[]
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- Read
+- Grep
+- Glob
+- Bash
+- Write
+skills: []
+capabilities: []
+source_sha256: 64d98275a5f08a3fb27c46b735012bfb387e01da38ccac1d03c0a9c4ce88dc14
 ---
 
-# proposal-tracker
+Generated from `PROPOSAL_TEAM/.claude/agents/proposal-tracker.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `PROPOSAL_TEAM/.claude/agents/proposal-tracker.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - Read
-  - Grep
-  - Glob
-  - Bash
-  - Write
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Proposal Tracker
 

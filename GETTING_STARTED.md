@@ -62,7 +62,7 @@ If you plan to use specific agents, configure API keys:
 - Bright Data API key (web scraping)
 - Gemini API key (video generation with Veo)
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) for detailed setup instructions.
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) for detailed setup instructions.
 
 ### Step 4: Your First Agent Invocation
 
@@ -181,7 +181,7 @@ Task(supervisor): Verify [deliverable] meets quality standards
 ## Documentation Navigation
 
 **New Users (Read First):**
-1. [claude.md](claude.md) - Repository navigation hub
+1. [CLAUDE.md](CLAUDE.md) - Repository navigation hub
 2. [GETTING_STARTED.md](GETTING_STARTED.md) - This guide
 3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents explained
 4. [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - Invocation patterns
@@ -198,10 +198,9 @@ Task(supervisor): Verify [deliverable] meets quality standards
 - [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Pre-creation checklist
 
 **Reference:**
-- [GLOSSARY.md](GLOSSARY.md) - Terms and definitions
 - [FAQ.md](FAQ.md) - Common questions
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debugging guide
-- [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) - API configuration
+- [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) - API configuration
 
 ## Next Steps
 
@@ -246,6 +245,6 @@ Task(rfp-agent): Parse this RFP and generate a proposal
 
 ---
 
-**Ready to go?** Start with [claude.md](claude.md) for complete navigation, or dive into a team README!
+**Ready to go?** Start with [CLAUDE.md](CLAUDE.md) for complete navigation, or dive into a team README!
 
 **Questions?** Check [FAQ.md](FAQ.md) or [TROUBLESHOOTING.md](TROUBLESHOOTING.md)

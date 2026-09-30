@@ -353,7 +353,8 @@ class PineconeKnowledgeBase:
     Main Pinecone knowledge base manager for compliance frameworks.
     """
 
-    def __init__(self, api_key: str = None, index_name: str = "rfp-knowledge-base"):
+    def __init__(self, api_key: str = None, index_name: str = "rfp-knowledge-base", *, demo_mode: bool = False):
+        self.demo_mode = demo_mode
         self.api_key = api_key or os.getenv("PINECONE_API_KEY")
         self.index_name = index_name
         self.namespace = "compliance_frameworks"
@@ -413,7 +414,8 @@ class PineconeKnowledgeBase:
         # In production, would upload chunks to Pinecone here
         # For now, store in memory
         self.indexed_documents[doc_id] = indexed_doc
-        indexed_doc.index_status = "indexed"
+        indexed_doc.index_status = "demo_only" if self.demo_mode else "prepared_not_uploaded"
+        indexed_doc.metadata["demo_only"] = self.demo_mode
 
         return indexed_doc
 
@@ -511,8 +513,9 @@ class PineconeKnowledgeBase:
         Returns:
             List of search results with metadata
         """
-        # In production, this would query Pinecone
-        # For now, return mock results
+        if not self.demo_mode:
+            raise NotImplementedError("Pinecone retrieval is not implemented. Configure a real retrieval adapter before requesting evidence; demo_mode is for demonstrations only.")
+        # Explicitly labeled sample data must never qualify as proposal evidence.
 
         results = []
 
@@ -531,8 +534,10 @@ class PineconeKnowledgeBase:
                 "framework_id": doc.framework_id,
                 "framework_name": doc.framework_name,
                 "file_name": doc.file_name,
-                "relevance_score": 0.85,  # Mock score
-                "chunk_text": f"Relevant content from {doc.framework_name}...",
+                "relevance_score": None,
+                "demo_only": True,
+                "verified_evidence": False,
+                "chunk_text": f"[DEMO ONLY] Example content for {doc.framework_name}",
                 "metadata": doc.metadata
             })
 
@@ -566,10 +571,22 @@ class PineconeKnowledgeBase:
         return hashlib.md5(hash_input.encode()).hexdigest()[:12]
 
     def _extract_text(self, file_path: Path) -> str:
-        """Extract text from document (PDF extraction would go here)."""
-        # In production, use PyPDF2 or similar to extract PDF text
-        # For now, return placeholder
-        return f"Text content from {file_path.name}"
+        """Extract real text; reject unsupported/unreadable sources."""
+        if self.demo_mode:
+            return f"[DEMO ONLY] Example text for {file_path.name}"
+        if file_path.suffix.lower() in {".txt", ".md"}:
+            text = file_path.read_text(encoding="utf-8-sig")
+        elif file_path.suffix.lower() == ".pdf":
+            try:
+                from pypdf import PdfReader
+            except ImportError as exc:
+                raise RuntimeError("PDF extraction requires pypdf in the proposal environment") from exc
+            text = "\n".join(page.extract_text() or "" for page in PdfReader(file_path).pages)
+        else:
+            raise ValueError(f"Unsupported document format: {file_path.suffix}")
+        if not text.strip():
+            raise ValueError("No source text extracted; OCR or a complete source is required")
+        return text
 
     def get_index_statistics(self) -> Dict[str, Any]:
         """Get statistics about indexed documents."""

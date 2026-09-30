@@ -544,7 +544,7 @@ except MCPError as e:
 6. ☐ Deprecation candidates (MCP replacements, unused tools)
 7. ☐ Documentation quality (docstrings, examples, registry entries)
 
-**See:** [TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md) for complete audit workflow
+The dedicated quarterly audit checklist is planned. Use [TOOL_REGISTRY.md](TOOL_REGISTRY.md) for the current inventory.
 
 ---
 
@@ -556,7 +556,7 @@ except MCPError as e:
 - **Skill Declaration Accuracy:** % of agents with correct skill declarations (target: 100%)
 - **Priority Documentation Coverage:** % of dual-capability agents with documented priority (target: 100%)
 
-**See:** [GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md) for complete metrics
+The dedicated governance metrics document is planned; the current measures are listed above.
 
 ---
 
@@ -565,14 +565,9 @@ except MCPError as e:
 - **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete tool/MCP/skill inventory
 - **[PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)** - Mandatory checks before tool/skill creation
 - **[AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md)** - Agent-specific rules
-- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow
-- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - Deprecation process
-- **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking
-
----
-
-**Last Audit:** Not yet conducted (first audit scheduled for 2025-12-03)
-**Next Review:** 2026-02-03
+- `TOOL_AUDITOR_CHECKLIST.md` *(planned)* - Quarterly audit workflow
+- `TOOL_CLEANUP_WORKFLOW.md` *(planned)* - Deprecation process
+- `GOVERNANCE_METRICS.md` *(planned)* - Success tracking
 
 ---
 

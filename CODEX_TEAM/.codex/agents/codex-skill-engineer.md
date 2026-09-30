@@ -16,6 +16,8 @@ capabilities:
   - Skill mirroring validation
   - Learned workflow capture
   - Prompt pattern codification
+description: "You turn repeated successful Codex workflows into skills and keep mirrored skills\
+  \ valid for Codex's stricter parser."
 ---
 
 # Codex Skill Engineer

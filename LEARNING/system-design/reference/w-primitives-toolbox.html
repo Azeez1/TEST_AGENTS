@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System Design W Primitives Toolbox</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --ink: #151515;
+      --muted: #5d625f;
+      --line: #d8d8cf;
+      --panel: #ffffff;
+      --accent: #1f6f68;
+      --accent-soft: #e7f1ef;
+      --warn-soft: #fff1d8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 36px 22px 64px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 34px 0 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 20px 0 8px;
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+    p { margin: 8px 0; }
+    code {
+      background: #efefea;
+      border: 1px solid #dfdfd6;
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: 0.95em;
+    }
+    .lead {
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .rule {
+      margin: 20px 0;
+      padding: 16px 18px;
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .card h3 { margin-top: 0; }
+    .tag {
+      display: inline-block;
+      margin: 2px 4px 2px 0;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #efefea;
+      color: #333;
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #ecece5;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .mini {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .warning {
+      margin: 18px 0;
+      padding: 14px 16px;
+      background: var(--warn-soft);
+      border: 1px solid #ead6a8;
+      border-radius: 8px;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #171717;
+      color: #f4f4ef;
+      padding: 14px;
+      border-radius: 8px;
+      overflow: auto;
+    }
+    @media print {
+      body { background: white; }
+      main { padding: 20px; }
+      .card, table, .rule, .warning { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>System Design W Primitives Toolbox</h1>
+  <p class="lead">
+    W means "wire the system." Do not memorize diagrams. Build them from primitives.
+    A primitive is a basic building block that exists because a specific limit exists.
+  </p>
+
+  <div class="rule">
+    First-principles rule: every component must answer one question:
+    what limit does this solve?
+  </div>
+
+  <h2>The Core Decision</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>If the lane needs...</th>
+        <th>Draw this primitive</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Truth that cannot be lost</td>
+        <td><code>Primary DB</code></td>
+        <td>The system needs one source of record.</td>
+      </tr>
+      <tr>
+        <td>Fast repeated reads</td>
+        <td><code>Cache</code> / <code>Read Replica</code></td>
+        <td>Do not make the source of truth answer every repeated read.</td>
+      </tr>
+      <tr>
+        <td>Search by words</td>
+        <td><code>Search Index</code></td>
+        <td>Normal DB rows are not optimized for text search.</td>
+      </tr>
+      <tr>
+        <td>Search by meaning</td>
+        <td><code>Embedding Service</code> + <code>Vector DB</code></td>
+        <td>The system needs semantic similarity, not exact keyword match.</td>
+      </tr>
+      <tr>
+        <td>Slow work after a request</td>
+        <td><code>Queue</code> + <code>Worker</code></td>
+        <td>The user should not wait while slow work finishes.</td>
+      </tr>
+      <tr>
+        <td>Tell many systems something happened</td>
+        <td><code>Event Bus</code> / <code>PubSub</code></td>
+        <td>One event can trigger many independent reactions.</td>
+      </tr>
+      <tr>
+        <td>Live updates to connected users</td>
+        <td><code>Realtime Gateway</code> / <code>WebSocket</code></td>
+        <td>The server needs to push updates without waiting for refresh.</td>
+      </tr>
+      <tr>
+        <td>Big binary files</td>
+        <td><code>Object Storage</code> + <code>DB Metadata</code></td>
+        <td>Files are large objects; metadata is queryable record data.</td>
+      </tr>
+      <tr>
+        <td>Analytics and reports</td>
+        <td><code>Warehouse</code> / <code>Read Replica</code> / <code>Export Worker</code></td>
+        <td>Heavy reporting should not hurt production writes.</td>
+      </tr>
+      <tr>
+        <td>Timed or recurring work</td>
+        <td><code>Scheduler</code> / <code>Cron</code></td>
+        <td>Some work starts because of time, not user action.</td>
+      </tr>
+      <tr>
+        <td>Multi-step business process</td>
+        <td><code>Workflow</code> / <code>State Machine</code></td>
+        <td>The system must remember where each item is in the process.</td>
+      </tr>
+      <tr>
+        <td>Money movement or audit-grade accounting</td>
+        <td><code>Ledger</code> / <code>Transaction Log</code></td>
+        <td>Balances must be explainable from immutable movements.</td>
+      </tr>
+      <tr>
+        <td>External systems calling you</td>
+        <td><code>Webhook Receiver</code></td>
+        <td>Another system needs a front door to send events.</td>
+      </tr>
+      <tr>
+        <td>Continuous high-volume events</td>
+        <td><code>Stream Processor</code></td>
+        <td>The system processes nonstop event flow, not one-off jobs.</td>
+      </tr>
+      <tr>
+        <td>Safe rollout or runtime behavior switch</td>
+        <td><code>Feature Flag</code> / <code>Config Service</code></td>
+        <td>Behavior changes without redeploying code.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Ingress Primitives</h2>
+  <div class="grid">
+    <section class="card">
+      <h3>DNS</h3>
+      <p>Maps a name like <code>app.com</code> to where traffic should go.</p>
+      <p class="mini">Draw when users access the system through a public domain.</p>
+    </section>
+    <section class="card">
+      <h3>CDN</h3>
+      <p>Serves static assets near users.</p>
+      <p class="mini">Draw for images, videos, frontend files, public downloads.</p>
+    </section>
+    <section class="card">
+      <h3>WAF</h3>
+      <p>Filters malicious web traffic before it reaches the app.</p>
+      <p class="mini">Draw for public web apps or sensitive internet-facing systems.</p>
+    </section>
+    <section class="card">
+      <h3>Load Balancer</h3>
+      <p>Spreads traffic across app servers.</p>
+      <p class="mini">Draw when one server is not enough or uptime matters.</p>
+    </section>
+    <section class="card">
+      <h3>API Gateway</h3>
+      <p>Routes API calls to backend services and applies API-level controls.</p>
+      <p class="mini">Draw for backend APIs, auth checks, rate limits, routing.</p>
+    </section>
+  </div>
+
+  <h2>Storage Primitives</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Primitive</th>
+        <th>Plain English</th>
+        <th>Common Software</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Primary DB</code></td>
+        <td>The official memory of the business.</td>
+        <td>Postgres, MySQL, SQL Server, DynamoDB, MongoDB</td>
+      </tr>
+      <tr>
+        <td><code>Read Replica</code></td>
+        <td>A copy used to remove read pressure from the primary DB.</td>
+        <td>Postgres replica, MySQL replica, Aurora replica</td>
+      </tr>
+      <tr>
+        <td><code>Cache</code></td>
+        <td>A fast temporary shelf for answers you need often.</td>
+        <td>Redis, Memcached, Cloudflare KV</td>
+      </tr>
+      <tr>
+        <td><code>Search Index</code></td>
+        <td>A special store for finding text fast.</td>
+        <td>Elasticsearch, OpenSearch, Algolia, Typesense, Meilisearch</td>
+      </tr>
+      <tr>
+        <td><code>Vector DB</code></td>
+        <td>A special store for finding similar meaning.</td>
+        <td>Pinecone, Weaviate, Milvus, pgvector, Chroma</td>
+      </tr>
+      <tr>
+        <td><code>Object Storage</code></td>
+        <td>A warehouse for large files.</td>
+        <td>S3, Azure Blob, GCS, Cloudflare R2</td>
+      </tr>
+      <tr>
+        <td><code>Warehouse</code></td>
+        <td>A reporting/analytics store.</td>
+        <td>Snowflake, BigQuery, Redshift, Databricks</td>
+      </tr>
+      <tr>
+        <td><code>Ledger</code></td>
+        <td>An audit-grade record of movements, especially money.</td>
+        <td>SQL append-only table, QLDB-style ledger, event store</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Work Movement Primitives</h2>
+  <div class="grid">
+    <section class="card">
+      <h3>Queue</h3>
+      <p>A waiting line for work that can happen later.</p>
+      <p><span class="tag">email</span><span class="tag">PDF processing</span><span class="tag">retries</span></p>
+    </section>
+    <section class="card">
+      <h3>Worker</h3>
+      <p>A background program that pulls jobs from a queue and does them.</p>
+      <p><span class="tag">OCR</span><span class="tag">export</span><span class="tag">notifications</span></p>
+    </section>
+    <section class="card">
+      <h3>Event Bus / PubSub</h3>
+      <p>A way to announce "this happened" so many consumers can react.</p>
+      <p><span class="tag">post created</span><span class="tag">order placed</span><span class="tag">file uploaded</span></p>
+    </section>
+    <section class="card">
+      <h3>Stream Processor</h3>
+      <p>A worker for nonstop event rivers, not occasional jobs.</p>
+      <p><span class="tag">clickstream</span><span class="tag">IoT</span><span class="tag">logs</span></p>
+    </section>
+    <section class="card">
+      <h3>Scheduler / Cron</h3>
+      <p>Starts work at a planned time.</p>
+      <p><span class="tag">daily reports</span><span class="tag">billing run</span><span class="tag">cleanup</span></p>
+    </section>
+    <section class="card">
+      <h3>Workflow / State Machine</h3>
+      <p>Tracks a process through steps.</p>
+      <p><span class="tag">approval</span><span class="tag">claims</span><span class="tag">RFP pipeline</span></p>
+    </section>
+  </div>
+
+  <h2>Product Pattern Primitives</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Product Type</th>
+        <th>Must-Think Primitive</th>
+        <th>Core Question</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Feed app</td>
+        <td><code>Follow Graph</code> + <code>Home Feed Store</code></td>
+        <td>How does a post get into followers' feeds?</td>
+      </tr>
+      <tr>
+        <td>Chat app</td>
+        <td><code>Primary DB</code> + <code>Realtime Gateway</code></td>
+        <td>How do we both save and instantly deliver messages?</td>
+      </tr>
+      <tr>
+        <td>Booking app</td>
+        <td><code>Primary DB Transaction</code> + uniqueness/locking</td>
+        <td>How do we stop two users from taking the same scarce slot?</td>
+      </tr>
+      <tr>
+        <td>Document AI app</td>
+        <td><code>Object Storage</code> + <code>Queue/Worker</code> + <code>Search Index</code></td>
+        <td>How do we store files, process them later, and search extracted text?</td>
+      </tr>
+      <tr>
+        <td>Payments app</td>
+        <td><code>Ledger</code> + idempotency</td>
+        <td>How do we make every money movement explainable and non-duplicated?</td>
+      </tr>
+      <tr>
+        <td>RAG app</td>
+        <td><code>Embedding Service</code> + <code>Vector DB</code> + model</td>
+        <td>How does the model retrieve the right context before answering?</td>
+      </tr>
+      <tr>
+        <td>Analytics app</td>
+        <td><code>Event Collector</code> + <code>Stream/Batch Pipeline</code> + <code>Warehouse</code></td>
+        <td>How do raw events become dashboards and reports?</td>
+      </tr>
+      <tr>
+        <td>Integration app</td>
+        <td><code>Webhook Receiver</code> + <code>Sync Job</code></td>
+        <td>How do outside systems send or receive changes?</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Lane Discovery Checklist</h2>
+  <div class="warning">
+    Before drawing components, ask: what are the 3-5 different promises this product makes?
+    Different promises usually need different lanes.
+  </div>
+  <pre>Durable write lane: what cannot be lost?
+Fast read lane: what is viewed often?
+Search lane: what must be found by text or meaning?
+Async lane: what can happen after the user request?
+Live lane: what must update without refresh?
+File lane: what large object must be stored?
+Report lane: what heavy query/export should not hit production?
+External lane: what comes from or goes to another system?
+Workflow lane: what moves through multiple business states?
+Money/audit lane: what must be reconstructable forever?</pre>
+
+  <h2>Default W Template</h2>
+  <pre>Core user action:
+Client -> Edge/LB -> Web App -> API Gateway -> Domain Service -> Primary DB
+
+After durable write:
+Primary DB/Event -> Event Bus/Queue -> Worker(s)
+
+Fast reads:
+Client -> API Gateway -> Read Service -> Cache/Read Replica
+
+Search:
+Client -> API Gateway -> Search Service -> Search Index
+
+Files:
+Client -> Upload Service -> Object Storage + DB Metadata
+
+Live:
+Client -> Realtime Gateway/WebSocket -> PubSub/Cache -> Client(s)
+
+Reports:
+Admin -> Report Service -> Replica/Warehouse -> Export Worker -> Object Storage</pre>
+
+  <h2>Short Rule</h2>
+  <p>
+    Do not ask, "What boxes do I remember?" Ask, "What promises does this product make?"
+    Then choose primitives that satisfy those promises.
+  </p>
+</main>
+</body>
+</html>

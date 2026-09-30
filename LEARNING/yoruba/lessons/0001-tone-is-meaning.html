@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 1: Tone Is Meaning</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18212a;
+      --muted: #5a6470;
+      --paper: #fbfcf8;
+      --panel: #ffffff;
+      --line: #d8e0ea;
+      --accent: #1e6f5c;
+      --bad: #a83232;
+      --good: #1e6f5c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+    }
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 36px 20px 64px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 28px 0 10px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+    p { margin: 10px 0; }
+    .lede { color: var(--muted); max-width: 720px; }
+    .principle {
+      background: #edf5f1;
+      border-left: 5px solid var(--accent);
+      padding: 16px;
+      margin: 18px 0;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+      min-height: 120px;
+    }
+    .tone {
+      font-size: 34px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    button {
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .quiz {
+      background: white;
+      border: 1px solid var(--line);
+      padding: 18px;
+      margin-top: 14px;
+    }
+    .choices {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .feedback {
+      min-height: 28px;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    .good { color: var(--good); }
+    .bad { color: var(--bad); }
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      border: 1px solid var(--line);
+      padding: 12px;
+      font: inherit;
+      resize: vertical;
+      background: white;
+    }
+    a { color: #345995; }
+    @media print {
+      body { background: white; }
+      main { padding: 20px; }
+      button { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Lesson 1: Tone Is Meaning</h1>
+      <p class="lede">One idea only: in Yoruba, pitch is not decoration. Pitch helps identify the word. If you want professional-level Yoruba, your ear has to treat tone as part of the word from day one.</p>
+    </header>
+
+    <section class="principle">
+      <strong>First principle:</strong> spoken language is sound carrying meaning. Yoruba uses pitch differences to carry meaning. Therefore, learning a Yoruba word without its tone is like learning only part of the word.
+    </section>
+
+    <h2>The plain-English version</h2>
+    <p>In English, pitch often shows feeling: surprise, doubt, excitement. In Yoruba, pitch can help decide which word was said. So the first job is not to memorize hundreds of words. The first job is to train your ear to hear the shape of the word.</p>
+    <p>The formal term is <strong>tone</strong>. Yoruba has high, mid, and low tones. High is usually marked with an acute accent, low with a grave accent, and mid is often unmarked.</p>
+
+    <div class="cards" aria-label="Tone examples">
+      <div class="card">
+        <div class="tone">bí</div>
+        <div>High tone</div>
+        <div class="label">Example meaning in Yorùbá Yé Mi: to give birth to.</div>
+      </div>
+      <div class="card">
+        <div class="tone">bi</div>
+        <div>Mid tone</div>
+        <div class="label">Example meaning in Yorùbá Yé Mi: to ask.</div>
+      </div>
+      <div class="card">
+        <div class="tone">bì</div>
+        <div>Low tone</div>
+        <div class="label">Example meaning in Yorùbá Yé Mi: to vomit.</div>
+      </div>
+    </div>
+
+    <h2>Why this changes the curriculum</h2>
+    <p>If tone carries meaning, then vocabulary cannot be "spelling plus English definition." A real vocabulary item has four parts: spelling, sound, tone, and meaning. Leave one out and the word is unstable.</p>
+    <p>That is why your daily practice starts with audio. You are not doing pronunciation as polish at the end. You are building the foundation.</p>
+
+    <h2>Practice</h2>
+    <div class="quiz">
+      <p><strong>Question:</strong> If you learn a new Yoruba word from text only, what is missing?</p>
+      <div class="choices">
+        <button type="button" data-correct="false">Only the English translation</button>
+        <button type="button" data-correct="true">The sound and tone pattern</button>
+        <button type="button" data-correct="false">Nothing, text is enough</button>
+      </div>
+      <div id="feedback" class="feedback" role="status"></div>
+    </div>
+
+    <h2>Five-minute drill</h2>
+    <ol>
+      <li>Open the Yorùbá Yé Mi tone audio or an FSI tone drill.</li>
+      <li>Listen once without speaking.</li>
+      <li>Listen again and trace the pitch with your hand: up for high, level for mid, down for low.</li>
+      <li>Repeat the sound after the speaker.</li>
+      <li>Record yourself once. Do not judge the recording yet; just create the feedback loop.</li>
+    </ol>
+
+    <h2>Teach-back</h2>
+    <p>Explain this out loud in your own words as if teaching a smart 12-year-old: why is tone part of the word in Yoruba?</p>
+    <textarea aria-label="Teach-back response" placeholder="Write your explanation here. Then send it to your teacher-agent for feedback."></textarea>
+
+    <h2>Sources</h2>
+    <p>Use the tone audio and introduction from <a href="https://coerll.utexas.edu/yemi/">Yorùbá Yé Mi</a>. Use the pronunciation and tone drills from the <a href="https://www.fsi-language-courses.org/fsi-yoruba-basic-course/">FSI Yoruba Basic Course</a>. The professional milestone framing follows <a href="https://www.actfl.org/proficiency-guidelines-overview">ACTFL's proficiency-guideline approach</a>: what you can actually do in real situations.</p>
+  </main>
+
+  <script>
+    const feedback = document.getElementById("feedback");
+    document.querySelectorAll("button[data-correct]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const correct = button.dataset.correct === "true";
+        feedback.textContent = correct
+          ? "Correct. A Yoruba word is incomplete until you know its sound and tone."
+          : "Not quite. The missing piece is the sound and tone pattern.";
+        feedback.className = correct ? "feedback good" : "feedback bad";
+      });
+    });
+  </script>
+</body>
+</html>

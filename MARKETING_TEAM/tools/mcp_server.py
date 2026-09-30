@@ -16,6 +16,7 @@ import asyncio
 import json
 import mimetypes
 import traceback
+from urllib.parse import urlparse
 from pathlib import Path
 
 # CRITICAL: Load environment variables FIRST (before any OpenAI/Google imports)
@@ -53,6 +54,9 @@ except ImportError:
 
 # Global variable to cache the last Nano Banana image for Veo 3.1
 _last_generated_image = None
+
+OMNI_MODEL = "gemini-omni-flash-preview"
+OMNI_OUTPUT_COST_PER_SECOND = 0.10
 
 # MCP Server imports
 from mcp.server import Server
@@ -383,7 +387,8 @@ async def generate_sora_video_mcp(
     stability_mode: str = "auto"
 ) -> list[TextContent]:
     """
-    Generate video using Sora-2 - MCP native implementation with UGC support
+    Generate video using Sora-2 - MCP native implementation with UGC support.
+    Sora is now the UGC fallback path; SeedDance 2.5 is the default primary UGC path.
 
     Model: sora-2
     Pricing: $0.10 per second + optional $0.01 for image analysis
@@ -906,9 +911,9 @@ async def generate_nano_banana_image_mcp(prompt: str, aspect_ratio: str, filenam
             f"**Aspect ratio:** {aspect_ratio}\n"
             f"**Cost:** {cost}\n\n"
             f"**Saved to:** {str(output_path)}\n\n"
-            f"✨ This image is optimized for Veo 3.1 image-to-video conversion.\n"
-            f"✨ Image object cached in memory for immediate Veo 3.1 use.\n\n"
-            f"**Next step:** Use generate_veo_ugc_from_nano_banana to create UGC ad video"
+            f"✨ This image is optimized for UGC video reference workflows.\n"
+            f"✨ SeedDance 2.5 is now the primary UGC video path; it needs a public image URL for direct image-to-video.\n\n"
+            f"**Next step:** Use generate_seedance_video with ugc_style + product_name, and add image_urls if the product image is publicly hosted."
         )
 
         return [TextContent(type="text", text=result_text)]
@@ -1041,9 +1046,9 @@ async def generate_nano_banana_2_image_mcp(
             f"**Thinking:** {thinking_level}\n"
             f"**Cost:** {cost}\n\n"
             f"**Saved to:** {str(output_path)}\n\n"
-            f"✨ Image cached in memory for immediate Veo 3.1 use.\n"
+            f"✨ Image ready for UGC video reference workflows.\n"
             f"✨ Supports up to 14 reference images and Google Image Search grounding.\n\n"
-            f"**Next step:** Use generate_veo_ugc_from_image to create UGC ad video"
+            f"**Next step:** Use generate_seedance_video with ugc_style + product_name, and add image_urls if the product image is publicly hosted."
         )
 
         return [TextContent(type="text", text=result_text)]
@@ -1087,6 +1092,286 @@ async def generate_image_with_fallback(
     raise last_error or Exception("All image generation providers failed")
 
 
+def _guess_mime_type(reference: str, default: str = "image/png") -> str:
+    parsed_path = urlparse(reference).path if reference.startswith(("http://", "https://")) else reference
+    guessed, _ = mimetypes.guess_type(parsed_path)
+    return guessed or default
+
+
+async def _read_reference_as_base64(reference: str, default_mime: str = "image/png") -> tuple[str, str]:
+    """Read a local path or URL and return (base64_data, mime_type)."""
+    if reference.startswith(("http://", "https://")):
+        async with httpx.AsyncClient(timeout=60.0) as http_client:
+            response = await http_client.get(reference)
+            response.raise_for_status()
+            content_type = response.headers.get("content-type", "").split(";")[0].strip()
+            mime_type = content_type or _guess_mime_type(reference, default_mime)
+            return base64.b64encode(response.content).decode("utf-8"), mime_type
+
+    path = Path(reference).expanduser()
+    if not path.exists():
+        raise FileNotFoundError(f"Reference file not found: {reference}")
+    return base64.b64encode(path.read_bytes()).decode("utf-8"), _guess_mime_type(str(path), default_mime)
+
+
+def _extract_omni_video_output(interaction: dict) -> tuple[str | None, str | None, str | None]:
+    """Return (base64_data, uri, mime_type) from Gemini Omni Interactions API output."""
+    output_video = interaction.get("output_video")
+    if isinstance(output_video, dict):
+        return output_video.get("data"), output_video.get("uri"), output_video.get("mime_type")
+
+    for step in interaction.get("steps", []):
+        for content in step.get("content", []):
+            if content.get("type") == "video":
+                return content.get("data"), content.get("uri"), content.get("mime_type")
+    return None, None, None
+
+
+def _extract_file_name_from_uri(uri: str) -> str | None:
+    if not uri:
+        return None
+    if "/files/" in uri:
+        tail = uri.split("/files/", 1)[1]
+    elif uri.startswith("files/"):
+        tail = uri.split("/", 1)[1]
+    else:
+        return None
+    tail = tail.split("?", 1)[0].split(":download", 1)[0].strip("/")
+    return f"files/{tail}" if tail else None
+
+
+def _file_state_name(file_info: dict) -> str:
+    state = file_info.get("state")
+    if isinstance(state, dict):
+        return str(state.get("name", "")).upper()
+    return str(state or "").upper()
+
+
+async def _download_omni_video_from_uri(
+    http_client: httpx.AsyncClient,
+    uri: str,
+    api_key: str,
+    max_wait_seconds: int = 360,
+) -> bytes:
+    file_name = _extract_file_name_from_uri(uri)
+    headers = {"x-goog-api-key": api_key}
+
+    if file_name:
+        poll_url = f"https://generativelanguage.googleapis.com/v1beta/{file_name}"
+        waited = 0
+        while waited <= max_wait_seconds:
+            file_response = await http_client.get(poll_url, headers=headers)
+            file_response.raise_for_status()
+            file_info = file_response.json()
+            state = _file_state_name(file_info)
+            if state in {"ACTIVE", "SUCCEEDED", "COMPLETED", ""}:
+                break
+            if state == "FAILED":
+                raise RuntimeError(f"Gemini Omni file processing failed: {json.dumps(file_info, indent=2)}")
+            await asyncio.sleep(5)
+            waited += 5
+        else:
+            raise TimeoutError("Timed out waiting for Gemini Omni video file to become active.")
+
+        download_url = f"https://generativelanguage.googleapis.com/v1beta/{file_name}:download?alt=media"
+    else:
+        download_url = uri
+
+    response = await http_client.get(download_url, headers=headers, follow_redirects=True)
+    response.raise_for_status()
+    return response.content
+
+
+def _build_omni_ugc_prompt(
+    ugc_style: str,
+    product_name: str,
+    platform: str = "tiktok",
+    custom_prompt: str | None = None,
+    icp: str | None = None,
+    product_features: str | None = None,
+    video_setting: str | None = None,
+) -> str:
+    base_prompt = _build_seedance_ugc_prompt(
+        ugc_style=ugc_style,
+        product_name=product_name,
+        platform=platform,
+        custom_prompt=custom_prompt,
+        icp=icp,
+        product_features=product_features,
+        video_setting=video_setting,
+    )
+    return base_prompt.replace("SEEDANCE DIRECTION:", "GEMINI OMNI DIRECTION:")
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
+async def generate_omni_video_mcp(
+    prompt: str = None,
+    seconds: str = "8",
+    orientation: str = "portrait",
+    filename: str = "video.mp4",
+    image_paths: list = None,
+    image_urls: list = None,
+    task: str = "auto",
+    delivery: str = "uri",
+    stability_mode: str = "auto",
+    ugc_style: str = None,
+    product_name: str = None,
+    platform: str = "tiktok",
+    custom_prompt: str = None,
+    icp: str = None,
+    product_features: str = None,
+    video_setting: str = None,
+) -> list[TextContent]:
+    """Generate video using Gemini Omni Flash via the Gemini Interactions API."""
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="Error: GEMINI_API_KEY not found in environment variables. Add it to MARKETING_TEAM/.env"
+        )]
+
+    try:
+        seconds_int = int(seconds)
+    except (TypeError, ValueError):
+        return [TextContent(type="text", text=f"Error: seconds must be an integer-like string. Got: {seconds}")]
+    if seconds_int < 3 or seconds_int > 10:
+        return [TextContent(type="text", text=f"Error: Gemini Omni Flash output is limited to 3-10 seconds. Got: {seconds}")]
+
+    aspect_ratio = "9:16" if orientation == "portrait" else "16:9"
+    references = _normalize_url_list(image_paths) + _normalize_url_list(image_urls)
+
+    if ugc_style:
+        try:
+            prompt = _build_omni_ugc_prompt(
+                ugc_style=ugc_style,
+                product_name=product_name,
+                platform=platform,
+                custom_prompt=custom_prompt or prompt,
+                icp=icp,
+                product_features=product_features,
+                video_setting=video_setting,
+            )
+            logger.success(f"Built Gemini Omni UGC prompt from '{ugc_style}' template for {platform}")
+        except ValueError as e:
+            return [TextContent(type="text", text=f"Error building Gemini Omni UGC prompt: {str(e)}")]
+
+    if not prompt:
+        return [TextContent(type="text", text="Error: Must provide either 'prompt' or 'ugc_style'.")]
+
+    valid_tasks = ["auto", "text_to_video", "image_to_video", "reference_to_video"]
+    if task not in valid_tasks:
+        return [TextContent(type="text", text=f"Error: task must be one of {valid_tasks}. Got: {task}")]
+    if task == "auto":
+        task = "text_to_video" if not references else ("image_to_video" if len(references) == 1 else "reference_to_video")
+
+    valid_delivery_modes = ["uri", "inline"]
+    if delivery not in valid_delivery_modes:
+        return [TextContent(type="text", text=f"Error: delivery must be one of {valid_delivery_modes}. Got: {delivery}")]
+
+    try:
+        enhanced_prompt = enhance_prompt_for_stability(prompt, stability_mode, seconds_int)
+        enhanced_prompt += (
+            f"\n\nTARGET OUTPUT: approximately {seconds_int} seconds, {aspect_ratio}, 720p, with natural audio when appropriate. "
+            "Prefer a single coherent creator-style sequence, stable product identity, realistic hands, and no flickering text."
+        )
+
+        omni_input = enhanced_prompt
+        if references:
+            omni_input = []
+            for reference in references:
+                media_data, mime_type = await _read_reference_as_base64(reference, default_mime="image/png")
+                omni_input.append({
+                    "type": "image",
+                    "data": media_data,
+                    "mime_type": mime_type,
+                })
+            omni_input.append({"type": "text", "text": enhanced_prompt})
+
+        response_format = {
+            "type": "video",
+            "aspect_ratio": aspect_ratio,
+        }
+        if delivery == "uri":
+            response_format["delivery"] = "uri"
+
+        payload = {
+            "model": OMNI_MODEL,
+            "input": omni_input,
+            "response_format": response_format,
+            "generation_config": {
+                "video_config": {
+                    "task": task,
+                }
+            },
+            "background": False,
+            "store": False,
+            "stream": False,
+        }
+
+        headers = {
+            "x-goog-api-key": api_key,
+            "Content-Type": "application/json",
+        }
+
+        async with httpx.AsyncClient(timeout=180.0) as http_client:
+            logger.info(f"Starting Gemini Omni video generation ({task})...")
+            response = await http_client.post(
+                "https://generativelanguage.googleapis.com/v1beta/interactions",
+                headers=headers,
+                json=payload,
+            )
+            if response.status_code != 200:
+                error_detail = response.text
+                try:
+                    error_detail = json.dumps(response.json(), indent=2)
+                except Exception:
+                    pass
+                return [TextContent(type="text", text=f"Gemini Omni Error ({response.status_code}):\n\n{error_detail}")]
+
+            interaction = response.json()
+            video_b64, video_uri, mime_type = _extract_omni_video_output(interaction)
+            if video_b64:
+                video_bytes = base64.b64decode(video_b64)
+            elif video_uri:
+                video_bytes = await _download_omni_video_from_uri(http_client, video_uri, api_key)
+            else:
+                return [TextContent(
+                    type="text",
+                    text=f"No video output found in Gemini Omni response:\n\n{json.dumps(interaction, indent=2)[:4000]}"
+                )]
+
+        if not filename.endswith(".mp4"):
+            filename = f"{filename}.mp4"
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_path = output_dir / filename
+        output_path.write_bytes(video_bytes)
+
+        estimated_cost = seconds_int * OMNI_OUTPUT_COST_PER_SECOND
+        result_text = (
+            f"Video generated successfully!\n\n"
+            f"**Model:** {OMNI_MODEL}\n"
+            f"**Provider:** Google Gemini Omni Flash\n"
+            f"**Task:** {task}\n"
+            f"**Duration target:** {seconds_int}s\n"
+            f"**Aspect Ratio:** {aspect_ratio}\n"
+            f"**Reference Images:** {len(references)}\n"
+            f"**UGC Style:** {ugc_style if ugc_style else 'N/A'}\n"
+            f"**Estimated Output Cost:** ~${estimated_cost:.2f} plus input tokens\n"
+            f"**MIME Type:** {mime_type or 'video/mp4'}\n\n"
+            f"**Saved to:** {output_path}"
+        )
+        return [TextContent(type="text", text=result_text)]
+
+    except Exception as e:
+        return [TextContent(type="text", text=f"Error generating Gemini Omni video: {str(e)}")]
+
+
 async def generate_video_with_fallback(
     prompt: str,
     seconds: str = "8",
@@ -1094,7 +1379,7 @@ async def generate_video_with_fallback(
     filename: str = "video.mp4",
     stability_mode: str = "auto",
 ) -> list[TextContent]:
-    """Generate video with automatic fallback chain: Sora 2 -> SeedDance 2.0 -> Kling 3.0 -> Veo 3.1"""
+    """Generate video with automatic fallback chain: SeedDance 2.5 -> Gemini Omni Flash -> Sora 2 -> Kling 3.0"""
 
     # Map orientation to aspect ratio for PiAPI models
     aspect_ratio = "9:16" if orientation == "portrait" else "16:9"
@@ -1105,6 +1390,20 @@ async def generate_video_with_fallback(
     kling_duration = 5 if secs_int <= 7 else 10
 
     providers = [
+        ("SeedDance 2.5", lambda: generate_seedance_video_mcp(
+            prompt=prompt,
+            duration=seedance_duration,
+            aspect_ratio=aspect_ratio,
+            filename=filename,
+            stability_mode=stability_mode,
+        )),
+        ("Gemini Omni Flash", lambda: generate_omni_video_mcp(
+            prompt=prompt,
+            seconds=str(max(3, min(secs_int, 10))),
+            orientation=orientation,
+            filename=filename,
+            stability_mode=stability_mode,
+        )),
         ("Sora 2", lambda: generate_sora_video_mcp(
             prompt=prompt,
             seconds=seconds,
@@ -1112,25 +1411,10 @@ async def generate_video_with_fallback(
             filename=filename,
             stability_mode=stability_mode,
         )),
-        ("SeedDance 2.0", lambda: generate_seedance_video_mcp(
-            prompt=prompt,
-            duration=seedance_duration,
-            aspect_ratio=aspect_ratio,
-            filename=filename,
-            stability_mode=stability_mode,
-        )),
         ("Kling 3.0", lambda: generate_kling_video_mcp(
             prompt=prompt,
             duration=kling_duration,
             aspect_ratio=aspect_ratio,
-            filename=filename,
-            stability_mode=stability_mode,
-        )),
-        ("Veo 3.1", lambda: generate_veo_text_to_video_mcp(
-            prompt=prompt,
-            seconds=seconds,
-            orientation=orientation,
-            resolution="720p",
             filename=filename,
             stability_mode=stability_mode,
         )),
@@ -2500,7 +2784,7 @@ def _extract_piapi_video_url(result: dict, model_name: str) -> str:
     retry=retry_if_exception_type((Exception,)),
     reraise=True
 )
-async def generate_seedance_video_mcp(
+async def _generate_seedance_video_mcp_legacy(
     prompt: str,
     duration: int = 5,
     aspect_ratio: str = "16:9",
@@ -2683,6 +2967,408 @@ async def generate_seedance_video_mcp(
             type="text",
             text=f"❌ Error generating SeedDance video: {str(e)}\n\nCheck your PIAPI_API_KEY."
         )]
+
+
+SEEDANCE_TASK_TYPES = {
+    "seedance-2.5",
+    "seedance-2",
+    "seedance-2-fast",
+    "seedance-2-mini",
+    "seedance-2-less-restriction",
+    "seedance-2-fast-less-restriction",
+    "seedance-2-mini-less-restriction",
+}
+
+SEEDANCE_PRICE_PER_SECOND = {
+    "seedance-2.5": {"480p": 0.30, "720p": 0.60},
+    "seedance-2": {"480p": 0.10, "720p": 0.20, "1080p": 0.50},
+    "seedance-2-fast": {"480p": 0.08, "720p": 0.16},
+    "seedance-2-mini": {"480p": 0.07, "720p": 0.14},
+    "seedance-2-less-restriction": {"480p": 0.11, "720p": 0.22, "1080p": 0.55},
+    "seedance-2-fast-less-restriction": {"480p": 0.088, "720p": 0.176},
+    "seedance-2-mini-less-restriction": {"480p": 0.077, "720p": 0.154},
+}
+
+SEEDANCE_DEFAULT_TASK_TYPE = "seedance-2.5"
+
+
+def _resolve_seedance_task_type(
+    task_type: str | None,
+    model_tier: str | None,
+    less_restriction: bool | None,
+    speed_mode: str | None,
+) -> str:
+    """Resolve legacy and current SeedDance options to a current PiAPI task_type."""
+    if task_type:
+        return task_type
+
+    if model_tier is None and speed_mode is None and less_restriction is None:
+        return SEEDANCE_DEFAULT_TASK_TYPE
+
+    if model_tier is None and speed_mode:
+        model_tier = "fast" if speed_mode == "fast" else "pro"
+
+    model_tier = model_tier or "fast"
+    if model_tier not in {"pro", "fast", "mini"}:
+        raise ValueError("model_tier must be one of: pro, fast, mini")
+
+    # New calls default to the user's preferred fast less-restriction model.
+    # Old callers that explicitly pass speed_mode keep strict behavior unless
+    # less_restriction is supplied.
+    if less_restriction is None:
+        less_restriction = speed_mode is None
+
+    strict_task_types = {
+        "pro": "seedance-2",
+        "fast": "seedance-2-fast",
+        "mini": "seedance-2-mini",
+    }
+    resolved = strict_task_types[model_tier]
+    if less_restriction:
+        if model_tier == "pro":
+            resolved = "seedance-2-less-restriction"
+        else:
+            resolved = f"{resolved}-less-restriction"
+    return resolved
+
+
+def _normalize_url_list(value) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    return [str(item) for item in value if item]
+
+
+def _infer_seedance_mode(
+    mode: str | None,
+    image_urls: list[str],
+    video_urls: list[str],
+    audio_urls: list[str],
+) -> str:
+    if mode and mode != "auto":
+        return mode
+    if not image_urls and not video_urls and not audio_urls:
+        return "text_to_video"
+    if image_urls and len(image_urls) <= 2 and not video_urls and not audio_urls:
+        return "first_last_frames"
+    return "omni_reference"
+
+
+def _build_seedance_ugc_prompt(
+    ugc_style: str,
+    product_name: str,
+    platform: str = "tiktok",
+    custom_prompt: str | None = None,
+    icp: str | None = None,
+    product_features: str | None = None,
+    video_setting: str | None = None,
+) -> str:
+    """Build a SeedDance-ready UGC prompt from the shared UGC templates."""
+    if not product_name:
+        raise ValueError("'product_name' is required when using 'ugc_style'.")
+
+    style_key = (ugc_style or "").strip()
+    platform_key = (platform or "tiktok").strip().lower()
+    valid_platforms = {"tiktok", "instagram", "facebook"}
+    if platform_key not in valid_platforms:
+        raise ValueError(f"platform must be one of {sorted(valid_platforms)}. Got: {platform}")
+
+    templates = LOADED_UGC_TEMPLATES or {}
+    if style_key not in templates:
+        available_styles = ", ".join(AVAILABLE_UGC_STYLES)
+        raise ValueError(f"Unknown UGC style '{ugc_style}'. Available: {available_styles}")
+
+    platform_prompt = templates[style_key].get(platform_key) or templates[style_key].get("tiktok") or ""
+    prompt_parts = [
+        f"UGC-STYLE VIDEO ({style_key.upper()})",
+        platform_prompt,
+        f"PRODUCT: {product_name}",
+    ]
+
+    if icp:
+        prompt_parts.append(f"TARGET AUDIENCE: {icp}")
+    if product_features:
+        prompt_parts.append(f"KEY FEATURES TO SHOW: {product_features}")
+    if video_setting:
+        prompt_parts.append(f"SETTING: {video_setting}")
+
+    prompt_parts.append(
+        "SEEDANCE DIRECTION: Create a natural creator-style ad with believable handheld motion, "
+        "clear product visibility, stable hands, consistent product shape, and realistic social-media pacing. "
+        "If reference images are provided, use @image1, @image2, etc. to preserve product identity."
+    )
+    prompt_parts.append(
+        "AUTHENTICITY REQUIREMENTS: natural light, casual environment, real-person pacing, "
+        "small imperfections, no corporate studio polish, no warped hands, no duplicate limbs, no flickering text."
+    )
+
+    if custom_prompt:
+        prompt_parts.append(f"ADDITIONAL INSTRUCTIONS: {custom_prompt}")
+
+    return "\n\n".join(part for part in prompt_parts if part)
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
+    retry=retry_if_exception_type((Exception,)),
+    reraise=True
+)
+async def generate_seedance_video_mcp(
+    prompt: str = None,
+    duration: int = 5,
+    aspect_ratio: str = "16:9",
+    filename: str = "video.mp4",
+    image_urls: list = None,
+    video_urls: list = None,
+    audio_urls: list = None,
+    video_url: str = None,
+    speed_mode: str = None,
+    task_type: str = None,
+    model_tier: str = None,
+    less_restriction: bool = None,
+    mode: str = "auto",
+    resolution: str = "720p",
+    cost_per_second: float = None,
+    auto_upload_assets: bool = False,
+    asset_retention_hours: int = None,
+    stability_mode: str = "auto",
+    generate_audio: bool = True,
+    ugc_style: str = None,
+    product_name: str = None,
+    platform: str = "tiktok",
+    custom_prompt: str = None,
+    icp: str = None,
+    product_features: str = None,
+    video_setting: str = None,
+) -> list[TextContent]:
+    """Generate video using PiAPI SeedDance. Defaults to SeedDance 2.5."""
+    api_key = os.getenv("PIAPI_API_KEY")
+    if not api_key:
+        return [TextContent(
+            type="text",
+            text="Error: PIAPI_API_KEY not found in environment variables. Add it to MARKETING_TEAM/.env"
+        )]
+
+    try:
+        duration = int(duration)
+    except (TypeError, ValueError):
+        return [TextContent(type="text", text=f"Error: duration must be an integer. Got: {duration}")]
+
+    image_urls = _normalize_url_list(image_urls)
+    video_urls = _normalize_url_list(video_urls)
+    if video_url:
+        video_urls.insert(0, video_url)
+    audio_urls = _normalize_url_list(audio_urls)
+
+    if ugc_style:
+        try:
+            prompt = _build_seedance_ugc_prompt(
+                ugc_style=ugc_style,
+                product_name=product_name,
+                platform=platform,
+                custom_prompt=custom_prompt or prompt,
+                icp=icp,
+                product_features=product_features,
+                video_setting=video_setting,
+            )
+            logger.success(f"Built SeedDance UGC prompt from '{ugc_style}' template for {platform}")
+        except ValueError as e:
+            return [TextContent(type="text", text=f"Error building SeedDance UGC prompt: {str(e)}")]
+
+    if not prompt:
+        return [TextContent(type="text", text="Error: Must provide either 'prompt' or 'ugc_style'.")]
+
+    try:
+        task_type = _resolve_seedance_task_type(
+            task_type=task_type,
+            model_tier=model_tier,
+            less_restriction=less_restriction,
+            speed_mode=speed_mode,
+        )
+    except ValueError as e:
+        return [TextContent(type="text", text=f"Error: {str(e)}")]
+
+    min_duration = 4
+    max_duration = 15
+    if task_type == "seedance-2.5":
+        # PiAPI's live playground currently advertises 4-15s for SeedDance 2.5.
+        # Keep this conservative until longer durations are verified in production.
+        min_duration = 4
+        max_duration = 15
+
+    if duration < min_duration or duration > max_duration:
+        return [TextContent(
+            type="text",
+            text=f"Error: {task_type} duration must be an integer from {min_duration} to {max_duration} seconds. Got: {duration}"
+        )]
+
+    valid_ratios = ["21:9", "16:9", "4:3", "1:1", "3:4", "9:16", "auto"]
+    if aspect_ratio not in valid_ratios:
+        return [TextContent(type="text", text=f"Error: aspect_ratio must be one of {valid_ratios}. Got: {aspect_ratio}")]
+
+    mode = _infer_seedance_mode(mode, image_urls, video_urls, audio_urls)
+    valid_modes = ["text_to_video", "first_last_frames", "omni_reference"]
+    if mode not in valid_modes:
+        return [TextContent(type="text", text=f"Error: mode must be one of {valid_modes} or auto. Got: {mode}")]
+
+    if aspect_ratio == "auto" and mode != "first_last_frames":
+        return [TextContent(type="text", text="Error: aspect_ratio='auto' is only valid for first_last_frames mode.")]
+
+    reference_count = len(image_urls) + len(video_urls) + len(audio_urls)
+    if mode == "text_to_video" and reference_count:
+        return [TextContent(type="text", text="Error: text_to_video mode does not accept reference URLs.")]
+    if mode == "first_last_frames" and (not 1 <= len(image_urls) <= 2 or video_urls or audio_urls):
+        return [TextContent(type="text", text="Error: first_last_frames mode requires 1-2 image_urls and no video_urls/audio_urls.")]
+    if mode == "omni_reference":
+        if reference_count < 1:
+            return [TextContent(type="text", text="Error: omni_reference mode requires at least one reference URL.")]
+        if len(image_urls) > 9:
+            return [TextContent(type="text", text="Error: SeedDance supports up to 9 image_urls.")]
+        if len(video_urls) > 3:
+            return [TextContent(type="text", text="Error: SeedDance supports up to 3 video_urls.")]
+        if len(audio_urls) > 3:
+            return [TextContent(type="text", text="Error: SeedDance supports up to 3 audio_urls.")]
+        if reference_count > 12:
+            return [TextContent(type="text", text="Error: SeedDance supports up to 12 total references.")]
+        if audio_urls and not (image_urls or video_urls):
+            return [TextContent(type="text", text="Error: audio_urls require at least one image_url or video_url.")]
+
+    valid_resolutions = ["480p", "720p", "1080p"]
+    if resolution not in valid_resolutions:
+        return [TextContent(type="text", text=f"Error: resolution must be one of {valid_resolutions}. Got: {resolution}")]
+
+    known_pricing = SEEDANCE_PRICE_PER_SECOND.get(task_type)
+    if resolution == "1080p" and known_pricing is not None and resolution not in known_pricing:
+        return [TextContent(
+            type="text",
+            text=f"Error: {task_type} does not support 1080p. Use 480p/720p or switch to seedance-2."
+        )]
+
+    cost_per_sec = cost_per_second if cost_per_second is not None else (known_pricing or {}).get(resolution)
+    estimated_cost = duration * cost_per_sec if cost_per_sec is not None else None
+
+    enhanced_prompt = enhance_prompt_for_stability(prompt, stability_mode, duration)
+    seedance_suffix = (
+        "\n\nLANGUAGE: All speech, text, and audio MUST be in English. "
+        "For whiteboard or diagram scenes, keep text minimal, high-contrast, and legible. "
+        "Maintain consistent subject identity and visual style from first frame to last frame. "
+        "Avoid warped hands, duplicate limbs, fused fingers, unstable lettering, and flickering diagrams."
+    )
+    enhanced_prompt = enhanced_prompt + seedance_suffix
+
+    input_data = {
+        "prompt": enhanced_prompt,
+        "mode": mode,
+        "duration": duration,
+        "aspect_ratio": aspect_ratio,
+        "resolution": resolution,
+    }
+
+    if image_urls:
+        input_data["image_urls"] = image_urls
+    if video_urls:
+        input_data["video_urls"] = video_urls
+    if audio_urls:
+        input_data["audio_urls"] = audio_urls
+    if task_type == "seedance-2.5":
+        input_data["audio"] = bool(generate_audio)
+    if auto_upload_assets:
+        input_data["auto_upload_assets"] = True
+    if asset_retention_hours is not None:
+        input_data["asset_retention_hours"] = int(asset_retention_hours)
+
+    payload = {
+        "model": "seedance",
+        "task_type": task_type,
+        "input": input_data,
+    }
+
+    headers = {
+        "X-API-Key": api_key,
+        "Content-Type": "application/json",
+    }
+
+    try:
+        logger.info(f"Starting SeedDance video generation ({task_type})...")
+        cost_log = f"${estimated_cost:.2f}" if estimated_cost is not None else "unknown"
+        logger.debug(f"Duration: {duration}s | Aspect: {aspect_ratio} | Resolution: {resolution} | Cost: {cost_log}")
+
+        async with httpx.AsyncClient(timeout=60.0) as http_client:
+            response = await http_client.post(
+                "https://api.piapi.ai/api/v1/task",
+                headers=headers,
+                json=payload,
+            )
+
+            if response.status_code != 200:
+                error_detail = response.text
+                try:
+                    error_detail = json.dumps(response.json(), indent=2)
+                except Exception:
+                    pass
+                return [TextContent(type="text", text=f"PiAPI Error ({response.status_code}):\n\n{error_detail}")]
+
+            result = response.json()
+            task_id = result.get("data", {}).get("task_id")
+            if not task_id:
+                return [TextContent(type="text", text=f"No task_id in PiAPI response:\n\n{json.dumps(result, indent=2)}")]
+
+        completed_result = await _poll_piapi_task(task_id, "SeedDance", max_wait=600)
+        video_download_url = _extract_piapi_video_url(completed_result, "SeedDance")
+
+        if not filename.endswith(".mp4"):
+            filename = f"{filename}.mp4"
+        output_dir = Path("MARKETING_TEAM/outputs/videos").resolve()
+        output_path = output_dir / filename
+
+        await _download_piapi_video(video_download_url, output_path, "SeedDance")
+
+        generation_type = {
+            "text_to_video": "Text-to-video",
+            "first_last_frames": "First/last-frame image-to-video",
+            "omni_reference": "Omni-reference video",
+        }[mode]
+
+        result_text = (
+            f"Video generated successfully!\n\n"
+            f"**Model:** {task_type} (via PiAPI)\n"
+            f"**Type:** {generation_type}\n"
+            f"**Task Type:** {task_type}\n"
+            f"**Mode:** {mode}\n"
+            f"**UGC Style:** {ugc_style if ugc_style else 'N/A'}\n"
+            f"**Platform:** {platform if ugc_style else 'N/A'}\n"
+            f"**Prompt:** {prompt}\n"
+            f"**Duration:** {duration}s\n"
+            f"**Aspect Ratio:** {aspect_ratio}\n"
+            f"**Resolution:** {resolution}\n"
+            f"**Audio Generation:** {'Enabled' if task_type == 'seedance-2.5' and generate_audio else 'Disabled or model-controlled'}\n"
+            f"**Cost:** "
+            f"{f'${estimated_cost:.2f} (${cost_per_sec}/sec)' if estimated_cost is not None else 'Unknown for custom task_type'}"
+        )
+
+        if image_urls:
+            result_text += f"\n**Reference Images:** {len(image_urls)} (use @image1-@image{len(image_urls)} in prompt)"
+        if video_urls:
+            result_text += f"\n**Reference Videos:** {len(video_urls)} (use @video1-@video{len(video_urls)} in prompt)"
+            result_text += "\n**Note:** PiAPI may bill input video references at an additional half-rate based on input duration."
+        if audio_urls:
+            result_text += f"\n**Reference Audio:** {len(audio_urls)} (use @audio1-@audio{len(audio_urls)} in prompt)"
+        if auto_upload_assets:
+            result_text += "\n**Asset Upload:** auto_upload_assets enabled"
+
+        result_text += (
+            f"\n\n**Saved to:** {output_path}\n"
+            f"**Task ID:** {task_id}"
+        )
+
+        return [TextContent(type="text", text=result_text)]
+
+    except TimeoutError as e:
+        return [TextContent(type="text", text=f"Timeout: {str(e)}")]
+    except Exception as e:
+        return [TextContent(type="text", text=f"Error generating SeedDance video: {str(e)}\n\nCheck your PIAPI_API_KEY.")]
 
 
 # ============================================================================
@@ -2898,7 +3584,7 @@ async def list_tools() -> list[Tool]:
     return [
         Tool(
             name="generate_gpt4o_image",
-            description="Generate image with OpenAI gpt-image-2 (released 2026-04-21). BEST FOR: Images requiring readable embedded text, typography, logos, multilingual labels, or text overlays — significantly improved over gpt-image-1. ~$0.02-0.17/image depending on quality tier. DO NOT USE for UGC product images (use generate_nano_banana_image for better Sora video conversion). DO NOT USE as default general-purpose image gen (use generate_nano_banana_2_image — cheaper).",
+            description="Generate image with OpenAI gpt-image-2 (released 2026-04-21). BEST FOR: Images requiring readable embedded text, typography, logos, multilingual labels, or text overlays — significantly improved over gpt-image-1. ~$0.02-0.17/image depending on quality tier. DO NOT USE for UGC product reference images (use generate_nano_banana_image for better UGC video conversion). DO NOT USE as default general-purpose image gen (use generate_nano_banana_2_image — cheaper).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2928,7 +3614,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_sora_video",
-            description="PRIMARY UGC & VIDEO TOOL: Generate video using Sora 2 ($0.10/sec, 720p). BEST FOR: All UGC ad videos (50 styles), text-to-video, and image-to-video with GPT-4o Vision analysis. Use this FIRST for any video generation including UGC. 7.5x cheaper than Veo. DO NOT USE when native audio/dialogue is critical (use generate_veo_text_to_video). If Sora fails, fall back to generate_veo_ugc_from_image for UGC or generate_veo_text_to_video for non-UGC.",
+            description="FALLBACK UGC & VIDEO TOOL: Generate video using Sora 2 ($0.10/sec, 720p). BEST FOR: UGC ad fallback when SeedDance 2.5 and Gemini Omni Flash are unavailable, or local image-to-video flows that need GPT-4o Vision analysis. For new UGC ads, use generate_seedance_video first, then generate_omni_video. DO NOT USE when native audio/dialogue is critical (use generate_veo_text_to_video). If Sora fails, fall back to generate_kling_video or Veo-specific tools when needed.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -2992,8 +3678,97 @@ async def list_tools() -> list[Tool]:
             }
         ),
         Tool(
+            name="generate_omni_video",
+            description="SECONDARY UGC & VIDEO TOOL: Generate video using Google Gemini Omni Flash (`gemini-omni-flash-preview`) via the Gemini Interactions API. BEST FOR: fallback after SeedDance 2.5, fast text-to-video, local or URL image-to-video references, character/product consistency, multimodal reasoning, and conversational-video style outputs. Use before Sora and Kling in the fallback chain. Output is 3-10s at 720p with effective output cost around $0.10/sec plus input tokens.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "prompt": {
+                        "type": "string",
+                        "description": "Video prompt. Can be used alone, or with ugc_style as additional instructions."
+                    },
+                    "seconds": {
+                        "type": "string",
+                        "description": "Target output duration. Gemini Omni Flash supports 3-10s output; duration is also reinforced in the prompt.",
+                        "enum": ["3", "4", "5", "6", "7", "8", "9", "10"],
+                        "default": "8"
+                    },
+                    "orientation": {
+                        "type": "string",
+                        "description": "Video orientation/aspect ratio.",
+                        "enum": ["portrait", "landscape"],
+                        "default": "portrait"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "description": "Output filename (without extension, .mp4 will be added)"
+                    },
+                    "image_paths": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional local image paths for Gemini Omni image/reference-to-video."
+                    },
+                    "image_urls": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional image URLs for Gemini Omni image/reference-to-video."
+                    },
+                    "task": {
+                        "type": "string",
+                        "description": "Gemini Omni video task. auto infers text_to_video, image_to_video, or reference_to_video from references.",
+                        "enum": ["auto", "text_to_video", "image_to_video", "reference_to_video"],
+                        "default": "auto"
+                    },
+                    "delivery": {
+                        "type": "string",
+                        "description": "Video delivery mode. uri is recommended for generated videos larger than 4MB.",
+                        "enum": ["uri", "inline"],
+                        "default": "uri"
+                    },
+                    "stability_mode": {
+                        "type": "string",
+                        "description": "Anti-morphing prompt mode.",
+                        "enum": ["auto", "authentic", "cinematic", "off"],
+                        "default": "auto"
+                    },
+                    "ugc_style": {
+                        "type": "string",
+                        "description": "Optional: UGC style from memory/ugc_prompt_templates.json. When supplied, Gemini Omni builds an authentic creator-style UGC prompt from the shared templates.",
+                        "enum": AVAILABLE_UGC_STYLES
+                    },
+                    "product_name": {
+                        "type": "string",
+                        "description": "Required if ugc_style is used: product name for UGC prompt generation."
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "Platform optimization for UGC templates.",
+                        "enum": ["tiktok", "instagram", "facebook"],
+                        "default": "tiktok"
+                    },
+                    "custom_prompt": {
+                        "type": "string",
+                        "description": "Optional: additional UGC instructions layered onto the selected template."
+                    },
+                    "icp": {
+                        "type": "string",
+                        "description": "Optional: Ideal Customer Profile."
+                    },
+                    "product_features": {
+                        "type": "string",
+                        "description": "Optional: product features or benefits to show in the UGC ad."
+                    },
+                    "video_setting": {
+                        "type": "string",
+                        "description": "Optional: creator environment or scene setting."
+                    }
+                },
+                "required": ["filename"]
+            }
+        ),
+        Tool(
             name="generate_nano_banana_image",
-            description="Generate image via Gemini 3 Pro (Nano Banana Pro). BEST FOR: Product images for Sora UGC video conversion, or when character consistency across multiple images is critical. ~$0.134/image. DO NOT USE as default — prefer generate_nano_banana_2_image (newer, cheaper, more features). DO NOT USE for text-heavy images (use generate_gpt4o_image).",
+            description="Generate image via Gemini 3 Pro (Nano Banana Pro). BEST FOR: Product reference images for UGC video workflows, or when character consistency across multiple images is critical. ~$0.134/image. SeedDance image-to-video requires public image URLs; Sora fallback can use local paths. DO NOT USE as default — prefer generate_nano_banana_2_image (newer, cheaper, more features). DO NOT USE for text-heavy images (use generate_gpt4o_image).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -3088,7 +3863,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_video_with_fallback",
-            description="Reliability wrapper: Tries Sora 2 -> SeedDance 2.0 -> Kling 3.0 -> Veo 3.1 (4-tier fallback). USE ONLY for batch video generation or production pipelines where reliability matters. For single videos, call the specific model tool directly. DO NOT USE for UGC ads (use generate_sora_video directly for full UGC parameter control).",
+            description="Reliability wrapper: Tries SeedDance 2.5 -> Gemini Omni Flash -> Sora 2 -> Kling 3.0 (4-tier fallback). USE ONLY for batch video generation or production pipelines where reliability matters. For single videos, call the specific model tool directly. DO NOT USE for UGC ads (use generate_seedance_video directly for full UGC parameter control).",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -3118,7 +3893,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="analyze_ugc_image",
-            description="Analyze product image with GPT-4o Vision for consistent video generation. INTERMEDIATE STEP in UGC workflow: extracts visual details (colors, shapes, textures) for Sora/Veo consistency. ~$0.01/analysis. NOTE: generate_sora_video has built-in auto_analyze_image=True, so you only need this tool if you want to inspect or modify the analysis before video generation. DO NOT USE standalone — returns text description, not an image or video.",
+            description="Analyze product image with GPT-4o Vision for consistent video generation. INTERMEDIATE STEP in UGC workflow: extracts visual details (colors, shapes, textures) for SeedDance/Omni/Sora/Veo consistency. ~$0.01/analysis. NOTE: generate_sora_video has built-in auto_analyze_image=True; SeedDance expects public image_urls while Omni can use local image_paths. DO NOT USE standalone — returns text description, not an image or video.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -3132,7 +3907,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_veo_text_to_video",
-            description="Generate video from text via Veo 3.1. BEST FOR: High-quality text-to-video with native dialogue, sound effects, and ambient audio. $0.75/sec. USE when you need audio in the video or cinematic quality. DO NOT USE for UGC ads (use generate_sora_video as primary). DO NOT USE for budget videos where audio isn't needed (use generate_sora_video at $0.10/sec). NOTE: 1080p only available for 8-second videos.",
+            description="Generate video from text via Veo 3.1. BEST FOR: legacy Veo workflows, scene extension/last-frame control, or premium native-dialogue/cinematic quality. $0.75/sec. DO NOT USE for normal UGC fallback (order is generate_seedance_video -> generate_omni_video -> generate_sora_video -> generate_kling_video). NOTE: 1080p only available for 8-second videos.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -3184,7 +3959,7 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_veo_ugc_from_image",
-            description="BACKUP UGC TOOL: Generate UGC-style ad video from product image using Veo 3.1 image-to-video ($0.75/sec, native audio, 4 styles, 3 platforms). Use ONLY when Sora 2 fails or when native audio/dialogue in UGC is specifically required. For all other UGC, use generate_sora_video FIRST (cheaper, faster). Requires a product image as input.",
+            description="LEGACY/PREMIUM UGC TOOL: Generate UGC-style ad video from product image using Veo 3.1 image-to-video ($0.75/sec, native audio, 4 styles, 3 platforms). Use ONLY for legacy Veo workflows, scene/quality requirements unique to Veo, or native dialogue in UGC. Normal UGC fallback order is SeedDance -> Omni -> Sora -> Kling. Requires a product image as input.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -3249,24 +4024,25 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="generate_seedance_video",
-            description="Generate video using SeedDance 2.0 via PiAPI ($0.15/sec standard, $0.08/sec fast). BEST FOR: Multi-reference image-to-video (up to 9 images with @image1-@image9 in prompt), video editing (modify existing clips), and character consistency across scenes. Native audio + 2K resolution. Use as SECOND choice after Sora for general video, or FIRST choice when you need multi-image references or video editing. DO NOT USE when Sora works fine for simple T2V.",
+            description="PRIMARY UGC & VIDEO TOOL: Generate video using SeedDance via PiAPI. Defaults to SeedDance 2.5 at 720p with optional audio ($0.60/sec at 720p, $0.30/sec at 480p). BEST FOR: UGC ads, higher-control multimodal video, first/last-frame control, omni-reference workflows, character/product consistency, and scene-continuation workflows. Use ugc_style + product_name for UGC ad prompts. Explicitly set task_type to a seedance-2 variant for cheaper SeedDance 2.0 or less-restriction modes.",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "prompt": {
                         "type": "string",
-                        "description": "Video description. Use @image1, @image2 etc. to reference images from image_urls list."
+                        "description": "Video description. Can be used alone, or with ugc_style as additional instructions. Use @image1, @image2 etc. to reference images from image_urls list."
                     },
                     "duration": {
                         "type": "integer",
-                        "description": "Video duration in seconds",
-                        "enum": [5, 10, 15],
+                        "description": "Video duration in seconds. Default SeedDance 2.5 is conservatively limited to 4-15s by the local tool.",
+                        "minimum": 4,
+                        "maximum": 15,
                         "default": 5
                     },
                     "aspect_ratio": {
                         "type": "string",
                         "description": "Video aspect ratio",
-                        "enum": ["16:9", "9:16", "4:3", "3:4"],
+                        "enum": ["21:9", "16:9", "4:3", "1:1", "3:4", "9:16", "auto"],
                         "default": "16:9"
                     },
                     "filename": {
@@ -3278,23 +4054,109 @@ async def list_tools() -> list[Tool]:
                         "items": {"type": "string"},
                         "description": "Optional: Up to 9 reference image URLs. Reference in prompt as @image1, @image2, etc."
                     },
+                    "video_urls": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional: Up to 3 reference video URLs. Reference in prompt as @video1, @video2, etc."
+                    },
+                    "audio_urls": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional: Up to 3 mp3/wav reference audio URLs. Requires at least one image/video reference. Reference as @audio1, @audio2, etc."
+                    },
                     "video_url": {
                         "type": "string",
-                        "description": "Optional: URL of existing video for video editing mode"
+                        "description": "Backward-compatible single reference video URL. Prefer video_urls for new calls."
                     },
                     "speed_mode": {
                         "type": "string",
-                        "description": "Generation speed: 'standard' ($0.15/sec, best quality) or 'fast' ($0.08/sec, faster but lower quality)",
+                        "description": "Legacy option: 'standard' maps to pro strict, 'fast' maps to fast strict unless less_restriction is also supplied.",
                         "enum": ["standard", "fast"],
-                        "default": "standard"
+                    },
+                    "task_type": {
+                        "type": "string",
+                        "description": "Explicit SeedDance task type. Default is seedance-2.5. Known SeedDance 2.0 examples: seedance-2, seedance-2-fast, seedance-2-mini, and their -less-restriction variants. Custom/future PiAPI task types are passed through.",
+                        "default": "seedance-2.5"
+                    },
+                    "model_tier": {
+                        "type": "string",
+                        "description": "Legacy SeedDance 2.0 model tier used when task_type is not supplied and a legacy option is provided.",
+                        "enum": ["pro", "fast", "mini"],
+                        "default": "fast"
+                    },
+                    "less_restriction": {
+                        "type": "boolean",
+                        "description": "Legacy SeedDance 2.0 option: use the less-restriction task type when task_type is not supplied.",
+                        "default": False
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "Reference mode. auto infers text_to_video, first_last_frames, or omni_reference from supplied references.",
+                        "enum": ["auto", "text_to_video", "first_last_frames", "omni_reference"],
+                        "default": "auto"
+                    },
+                    "resolution": {
+                        "type": "string",
+                        "description": "Output resolution. SeedDance 2.5 supports 480p/720p only. 1080p is only supported by selected SeedDance 2.0 pro task types.",
+                        "enum": ["480p", "720p", "1080p"],
+                        "default": "720p"
+                    },
+                    "generate_audio": {
+                        "type": "boolean",
+                        "description": "SeedDance 2.5 only: enable optional audio generation.",
+                        "default": True
+                    },
+                    "ugc_style": {
+                        "type": "string",
+                        "description": "Optional: UGC style from memory/ugc_prompt_templates.json. When supplied, SeedDance builds an authentic creator-style UGC prompt from the shared templates.",
+                        "enum": AVAILABLE_UGC_STYLES
+                    },
+                    "product_name": {
+                        "type": "string",
+                        "description": "Required if ugc_style is used: product name for UGC prompt generation."
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "Platform optimization for UGC templates.",
+                        "enum": ["tiktok", "instagram", "facebook"],
+                        "default": "tiktok"
+                    },
+                    "custom_prompt": {
+                        "type": "string",
+                        "description": "Optional: additional UGC instructions layered onto the selected template."
+                    },
+                    "icp": {
+                        "type": "string",
+                        "description": "Optional: Ideal Customer Profile, e.g. 'busy founders, age 30-45'."
+                    },
+                    "product_features": {
+                        "type": "string",
+                        "description": "Optional: product features or benefits to show in the UGC ad."
+                    },
+                    "video_setting": {
+                        "type": "string",
+                        "description": "Optional: creator environment, e.g. 'bright kitchen counter, morning light'."
+                    },
+                    "cost_per_second": {
+                        "type": "number",
+                        "description": "Optional manual cost estimate for custom/future task types when local pricing is unknown."
+                    },
+                    "auto_upload_assets": {
+                        "type": "boolean",
+                        "description": "Less-restriction helper: upload raw reference URLs as ephemeral private assets.",
+                        "default": False
+                    },
+                    "asset_retention_hours": {
+                        "type": "integer",
+                        "description": "Optional retention window for auto-uploaded ephemeral assets."
                     }
                 },
-                "required": ["prompt", "filename"]
+                "required": ["filename"]
             }
         ),
         Tool(
             name="generate_kling_video",
-            description="Generate video using Kling 3.0 via PiAPI ($0.20/5sec std, $0.33/5sec pro). BEST FOR: Longer clips, budget generation, and when SeedDance/Sora are unavailable. Native audio, I2V support, camera control. No US legal restrictions (Kuaishou, not ByteDance). Use as THIRD choice after Sora and SeedDance for general video.",
+            description="Generate video using Kling 3.0 via PiAPI ($0.20/5sec std, $0.33/5sec pro). BEST FOR: longer clips, budget generation, and when SeedDance, Gemini Omni, and Sora are unavailable. Native audio, I2V support, camera control. No US legal restrictions (Kuaishou, not ByteDance). Use as fourth fallback after SeedDance, Omni, and Sora.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -3385,6 +4247,26 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
                 video_setting=arguments.get("video_setting")
             )
 
+        elif name == "generate_omni_video":
+            return await generate_omni_video_mcp(
+                prompt=arguments.get("prompt"),
+                seconds=arguments.get("seconds", "8"),
+                orientation=arguments.get("orientation", "portrait"),
+                filename=arguments["filename"],
+                image_paths=arguments.get("image_paths"),
+                image_urls=arguments.get("image_urls"),
+                task=arguments.get("task", "auto"),
+                delivery=arguments.get("delivery", "uri"),
+                stability_mode=arguments.get("stability_mode", "auto"),
+                ugc_style=arguments.get("ugc_style"),
+                product_name=arguments.get("product_name"),
+                platform=arguments.get("platform", "tiktok"),
+                custom_prompt=arguments.get("custom_prompt"),
+                icp=arguments.get("icp"),
+                product_features=arguments.get("product_features"),
+                video_setting=arguments.get("video_setting")
+            )
+
         elif name == "generate_nano_banana_image":
             return await generate_nano_banana_image_mcp(
                 prompt=arguments["prompt"],
@@ -3454,14 +4336,32 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
 
         elif name == "generate_seedance_video":
             return await generate_seedance_video_mcp(
-                prompt=arguments["prompt"],
+                prompt=arguments.get("prompt"),
                 duration=arguments.get("duration", 5),
                 aspect_ratio=arguments.get("aspect_ratio", "16:9"),
                 filename=arguments["filename"],
                 image_urls=arguments.get("image_urls"),
+                video_urls=arguments.get("video_urls"),
+                audio_urls=arguments.get("audio_urls"),
                 video_url=arguments.get("video_url"),
-                speed_mode=arguments.get("speed_mode", "standard"),
-                stability_mode=arguments.get("stability_mode", "auto")
+                speed_mode=arguments.get("speed_mode"),
+                task_type=arguments.get("task_type"),
+                model_tier=arguments.get("model_tier"),
+                less_restriction=arguments.get("less_restriction"),
+                mode=arguments.get("mode", "auto"),
+                resolution=arguments.get("resolution", "720p"),
+                cost_per_second=arguments.get("cost_per_second"),
+                auto_upload_assets=arguments.get("auto_upload_assets", False),
+                asset_retention_hours=arguments.get("asset_retention_hours"),
+                stability_mode=arguments.get("stability_mode", "auto"),
+                generate_audio=arguments.get("generate_audio", True),
+                ugc_style=arguments.get("ugc_style"),
+                product_name=arguments.get("product_name"),
+                platform=arguments.get("platform", "tiktok"),
+                custom_prompt=arguments.get("custom_prompt"),
+                icp=arguments.get("icp"),
+                product_features=arguments.get("product_features"),
+                video_setting=arguments.get("video_setting")
             )
 
         elif name == "generate_kling_video":

@@ -1,64 +1,58 @@
 ---
 name: ict-trader
 display_name: ict-trader
+description: ICT methodology trading agent. Identifies FVG, Order Blocks, MMXM, liquidity
+  sweeps, killzone setups across FX, indices, equities, and crypto. v1 is analyze-and-alert
+  only — no live execution.
 team: HEDGE_FUND
 source: HEDGE_FUND/.claude/agents/ict-trader.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- Read
+- Write
+- Edit
+- Glob
+- Grep
+- Bash
+- mcp__claude-in-chrome__tabs_context_mcp
+- mcp__claude-in-chrome__tabs_create_mcp
+- mcp__claude-in-chrome__navigate
+- mcp__claude-in-chrome__read_page
+- mcp__claude-in-chrome__computer
+- mcp__claude-in-chrome__javascript_tool
+- mcp__perplexity__perplexity_search
+- mcp__bright-data__scrape_as_markdown
 skills:
-  - xlsx
-  - pdf
-  - flow-diagram
-  - infographic-creator
-  - frontend-design
+- xlsx
+- pdf
+- flow-diagram
+- infographic-creator
+- frontend-design
 capabilities:
-  - HTF bias identification (D1/H4) using PD arrays, weekly profile, DXY correlation
-  - LTF entry identification (M15/M5/M1) using OTE, FVG mitigation, OB mitigation
-  - All ICT imbalance concepts: FVG, IFVG, BPR, Volume Imbalance, Liquidity Void
-  - All ICT order block variants: Bullish/Bearish OB, Breaker, Mitigation, Propulsion
-  - Market structure analysis: BOS, MSS, CHoCH, internal vs swing
-  - Market maker models: MMBM, MMSM, Power of 3 (AMD), Judas Swing
-  - Liquidity mapping: BSL, SSL, equal highs/lows, trendline liquidity, session liquidity, sweeps
-  - Killzone-aware setup scoring against the rubric in ict_playbook.json
-  - Risk-rule enforcement per risk_rules.json (1% default, 3% daily DD, 2.0 min R:R)
-  - Trade journal write-back to outputs/journal/trade_log.xlsx + postmortems
-  - TradingView integration via Chrome MCP (v1) or pluggable TV MCP (v2)
+- HTF bias identification (D1/H4) using PD arrays, weekly profile, DXY correlation
+- LTF entry identification (M15/M5/M1) using OTE, FVG mitigation, OB mitigation
+- 'All ICT imbalance concepts: FVG, IFVG, BPR, Volume Imbalance, Liquidity Void'
+- 'All ICT order block variants: Bullish/Bearish OB, Breaker, Mitigation, Propulsion'
+- 'Market structure analysis: BOS, MSS, CHoCH, internal vs swing'
+- 'Market maker models: MMBM, MMSM, Power of 3 (AMD), Judas Swing'
+- 'Liquidity mapping: BSL, SSL, equal highs/lows, trendline liquidity, session liquidity,
+  sweeps'
+- Killzone-aware setup scoring against the rubric in ict_playbook.json
+- Risk-rule enforcement per risk_rules.json (1% default, 3% daily DD, 2.0 min R:R)
+- Trade journal write-back to outputs/journal/trade_log.xlsx + postmortems
+- TradingView integration via Chrome MCP (v1) or pluggable TV MCP (v2)
+source_sha256: 5cd514a77194fca29879b88bac4133f8d98a96c81ae90d815c07dcd2311fb02a
 ---
 
-# ict-trader
+Generated from `HEDGE_FUND/.claude/agents/ict-trader.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `HEDGE_FUND/.claude/agents/ict-trader.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - mcp__claude-in-chrome__tabs_context_mcp
-  - mcp__claude-in-chrome__tabs_create_mcp
-  - mcp__claude-in-chrome__navigate
-  - mcp__claude-in-chrome__read_page
-  - mcp__claude-in-chrome__computer
-  - mcp__claude-in-chrome__javascript_tool
-  - mcp__perplexity__perplexity_search
-  - mcp__bright-data__scrape_as_markdown
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # ICT Trader
 

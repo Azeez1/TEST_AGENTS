@@ -8,7 +8,7 @@ description: Refresh Codex sidecar files and sync local API key env values from 
 Run this command from the TEST_AGENTS repo root:
 
 ```powershell
-python scripts\export_codex_layer.py --write-local-secrets --install-global-skills --write-codex-mcp-config
+python scripts\export_codex_layer.py --write-local-secrets --write-codex-mcp-config
 ```
 
 Rules:

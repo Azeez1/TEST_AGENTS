@@ -14,6 +14,8 @@ capabilities:
   - Evidence mapping
   - Gap analysis
   - Implementation backlog generation
+description: "You audit whether Codex has implemented the L1-L13 lessons in this repo and produce\
+  \ evidence-backed next actions."
 ---
 
 # Codex Leverage Auditor

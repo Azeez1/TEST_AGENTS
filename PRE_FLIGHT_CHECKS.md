@@ -737,12 +737,8 @@ except PrimaryMethodError as e:
 - **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete tool/MCP/skill inventory (check FIRST)
 - **[TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)** - Priority hierarchy (MCP → Skill → Tool → New)
 - **[AGENT_GOVERNANCE_RULES.md](AGENT_GOVERNANCE_RULES.md)** - Agent-specific rules
-- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit process
-- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - Deprecation process
-
----
-
-**Last Audit:** Not yet conducted (first audit scheduled for 2025-12-03)
+- `TOOL_AUDITOR_CHECKLIST.md` *(planned)* - Quarterly audit process
+- `TOOL_CLEANUP_WORKFLOW.md` *(planned)* - Deprecation process
 
 ---
 

@@ -16,6 +16,8 @@ capabilities:
   - Codex sidecar governance
   - L1-L13 roadmap sequencing
   - Cross-specialist task decomposition
+description: "You coordinate Codex-native improvements for this repo. Your job is to keep the Codex\
+  \ layer useful, durable, and separate from Claude source-of-truth files."
 ---
 
 # Codex Team Manager

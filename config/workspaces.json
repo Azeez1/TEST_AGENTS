@@ -1,0 +1,20 @@
+{
+  "schema": "test-agents/workspaces/v1",
+  "teams": {
+    "ROOT": {"root": ".", "agent_dir": ".claude/agents", "runtime": "claude", "outputs": "outputs", "orchestrator": "supervisor"},
+    "MARKETING_TEAM": {"root": "MARKETING_TEAM", "agent_dir": "MARKETING_TEAM/.claude/agents", "runtime": "claude", "outputs": "MARKETING_TEAM/outputs", "orchestrator": "router-agent"},
+    "ENGINEERING_TEAM": {"root": "ENGINEERING_TEAM", "agent_dir": "ENGINEERING_TEAM/.claude/agents", "runtime": "claude", "outputs": "ENGINEERING_TEAM/outputs", "orchestrator": "cto"},
+    "QA_TEAM": {"root": "QA_TEAM", "agent_dir": "QA_TEAM/.claude/agents", "runtime": "claude", "outputs": "QA_TEAM/tests", "orchestrator": "test-orchestrator"},
+    "PROPOSAL_TEAM": {"root": "PROPOSAL_TEAM", "agent_dir": "PROPOSAL_TEAM/.claude/agents", "runtime": "claude", "outputs": "PROPOSAL_TEAM/outputs", "orchestrator": "rfp-agent"},
+    "FINANCIAL_TEAM": {"root": "FINANCIAL_TEAM", "agent_dir": "FINANCIAL_TEAM/.claude/agents", "runtime": "claude", "outputs": "FINANCIAL_TEAM/outputs", "orchestrator": "cfo-agent"},
+    "SALES_TEAM": {"root": "SALES_TEAM", "agent_dir": "SALES_TEAM/.claude/agents", "runtime": "claude", "outputs": "SALES_TEAM/outputs", "orchestrator": "sales-manager"},
+    "VOICE_TEAM": {"root": "VOICE_TEAM", "agent_dir": "VOICE_TEAM/.claude/agents", "runtime": "claude", "outputs": "VOICE_TEAM/outputs", "orchestrator": "voice-deployer"},
+    "HEDGE_FUND": {"root": "HEDGE_FUND", "agent_dir": "HEDGE_FUND/.claude/agents", "runtime": "claude", "outputs": "HEDGE_FUND/outputs", "orchestrator": "ict-trader"},
+    "CODEX_TEAM": {"root": "CODEX_TEAM", "agent_dir": "CODEX_TEAM/.codex/agents", "runtime": "codex", "outputs": "CODEX_TEAM/outputs", "orchestrator": "codex-team-manager"}
+  },
+  "cross_team_access": {
+    "read_code": ["ROOT", "ENGINEERING_TEAM", "QA_TEAM", "CODEX_TEAM"],
+    "read_memory": ["ROOT"],
+    "write_infrastructure": ["ROOT", "ENGINEERING_TEAM", "CODEX_TEAM"]
+  }
+}

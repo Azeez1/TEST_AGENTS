@@ -420,7 +420,7 @@ print('OpenAI API key configured successfully')
 5. Update OPENAI_API_KEY environment variable
 ```
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) for complete setup
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) for complete setup
 
 ---
 
@@ -629,7 +629,7 @@ else:
 "
 ```
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) sections 1-7
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) sections 1-7
 
 ---
 
@@ -1938,7 +1938,7 @@ STEP 4: Check MCP servers
 ├─ Verify all servers connected
 └─ Restart if needed
 
-STEP 5: Review API_SETUP_GUIDE.md
+STEP 5: Review MARKETING_TEAM/docs/API_SETUP_GUIDE.md
 └─ Follow setup for missing APIs
 ```
 
@@ -2007,7 +2007,7 @@ STEP 5: Document decision
 | Agent not found | Check spelling, verify team | [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) |
 | Workspace validation failed | `cd TEST_AGENTS`, verify folders | [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* |
 | File not found | Use absolute paths | [WORKSPACE_ENFORCEMENT.md](docs/archive/WORKSPACE_ENFORCEMENT.md) *(archived)* |
-| API key missing | Set environment variable, create .env | [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) |
+| API key missing | Set environment variable, create .env | [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) |
 | MCP not connected | `claude mcp list`, install server | [MCP_SETUP.md](MCP_SETUP.md) |
 | Memory file missing | Create in team/memory/ folder | [MEMORY_SYSTEM.md](MEMORY_SYSTEM.md) |
 | Skill not enabled | Check .claude/settings.json | [TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md) |
@@ -2022,8 +2022,7 @@ STEP 5: Document decision
 **Core Guides:**
 - [GETTING_STARTED.md](GETTING_STARTED.md) - Quick start guide
 - [FAQ.md](FAQ.md) - Frequently asked questions
-- [GLOSSARY.md](GLOSSARY.md) - Terms and definitions
-- [claude.md](claude.md) - Repository navigation
+- [CLAUDE.md](CLAUDE.md) - Repository navigation
 
 **Technical Documentation:**
 - [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All 73 agents
@@ -2037,7 +2036,7 @@ STEP 5: Document decision
 - [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Complete tool inventory
 
 **Setup:**
-- [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) - API configuration
+- [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) - API configuration
 - [MCP_SETUP.md](MCP_SETUP.md) - MCP server setup
 
 ---
@@ -2050,7 +2049,7 @@ STEP 5: Document decision
 4. **Verify system structure** with ls commands
 5. **Run debug workflows** from this guide
 
-**Still stuck?** Review the complete documentation at [claude.md](claude.md) for navigation to all resources.
+**Still stuck?** Review the complete documentation at [CLAUDE.md](CLAUDE.md) for navigation to all resources.
 
 ---
 

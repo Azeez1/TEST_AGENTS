@@ -19,28 +19,25 @@ import shutil
 import argparse
 import ctypes
 import stat
-from dataclasses import dataclass
+import hashlib
+import sys
+import tempfile
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 
-ROOT = Path.cwd()
+import yaml
 
-AGENT_DIRS = {
-    "ROOT": ROOT / ".claude" / "agents",
-    "MARKETING_TEAM": ROOT / "MARKETING_TEAM" / ".claude" / "agents",
-    "ENGINEERING_TEAM": ROOT / "ENGINEERING_TEAM" / ".claude" / "agents",
-    "QA_TEAM": ROOT / "QA_TEAM" / ".claude" / "agents",
-    "PROPOSAL_TEAM": ROOT / "PROPOSAL_TEAM" / ".claude" / "agents",
-    "FINANCIAL_TEAM": ROOT / "FINANCIAL_TEAM" / ".claude" / "agents",
-    "SALES_TEAM": ROOT / "SALES_TEAM" / ".claude" / "agents",
-    "VOICE_TEAM": ROOT / "VOICE_TEAM" / ".claude" / "agents",
-    "HEDGE_FUND": ROOT / "HEDGE_FUND" / ".claude" / "agents",
-}
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from tools.workspace_registry import load_registry, contained_path
 
-NATIVE_CODEX_AGENT_DIRS = {
-    "CODEX_TEAM": ROOT / "CODEX_TEAM" / ".codex" / "agents",
-}
+# The shared registry owns runtime directories; no roster counts live here.
+AGENT_DIRS = {name: ROOT / cfg["agent_dir"] for name, cfg in load_registry(ROOT)["teams"].items()
+              if cfg["runtime"] == "claude"}
+NATIVE_CODEX_AGENT_DIRS = {name: ROOT / cfg["agent_dir"] for name, cfg in load_registry(ROOT)["teams"].items()
+                         if cfg["runtime"] == "codex"}
 
 CODEX_DIR = ROOT / ".codex"
 CODEX_AGENTS_DIR = CODEX_DIR / "agents"
@@ -126,9 +123,16 @@ class AgentExport:
     tools: list[str]
     skills: list[str]
     capabilities: list[str]
+    description: str = ""
+    source_sha256: str = ""
+    rendered_sha256: str = ""
+    model_policy: str = "inherit_session_unless_user_selects"
+    adaptations: list[str] = field(default_factory=list)
 
 
 def rel(path: Path) -> str:
+    if path.is_relative_to(CODEX_DIR):
+        return (Path(".codex") / path.relative_to(CODEX_DIR)).as_posix()
     return path.relative_to(ROOT).as_posix()
 
 
@@ -140,29 +144,10 @@ def parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
 
 
 def parse_simple_yaml(frontmatter: str) -> dict[str, Any]:
-    data: dict[str, Any] = {}
-    current_key: str | None = None
-    for raw_line in frontmatter.splitlines():
-        line = raw_line.rstrip()
-        if not line.strip() or line.lstrip().startswith("#"):
-            continue
-        list_item = re.match(r"^\s*-\s*(.+?)\s*$", line)
-        if list_item and current_key:
-            data.setdefault(current_key, []).append(strip_quotes(list_item.group(1)))
-            continue
-        key_value = re.match(r"^([A-Za-z0-9_-]+):\s*(.*?)\s*$", line)
-        if key_value:
-            key, value = key_value.groups()
-            current_key = key
-            if value == "":
-                data[key] = []
-            elif value == "[]":
-                data[key] = []
-            elif value.startswith("[") and value.endswith("]"):
-                inner = value[1:-1].strip()
-                data[key] = [strip_quotes(item.strip()) for item in inner.split(",") if item.strip()]
-            else:
-                data[key] = strip_quotes(value)
+    """Parse actual YAML and reject scalar/list documents rather than guessing."""
+    data = yaml.safe_load(frontmatter) or {}
+    if not isinstance(data, dict):
+        raise ValueError("Frontmatter must be a mapping")
     return data
 
 
@@ -173,9 +158,30 @@ def strip_quotes(value: str) -> str:
     return value
 
 
+def parse_skill_frontmatter(text: str) -> tuple[dict[str, Any], str]:
+    """Read only Codex-supported name/description from legacy skill headers.
+
+    Some Claude-only fields contain prose that is not valid YAML. They are
+    omitted from the export, never interpreted as a runtime declaration.
+    """
+    match = re.match(r"^---\s*\n(.*?)\n---\s*\n?", text, re.DOTALL)
+    if not match:
+        raise ValueError("Skill is missing frontmatter")
+    selected = []
+    keep = False
+    for line in match.group(1).splitlines():
+        key = re.match(r"^([\w-]+):", line)
+        if key:
+            keep = key.group(1) in {"name", "description"}
+        if keep:
+            selected.append(line)
+    data = parse_simple_yaml("\n".join(selected))
+    return data, text[match.end():]
+
+
 def sanitize_skill_frontmatter(skill_file: Path, fallback_name: str) -> None:
     text = skill_file.read_text(encoding="utf-8", errors="replace")
-    frontmatter, body = parse_frontmatter(text)
+    frontmatter, body = parse_skill_frontmatter(text)
     if not frontmatter:
         return
     name = str(frontmatter.get("name") or fallback_name)
@@ -195,11 +201,12 @@ def sanitize_skill_frontmatter(skill_file: Path, fallback_name: str) -> None:
 
 def yaml_list(items: list[str]) -> str:
     if not items:
-        return "[]"
+        return " []"
     return "\n" + "\n".join(f"  - {item}" for item in items)
 
 
 def write_text(path: Path, text: str) -> None:
+    contained_path(CODEX_DIR, path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="\n")
 
@@ -263,6 +270,10 @@ def copy_skill_tree(source: Path, target: Path) -> None:
 
 
 def remove_tree(path: Path) -> None:
+    resolved = path.resolve()
+    skill_root = GLOBAL_CODEX_SKILLS_DIR.resolve()
+    if resolved != CODEX_SKILLS_EXPORT_DIR.resolve() and not (resolved.parent == skill_root and resolved != skill_root):
+        raise ValueError(f"Refusing to remove unmanaged tree: {resolved}")
     def handle_remove_error(function: Any, failed_path: str, _exc_info: Any) -> None:
         os.chmod(failed_path, 0o700)
         function(failed_path)
@@ -319,141 +330,113 @@ def extract_secret_env_names() -> list[str]:
     return sorted(names)
 
 
+def content_hash(text: str) -> str:
+    """Hash UTF-8 text with canonical newlines, independent of Git autocrlf."""
+    return hashlib.sha256(text.replace("\r\n", "\n").encode("utf-8")).hexdigest()
+
+
+def adapt_workspace_boilerplate(body: str) -> tuple[str, list[str]]:
+    """Replace only the known shared workspace section in generated mirrors.
+
+    Domain sections and all canonical source files remain intact. Headings in
+    fenced examples are ignored when locating the end of the shared section.
+    """
+    lines = body.splitlines(keepends=True)
+    start = end = None
+    fence = None
+    for index, line in enumerate(lines):
+        marker = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if marker:
+            token = marker.group(1)
+            if fence is None:
+                fence = token
+            elif token[0] == fence[0] and len(token) >= len(fence):
+                fence = None
+            continue
+        if fence:
+            continue
+        if start is None and line.strip() == "## 🏢 WORKSPACE CONTEXT & VALIDATION":
+            start = index
+        elif start is not None and re.match(r"^#{1,2}\s", line):
+            end = index
+            break
+    if start is None:
+        return body, []
+    end = end if end is not None else len(lines)
+    replacement = "## Workspace\n\nUse `config/workspaces.json` and `.codex/runtime-contract.md` for workspace validation and output paths.\n\n"
+    return "".join(lines[:start]) + replacement + "".join(lines[end:]), ["shared_workspace_contract"]
+
+
 def build_agent_doc(export: AgentExport, body: str) -> str:
-    runtime_notes = f"""---
-name: {export.slug}
-display_name: {export.display_name}
-team: {export.team}
-source: {export.source}
-source_runtime: {export.source_runtime}
-codex_model: {export.codex_model}
-claude_model: {export.claude_model or ""}
-skills:{yaml_list(export.skills)}
-capabilities:{yaml_list(export.capabilities)}
----
-
-# {export.display_name}
-
-## Codex Runtime Notes
-
-This file is generated for Codex from `{export.source}`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-{yaml_list(export.tools)}
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
-
-"""
-    return runtime_notes + body
+    header = {
+        "name": export.slug, "display_name": export.display_name,
+        "description": export.description, "team": export.team,
+        "source": export.source, "source_runtime": export.source_runtime,
+        "model_policy": export.model_policy, "codex_model": export.codex_model,
+        "claude_model": export.claude_model, "tools": export.tools,
+        "skills": export.skills, "capabilities": export.capabilities,
+        "source_sha256": export.source_sha256,
+    }
+    notes = (
+        f"Generated from `{export.source}`. Edit the source or exporter.\n\n"
+        "Read `.codex/runtime-contract.md` once per task. It defines the Codex\n"
+        "runtime adaptation of the source below: inherit the active model, resolve\n"
+        "tools from this session, and use the shared workspace registry.\n"
+        "Source model/tool declarations below are reference metadata.\n\n"
+    )
+    return "---\n" + yaml.safe_dump(header, sort_keys=False, allow_unicode=True) + "---\n\n" + notes + body
 
 
 def build_native_codex_agent_doc(export: AgentExport, body: str) -> str:
-    runtime_notes = f"""---
-name: {export.slug}
-display_name: {export.display_name}
-team: {export.team}
-source: {export.source}
-source_runtime: {export.source_runtime}
-codex_model: {export.codex_model}
-claude_model: {export.claude_model or ""}
-skills:{yaml_list(export.skills)}
-capabilities:{yaml_list(export.capabilities)}
----
-
-# {export.display_name}
-
-## Codex Runtime Notes
-
-This file is generated for Codex from the Codex-native source `{export.source}`.
-Do not edit this generated file by hand; update the source file under
-`CODEX_TEAM/.codex/agents/` or the exporter instead.
-
-This agent is allowed to work on Codex-facing infrastructure only. It must not
-modify `.claude/`, Claude agent definitions, or `.mcp.json` unless the user
-explicitly asks for that boundary to change.
-
-Declared Codex tools/capabilities:
-{yaml_list(export.tools)}
-
-"""
-    return runtime_notes + body
+    return build_agent_doc(export, body)
 
 
 def export_agents() -> list[AgentExport]:
     exports: list[AgentExport] = []
-    for team, directory in AGENT_DIRS.items():
-        if not directory.exists():
-            continue
-        for source_path in sorted(directory.glob("*.md")):
-            text = source_path.read_text(encoding="utf-8", errors="replace")
-            frontmatter, body = parse_frontmatter(text)
-            slug = source_path.stem
-            display_name = str(frontmatter.get("name") or slug)
-            claude_model = frontmatter.get("model")
-            codex_model = MODEL_MAP.get(str(claude_model), "gpt-5.4")
-            tools = [str(item) for item in frontmatter.get("tools", [])]
-            skills = [str(item) for item in frontmatter.get("skills", [])]
-            capabilities = [str(item) for item in frontmatter.get("capabilities", [])]
-            target = CODEX_AGENTS_DIR / team / f"{slug}.md"
-            export = AgentExport(
-                slug=slug,
-                display_name=display_name,
-                team=team,
-                source=rel(source_path),
-                codex_instructions=rel(target),
-                source_runtime="claude",
-                claude_model=str(claude_model) if claude_model else None,
-                codex_model=codex_model,
-                tools=tools,
-                skills=skills,
-                capabilities=capabilities,
-            )
-            write_text(target, build_agent_doc(export, body))
-            exports.append(export)
-    for team, directory in NATIVE_CODEX_AGENT_DIRS.items():
-        if not directory.exists():
-            continue
-        for source_path in sorted(directory.glob("*.md")):
-            text = source_path.read_text(encoding="utf-8", errors="replace")
-            frontmatter, body = parse_frontmatter(text)
-            slug = source_path.stem
-            display_name = str(frontmatter.get("name") or slug)
-            codex_model = str(frontmatter.get("codex_model") or "gpt-5.4")
-            tools = [str(item) for item in frontmatter.get("tools", [])]
-            skills = [str(item) for item in frontmatter.get("skills", [])]
-            capabilities = [str(item) for item in frontmatter.get("capabilities", [])]
-            target = CODEX_AGENTS_DIR / team / f"{slug}.md"
-            export = AgentExport(
-                slug=slug,
-                display_name=display_name,
-                team=team,
-                source=rel(source_path),
-                codex_instructions=rel(target),
-                source_runtime="codex",
-                claude_model=None,
-                codex_model=codex_model,
-                tools=tools,
-                skills=skills,
-                capabilities=capabilities,
-            )
-            write_text(target, build_native_codex_agent_doc(export, body))
-            exports.append(export)
+    for runtime, directories in (("claude", AGENT_DIRS), ("codex", NATIVE_CODEX_AGENT_DIRS)):
+        for team, directory in directories.items():
+            if not directory.is_dir():
+                raise ValueError(f"Missing agent source directory: {directory}")
+            for source_path in sorted(directory.glob("*.md")):
+                text = source_path.read_text(encoding="utf-8-sig")
+                frontmatter, body = parse_frontmatter(text)
+                for required in ("name", "description"):
+                    if not isinstance(frontmatter.get(required), str) or not frontmatter[required].strip():
+                        raise ValueError(f"{rel(source_path)} requires a nonempty {required}")
+                lists = {}
+                for key in ("tools", "skills", "capabilities"):
+                    value = frontmatter.get(key, [])
+                    # Older capability prose used unquoted colons. Preserve its
+                    # text while keeping strict executable declaration types.
+                    if key == "capabilities" and isinstance(value, list):
+                        value = [f"{next(iter(v))}: {next(iter(v.values()))}"
+                                 if isinstance(v, dict) and len(v) == 1
+                                 and all(isinstance(x, str) for x in (*v.keys(), *v.values()))
+                                 else v for v in value]
+                    if not isinstance(value, list) or not all(isinstance(v, str) for v in value):
+                        raise ValueError(f"{rel(source_path)}: {key} must be a list of strings")
+                    lists[key] = value
+                target = CODEX_AGENTS_DIR / team / source_path.name
+                export = AgentExport(
+                    slug=source_path.stem, display_name=frontmatter["name"], team=team,
+                    source=rel(source_path), codex_instructions=rel(target),
+                    source_runtime=runtime,
+                    claude_model=str(frontmatter.get("model")) if runtime == "claude" else None,
+                    codex_model="inherit", description=frontmatter["description"].strip(),
+                    source_sha256=content_hash(text), **lists,
+                )
+                adapted, export.adaptations = adapt_workspace_boilerplate(body)
+                rendered = build_agent_doc(export, adapted)
+                export.rendered_sha256 = content_hash(rendered)
+                write_text(target, rendered)
+                exports.append(export)
     return exports
 
 
 def export_skills() -> list[dict[str, Any]]:
     exported: list[dict[str, Any]] = []
     enabled = load_enabled_claude_skills()
-    names = set(enabled)
+    names = set(enabled) | set(NATIVE_CODEX_SKILLS)
     for skill_path in CLAUDE_SKILLS_DIR.rglob("SKILL.md"):
         names.add(skill_path.parent.name)
 
@@ -520,14 +503,14 @@ Use this skill when the user asks for work in TEST_AGENTS but does not name a sp
 
 ## Routing Process
 
-1. Read `.codex/manifest.json`.
-2. Match the user's request against each agent's `team`, `slug`, `display_name`, `capabilities`, `skills`, and `tools`.
+1. Read `.codex/manifest.json` and, for a matching workflow, `CODEX_TEAM/config/workflows.json`.
+2. Match the user's request against each agent's `team`, `slug`, `display_name`, `description`, `capabilities`, `skills`, and `tools`.
 3. Choose the narrowest specialist that can complete the task.
-4. Load that agent's `codex_instructions` file before doing the work.
-5. Read the team's memory/config files referenced by that agent.
+4. Load `.codex/runtime-contract.md` and that agent's `codex_instructions` file before doing the work. Preserve the active session model and use one owner; delegate only when authorized.
+5. Read relevant tracked team `config/` defaults and only the private memory required for the task.
 6. Save deliverables in the selected team's `outputs/` folder.
 
-Do not read `.claude/agents/` directly unless the sidecar is missing or stale. If stale, run `$codex-sync-secrets` first.
+Do not read `.claude/agents/` directly unless the sidecar is missing or stale. If stale, run `python scripts/export_codex_layer.py --agents-only` first. This does not change secrets or installed skills.
 
 ## Fast Routing Map
 
@@ -601,7 +584,7 @@ Do not modify `.claude/`.
 Run this command from the TEST_AGENTS repo root:
 
 ```powershell
-python scripts\\export_codex_layer.py --write-local-secrets --install-global-skills --write-codex-mcp-config
+python scripts\\export_codex_layer.py --write-local-secrets --write-codex-mcp-config
 ```
 
 Rules:
@@ -621,13 +604,10 @@ Do not modify `.claude/`.
 Validate the generated Codex sidecar layer:
 
 ```powershell
-$m = Get-Content .codex\\manifest.json -Raw | ConvertFrom-Json
-"agents=$($m.agents.Count)"
-"skills=$($m.skills.Count)"
-$m.skills | Group-Object status | Select-Object Count,Name | Format-Table -AutoSize
-git check-ignore -v .codex\\secrets.local.env .codex\\runtime.local.json
-git check-ignore -v .codex\\config.toml .codex\\mcp.generated.toml
+python tools/project_health.py
 ```
+
+For offline behavior and coverage, add `--tests`. Local hook dispatch and connector authentication require separate live verification.
 
 Report counts and any `missing_source` skills. Do not print secret file contents.
 """,
@@ -658,7 +638,7 @@ Rules:
 Run this command from the TEST_AGENTS repo root:
 
 ```powershell
-python scripts\\export_codex_layer.py --write-local-secrets --install-global-skills --write-codex-mcp-config
+python scripts\\export_codex_layer.py --write-local-secrets --write-codex-mcp-config
 ```
 
 This refreshes agents, skills, local secret handoff, and local Codex MCP config.
@@ -708,6 +688,7 @@ def write_codex_root_doc(agent_exports: list[AgentExport]) -> None:
         "",
         "## Runtime Rules",
         "",
+        "- Read `.codex/runtime-contract.md` once per task; preserve the active model and use one owner by default.",
         "- Load agent instructions from `.codex/agents/<team>/<agent>.md`.",
         "- Load exported skills from `.codex/skills-export/<skill>/SKILL.md` when no native Codex skill exists.",
         "- Use Codex-native tools/connectors first when available.",
@@ -734,69 +715,12 @@ def write_codex_root_doc(agent_exports: list[AgentExport]) -> None:
 
 
 def write_codex_commands() -> None:
-    sync_command = """---
-description: Refresh the local Codex sidecar layer from Claude agents and skills
----
-
-# Codex Sync
-
-Run the local exporter to refresh Codex-facing agents, skills, manifest, and docs from the Claude-first repository.
-
-```powershell
-python scripts\\export_codex_layer.py
-```
-
-After it runs, summarize:
-- number of agents exported
-- number of skills processed
-- any skills marked `missing_source` in `.codex/manifest.json`
-
-Do not modify `.claude/`.
-"""
-    secrets_command = """---
-description: Refresh Codex sidecar layer and sync local API key env values from Claude MCP config
----
-
-# Codex Sync Secrets
-
-Run the local exporter with secret handoff enabled. This copies environment variable values from local `.mcp.json` into `.codex/secrets.local.env`, which is gitignored.
-
-```powershell
-python scripts\\export_codex_layer.py --write-local-secrets
-```
-
-Rules:
-- Do not print `.codex/secrets.local.env`.
-- Do not reveal API keys, tokens, OAuth secrets, or credential values.
-- Confirm only that the local env file exists and is ignored by git.
-- Prefer Codex-native connectors/tools at runtime when available.
-- Use `.codex/secrets.local.env` only for local script/tool fallbacks.
-
-Do not modify `.claude/`.
-"""
-    validate_command = """---
-description: Check the generated Codex sidecar manifest and local ignore rules
----
-
-# Codex Validate
-
-Validate the generated Codex sidecar layer.
-
-Run:
-
-```powershell
-$m = Get-Content .codex\\manifest.json -Raw | ConvertFrom-Json
-"agents=$($m.agents.Count)"
-"skills=$($m.skills.Count)"
-$m.skills | Group-Object status | Select-Object Count,Name | Format-Table -AutoSize
-git check-ignore -v .codex\\secrets.local.env .codex\\runtime.local.json
-```
-
-Report counts and any `missing_source` skills. Do not print secret file contents.
-"""
-    write_text(CODEX_COMMANDS_DIR / "codex-sync.md", sync_command)
-    write_text(CODEX_COMMANDS_DIR / "codex-sync-secrets.md", secrets_command)
-    write_text(CODEX_COMMANDS_DIR / "codex-validate.md", validate_command)
+    """Generate command aliases from the same workflow instructions as skills."""
+    for name in ("codex-sync", "codex-sync-secrets", "codex-validate"):
+        skill = CODEX_SKILLS_EXPORT_DIR / name / "SKILL.md"
+        header, body = parse_frontmatter(skill.read_text(encoding="utf-8"))
+        command = "---\n" + yaml.safe_dump({"description": header["description"]}, sort_keys=False) + "---\n\n" + body.strip() + "\n"
+        write_text(CODEX_COMMANDS_DIR / f"{name}.md", command)
 
 
 def write_secret_template() -> None:
@@ -1050,9 +974,11 @@ def sync_codex_hooks() -> dict[str, int]:
 
 def write_manifest(agent_exports: list[AgentExport], skill_exports: list[dict[str, Any]]) -> None:
     manifest = {
-        "schema": "test-agents/codex-layer/v1",
+        "schema": "test-agents/codex-layer/v2",
         "sourceRuntime": "claude+codex-native",
         "targetRuntime": "codex",
+        "runtimeContract": ".codex/runtime-contract.md",
+        "workspaceRegistry": "config/workspaces.json",
         "notes": [
             "Generated without modifying .claude infrastructure.",
             "Codex-native agents are loaded from CODEX_TEAM/.codex/agents.",
@@ -1061,7 +987,7 @@ def write_manifest(agent_exports: list[AgentExport], skill_exports: list[dict[st
         ],
         "agents": [agent.__dict__ for agent in agent_exports],
         "skills": skill_exports,
-        "installedSkillsDir": str(GLOBAL_CODEX_SKILLS_DIR),
+        "installedSkillsDir": "$CODEX_HOME/skills",
         "codexMcpConfig": {
             "projectConfig": ".codex/config.toml",
             "generatedConfig": ".codex/mcp.generated.toml",
@@ -1070,7 +996,7 @@ def write_manifest(agent_exports: list[AgentExport], skill_exports: list[dict[st
         "secrets": {
             "template": ".codex/secrets.example.env",
             "local": ".codex/secrets.local.env",
-            "envNames": extract_secret_env_names(),
+            "envNames": sorted(SECRET_ENV_NAMES),
         },
     }
     write_text(CODEX_DIR / "manifest.json", json.dumps(manifest, indent=2) + "\n")
@@ -1110,45 +1036,98 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Create local project .codex/config.toml MCP config from Claude .mcp.json.",
     )
+    parser.add_argument("--agents-only", action="store_true", help="Refresh the portable routing layer without copying skill assets or local hooks.")
+    parser.add_argument("--check", action="store_true", help="Validate in staging and report drift without publishing or touching local secrets.")
+    parser.add_argument("--sync-hooks", action="store_true", help="Explicitly refresh machine-local hook wiring from Claude settings.")
     return parser.parse_args()
 
 
+def configure_output(directory: Path) -> None:
+    global CODEX_DIR, CODEX_AGENTS_DIR, CODEX_COMMANDS_DIR, CODEX_SKILLS_EXPORT_DIR, CODEX_HOOKS_DIR
+    CODEX_DIR = directory
+    CODEX_AGENTS_DIR = directory / "agents"
+    CODEX_COMMANDS_DIR = directory / "commands"
+    CODEX_SKILLS_EXPORT_DIR = directory / "skills-export"
+    CODEX_HOOKS_DIR = directory / "hooks"
+
+
+def validate_staged_agents(exports: list[AgentExport]) -> None:
+    seen = set()
+    for agent in exports:
+        identity = (agent.team, agent.slug)
+        if identity in seen:
+            raise ValueError(f"Duplicate agent identity: {identity}")
+        seen.add(identity)
+        rendered = (CODEX_AGENTS_DIR / agent.team / f"{agent.slug}.md").read_text(encoding="utf-8")
+        header, _ = parse_frontmatter(rendered)
+        if header.get("description") != agent.description or header.get("source_sha256") != agent.source_sha256:
+            raise ValueError(f"Generated metadata mismatch: {agent.source}")
+        if content_hash(rendered) != agent.rendered_sha256:
+            raise ValueError(f"Generated hash mismatch: {agent.source}")
+    if not exports:
+        raise ValueError("Refusing to publish an empty agent catalog")
+
+
 def main() -> None:
+    from tools.codex_export_transaction import differing_files, publish
     args = parse_args()
-    CODEX_DIR.mkdir(exist_ok=True)
-    agent_exports = export_agents()
-    skill_exports = export_skills()
-    write_codex_root_doc(agent_exports)
-    write_codex_commands()
-    write_secret_template()
-    if args.write_local_secrets:
-        write_local_secrets()
-    mcp_names: list[str] = []
-    if args.write_codex_mcp_config:
-        mcp_names = write_codex_mcp_config()
-    installed = install_global_skills(skill_exports) if args.install_global_skills else 0
-    hook_stats = sync_codex_hooks()
-    write_manifest(agent_exports, skill_exports)
-    print(f"Exported {len(agent_exports)} agents to {rel(CODEX_AGENTS_DIR)}")
-    print(f"Processed {len(skill_exports)} skills into {rel(CODEX_SKILLS_EXPORT_DIR)}")
-    print(
-        f"Synced {hook_stats['copied']} hook scripts and wired {hook_stats['wired']} "
-        f"Codex hooks into {rel(CODEX_DIR / 'hooks.json')}"
-    )
-    print(f"Wrote {rel(CODEX_DIR / 'manifest.json')}")
-    if args.write_local_secrets:
-        print("Wrote local Codex secrets env file without printing secret values")
-    if args.install_global_skills:
-        print(f"Installed {installed} skills into {GLOBAL_CODEX_SKILLS_DIR}")
-    if args.write_codex_mcp_config:
-        print("Wrote local Codex MCP config for servers: " + ", ".join(mcp_names))
-    if SKIPPED_SKILL_COPY_FILES:
-        preview = ", ".join(SKIPPED_SKILL_COPY_FILES[:5])
-        suffix = "" if len(SKIPPED_SKILL_COPY_FILES) <= 5 else " ..."
-        print(
-            f"Skipped {len(SKIPPED_SKILL_COPY_FILES)} unavailable cloud skill files: "
-            f"{preview}{suffix}"
-        )
+    local_flags = args.write_local_secrets or args.install_global_skills or args.write_codex_mcp_config
+    if args.agents_only and args.sync_hooks:
+        raise SystemExit("--agents-only cannot be combined with --sync-hooks")
+    if (args.check or args.agents_only) and local_flags:
+        raise SystemExit("--check/--agents-only cannot be combined with local installation or secret writes")
+    destination = ROOT / ".codex"
+    destination.mkdir(exist_ok=True)
+    lock = destination / ".export.lock"
+    try:
+        descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        raise SystemExit("Another export holds .codex/.export.lock; verify it has stopped before clearing a stale lock")
+    os.close(descriptor)
+    try:
+        # A sibling staging directory stays on the same filesystem for os.replace.
+        with tempfile.TemporaryDirectory(prefix=".codex-stage-", dir=ROOT) as temporary:
+            stage = Path(temporary) / "generated"
+            configure_output(stage)
+            exports = export_agents()
+            if args.agents_only:
+                previous = json.loads((destination / "manifest.json").read_text(encoding="utf-8")) if (destination / "manifest.json").exists() else {}
+                workflows = write_codex_workflow_skills()
+                replaced = {s["name"] for s in workflows} | set(NATIVE_CODEX_SKILLS)
+                skills = [s for s in previous.get("skills", []) if s["name"] not in replaced]
+                skills += [{"name": n, "status": "codex_native", "codexPath": p} for n, p in NATIVE_CODEX_SKILLS.items()]
+                skills += workflows
+            else:
+                skills = export_skills()
+                if SKIPPED_SKILL_COPY_FILES:
+                    raise ValueError("Skill assets are unavailable locally; refusing a partial full export. Use --agents-only or hydrate the source assets.")
+                if args.sync_hooks:
+                    sync_codex_hooks()
+            write_codex_root_doc(exports)
+            write_codex_commands()
+            write_text(stage / "runtime-contract.md", (ROOT / "CODEX_TEAM/config/runtime-contract.md").read_text(encoding="utf-8"))
+            write_manifest(exports, sorted(skills, key=lambda s: s["name"]))
+            validate_staged_agents(exports)
+            changes = differing_files(stage, destination)
+            if args.check:
+                print(json.dumps({"ok": not changes, "agents": len(exports), "changed": changes}, indent=2))
+                if changes:
+                    raise SystemExit(1)
+            else:
+                publish(stage, destination, Path(temporary) / "backup")
+                print(f"Validated and published {len(exports)} agents; {len(changes)} generated files changed")
+            configure_output(destination)
+            # Explicit local installation remains separate from portable publication.
+            if args.write_local_secrets:
+                write_local_secrets()
+                print("Wrote ignored local secrets without printing values")
+            if args.write_codex_mcp_config:
+                print("Configured MCP servers: " + ", ".join(write_codex_mcp_config()))
+            if args.install_global_skills:
+                print(f"Installed {install_global_skills(skills)} skills")
+    finally:
+        configure_output(destination)
+        lock.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

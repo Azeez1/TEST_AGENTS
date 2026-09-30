@@ -1,6 +1,6 @@
 ---
 name: "wiki-query"
-description: ">"
+description: "Ask complex questions against the compiled wiki knowledge base. Reads the wiki index, pulls relevant articles and concepts into context, synthesizes an answer, and optionally files the answer back into wiki/queries/ for future reference. Use when the user asks a question about topics covered in their wiki, says \"query the wiki\", \"what does the wiki say about\", \"research this in my notes\", or asks analytical questions about their collected knowledge."
 ---
 
 # Wiki Query — Q&A Against Your Knowledge Base

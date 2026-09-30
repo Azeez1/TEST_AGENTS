@@ -8,7 +8,7 @@ description: Refresh Codex agents, skills, local secrets, and MCP config from Cl
 Run this command from the TEST_AGENTS repo root:
 
 ```powershell
-python scripts\export_codex_layer.py --write-local-secrets --install-global-skills --write-codex-mcp-config
+python scripts\export_codex_layer.py --write-local-secrets --write-codex-mcp-config
 ```
 
 This refreshes agents, skills, local secret handoff, and local Codex MCP config.

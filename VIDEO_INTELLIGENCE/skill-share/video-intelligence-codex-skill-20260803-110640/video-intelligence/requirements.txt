@@ -1,0 +1,4 @@
+google-genai>=2,<3
+yt-dlp
+imageio-ffmpeg
+opencv-python

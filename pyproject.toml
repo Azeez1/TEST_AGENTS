@@ -1,0 +1,30 @@
+[project]
+name = "test-agents-core"
+version = "0.1.0"
+description = "Shared Claude and Codex workspace contracts and validation"
+requires-python = ">=3.11"
+dependencies = [
+    "higgsfield-client>=0.2.0",
+    "python-dotenv>=1.2.3",
+    "PyYAML==6.0.3",
+]
+
+[dependency-groups]
+dev = ["pytest==9.1.0", "pytest-cov>=6,<8"]
+voice-tests = ["fastapi==0.138.0", "httpx==0.28.1", "dateparser==1.4.1", "websockets==15.0.1"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+markers = ["live: explicitly enabled external integration tests"]
+
+[tool.coverage.run]
+source = ["tools", "scripts", ".codex/hooks"]
+omit = ["tools/archive/*", "tools/build_*", "scripts/create_*", "tools/piter/*"]
+
+[tool.coverage.report]
+show_missing = true

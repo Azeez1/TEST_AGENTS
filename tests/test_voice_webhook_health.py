@@ -2,6 +2,11 @@ import importlib
 import sys
 from pathlib import Path
 
+import pytest
+pytest.importorskip("fastapi")
+pytest.importorskip("httpx")
+pytest.importorskip("dateparser")
+pytest.importorskip("websockets")
 from fastapi.testclient import TestClient
 
 

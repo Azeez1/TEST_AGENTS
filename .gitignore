@@ -26,11 +26,6 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environments
-venv/
-ENV/
-env/
-
 # IDE
 .vscode/
 .idea/
@@ -55,6 +50,7 @@ outputs/
 test_*.csv
 test_*.json
 **/outputs/
+!VIDEO_INTELLIGENCE/outputs/
 !MARKETING_TEAM/outputs/
 MARKETING_TEAM/outputs/*
 !MARKETING_TEAM/outputs/automation/
@@ -69,6 +65,7 @@ ENGINEERING_TEAM/outputs/design/diagrams/*
 !ENGINEERING_TEAM/outputs/design/diagrams/README.md
 !examples/**
 .env
+.env.local
 
 # Autonomous mode preferences and memory
 preferences_store.json
@@ -82,8 +79,13 @@ credentials.json
 .mcp.json
 .codex/secrets.local.env
 .codex/runtime.local.json
+.codex/.export.lock
+.codex-stage-*/
 .codex/config.toml
 .codex/mcp.generated.toml
+.codex/config.toml.*
+.codex/mcp.generated.toml.*
+.codex/secrets.local.env.*
 *.backup
 .mcp.test-*.json
 nul
@@ -124,6 +126,8 @@ temp_upload.txt
 # Temp folders with client work
 **/temp_*/
 temp_*
+tmp_*/
+tmp_*
 
 # Claude Code session temp files
 tmpclaude-*
@@ -133,6 +137,7 @@ tmpclaude-*-cwd
 .claude/hooks/logs/
 
 # Test artifacts
+.pytest_cache/
 test.txt
 _ul
 _ul-*
@@ -163,6 +168,9 @@ MARKETING_TEAM/logs/*.log
 # Local cleanup + working artifacts (never commit)
 .trash/
 .agents/
+.coverage
+coverage.xml
+htmlcov/
 .backups/
 .cache/
 .claude/scheduled_tasks.lock
@@ -170,9 +178,6 @@ MARKETING_TEAM/logs/*.log
 **/MEMORY.md.OLD
 **/.pe_retry_state/
 
-# Scratch / temp dirs (tmp_ prefix — note: temp_ already covered above)
-tmp_*/
-tmp_*
 .tmp_setup_eval/
 
 # Per-machine local settings (settings.local.json already ignored above)
@@ -184,11 +189,22 @@ tmp_*
 # Runtime logs
 LOGS/*.log
 LOGS/**/*.log
+LOGS/api-spend-*.total
+LOGS/email-sends-*.count
+LOGS/agent-inventory.json
+LOGS/performance-metrics.json
+LOGS/issues-found.txt
+LOGS/remediation-plan.md
+LOGS/workspace-health-report.md
 
 # Untracked working areas (not team workspaces, not for GitHub)
 DUX_MACHINA/
 RESEARCH/
 USPS_ANALYSIS/
+
+# Independent repositories with their own Git history
+/DUX-VITAE-CAPITAL/
+/test-FDE/
 
 # Excluded project (not for GitHub)
 ekomi/
@@ -200,3 +216,6 @@ gmail_check_report_*.md
 # Root litter - never track (audit 2026-07-12)
 tribe_demo.ipynb
 add_governance_reminders.sh
+
+# Interview practice workspace
+/MULTI_Agent/

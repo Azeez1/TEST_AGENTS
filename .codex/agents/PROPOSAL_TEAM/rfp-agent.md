@@ -1,60 +1,51 @@
 ---
 name: rfp-agent
 display_name: rfp-agent
+description: RFP automation and proposal generation specialist
 team: PROPOSAL_TEAM
 source: PROPOSAL_TEAM/.claude/agents/rfp-agent.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- rfp_parser
+- compliance_engine
+- adaptive_proposal_writer
+- pinecone_knowledge_base
+- hybrid_search
 skills:
-  - pdf
-  - docx
-  - pptx
-  - xlsx
-  - flow-diagram
-  - infographic-creator
-  - internal-comms
-  - theme-factory
-  - brand-guidelines
-  - artifacts-builder
+- pdf
+- docx
+- pptx
+- xlsx
+- flow-diagram
+- infographic-creator
+- internal-comms
+- theme-factory
+- brand-guidelines
+- artifacts-builder
 capabilities:
-  - Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via rfp_parser
-  - Intelligent requirement extraction with LLM and RFC 2119 classification
-  - Knowledge base retrieval (Pinecone) via hybrid_search
-  - Compliance matrix generation with risk assessment via compliance_engine
-  - AI-driven proposal section writing via adaptive_proposal_writer
-  - Quality assurance validation via compliance_engine
-  - Full pipeline orchestration across the tools above
-  - KB indexing via pinecone_knowledge_base
-  - Document creation with PDF, DOCX, PPTX, XLSX skills
-  - Visual design with canvas-design and flow-diagram skills
-  - Professional styling with theme-factory and brand-guidelines
+- Multi-format RFP ingestion (PDF, DOCX, TXT, ZIP) via rfp_parser
+- Intelligent requirement extraction with LLM and RFC 2119 classification
+- Knowledge base retrieval (Pinecone) via hybrid_search
+- Compliance matrix generation with risk assessment via compliance_engine
+- AI-driven proposal section writing via adaptive_proposal_writer
+- Quality assurance validation via compliance_engine
+- Full pipeline orchestration across the tools above
+- KB indexing via pinecone_knowledge_base
+- Document creation with PDF, DOCX, PPTX, XLSX skills
+- Visual design with canvas-design and flow-diagram skills
+- Professional styling with theme-factory and brand-guidelines
+source_sha256: 83e669cc59778f0b93d203dc778495187ad513747b47945ef48a6eacff5f8d58
 ---
 
-# rfp-agent
+Generated from `PROPOSAL_TEAM/.claude/agents/rfp-agent.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `PROPOSAL_TEAM/.claude/agents/rfp-agent.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - rfp_parser
-  - compliance_engine
-  - adaptive_proposal_writer
-  - pinecone_knowledge_base
-  - hybrid_search
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # RFP Agent
 

@@ -1,554 +1,147 @@
+"""Resolve team paths and enforce shared workspace boundaries.
+
+These helpers validate paths; they are not an operating-system sandbox.
 """
-Path Validator - Validate and correct file paths to ensure correct locations
+from __future__ import annotations
 
-This tool ensures all file operations use absolute paths and end up in the correct team folders.
-It prevents path ambiguity by converting relative paths to absolute paths.
+from pathlib import Path, PureWindowsPath
+from typing import Any
 
-Usage:
-    from tools.path_validator import validate_save_path, validate_read_path
-
-    # Validate save path (for writing files)
-    path = validate_save_path("blog_posts/article.md", "MARKETING_TEAM")
-    # Returns: "MARKETING_TEAM/outputs/blog_posts/article.md"
-
-    # Validate read path (for reading files)
-    config = validate_read_path("brand_voice.json", "MARKETING_TEAM")
-    # Returns: "MARKETING_TEAM/memory/brand_voice.json"
-
-Author: Claude Code + USER
-Created: 2025-01-06
-Version: 1.0
-"""
-
-import os
-from pathlib import Path
-from typing import Optional, Dict, List
-
-# Claude Agent SDK tool decorator (mock for testing outside Claude Code)
-try:
-    from anthropic import tool
-except (ImportError, AttributeError):
-    # Mock tool decorator for testing
-    def tool(func):
-        """Mock tool decorator for testing"""
-        return func
+from tools.workspace_registry import (
+    REPO_ROOT, contained_path, get_team, load_registry, output_paths,
+)
 
 
 def _get_repo_root() -> Path:
-    """Get the TEST_AGENTS repository root directory"""
-    current = Path.cwd()
-
-    # Check if we're already in TEST_AGENTS
-    if current.name == "TEST_AGENTS":
-        return current
-
-    # Check if TEST_AGENTS is a parent directory
-    for parent in current.parents:
-        if parent.name == "TEST_AGENTS":
-            return parent
-
-    # Check if we're inside a team folder
-    team_folders = ["MARKETING_TEAM", "QA_TEAM", "ENGINEERING_TEAM", "PROPOSAL_TEAM", "FINANCIAL_TEAM", "SALES_TEAM"]
-    for team in team_folders:
-        if team in str(current):
-            # Navigate up to find TEST_AGENTS
-            parts = current.parts
-            if team in parts:
-                idx = parts.index(team)
-                return Path(*parts[:idx])
-
-    # Default: assume current directory is repo root
-    return current
+    """Resolve independently of the caller's current directory."""
+    return REPO_ROOT
 
 
-# Team-specific output folder structures
+def _portable_path(value: str) -> Path:
+    if not isinstance(value, str) or not value.strip() or "\x00" in value:
+        raise ValueError("A nonempty file path is required")
+    path = Path(value.replace("\\", "/"))
+    if PureWindowsPath(value).drive and not path.is_absolute():
+        raise ValueError("Foreign or drive-relative path is not supported")
+    return path
+
+
 OUTPUT_STRUCTURES = {
-    "MARKETING_TEAM": {
-        "base": "outputs",
-        "subfolders": [
-            "blog_posts", "social_media", "images", "videos",
-            "emails", "landing_pages", "pdfs", "presentations",
-            "campaigns", "seo"
-        ]
-    },
-    "QA_TEAM": {
-        "base": "tests",
-        "subfolders": [
-            "marketing", "user_story", "engineering", "qa",
-            "integration", "unit", "edge_cases",
-            "financial", "sales", "proposal"
-        ]
-    },
-    "ENGINEERING_TEAM": {
-        "base": "outputs",
-        "subfolders": [
-            "ai", "backend", "database", "debugging", "design",
-            "diagrams", "docker", "frontend", "optimization",
-            "quality", "security", "specs", "testing"
-        ]
-    },
-    "PROPOSAL_TEAM": {
-        "base": "outputs",
-        "subfolders": [
-            "proposals", "compliance_matrices", "rfp_responses",
-            "templates", "scoring_reports"
-        ]
-    },
-    "FINANCIAL_TEAM": {
-        "base": "outputs",
-        "subfolders": [
-            "budgets", "dashboards", "due_diligence", "financials",
-            "forecasts", "memos", "models", "reports",
-            "treasury", "valuations", "investor_relations", "tax"
-        ]
-    },
-    "SALES_TEAM": {
-        "base": "outputs",
-        "subfolders": [
-            "contracts", "forecasts", "outreach", "playbooks",
-            "presentations", "proposals", "reports",
-            "sequences", "prospecting"
-        ]
-    }
-}
-
-# Team-specific memory folder structures
-MEMORY_FILES = {
-    "MARKETING_TEAM": [
-        "brand_voice.json", "email_config.json", "google_drive_config.json",
-        "visual_guidelines.json", "output_paths.json", "docs_folder_structure.json",
-        "seo_config.json", "campaign_templates.json", "voice_interface_config.json",
-        "learned_preferences.json", "social_media_accounts.json", "content_calendar.json"
-    ],
-    "QA_TEAM": [
-        "learned_patterns.json", "test_settings.json", "output_paths.json"
-    ],
-    "ENGINEERING_TEAM": [
-        "deployment_configs.json", "infrastructure_settings.json", "output_paths.json"
-    ],
-    "PROPOSAL_TEAM": [
-        "compliance_frameworks.json", "rfp_templates.json", "win_themes.json", "output_paths.json"
-    ],
-    "FINANCIAL_TEAM": [
-        "financial_assumptions.json", "historical_financials.json", "chart_of_accounts.json", "output_paths.json"
-    ],
-    "SALES_TEAM": [
-        "crm_config.json", "outreach_templates.json", "target_lists.json", "output_paths.json"
-    ]
+    name: {"base": Path(cfg["outputs"]).name,
+           "subfolders": [Path(p).name for p in output_paths(name).values()]}
+    for name, cfg in load_registry()["teams"].items()
 }
 
 
-@tool
-def validate_save_path(
-    path: str,
-    team: str,
-    create_missing_folders: bool = False
-) -> str:
-    """
-    Validate and convert a relative save path to an absolute path.
-
-    This function ensures files are saved to the correct team's output folder.
-    It automatically prepends the team's output folder if the path is relative.
-
-    Args:
-        path: Relative or absolute file path (e.g., "blog_posts/article.md")
-        team: Team name (e.g., "MARKETING_TEAM", "QA_TEAM")
-        create_missing_folders: If True, create intermediate folders if they don't exist
-
-    Returns:
-        Absolute path to save the file (e.g., "MARKETING_TEAM/outputs/blog_posts/article.md")
-
-    Raises:
-        ValueError: If team is invalid or path is unsafe
-
-    Example:
-        >>> path = validate_save_path("blog_posts/article.md", "MARKETING_TEAM")
-        >>> print(path)
-        "MARKETING_TEAM/outputs/blog_posts/article.md"
-        >>>
-        >>> # With absolute path (returns as-is if already correct)
-        >>> path = validate_save_path("MARKETING_TEAM/outputs/test.md", "MARKETING_TEAM")
-        >>> print(path)
-        "MARKETING_TEAM/outputs/test.md"
-    """
-    if team not in OUTPUT_STRUCTURES:
-        raise ValueError(f"Invalid team: {team}. Valid teams: {', '.join(OUTPUT_STRUCTURES.keys())}")
-
-    team_config = OUTPUT_STRUCTURES[team]
-    base_folder = team_config["base"]
-
-    repo_root = _get_repo_root()
-    team_path = repo_root / team
-
-    # Convert to Path object
-    path_obj = Path(path)
-
-    # Check if path is already absolute and correct
-    if path_obj.is_absolute():
-        # Verify it's in the correct team's output folder
-        if str(team_path / base_folder) in str(path_obj):
-            return str(path_obj)
+def validate_save_path(path: str, team: str, create_missing_folders: bool = False) -> str:
+    """Return a contained output path; reject unsafe paths instead of redirecting."""
+    root = _get_repo_root()
+    cfg = get_team(team, root)
+    allowed = root / cfg["outputs"]
+    candidate = _portable_path(path)
+    if not candidate.is_absolute():
+        if candidate.parts[0] == Path(cfg["root"]).name:
+            candidate = root / candidate
+        elif candidate.parts[0] == allowed.name:
+            candidate = allowed.parent / candidate
         else:
-            # Absolute path but wrong location - extract filename and redirect
-            filename = path_obj.name
-            return str(team_path / base_folder / filename)
-
-    # Relative path - prepend team's output folder
-    # Check if path already starts with team name
-    parts = path_obj.parts
-    if parts[0] == team:
-        # Path like "MARKETING_TEAM/outputs/blog_posts/article.md"
-        absolute_path = repo_root / path
-    elif parts[0] == base_folder:
-        # Path like "outputs/blog_posts/article.md"
-        absolute_path = team_path / path
-    else:
-        # Path like "blog_posts/article.md" - prepend team's output folder
-        absolute_path = team_path / base_folder / path
-
-    # Create intermediate folders if requested
+            candidate = allowed / candidate
+    resolved = contained_path(allowed, candidate)
+    if resolved == allowed.resolve():
+        raise ValueError("Expected a file beneath the output root")
     if create_missing_folders:
-        absolute_path.parent.mkdir(parents=True, exist_ok=True)
-
-    return str(absolute_path)
-
-
-@tool
-def validate_read_path(
-    path: str,
-    team: str,
-    search_folders: Optional[List[str]] = None
-) -> str:
-    """
-    Validate and convert a relative read path to an absolute path.
-
-    This function finds files in the correct team's folder structure.
-    By default, it searches memory/ first, then outputs/, then tools/.
-
-    Args:
-        path: Relative or absolute file path (e.g., "brand_voice.json")
-        team: Team name (e.g., "MARKETING_TEAM", "QA_TEAM")
-        search_folders: Custom list of folders to search (default: ["memory", "outputs", "tools"])
-
-    Returns:
-        Absolute path to read the file
-
-    Raises:
-        ValueError: If team is invalid
-        FileNotFoundError: If file doesn't exist in any search location
-
-    Example:
-        >>> # Reading memory config
-        >>> path = validate_read_path("brand_voice.json", "MARKETING_TEAM")
-        >>> print(path)
-        "MARKETING_TEAM/memory/brand_voice.json"
-        >>>
-        >>> # Reading from outputs
-        >>> path = validate_read_path("blog_posts/article.md", "MARKETING_TEAM")
-        >>> print(path)
-        "MARKETING_TEAM/outputs/blog_posts/article.md"
-    """
-    if team not in OUTPUT_STRUCTURES:
-        raise ValueError(f"Invalid team: {team}. Valid teams: {', '.join(OUTPUT_STRUCTURES.keys())}")
-
-    repo_root = _get_repo_root()
-    team_path = repo_root / team
-
-    # Convert to Path object
-    path_obj = Path(path)
-
-    # Check if path is already absolute
-    if path_obj.is_absolute():
-        if path_obj.exists():
-            return str(path_obj)
-        else:
-            raise FileNotFoundError(f"Absolute path does not exist: {path_obj}")
-
-    # Relative path - search in team folders
-    # Determine search order
-    if search_folders is None:
-        # Default search order: memory first (most common), then outputs, then tools
-        base_folder = OUTPUT_STRUCTURES[team]["base"]
-        search_folders = ["memory", base_folder, "tools"]
-
-    # Check if path already starts with team name
-    parts = path_obj.parts
-    if parts[0] == team:
-        # Path like "MARKETING_TEAM/memory/brand_voice.json"
-        absolute_path = repo_root / path
-        if absolute_path.exists():
-            return str(absolute_path)
-
-    # Search in each folder
-    for folder in search_folders:
-        if parts[0] == folder:
-            # Path like "memory/brand_voice.json"
-            test_path = team_path / path
-        else:
-            # Path like "brand_voice.json"
-            test_path = team_path / folder / path
-
-        if test_path.exists():
-            return str(test_path)
-
-    # File not found - provide helpful error message
-    searched_locations = [str(team_path / folder / path) for folder in search_folders]
-    raise FileNotFoundError(
-        f"File not found: {path}\n"
-        f"Searched in: {', '.join(searched_locations)}\n"
-        f"Team: {team}\n"
-        f"Hint: Check if file exists or use absolute path"
-    )
+        resolved.parent.mkdir(parents=True, exist_ok=True)
+        # Recheck after directory creation to catch ordinary link redirection.
+        resolved = contained_path(allowed, resolved)
+    return str(resolved)
 
 
-@tool
+def validate_read_path(path: str, team: str, search_folders: list[str] | None = None) -> str:
+    """Read within a team; tracked configuration precedes local-memory fallback."""
+    root = _get_repo_root()
+    cfg = get_team(team, root)
+    base = root / cfg["root"]
+    candidate = _portable_path(path)
+    if candidate.is_absolute():
+        candidates = [contained_path(base, candidate)]
+    elif candidate.parts[0] == Path(cfg["root"]).name:
+        candidates = [contained_path(base, root / candidate)]
+    else:
+        folders = search_folders if search_folders is not None else ["config", "memory", "outputs", "tests", "tools", "docs"]
+        candidates = []
+        for folder in folders:
+            search_root = contained_path(base, folder)
+            value = base / candidate if candidate.parts[0] == folder else search_root / candidate
+            candidates.append(contained_path(base, value))
+    for candidate in candidates:
+        # ROOT access is deliberate and reserved for the cross-team supervisor.
+        if candidate.is_file():
+            return str(candidate)
+    raise FileNotFoundError(f"File not found within {base}: {path}; searched {candidates}")
+
+
 def validate_cross_team_path(
-    path: str,
-    source_team: str,
-    target_team: str,
-    operation: str = "read"
-) -> Dict[str, any]:
+    path: str, source_team: str, target_team: str, operation: str = "read", *,
+    infrastructure: bool = False,
+) -> dict[str, Any]:
+    """Check a deliberate cross-team operation against shared access policy.
+
+    Infrastructure writes require an explicit flag and exclude private memory,
+    deliverables, and runtime-owned source instructions. Those changes require
+    an owner-specific operation instead of a generic cross-team write.
     """
-    Validate cross-team file operations (when one team needs to access another team's files).
-
-    This enforces cross-team boundaries:
-    - All teams can READ from any team's folders
-    - Only ENGINEERING_TEAM can WRITE to other teams' folders
-    - QA_TEAM can READ any codebase but WRITE only to QA_TEAM/tests/
-
-    Args:
-        path: File path to validate
-        source_team: Team performing the operation (e.g., "QA_TEAM")
-        target_team: Team that owns the file (e.g., "MARKETING_TEAM")
-        operation: "read" or "write"
-
-    Returns:
-        Dictionary with validation result:
-        {
-            "allowed": bool,
-            "path": str,
-            "source_team": str,
-            "target_team": str,
-            "operation": str,
-            "message": str,
-            "errors": List[str]
-        }
-
-    Example:
-        >>> # QA reading MARKETING code (allowed)
-        >>> result = validate_cross_team_path(
-        ...     "MARKETING_TEAM/tools/openai_gpt4o_image.py",
-        ...     "QA_TEAM",
-        ...     "MARKETING_TEAM",
-        ...     "read"
-        ... )
-        >>> print(result["allowed"])
-        True
-        >>>
-        >>> # QA writing to MARKETING folder (blocked)
-        >>> result = validate_cross_team_path(
-        ...     "MARKETING_TEAM/tools/new_file.py",
-        ...     "QA_TEAM",
-        ...     "MARKETING_TEAM",
-        ...     "write"
-        ... )
-        >>> print(result["allowed"])
-        False
-    """
-    errors = []
-
-    # Validate teams
-    valid_teams = list(OUTPUT_STRUCTURES.keys())
-    if source_team not in valid_teams:
-        errors.append(f"Invalid source team: {source_team}")
-    if target_team not in valid_teams:
-        errors.append(f"Invalid target team: {target_team}")
-
-    if errors:
-        return {
-            "allowed": False,
-            "path": path,
-            "source_team": source_team,
-            "target_team": target_team,
-            "operation": operation,
-            "message": "Invalid team names",
-            "errors": errors
-        }
-
-    # Cross-team rules
-    if source_team == target_team:
-        # Same team - always allowed
-        return {
-            "allowed": True,
-            "path": path,
-            "source_team": source_team,
-            "target_team": target_team,
-            "operation": operation,
-            "message": "Same team operation - allowed",
-            "errors": []
-        }
-
-    # READ operations
-    if operation == "read":
-        # All teams can read from any team
-        return {
-            "allowed": True,
-            "path": path,
-            "source_team": source_team,
-            "target_team": target_team,
-            "operation": operation,
-            "message": f"{source_team} can read from {target_team}",
-            "errors": []
-        }
-
-    # WRITE operations
-    if operation == "write":
-        # ENGINEERING_TEAM has full write access
-        if source_team == "ENGINEERING_TEAM":
-            return {
-                "allowed": True,
-                "path": path,
-                "source_team": source_team,
-                "target_team": target_team,
-                "operation": operation,
-                "message": "ENGINEERING_TEAM has full write access",
-                "errors": []
-            }
-
-        # Other teams can't write to different teams
-        errors.append(
-            f"{source_team} cannot write to {target_team} folders. "
-            f"Only ENGINEERING_TEAM has cross-team write access."
-        )
-
-        # Special note for QA_TEAM
-        if source_team == "QA_TEAM":
-            errors.append(
-                "QA_TEAM can READ any codebase for testing, "
-                "but must WRITE tests to QA_TEAM/tests/ only."
-            )
-
-        return {
-            "allowed": False,
-            "path": path,
-            "source_team": source_team,
-            "target_team": target_team,
-            "operation": operation,
-            "message": "Cross-team write operation blocked",
-            "errors": errors
-        }
-
-    # Invalid operation
-    return {
-        "allowed": False,
-        "path": path,
-        "source_team": source_team,
-        "target_team": target_team,
-        "operation": operation,
-        "message": f"Invalid operation: {operation}",
-        "errors": [f"Operation must be 'read' or 'write', got: {operation}"]
-    }
+    result = {"allowed": False, "path": path, "source_team": source_team,
+              "target_team": target_team, "operation": operation,
+              "message": "", "errors": []}
+    try:
+        if operation not in {"read", "write"}:
+            raise ValueError("Operation must be read or write")
+        root = _get_repo_root()
+        get_team(source_team, root)
+        target = get_team(target_team, root)
+        target_root = (root / target["root"]).resolve()
+        candidate = _portable_path(path)
+        if not candidate.is_absolute():
+            candidate = root / candidate if candidate.parts[0] == Path(target["root"]).name else target_root / candidate
+        resolved = contained_path(target_root, candidate)
+        result["path"] = str(resolved)
+        # ROOT must not provide a shortcut around a nested team's private scope.
+        if target_team == "ROOT" and source_team != "ROOT":
+            owner = get_team_from_path(str(resolved))
+            if owner:
+                return validate_cross_team_path(str(resolved), source_team, owner, operation,
+                                                infrastructure=infrastructure)
+        relative = resolved.relative_to(target_root)
+        first = relative.parts[0] if relative.parts else ""
+        policy = load_registry(root)["cross_team_access"]
+        if source_team == target_team:
+            result["allowed"] = True
+        elif operation == "read":
+            private = first == "memory" or first.startswith(".env") or first in {".mcp.json", ".claude.json"}
+            allowed = policy["read_memory"] if private else policy["read_code"]
+            result["allowed"] = source_team in allowed
+        else:
+            public = first in {"config", "tools", "scripts", "tests", "docs"}
+            result["allowed"] = (infrastructure and source_team in policy["write_infrastructure"] and public)
+        if not result["allowed"]:
+            raise ValueError("Cross-team access is outside the permitted scope")
+        result["message"] = "Allowed by workspace policy"
+    except (ValueError, OSError) as exc:
+        result["allowed"] = False
+        result["message"] = str(exc)
+        result["errors"] = [str(exc)]
+    return result
 
 
-def get_team_from_path(path: str) -> Optional[str]:
-    """
-    Extract team name from a file path.
-
-    Args:
-        path: File path (e.g., "MARKETING_TEAM/outputs/test.md")
-
-    Returns:
-        Team name if found, None otherwise
-
-    Example:
-        >>> get_team_from_path("MARKETING_TEAM/outputs/blog_posts/article.md")
-        "MARKETING_TEAM"
-    """
-    path_obj = Path(path)
-    parts = path_obj.parts
-
-    valid_teams = list(OUTPUT_STRUCTURES.keys())
-    for part in parts:
-        if part in valid_teams:
-            return part
-
+def get_team_from_path(path: str) -> str | None:
+    """Find the actual owning team after resolving the path."""
+    root = _get_repo_root()
+    candidate = _portable_path(path)
+    try:
+        resolved = contained_path(root, candidate)
+    except ValueError:
+        return None
+    for name, cfg in load_registry(root)["teams"].items():
+        if name != "ROOT" and resolved.is_relative_to((root / cfg["root"]).resolve()):
+            return name
     return None
-
-
-# CLI interface for testing
-if __name__ == "__main__":
-    print("=" * 70)
-    print("PATH VALIDATOR - Test Mode")
-    print("=" * 70)
-
-    # Test validate_save_path
-    print("\n1. Testing validate_save_path()...")
-    print("-" * 70)
-
-    save_tests = [
-        ("blog_posts/article.md", "MARKETING_TEAM"),
-        ("outputs/blog_posts/article.md", "MARKETING_TEAM"),
-        ("MARKETING_TEAM/outputs/blog_posts/article.md", "MARKETING_TEAM"),
-        ("tests/test_example.py", "QA_TEAM"),
-        ("prds/feature_spec.md", "ENGINEERING_TEAM"),
-    ]
-
-    for path, team in save_tests:
-        print(f"\nInput: {path} (Team: {team})")
-        result = validate_save_path(path, team)
-        print(f"Output: {result}")
-
-    # Test validate_read_path
-    print("\n\n2. Testing validate_read_path()...")
-    print("-" * 70)
-
-    read_tests = [
-        ("brand_voice.json", "MARKETING_TEAM"),
-        ("memory/email_config.json", "MARKETING_TEAM"),
-        ("learned_patterns.json", "QA_TEAM"),
-    ]
-
-    for path, team in read_tests:
-        print(f"\nInput: {path} (Team: {team})")
-        try:
-            result = validate_read_path(path, team)
-            print(f"Output: {result}")
-        except FileNotFoundError as e:
-            print(f"File not found (expected if file doesn't exist): {e}")
-
-    # Test validate_cross_team_path
-    print("\n\n3. Testing validate_cross_team_path()...")
-    print("-" * 70)
-
-    cross_team_tests = [
-        ("MARKETING_TEAM/tools/test.py", "QA_TEAM", "MARKETING_TEAM", "read"),
-        ("MARKETING_TEAM/tools/test.py", "QA_TEAM", "MARKETING_TEAM", "write"),
-        ("MARKETING_TEAM/tools/test.py", "ENGINEERING_TEAM", "MARKETING_TEAM", "write"),
-    ]
-
-    for path, source, target, op in cross_team_tests:
-        print(f"\n{source} trying to {op} {target} file: {path}")
-        result = validate_cross_team_path(path, source, target, op)
-        print(f"Allowed: {result['allowed']}")
-        print(f"Message: {result['message']}")
-        if result['errors']:
-            print(f"Errors: {result['errors']}")
-
-    # Test get_team_from_path
-    print("\n\n4. Testing get_team_from_path()...")
-    print("-" * 70)
-
-    path_tests = [
-        "MARKETING_TEAM/outputs/blog_posts/article.md",
-        "QA_TEAM/tests/test_example.py",
-        "some/random/path.txt"
-    ]
-
-    for path in path_tests:
-        team = get_team_from_path(path)
-        print(f"\nPath: {path}")
-        print(f"Team: {team if team else 'None (not in team folder)'}")
-
-    print("\n" + "=" * 70)
-    print("Test complete!")
-    print("=" * 70)

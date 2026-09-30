@@ -1,0 +1,11 @@
+{
+  "contracts": "SALES_TEAM/outputs/contracts",
+  "forecasts": "SALES_TEAM/outputs/forecasts",
+  "outreach": "SALES_TEAM/outputs/outreach",
+  "playbooks": "SALES_TEAM/outputs/playbooks",
+  "presentations": "SALES_TEAM/outputs/presentations",
+  "proposals": "SALES_TEAM/outputs/proposals",
+  "reports": "SALES_TEAM/outputs/reports",
+  "sequences": "SALES_TEAM/outputs/sequences",
+  "prospecting": "SALES_TEAM/outputs/prospecting"
+}

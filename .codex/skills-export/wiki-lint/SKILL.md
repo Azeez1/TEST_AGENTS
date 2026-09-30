@@ -1,6 +1,6 @@
 ---
 name: "wiki-lint"
-description: ">"
+description: "Run health checks on the wiki knowledge base: find inconsistencies, broken backlinks, missing concepts, short articles, stale data, tag inconsistencies, and suggest improvements. Use when the user says \"lint\", \"health check\", \"audit the wiki\", \"clean up wiki\", or wants to improve wiki quality and data integrity."
 ---
 
 # Wiki Lint — Health Checks and Quality Improvement

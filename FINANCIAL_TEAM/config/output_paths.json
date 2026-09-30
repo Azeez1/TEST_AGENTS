@@ -1,0 +1,15 @@
+{
+  "budgets": "FINANCIAL_TEAM/outputs/budgets",
+  "dashboards": "FINANCIAL_TEAM/outputs/dashboards",
+  "due_diligence": "FINANCIAL_TEAM/outputs/due_diligence",
+  "financials": "FINANCIAL_TEAM/outputs/financials",
+  "forecasts": "FINANCIAL_TEAM/outputs/forecasts",
+  "memos": "FINANCIAL_TEAM/outputs/memos",
+  "models": "FINANCIAL_TEAM/outputs/models",
+  "reports": "FINANCIAL_TEAM/outputs/reports",
+  "treasury": "FINANCIAL_TEAM/outputs/treasury",
+  "valuations": "FINANCIAL_TEAM/outputs/valuations",
+  "investor_relations": "FINANCIAL_TEAM/outputs/investor_relations",
+  "tax": "FINANCIAL_TEAM/outputs/tax",
+  "trading": "FINANCIAL_TEAM/outputs/trading"
+}

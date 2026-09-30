@@ -29,6 +29,13 @@ live under `CODEX_TEAM/.codex/agents/` and export to
 modify `.claude/`, Claude agent definitions, or `.mcp.json` unless explicitly
 asked.
 
+## Persistent User Preferences
+
+- For Azeez's Gmail work, use the Google Workspace MCP Gmail tools with
+  `user_google_email: "sabaazeez12@gmail.com"`. Do not default to the generic
+  Gmail connector unless the user explicitly asks for it or Google Workspace MCP
+  is unavailable.
+
 ## Project Overview
 
 This is a **73-agent multi-team AI system** built on the Claude Agent SDK, organized into 8 autonomous teams plus 5 root-level agents (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts). Codex also has a Codex-native `CODEX_TEAM` for maintaining the local Codex sidecar. The Claude system is orchestrated through Claude Code — no Python orchestrators.
@@ -286,3 +293,19 @@ Codex should NOT attempt to:
 - Execute Claude Code skills
 - Modify agent definition files without explicit instruction
 - Override Claude Code's orchestration decisions
+
+
+## Portable Codex contracts
+
+For current Codex-native work, load `.codex/runtime-contract.md` once alongside
+the selected role. `config/workspaces.json` is the shared path/runtime registry;
+roster checks discover source files instead of relying on counts in prose.
+`CODEX_TEAM/config/workflows.json` provides optional workflow ownership pilots.
+The active runtime may use its available native tools directly; historical
+Claude-MCP delegation descriptions above are not a restriction on current
+Codex-native operation. Preserve the current model unless the user selects one.
+
+Run `python tools/project_health.py --tests` from the locked core environment.
+Read `CODEX_TEAM/README.md` for setup, export and task-record commands. Generated
+Codex files change through the exporter; actual Claude sources and local MCP
+settings remain separately owned. Honor the user's current protected folders.

@@ -1,54 +1,46 @@
 ---
 name: financial-data-analyst
 display_name: financial-data-analyst
+description: SQL-driven financial analysis, data visualization, interactive dashboards,
+  and data quality assurance for financial reporting
 team: FINANCIAL_TEAM
 source: FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- workspace_enforcer
+- path_validator
+- mcp__google-workspace__create_spreadsheet
+- mcp__google-workspace__modify_sheet_values
+- mcp__google-workspace__read_sheet_values
+- mcp__google-workspace__create_doc
+- mcp__bright-data__search_engine
+- mcp__perplexity__perplexity_search
 skills:
-  - xlsx
-  - flow-diagram
-  - infographic-creator
-  - frontend-design
+- xlsx
+- flow-diagram
+- infographic-creator
+- frontend-design
 capabilities:
-  - SQL query generation for financial data warehouses
-  - Financial data visualization (charts, graphs, heatmaps)
-  - Interactive HTML dashboard creation
-  - Data quality assurance and validation
-  - Database schema discovery and documentation
-  - ETL pipeline design for financial data
-  - Statistical analysis of financial metrics
-  - Automated reporting and data pipelines
+- SQL query generation for financial data warehouses
+- Financial data visualization (charts, graphs, heatmaps)
+- Interactive HTML dashboard creation
+- Data quality assurance and validation
+- Database schema discovery and documentation
+- ETL pipeline design for financial data
+- Statistical analysis of financial metrics
+- Automated reporting and data pipelines
+source_sha256: 1bdd5ce997ea645aa917fee1a9a9354e0243cb85eaa458a5ff2b308f1f393c85
 ---
 
-# financial-data-analyst
+Generated from `FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `FINANCIAL_TEAM/.claude/agents/financial-data-analyst.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - workspace_enforcer
-  - path_validator
-  - mcp__google-workspace__create_spreadsheet
-  - mcp__google-workspace__modify_sheet_values
-  - mcp__google-workspace__read_sheet_values
-  - mcp__google-workspace__create_doc
-  - mcp__bright-data__search_engine
-  - mcp__perplexity__perplexity_search
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Financial Data Analyst
 

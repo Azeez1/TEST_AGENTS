@@ -20,9 +20,10 @@ Headless Claude Code runs via `scripts/run_scheduled_claude.ps1`. Each task gets
 | Task | Schedule | Runs |
 |---|---|---|
 | `DuxOS sync-memory daily` | Daily 7:00am | `/sync-memory` |
-| `DuxOS lead-gen-pm daily` | Daily 8:00am | `/lead-gen-pm 40` |
 | `DuxOS agent-health weekly` | Monday 8:00am | `/agent-health full generate-report` |
-| `DuxOS brand-check weekly` | Thursday 10:00am | `/brand-check MARKETING_TEAM/outputs` |
+
+Retired 2026-07-01 (were billing API credits daily/weekly): `DuxOS lead-gen-pm daily` and `DuxOS brand-check weekly`. The runner script now no-ops them; finish the job on the EZ desktop with:
+`Unregister-ScheduledTask -TaskName 'DuxOS lead-gen-pm daily' -Confirm:$false` and `Unregister-ScheduledTask -TaskName 'DuxOS brand-check weekly' -Confirm:$false`, then remove them from `$disabledTasks` in `scripts/run_scheduled_claude.ps1`.
 
 Manage: `Get-ScheduledTask DuxOS*` · run now: `Start-ScheduledTask -TaskName 'DuxOS sync-memory daily'` · remove: `Unregister-ScheduledTask -TaskName '<name>'`
 

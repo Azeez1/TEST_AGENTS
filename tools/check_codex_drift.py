@@ -1,128 +1,76 @@
-"""Codex mirror drift checker: is .codex/ stale relative to .claude/?
-
-The .codex/ layer is a GENERATED mirror (source of truth = .claude/; generator =
-scripts/export_codex_layer.py, invoked via /sync-codex). This checker detects the
-three ways the mirror rots, using .codex/manifest.json as the contract:
-
-  1. GHOST    - manifest/mirror entry whose .claude source no longer exists
-  2. STALE    - source file modified more recently than its mirror
-  3. UNSEEN   - agent/skill on disk that the manifest has never exported
-
-Usage:  python tools/check_codex_drift.py [--json]
-Exit codes: 0 = mirror fresh, 1 = drift found (fix: run /sync-codex), 2 = no manifest.
-
-Wired into /agent-health next to lint_agent_declarations.py. Born from the
-2026-07-12 Factory Audit: the hand-maintained mirror had drifted to claiming
-"62 agents" while reality moved to 73.
-"""
+"""Content-based drift checks for both source runtimes; no mtime assumptions."""
+from __future__ import annotations
 
 import json
 import sys
+import yaml
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
-MANIFEST = REPO / ".codex" / "manifest.json"
-
-TEAM_DIRS = [
-    "MARKETING_TEAM", "ENGINEERING_TEAM", "FINANCIAL_TEAM", "SALES_TEAM",
-    "QA_TEAM", "VOICE_TEAM", "PROPOSAL_TEAM", "HEDGE_FUND",
-]
+REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO))
+from scripts.export_codex_layer import content_hash, parse_frontmatter, parse_skill_frontmatter
+from tools.workspace_registry import contained_path, discover_agents
 
 
-def mtime(path: Path) -> float:
+def check_drift(root: Path = REPO) -> dict:
+    findings, warnings = [], []
     try:
-        return path.stat().st_mtime
-    except OSError:
-        return 0.0
+        manifest = json.loads((root / ".codex/manifest.json").read_text(encoding="utf-8"))
+        if manifest.get("schema") != "test-agents/codex-layer/v2":
+            findings.append("Manifest schema must be test-agents/codex-layer/v2")
+        discovered = {p.relative_to(root).as_posix() for paths in discover_agents(root).values() for p in paths}
+        recorded = [a["source"] for a in manifest["agents"]]
+        if len(recorded) != len(set(recorded)):
+            findings.append("Duplicate manifest agent source")
+        findings += [f"Unexported source: {p}" for p in sorted(discovered - set(recorded))]
+        findings += [f"Missing source: {p}" for p in sorted(set(recorded) - discovered)]
+        expected_outputs = set()
+        for agent in manifest["agents"]:
+            source = contained_path(root, agent["source"])
+            mirror = contained_path(root / ".codex/agents", root / agent["codex_instructions"])
+            expected_outputs.add(mirror)
+            if not source.is_file() or not mirror.is_file():
+                findings.append(f"Missing agent file: {agent['source']}")
+                continue
+            source_text = source.read_text(encoding="utf-8-sig")
+            text = mirror.read_text(encoding="utf-8")
+            header, _ = parse_frontmatter(text)
+            if not header.get("description") or header.get("model_policy") != "inherit_session_unless_user_selects":
+                findings.append(f"Invalid generated metadata: {agent['slug']}")
+            if content_hash(source_text) != agent.get("source_sha256"):
+                findings.append(f"Changed source: {agent['source']}")
+            if content_hash(text) != agent.get("rendered_sha256"):
+                findings.append(f"Changed generated file: {agent['codex_instructions']}")
+        findings += [f"Obsolete generated agent: {p.relative_to(root)}"
+                     for p in (root / ".codex/agents").rglob("*.md") if p.resolve() not in expected_outputs]
+        for skill in manifest.get("skills", []):
+            if skill.get("status") == "missing_source":
+                findings.append(f"Missing skill source: {skill['name']}")
+            if skill.get("codexPath") and not contained_path(root, skill["codexPath"]).is_file():
+                findings.append(f"Missing skill file: {skill['name']}")
+            if skill.get("skippedFiles"):
+                warnings.append(f"Skill assets were unavailable during export: {skill['name']}")
+            if skill.get("source") not in (None, "generated"):
+                source = contained_path(root, skill["source"]) / "SKILL.md"
+                mirror = contained_path(root, skill["codexPath"])
+                if not source.is_file():
+                    findings.append(f"Missing skill source: {skill['name']}")
+                elif mirror.is_file():
+                    src_header, src_body = parse_skill_frontmatter(source.read_text(encoding="utf-8-sig"))
+                    dst_header, dst_body = parse_frontmatter(mirror.read_text(encoding="utf-8-sig"))
+                    if src_body.lstrip() != dst_body.lstrip() or src_header.get("description") != dst_header.get("description"):
+                        findings.append(f"Changed skill instructions: {skill['name']}")
+        return {"ok": not findings, "drift_count": len(findings), "findings": findings,
+                "warnings": warnings, "agents": len(manifest["agents"]),
+                "scope": "Agent hashes and skill instructions; binary skill assets and live integrations are not checked"}
+    except (OSError, ValueError, KeyError, TypeError, yaml.YAMLError) as exc:
+        return {"ok": False, "drift_count": 1, "findings": [str(exc)], "warnings": []}
 
 
-def on_disk_agent_sources() -> set[str]:
-    """All .claude agent definition files, repo-relative with forward slashes."""
-    files = list((REPO / ".claude" / "agents").glob("*.md"))
-    for team in TEAM_DIRS:
-        files += (REPO / team / ".claude" / "agents").glob("*.md")
-    return {p.relative_to(REPO).as_posix() for p in files}
-
-
-def on_disk_skill_sources() -> set[str]:
-    """All root skill dirs (incl. document-skills children), repo-relative."""
-    skills = set()
-    root = REPO / ".claude" / "skills"
-    for d in root.iterdir():
-        if (d / "SKILL.md").exists():
-            skills.add(d.relative_to(REPO).as_posix())
-        if d.name == "document-skills":
-            for sub in d.iterdir():
-                if (sub / "SKILL.md").exists():
-                    skills.add(sub.relative_to(REPO).as_posix())
-    return skills
-
-
-def main():
-    if not MANIFEST.exists():
-        print("NO MANIFEST at .codex/manifest.json - run /sync-codex to generate the mirror.")
-        sys.exit(2)
-
-    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    ghosts, stale, unseen = [], [], []
-
-    # --- agents ---------------------------------------------------------
-    manifest_agent_sources = set()
-    for a in manifest.get("agents", []):
-        src_rel = a.get("source", "")
-        if a.get("source_runtime") == "codex-native":
-            continue  # native Codex agents have no .claude source to compare
-        manifest_agent_sources.add(src_rel)
-        src, mirror = REPO / src_rel, REPO / a.get("codex_instructions", "")
-        if not src.exists():
-            ghosts.append(f"agent {a.get('slug')}: source gone ({src_rel})")
-            continue
-        if not mirror.exists():
-            stale.append(f"agent {a.get('slug')}: mirror missing ({a.get('codex_instructions')})")
-        elif mtime(src) > mtime(mirror):
-            stale.append(f"agent {a.get('slug')}: source newer than mirror ({src_rel})")
-
-    for src_rel in sorted(on_disk_agent_sources() - manifest_agent_sources):
-        unseen.append(f"agent never exported: {src_rel}")
-
-    # --- skills ---------------------------------------------------------
-    manifest_skill_sources = set()
-    for s in manifest.get("skills", []):
-        src_rel = s.get("source", "")
-        if src_rel in ("", "generated"):
-            continue  # exporter-generated pseudo-skills have no .claude source
-        manifest_skill_sources.add(src_rel)
-        src_md = REPO / src_rel / "SKILL.md"
-        mirror = REPO / s.get("codexPath", "")
-        if not src_md.exists():
-            ghosts.append(f"skill {s.get('name')}: source gone ({src_rel})")
-            continue
-        if not mirror.exists():
-            stale.append(f"skill {s.get('name')}: mirror missing ({s.get('codexPath')})")
-        elif mtime(src_md) > mtime(mirror):
-            stale.append(f"skill {s.get('name')}: source newer than mirror ({src_rel})")
-
-    for src_rel in sorted(on_disk_skill_sources() - manifest_skill_sources):
-        unseen.append(f"skill never exported: {src_rel}")
-
-    drift = {"ghosts": ghosts, "stale": stale, "unseen": unseen}
-    total = sum(len(v) for v in drift.values())
-
-    if "--json" in sys.argv:
-        print(json.dumps({"drift_count": total, **drift}, indent=2))
-    else:
-        print(f"Codex mirror check: {len(manifest.get('agents', []))} manifest agents, "
-              f"{len(manifest.get('skills', []))} manifest skills.")
-        if total == 0:
-            print("FRESH: .codex mirror matches .claude sources.")
-        else:
-            print(f"DRIFT ({total} findings) - fix: run /sync-codex")
-            for kind, items in drift.items():
-                for item in items[:40]:
-                    print(f"  [{kind.upper()[:-1]}] {item}")
-                if len(items) > 40:
-                    print(f"  ... and {len(items) - 40} more {kind}")
-    sys.exit(1 if total else 0)
+def main() -> None:
+    result = check_drift()
+    print(json.dumps(result, indent=2))
+    raise SystemExit(0 if result["ok"] else 1)
 
 
 if __name__ == "__main__":

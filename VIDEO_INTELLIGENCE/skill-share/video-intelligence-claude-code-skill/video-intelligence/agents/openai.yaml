@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video Intelligence"
+  short_description: "Analyze any video with multimodal evidence"
+  default_prompt: "Use $video-intelligence to analyze this video and return timestamped evidence."

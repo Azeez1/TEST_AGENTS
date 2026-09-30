@@ -538,26 +538,10 @@ class Block4_EvidenceRetriever:
         Returns:
             Dictionary mapping framework_id to evidence documents
         """
-        evidence_map = {}
-
-        for fw_evidence in frameworks:
-            if fw_evidence.confidence_score < 0.5:
-                continue
-
-            fw_id = fw_evidence.framework_id
-
-            # In production, this would query Pinecone
-            # For now, return structured placeholders
-            evidence_map[fw_id] = [
-                {
-                    "source": f"{fw_evidence.framework_name} Compliance Guide",
-                    "relevance_score": 0.95,
-                    "content": f"Evidence for {fw_evidence.framework_name} compliance...",
-                    "document_id": f"doc_{fw_id}_001"
-                }
-            ]
-
-        return evidence_map
+        # This class has no retrieval adapter yet. Empty evidence is deliberate;
+        # never emit plausible documents or synthetic relevance scores.
+        self.retrieval_status = "unavailable: retrieval adapter not implemented"
+        return {item.framework_id: [] for item in frameworks if item.confidence_score >= 0.5}
 
 class Block5_ComplianceWriter:
     """
@@ -578,27 +562,17 @@ class Block5_ComplianceWriter:
         Returns:
             Generated compliance response
         """
-        # In production, this would use LLM to generate responses
-        # For now, return template response
-
-        fw_name = FRAMEWORK_BY_ID.get(framework, UserFramework(
-            id=framework, name=framework, category="", keywords=set(),
-            pdf_count=0, description="", requirements=[]
-        )).name
-
-        response = f"""
-        Our solution fully addresses this requirement through our {fw_name} compliant implementation.
-
-        We maintain comprehensive controls and processes that ensure:
-        - Full compliance with {fw_name} requirements
-        - Continuous monitoring and assessment
-        - Regular audits and updates
-        - Documentation and evidence management
-
-        [Specific evidence and implementation details would be inserted here based on retrieved documents]
-        """
-
-        return response.strip()
+        # A framework match is not evidence that the bidder meets a control.
+        real_evidence = [item for item in evidence if not item.get("demo_only")
+                         and item.get("document_id") and item.get("source")
+                         and isinstance(item.get("content"), str) and item["content"].strip()]
+        return (
+            f"[UNVERIFIED DRAFT — REVIEW REQUIRED] Framework: {framework}\n"
+            f"Requirement: {requirement}\n"
+            f"Candidate evidence documents supplied: {len(real_evidence)}.\n"
+            "Compliance has not been established. Verify each source, map it to this "
+            "requirement, and obtain the responsible owner's attestation before making a compliance claim."
+        )
 
 class Block6_IntegrationOrchestrator:
     """
@@ -761,6 +735,8 @@ class UniversalComplianceEngine:
                                         if fw.confidence == ComplianceConfidence.HIGH),
             "total_requirements": len(rfp_requirements),
             "evidence_documents": sum(len(docs) for docs in evidence_map.values()),
+            "evidence_status": self.block4_evidence.retrieval_status,
+            "compliance_verified": False,
             "risk_areas_identified": len(risk_areas),
             "integration_opportunities": len(integration_points)
         }

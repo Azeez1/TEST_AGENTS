@@ -1,20 +1,21 @@
 ---
-description: Refresh Codex sidecar layer and sync local API key env values from Claude MCP config
+description: Refresh Codex sidecar files and sync local API key env values from Claude
+  MCP config.
 ---
 
 # Codex Sync Secrets
 
-Run the local exporter with secret handoff enabled. This copies environment variable values from local `.mcp.json` into `.codex/secrets.local.env`, which is gitignored.
+Run this command from the TEST_AGENTS repo root:
 
 ```powershell
-python scripts\export_codex_layer.py --write-local-secrets
+python scripts\export_codex_layer.py --write-local-secrets --write-codex-mcp-config
 ```
 
 Rules:
 - Do not print `.codex/secrets.local.env`.
 - Do not reveal API keys, tokens, OAuth secrets, or credential values.
-- Confirm only that the local env file exists and is ignored by git.
-- Prefer Codex-native connectors/tools at runtime when available.
-- Use `.codex/secrets.local.env` only for local script/tool fallbacks.
+- Confirm only that local env files exist and are ignored by git.
+- Confirm only MCP server names, not secret values.
+- Prefer Codex-native connectors/tools when available.
 
 Do not modify `.claude/`.

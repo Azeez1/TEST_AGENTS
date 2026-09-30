@@ -9,14 +9,14 @@ Use this skill when the user asks for work in TEST_AGENTS but does not name a sp
 
 ## Routing Process
 
-1. Read `.codex/manifest.json`.
-2. Match the user's request against each agent's `team`, `slug`, `display_name`, `capabilities`, `skills`, and `tools`.
+1. Read `.codex/manifest.json` and, for a matching workflow, `CODEX_TEAM/config/workflows.json`.
+2. Match the user's request against each agent's `team`, `slug`, `display_name`, `description`, `capabilities`, `skills`, and `tools`.
 3. Choose the narrowest specialist that can complete the task.
-4. Load that agent's `codex_instructions` file before doing the work.
-5. Read the team's memory/config files referenced by that agent.
+4. Load `.codex/runtime-contract.md` and that agent's `codex_instructions` file before doing the work. Preserve the active session model and use one owner; delegate only when authorized.
+5. Read relevant tracked team `config/` defaults and only the private memory required for the task.
 6. Save deliverables in the selected team's `outputs/` folder.
 
-Do not read `.claude/agents/` directly unless the sidecar is missing or stale. If stale, run `$codex-sync-secrets` first.
+Do not read `.claude/agents/` directly unless the sidecar is missing or stale. If stale, run `python scripts/export_codex_layer.py --agents-only` first. This does not change secrets or installed skills.
 
 ## Fast Routing Map
 

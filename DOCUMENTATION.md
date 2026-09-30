@@ -10,7 +10,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - Browse all 73 agents across 8 teams (see [CLAUDE.md](CLAUDE.md) — single source of truth for roster counts)
 
 **Learn the basics:**
-- [claude.md](claude.md) - Repository navigation hub
+- [CLAUDE.md](CLAUDE.md) - Repository navigation hub
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - How to use agents
 - [FAQ.md](FAQ.md) - Common questions answered
 
@@ -21,7 +21,7 @@ Complete navigation guide for TEST_AGENTS documentation.
 ### Core System Documentation
 
 **Overview & Navigation:**
-- [claude.md](claude.md) - Repository navigation hub (primary entry point)
+- [CLAUDE.md](CLAUDE.md) - Repository navigation hub (primary entry point)
 - [DOCUMENTATION.md](DOCUMENTATION.md) - This file (master index)
 - [GETTING_STARTED.md](GETTING_STARTED.md) - 5-minute quick start
 - [CHANGELOG.md](CHANGELOG.md) - Version history
@@ -269,8 +269,8 @@ Complete navigation guide for TEST_AGENTS documentation.
 1. [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance system
 2. [TOOL_REGISTRY.md](TOOL_REGISTRY.md) - Current inventory
 3. [PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md) - Creation process
-4. [TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md) - Audit process
-5. [TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md) - Deprecation
+4. `TOOL_AUDITOR_CHECKLIST.md` *(planned)* - Audit process
+5. `TOOL_CLEANUP_WORKFLOW.md` *(planned)* - Deprecation
 
 ---
 
@@ -279,33 +279,26 @@ Complete navigation guide for TEST_AGENTS documentation.
 ```
 TEST_AGENTS/
 ├── Core Documentation
-│   ├── README.md
-│   ├── claude.md
+│   ├── AGENTS.md (Codex instructions)
+│   ├── CLAUDE.md (Claude instructions)
 │   ├── DOCUMENTATION.md (this file)
 │   ├── GETTING_STARTED.md
 │   ├── MULTI_AGENT_GUIDE.md
 │   ├── AGENT_INVOCATION_BEST_PRACTICES.md
 │   ├── MEMORY_SYSTEM.md
-│   ├── WORKSPACE_ENFORCEMENT.md
 │   ├── MCP_SETUP.md
 │   └── CHANGELOG.md
 │
 ├── Governance
-│   ├── GOVERNANCE_OVERVIEW.md
 │   ├── TOOL_USAGE_POLICY.md
 │   ├── TOOL_REGISTRY.md
 │   ├── AGENT_GOVERNANCE_RULES.md
 │   ├── PRE_FLIGHT_CHECKS.md
-│   ├── TOOL_AUDITOR_CHECKLIST.md
-│   ├── TOOL_CLEANUP_WORKFLOW.md
-│   └── GOVERNANCE_METRICS.md
-│
-├── Supervisor
-│   ├── SUPERVISOR_ARCHITECTURE.md
-│   └── SUPERVISOR_VERIFICATION_CRITERIA.md
+│   ├── LLAR_GOVERNANCE.md
+│   └── (audit, cleanup, and metrics guides - planned)
 │
 ├── Setup & Reference
-│   ├── MARKETING_TEAM/docs/getting-started/api-setup.md
+│   ├── MARKETING_TEAM/docs/API_SETUP_GUIDE.md
 │   ├── TROUBLESHOOTING.md
 │   ├── FAQ.md
 │   └── (GLOSSARY.md - planned)
@@ -328,8 +321,9 @@ TEST_AGENTS/
 │       └── SETUP.md
 │
 └── Archive
-    ├── deprecated/
-    └── historical/
+    ├── archive/deprecated/
+    ├── archive/historical/
+    └── docs/archive/ (older governance and supervisor guides)
 ```
 
 ---

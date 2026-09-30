@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "skill": "video-intelligence",
+  "inbox_dir": "inbox",
+  "analysis_output_dir": "outputs/analyses",
+  "test_output_dir": "outputs/tests",
+  "rubric_dir": "rubrics",
+  "example_dir": "examples",
+  "default_profile": "general",
+  "default_model": "auto",
+  "default_max_cost_usd": 0.5
+}

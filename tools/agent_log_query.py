@@ -15,6 +15,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 LOG_PATH = Path(__file__).resolve().parent.parent / "LOGS" / "agent-runs.jsonl"
+RECOVERED_LOG_PATH = LOG_PATH.with_name("recovered-agent-runs.jsonl")
 
 
 def load(path: Path, since: datetime | None = None, agent: str | None = None):
@@ -40,6 +41,18 @@ def load(path: Path, since: datetime | None = None, agent: str | None = None):
             if dt < since:
                 continue
         rows.append(r)
+    return rows
+
+
+def load_default(since: datetime | None = None, agent: str | None = None):
+    """Include recovered OneDrive conflict records without counting duplicates."""
+    rows = load(LOG_PATH, since=since, agent=agent)
+    seen = {json.dumps(row, sort_keys=True, separators=(",", ":")) for row in rows}
+    for row in load(RECOVERED_LOG_PATH, since=since, agent=agent):
+        key = json.dumps(row, sort_keys=True, separators=(",", ":"))
+        if key not in seen:
+            rows.append(row)
+            seen.add(key)
     return rows
 
 
@@ -73,11 +86,12 @@ def main():
     ap.add_argument("--this-week", action="store_true", help="Only last 7 days")
     ap.add_argument("--agent", help="Filter to a single agent name")
     ap.add_argument("--cost-summary", action="store_true", help="Print summary (default)")
-    ap.add_argument("--path", default=str(LOG_PATH), help="Override JSONL path")
+    ap.add_argument("--path", help="Override the default canonical and recovered logs")
     args = ap.parse_args()
 
     since = datetime.now(timezone.utc) - timedelta(days=7) if args.this_week else None
-    rows = load(Path(args.path), since=since, agent=args.agent)
+    rows = (load(Path(args.path), since=since, agent=args.agent)
+            if args.path else load_default(since=since, agent=args.agent))
     if not rows:
         print("No matching rows.", file=sys.stderr)
         return

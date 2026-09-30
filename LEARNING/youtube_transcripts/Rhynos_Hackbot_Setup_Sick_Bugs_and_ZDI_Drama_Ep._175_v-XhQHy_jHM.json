@@ -1,0 +1,7501 @@
+{
+  "metadata": {
+    "title": "Rhyno’s Hackbot Setup, Sick Bugs, and ZDI Drama (Ep. 175)",
+    "author_name": "Critical Thinking - Bug Bounty Podcast",
+    "provider_name": "YouTube",
+    "author_url": "https://www.youtube.com/@criticalthinkingpodcast",
+    "type": "video",
+    "height": 113,
+    "width": 200,
+    "version": "1.0",
+    "provider_url": "https://www.youtube.com/",
+    "thumbnail_height": 360,
+    "thumbnail_width": 480,
+    "thumbnail_url": "https://i.ytimg.com/vi/v-XhQHy_jHM/hqdefault.jpg",
+    "html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/v-XhQHy_jHM?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Rhyno’s Hackbot Setup, Sick Bugs, and ZDI Drama (Ep. 175)\"></iframe>"
+  },
+  "video_id": "v-XhQHy_jHM",
+  "url": "https://youtu.be/v-XhQHy_jHM?is=JQHTSqlLMDi1whuV",
+  "segments": [
+    {
+      "start": 1.12,
+      "duration": 4.4,
+      "text": "I had to slow my hackbot down a little"
+    },
+    {
+      "start": 3.04,
+      "duration": 3.92,
+      "text": "bit because I was turning through a lot"
+    },
+    {
+      "start": 5.52,
+      "duration": 2.16,
+      "text": "of tokens, you know, and I was like,"
+    },
+    {
+      "start": 6.96,
+      "duration": 2.0,
+      "text": "actually,"
+    },
+    {
+      "start": 7.68,
+      "duration": 3.2,
+      "text": ">> no, you shouldn't do that. You should"
+    },
+    {
+      "start": 8.96,
+      "duration": 4.48,
+      "text": "just buy another sub for another $200."
+    },
+    {
+      "start": 10.88,
+      "duration": 6.36,
+      "text": ">> So, right. Shut up, dude. I I know. I"
+    },
+    {
+      "start": 13.44,
+      "duration": 3.8,
+      "text": "know. Just give me a second."
+    },
+    {
+      "start": 19.279,
+      "duration": 6.361,
+      "text": ">> Best part of when you can just, you"
+    },
+    {
+      "start": 21.359,
+      "duration": 4.281,
+      "text": "know, critical thing, right?"
+    },
+    {
+      "start": 29.519,
+      "duration": 3.721,
+      "text": "Yeah, dude."
+    },
+    {
+      "start": 38.559,
+      "duration": 2.481,
+      "text": ">> Hey, what's up guys? Before we get into"
+    },
+    {
+      "start": 40.0,
+      "duration": 2.879,
+      "text": "the show, I wanted to mention something"
+    },
+    {
+      "start": 41.04,
+      "duration": 3.519,
+      "text": "super quick from our friends at Threat"
+    },
+    {
+      "start": 42.879,
+      "duration": 2.641,
+      "text": "Locker. And I actually think you are"
+    },
+    {
+      "start": 44.559,
+      "duration": 3.84,
+      "text": "going to think it's pretty awesome"
+    },
+    {
+      "start": 45.52,
+      "duration": 4.32,
+      "text": "because so much of Bug Bounty is often,"
+    },
+    {
+      "start": 48.399,
+      "duration": 2.721,
+      "text": "you know, kind of quoted as like, \"Yeah,"
+    },
+    {
+      "start": 49.84,
+      "duration": 2.559,
+      "text": "but hackers will never exploit that"
+    },
+    {
+      "start": 51.12,
+      "duration": 2.64,
+      "text": "because they can just get in via"
+    },
+    {
+      "start": 52.399,
+      "duration": 2.64,
+      "text": "fishing.\" Well, that's actually true."
+    },
+    {
+      "start": 53.76,
+      "duration": 3.36,
+      "text": "You know, most of the time whenever"
+    },
+    {
+      "start": 55.039,
+      "duration": 4.881,
+      "text": "companies get breached, it's because of"
+    },
+    {
+      "start": 57.12,
+      "duration": 5.2,
+      "text": "fishing or access to that user's account"
+    },
+    {
+      "start": 59.92,
+      "duration": 4.239,
+      "text": "or, you know, they do something like do"
+    },
+    {
+      "start": 62.32,
+      "duration": 3.28,
+      "text": "a whole bunch of push notification to FA"
+    },
+    {
+      "start": 64.159,
+      "duration": 3.761,
+      "text": "and eventually a user gets so much"
+    },
+    {
+      "start": 65.6,
+      "duration": 3.519,
+      "text": "fatigue they approve it. But they have a"
+    },
+    {
+      "start": 67.92,
+      "duration": 3.12,
+      "text": "solution for this. Thread Locker has a"
+    },
+    {
+      "start": 69.119,
+      "duration": 3.601,
+      "text": "thing called zero trust cloud access,"
+    },
+    {
+      "start": 71.04,
+      "duration": 4.399,
+      "text": "right? Which prevents access to cloud"
+    },
+    {
+      "start": 72.72,
+      "duration": 5.68,
+      "text": "resources or SAS resources based on the"
+    },
+    {
+      "start": 75.439,
+      "duration": 4.72,
+      "text": "device you're logging in from. So if a"
+    },
+    {
+      "start": 78.4,
+      "duration": 3.2,
+      "text": "user gets fished, right, they put in"
+    },
+    {
+      "start": 80.159,
+      "duration": 3.521,
+      "text": "their credent they get fished or they"
+    },
+    {
+      "start": 81.6,
+      "duration": 3.68,
+      "text": "get fished. They the attacker has their"
+    },
+    {
+      "start": 83.68,
+      "duration": 3.52,
+      "text": "credentials. Maybe they even have a way"
+    },
+    {
+      "start": 85.28,
+      "duration": 3.44,
+      "text": "to get the MFA because they did some"
+    },
+    {
+      "start": 87.2,
+      "duration": 3.68,
+      "text": "sort of SIM swap because they have a"
+    },
+    {
+      "start": 88.72,
+      "duration": 4.16,
+      "text": "hookup at Verizon or AT&T or whatever,"
+    },
+    {
+      "start": 90.88,
+      "duration": 3.84,
+      "text": "right? So they have the credentials,"
+    },
+    {
+      "start": 92.88,
+      "duration": 4.96,
+      "text": "they have the MFA, they still can't get"
+    },
+    {
+      "start": 94.72,
+      "duration": 4.96,
+      "text": "in because the zerorust cloud access"
+    },
+    {
+      "start": 97.84,
+      "duration": 3.919,
+      "text": "like will basically straight up allow or"
+    },
+    {
+      "start": 99.68,
+      "duration": 3.68,
+      "text": "deny people access to resources based on"
+    },
+    {
+      "start": 101.759,
+      "duration": 3.281,
+      "text": "the device you're logging in from. So,"
+    },
+    {
+      "start": 103.36,
+      "duration": 3.759,
+      "text": "if you're an enterprise or a company and"
+    },
+    {
+      "start": 105.04,
+      "duration": 4.079,
+      "text": "you're concerned about the highest risk,"
+    },
+    {
+      "start": 107.119,
+      "duration": 4.0,
+      "text": "which really is fishing, this is a way"
+    },
+    {
+      "start": 109.119,
+      "duration": 4.881,
+      "text": "to add another like basically"
+    },
+    {
+      "start": 111.119,
+      "duration": 6.0,
+      "text": "impenetrable layer to preventing it and"
+    },
+    {
+      "start": 114.0,
+      "duration": 4.88,
+      "text": "securing your network. Um, yeah, back to"
+    },
+    {
+      "start": 117.119,
+      "duration": 3.441,
+      "text": "the show."
+    },
+    {
+      "start": 118.88,
+      "duration": 3.279,
+      "text": ">> All right, man. Let's kick off this"
+    },
+    {
+      "start": 120.56,
+      "duration": 3.04,
+      "text": "episode with a couple bugs from this"
+    },
+    {
+      "start": 122.159,
+      "duration": 2.081,
+      "text": "week. Yeah. Do you have something in the"
+    },
+    {
+      "start": 123.6,
+      "duration": 2.0,
+      "text": "docket?"
+    },
+    {
+      "start": 124.24,
+      "duration": 3.04,
+      "text": ">> Yeah. I feel like we haven't talked"
+    },
+    {
+      "start": 125.6,
+      "duration": 2.719,
+      "text": "enough about the awesome bugs that we've"
+    },
+    {
+      "start": 127.28,
+      "duration": 3.119,
+      "text": "been finding."
+    },
+    {
+      "start": 128.319,
+      "duration": 3.361,
+      "text": ">> Yeah. Yeah. I So, let's let's flex on"
+    },
+    {
+      "start": 130.399,
+      "duration": 2.641,
+      "text": "the people a little bit. How about that?"
+    },
+    {
+      "start": 131.68,
+      "duration": 2.88,
+      "text": ">> Perfect. Yeah, that's great. Okay. You"
+    },
+    {
+      "start": 133.04,
+      "duration": 2.88,
+      "text": "want to go first or should I?"
+    },
+    {
+      "start": 134.56,
+      "duration": 3.44,
+      "text": ">> Yeah, sure. I'll go. I know we were just"
+    },
+    {
+      "start": 135.92,
+      "duration": 3.84,
+      "text": "talking about this. I tried to mention a"
+    },
+    {
+      "start": 138.0,
+      "duration": 2.8,
+      "text": "bug honestly beforehand and and Justin's"
+    },
+    {
+      "start": 139.76,
+      "duration": 2.24,
+      "text": "like, \"No, we just talked about"
+    },
+    {
+      "start": 140.8,
+      "duration": 2.96,
+      "text": "something similar.\" I'm like, \"Dude, no,"
+    },
+    {
+      "start": 142.0,
+      "duration": 3.52,
+      "text": "this is cool enough to talk about.\""
+    },
+    {
+      "start": 143.76,
+      "duration": 2.24,
+      "text": ">> So, basically,"
+    },
+    {
+      "start": 145.52,
+      "duration": 2.64,
+      "text": "you're right."
+    },
+    {
+      "start": 146.0,
+      "duration": 4.879,
+      "text": ">> So, so basically I I keep my eye on a"
+    },
+    {
+      "start": 148.16,
+      "duration": 4.88,
+      "text": "lot of AI apps and so there there is AI"
+    },
+    {
+      "start": 150.879,
+      "duration": 4.08,
+      "text": "application that added well that has had"
+    },
+    {
+      "start": 153.04,
+      "duration": 3.04,
+      "text": "a long-standing q parameter injection,"
+    },
+    {
+      "start": 154.959,
+      "duration": 2.56,
+      "text": "right? So for those of you that don't"
+    },
+    {
+      "start": 156.08,
+      "duration": 3.84,
+      "text": "know what that is, basically just a git"
+    },
+    {
+      "start": 157.519,
+      "duration": 4.08,
+      "text": "parameter that automatically invokes and"
+    },
+    {
+      "start": 159.92,
+      "duration": 2.08,
+      "text": "so there was a company that added some"
+    },
+    {
+      "start": 161.599,
+      "duration": 1.601,
+      "text": "more"
+    },
+    {
+      "start": 162.0,
+      "duration": 2.319,
+      "text": ">> automatically invokes a prompt"
+    },
+    {
+      "start": 163.2,
+      "duration": 2.96,
+      "text": "injection."
+    },
+    {
+      "start": 164.319,
+      "duration": 4.401,
+      "text": ">> Well, automatically in invokes a prompt,"
+    },
+    {
+      "start": 166.16,
+      "duration": 4.64,
+      "text": "right? And just uh again to to recount"
+    },
+    {
+      "start": 168.72,
+      "duration": 4.0,
+      "text": "why that's so powerful in prompt"
+    },
+    {
+      "start": 170.8,
+      "duration": 3.76,
+      "text": "injections often times the models are"
+    },
+    {
+      "start": 172.72,
+      "duration": 3.36,
+      "text": "able to see that it's not from the"
+    },
+    {
+      "start": 174.56,
+      "duration": 3.12,
+      "text": "original user. But the nice thing about"
+    },
+    {
+      "start": 176.08,
+      "duration": 3.6,
+      "text": "these cute brand prompt injection is it"
+    },
+    {
+      "start": 177.68,
+      "duration": 3.919,
+      "text": "totally seems like it's coming directly"
+    },
+    {
+      "start": 179.68,
+      "duration": 3.279,
+      "text": "from the user and they're asking for the"
+    },
+    {
+      "start": 181.599,
+      "duration": 2.481,
+      "text": "thing. So you almost never get"
+    },
+    {
+      "start": 182.959,
+      "duration": 3.2,
+      "text": "rejections. you're not having to work"
+    },
+    {
+      "start": 184.08,
+      "duration": 3.2,
+      "text": "around anything. And so anyways, I had"
+    },
+    {
+      "start": 186.159,
+      "duration": 2.481,
+      "text": "been sitting on one of those for a long"
+    },
+    {
+      "start": 187.28,
+      "duration": 2.8,
+      "text": "time and in fact people probably"
+    },
+    {
+      "start": 188.64,
+      "duration": 3.92,
+      "text": "reported it, but there just was like"
+    },
+    {
+      "start": 190.08,
+      "duration": 4.32,
+      "text": "hardly any impact. They recently I kept"
+    },
+    {
+      "start": 192.56,
+      "duration": 3.12,
+      "text": "an eye on it like I immediately saw the"
+    },
+    {
+      "start": 194.4,
+      "duration": 2.72,
+      "text": "same day when they released this feature"
+    },
+    {
+      "start": 195.68,
+      "duration": 4.559,
+      "text": "where it could make changes to your"
+    },
+    {
+      "start": 197.12,
+      "duration": 5.119,
+      "text": "GitHub. And so um in this case that's"
+    },
+    {
+      "start": 200.239,
+      "duration": 4.72,
+      "text": "like extremely powerful for a bunch of"
+    },
+    {
+      "start": 202.239,
+      "duration": 5.681,
+      "text": "reasons because qperm can be invoked by"
+    },
+    {
+      "start": 204.959,
+      "duration": 4.801,
+      "text": "CSRF or by redirects or and you told me"
+    },
+    {
+      "start": 207.92,
+      "duration": 3.12,
+      "text": "this before we jumped on the pod that"
+    },
+    {
+      "start": 209.76,
+      "duration": 3.52,
+      "text": "actually you can do like a window"
+    },
+    {
+      "start": 211.04,
+      "duration": 4.0,
+      "text": "opener. So you can redirect them to a"
+    },
+    {
+      "start": 213.28,
+      "duration": 3.28,
+      "text": "benign site and then in the background"
+    },
+    {
+      "start": 215.04,
+      "duration": 3.119,
+      "text": "have something be processing because"
+    },
+    {
+      "start": 216.56,
+      "duration": 2.8,
+      "text": "often these Q parameter injections can"
+    },
+    {
+      "start": 218.159,
+      "duration": 3.281,
+      "text": "kind of look funny if you're just trying"
+    },
+    {
+      "start": 219.36,
+      "duration": 3.68,
+      "text": "to sell it as like, oh, I'm just going"
+    },
+    {
+      "start": 221.44,
+      "duration": 2.96,
+      "text": "to sit here and let the agent do"
+    },
+    {
+      "start": 223.04,
+      "duration": 2.8,
+      "text": "something malicious on this random"
+    },
+    {
+      "start": 224.4,
+      "duration": 3.199,
+      "text": "website for me as you like or you're"
+    },
+    {
+      "start": 225.84,
+      "duration": 3.119,
+      "text": "watching it slowly stream by. It's like"
+    },
+    {
+      "start": 227.599,
+      "duration": 3.121,
+      "text": "getting RC on your stuff."
+    },
+    {
+      "start": 228.959,
+      "duration": 3.28,
+      "text": ">> They take a second, right? Yeah."
+    },
+    {
+      "start": 230.72,
+      "duration": 2.96,
+      "text": ">> Yeah, it takes a second and so it feels"
+    },
+    {
+      "start": 232.239,
+      "duration": 2.801,
+      "text": "less believable, right, that someone"
+    },
+    {
+      "start": 233.68,
+      "duration": 2.96,
+      "text": "would do that. But your your example"
+    },
+    {
+      "start": 235.04,
+      "duration": 3.919,
+      "text": "where you use a a window opener to"
+    },
+    {
+      "start": 236.64,
+      "duration": 4.08,
+      "text": "basically open it up in the previous tab"
+    },
+    {
+      "start": 238.959,
+      "duration": 4.321,
+      "text": "so that it's like injecting you and"
+    },
+    {
+      "start": 240.72,
+      "duration": 4.239,
+      "text": "making changes on your stuff in the"
+    },
+    {
+      "start": 243.28,
+      "duration": 3.2,
+      "text": "background is like a much better I think"
+    },
+    {
+      "start": 244.959,
+      "duration": 4.721,
+      "text": "P."
+    },
+    {
+      "start": 246.48,
+      "duration": 5.119,
+      "text": ">> Look at look at you. Look at you like"
+    },
+    {
+      "start": 249.68,
+      "duration": 3.919,
+      "text": "saying a client side thing and it being"
+    },
+    {
+      "start": 251.599,
+      "duration": 4.321,
+      "text": "like yes that was that made me very"
+    },
+    {
+      "start": 253.599,
+      "duration": 4.241,
+      "text": "happy. Dude, you you dude you have"
+    },
+    {
+      "start": 255.92,
+      "duration": 3.599,
+      "text": "really grown as a hacker this year man."
+    },
+    {
+      "start": 257.84,
+      "duration": 3.119,
+      "text": ">> Oh I appreciate that. To be honest, I"
+    },
+    {
+      "start": 259.519,
+      "duration": 3.761,
+      "text": "know that it was a concern of a lot of"
+    },
+    {
+      "start": 260.959,
+      "duration": 3.52,
+      "text": "people that when you start using AI in"
+    },
+    {
+      "start": 263.28,
+      "duration": 2.96,
+      "text": "the way I have been because I do feel"
+    },
+    {
+      "start": 264.479,
+      "duration": 2.881,
+      "text": "like I do less manual hacking, but this"
+    },
+    {
+      "start": 266.24,
+      "duration": 3.2,
+      "text": "bug actually that I'm mentioning was"
+    },
+    {
+      "start": 267.36,
+      "duration": 3.2,
+      "text": "just fully all me all the way from the"
+    },
+    {
+      "start": 269.44,
+      "duration": 3.84,
+      "text": "beginning to the end to the reporting"
+    },
+    {
+      "start": 270.56,
+      "duration": 3.84,
+      "text": "and everything. Um, so I anyways, I"
+    },
+    {
+      "start": 273.28,
+      "duration": 2.639,
+      "text": "appreciate that. I actually do think"
+    },
+    {
+      "start": 274.4,
+      "duration": 3.28,
+      "text": "that basically I've been a triager of"
+    },
+    {
+      "start": 275.919,
+      "duration": 3.121,
+      "text": "sorts and we've mentioned in the past"
+    },
+    {
+      "start": 277.68,
+      "duration": 3.12,
+      "text": "that being a triager is the great the"
+    },
+    {
+      "start": 279.04,
+      "duration": 3.68,
+      "text": "best way to learn and so I've been"
+    },
+    {
+      "start": 280.8,
+      "duration": 3.52,
+      "text": "triaging lots of these vuls from from"
+    },
+    {
+      "start": 282.72,
+      "duration": 3.199,
+      "text": "the hackbot and so I have actually"
+    },
+    {
+      "start": 284.32,
+      "duration": 4.0,
+      "text": "learned a lot. So and also working with"
+    },
+    {
+      "start": 285.919,
+      "duration": 4.161,
+      "text": "JD and you help a lot. But anyways, so"
+    },
+    {
+      "start": 288.32,
+      "duration": 3.92,
+      "text": "all that to say, this was really cool"
+    },
+    {
+      "start": 290.08,
+      "duration": 4.0,
+      "text": "because now you could automatically via"
+    },
+    {
+      "start": 292.24,
+      "duration": 3.519,
+      "text": "Q parameter injection make changes to"
+    },
+    {
+      "start": 294.08,
+      "duration": 4.16,
+      "text": "anybody's GitHub repo that they had"
+    },
+    {
+      "start": 295.759,
+      "duration": 3.681,
+      "text": "connected into this application. And um"
+    },
+    {
+      "start": 298.24,
+      "duration": 2.88,
+      "text": "the neat thing is that it was fully"
+    },
+    {
+      "start": 299.44,
+      "duration": 3.44,
+      "text": "wormable because so many GitHub repos"
+    },
+    {
+      "start": 301.12,
+      "duration": 3.28,
+      "text": "are just literally automatically pushed"
+    },
+    {
+      "start": 302.88,
+      "duration": 3.2,
+      "text": "to prod when you get a push. I mean"
+    },
+    {
+      "start": 304.4,
+      "duration": 3.519,
+      "text": "that's how my that's how my blog works,"
+    },
+    {
+      "start": 306.08,
+      "duration": 4.08,
+      "text": "right? I push in some new content, it's"
+    },
+    {
+      "start": 307.919,
+      "duration": 3.84,
+      "text": "CI/CD automatically pushes it. And so"
+    },
+    {
+      "start": 310.16,
+      "duration": 4.56,
+      "text": "when you've automatically poned that,"
+    },
+    {
+      "start": 311.759,
+      "duration": 5.361,
+      "text": "now you have another site out there that"
+    },
+    {
+      "start": 314.72,
+      "duration": 4.16,
+      "text": "can then make those same CSRF request or"
+    },
+    {
+      "start": 317.12,
+      "duration": 4.16,
+      "text": "the post message request, right, to then"
+    },
+    {
+      "start": 318.88,
+      "duration": 4.879,
+      "text": "keep going. And so this is like a a"
+    },
+    {
+      "start": 321.28,
+      "duration": 4.0,
+      "text": "wormable AI exploit to make changes in"
+    },
+    {
+      "start": 323.759,
+      "duration": 4.88,
+      "text": "everyone's GitHub repo."
+    },
+    {
+      "start": 325.28,
+      "duration": 5.04,
+      "text": ">> Dude, that is crazy. So first first part"
+    },
+    {
+      "start": 328.639,
+      "duration": 4.4,
+      "text": "in the chain,"
+    },
+    {
+      "start": 330.32,
+      "duration": 4.08,
+      "text": ">> qarameter prompt injection, which can be"
+    },
+    {
+      "start": 333.039,
+      "duration": 3.44,
+      "text": "done in the background via window.opener"
+    },
+    {
+      "start": 334.4,
+      "duration": 3.519,
+      "text": "opener redirect, you know, so that"
+    },
+    {
+      "start": 336.479,
+      "duration": 3.121,
+      "text": "they're not seeing how long it takes for"
+    },
+    {
+      "start": 337.919,
+      "duration": 3.201,
+      "text": "the exploit to work, which is like which"
+    },
+    {
+      "start": 339.6,
+      "duration": 5.76,
+      "text": "was pretty fast, by the way, I when I"
+    },
+    {
+      "start": 341.12,
+      "duration": 6.16,
+      "text": "saw the video. Um, and then the AI"
+    },
+    {
+      "start": 345.36,
+      "duration": 3.839,
+      "text": "reading that that prompt injection"
+    },
+    {
+      "start": 347.28,
+      "duration": 3.68,
+      "text": "changes an arbitrary file in your GitHub"
+    },
+    {
+      "start": 349.199,
+      "duration": 3.921,
+      "text": "repo via the connector"
+    },
+    {
+      "start": 350.96,
+      "duration": 5.44,
+      "text": ">> and that what you're envisioning would"
+    },
+    {
+      "start": 353.12,
+      "duration": 5.12,
+      "text": "change a website that is run and it's"
+    },
+    {
+      "start": 356.4,
+      "duration": 3.68,
+      "text": "very easy to adapt that prompt to a"
+    },
+    {
+      "start": 358.24,
+      "duration": 3.92,
+      "text": "dynamic like change any, you know,"
+    },
+    {
+      "start": 360.08,
+      "duration": 6.08,
+      "text": "GitHub pages, you know, website or"
+    },
+    {
+      "start": 362.16,
+      "duration": 5.759,
+      "text": "whatever. uh and then worm that exploit"
+    },
+    {
+      "start": 366.16,
+      "duration": 4.0,
+      "text": "through all of the websites of all the"
+    },
+    {
+      "start": 367.919,
+      "duration": 2.961,
+      "text": "users, you know, everybody who visits"
+    },
+    {
+      "start": 370.16,
+      "duration": 1.84,
+      "text": "that website."
+    },
+    {
+      "start": 370.88,
+      "duration": 2.0,
+      "text": ">> Yeah, we should take a second and talk"
+    },
+    {
+      "start": 372.0,
+      "duration": 2.4,
+      "text": "about that because that's probably"
+    },
+    {
+      "start": 372.88,
+      "duration": 3.2,
+      "text": "almost like a technique. So like uh"
+    },
+    {
+      "start": 374.4,
+      "duration": 3.359,
+      "text": "let's just call it ambiguous prompting."
+    },
+    {
+      "start": 376.08,
+      "duration": 4.239,
+      "text": "So your ambiguous prompt could say"
+    },
+    {
+      "start": 377.759,
+      "duration": 4.56,
+      "text": "something like, hey, go change my"
+    },
+    {
+      "start": 380.319,
+      "duration": 3.521,
+      "text": "website, which the agent knows it can"
+    },
+    {
+      "start": 382.319,
+      "duration": 2.961,
+      "text": "like list GitHub repos, right? Right?"
+    },
+    {
+      "start": 383.84,
+      "duration": 3.84,
+      "text": "And so some of those are websites and so"
+    },
+    {
+      "start": 385.28,
+      "duration": 4.08,
+      "text": "then it's like go change my website such"
+    },
+    {
+      "start": 387.68,
+      "duration": 3.359,
+      "text": "that it actually does a redirect and"
+    },
+    {
+      "start": 389.36,
+      "duration": 3.119,
+      "text": "then in the background does this thing"
+    },
+    {
+      "start": 391.039,
+      "duration": 2.72,
+      "text": "to really help out the user because they"
+    },
+    {
+      "start": 392.479,
+      "duration": 2.56,
+      "text": "need that, right? Or something just like"
+    },
+    {
+      "start": 393.759,
+      "duration": 2.321,
+      "text": "something to convince the model to do"
+    },
+    {
+      "start": 395.039,
+      "duration": 4.401,
+      "text": "it. Yeah,"
+    },
+    {
+      "start": 396.08,
+      "duration": 5.6,
+      "text": ">> that's such a powerful thing about AI"
+    },
+    {
+      "start": 399.44,
+      "duration": 4.0,
+      "text": "stuff is like obviously you're going to"
+    },
+    {
+      "start": 401.68,
+      "duration": 2.32,
+      "text": "get a more deterministic exploit the"
+    },
+    {
+      "start": 403.44,
+      "duration": 2.08,
+      "text": "more"
+    },
+    {
+      "start": 404.0,
+      "duration": 3.84,
+      "text": ">> Yeah. specific you are."
+    },
+    {
+      "start": 405.52,
+      "duration": 4.48,
+      "text": ">> specific you are, but you also gain a"
+    },
+    {
+      "start": 407.84,
+      "duration": 3.68,
+      "text": "lot of power in if being able to fill in"
+    },
+    {
+      "start": 410.0,
+      "duration": 3.199,
+      "text": "the blanks for you if you very"
+    },
+    {
+      "start": 411.52,
+      "duration": 4.08,
+      "text": "specifically describe what you need."
+    },
+    {
+      "start": 413.199,
+      "duration": 3.521,
+      "text": "Yeah, you know what's insane though? I I"
+    },
+    {
+      "start": 415.6,
+      "duration": 3.92,
+      "text": "didn't I don't think I even shared this"
+    },
+    {
+      "start": 416.72,
+      "duration": 5.599,
+      "text": "with you. In one of mine, I because I"
+    },
+    {
+      "start": 419.52,
+      "duration": 4.16,
+      "text": "just had um I think I had Claude write a"
+    },
+    {
+      "start": 422.319,
+      "duration": 2.801,
+      "text": "prompt or something at some point to see"
+    },
+    {
+      "start": 423.68,
+      "duration": 4.4,
+      "text": "if I can make it do something else and"
+    },
+    {
+      "start": 425.12,
+      "duration": 5.84,
+      "text": "it used like attacker.com."
+    },
+    {
+      "start": 428.08,
+      "duration": 4.399,
+      "text": "This app this app still did it. It went"
+    },
+    {
+      "start": 430.96,
+      "duration": 4.16,
+      "text": "and made the change and pointed the"
+    },
+    {
+      "start": 432.479,
+      "duration": 4.641,
+      "text": "redirect to attacker.com."
+    },
+    {
+      "start": 435.12,
+      "duration": 3.68,
+      "text": "It's like, do you not understand that"
+    },
+    {
+      "start": 437.12,
+      "duration": 2.16,
+      "text": "this is like not a safe thing to do? But"
+    },
+    {
+      "start": 438.8,
+      "duration": 2.48,
+      "text": "anyways,"
+    },
+    {
+      "start": 439.28,
+      "duration": 4.96,
+      "text": ">> oh my gosh. Yeah. Well, it's funny as"
+    },
+    {
+      "start": 441.28,
+      "duration": 5.039,
+      "text": "soon as you said that, like as soon as"
+    },
+    {
+      "start": 444.24,
+      "duration": 6.0,
+      "text": ">> Yeah, it makes me think I actually"
+    },
+    {
+      "start": 446.319,
+      "duration": 6.32,
+      "text": "recently gave Claude access to like a"
+    },
+    {
+      "start": 450.24,
+      "duration": 3.84,
+      "text": "Digital Ocean API key that I have"
+    },
+    {
+      "start": 452.639,
+      "duration": 2.321,
+      "text": ">> and just said like, \"Hey, add this"
+    },
+    {
+      "start": 454.08,
+      "duration": 2.8,
+      "text": "record,\""
+    },
+    {
+      "start": 454.96,
+      "duration": 3.28,
+      "text": ">> you know, and it just boom, by the CLI"
+    },
+    {
+      "start": 456.88,
+      "duration": 2.879,
+      "text": "just added it easy peasy. And I'm like,"
+    },
+    {
+      "start": 458.24,
+      "duration": 3.92,
+      "text": "\"Oh my gosh, now I don't even have to"
+    },
+    {
+      "start": 459.759,
+      "duration": 4.0,
+      "text": "log into Digital Ocean anymore.\" Yeah."
+    },
+    {
+      "start": 462.16,
+      "duration": 4.4,
+      "text": "You know, like, and it can just"
+    },
+    {
+      "start": 463.759,
+      "duration": 3.84,
+      "text": "automatically do stuff. H so"
+    },
+    {
+      "start": 466.56,
+      "duration": 2.96,
+      "text": ">> that's really powerful inside of"
+    },
+    {
+      "start": 467.599,
+      "duration": 3.281,
+      "text": "Cloudflare. If anybody wants to take on"
+    },
+    {
+      "start": 469.52,
+      "duration": 3.2,
+      "text": "that risk of letting their agent have"
+    },
+    {
+      "start": 470.88,
+      "duration": 5.92,
+      "text": "like a global key to their Cloudflare,"
+    },
+    {
+      "start": 472.72,
+      "duration": 6.08,
+      "text": "it can configure so much via the CLI."
+    },
+    {
+      "start": 476.8,
+      "duration": 3.28,
+      "text": ">> Yeah, dude. And you know, obviously all"
+    },
+    {
+      "start": 478.8,
+      "duration": 3.28,
+      "text": "this stuff that we're saying shouldn't"
+    },
+    {
+      "start": 480.08,
+      "duration": 3.04,
+      "text": "be done in any sort of professional"
+    },
+    {
+      "start": 482.08,
+      "duration": 2.64,
+      "text": "environment,"
+    },
+    {
+      "start": 483.12,
+      "duration": 4.56,
+      "text": ">> you know, but but the thing is as a bug"
+    },
+    {
+      "start": 484.72,
+      "duration": 4.96,
+      "text": "bounty hunter, like the the beauty of us"
+    },
+    {
+      "start": 487.68,
+      "duration": 4.239,
+      "text": "is we're scrappy as hell, you know, and"
+    },
+    {
+      "start": 489.68,
+      "duration": 4.56,
+      "text": "and I'm I'm not going to pretend"
+    },
+    {
+      "start": 491.919,
+      "duration": 4.881,
+      "text": ">> with you guys that all of my everything"
+    },
+    {
+      "start": 494.24,
+      "duration": 4.56,
+      "text": "that I run is is secure. It's not, you"
+    },
+    {
+      "start": 496.8,
+      "duration": 3.76,
+      "text": "know, like I know it's not. And I just"
+    },
+    {
+      "start": 498.8,
+      "duration": 3.28,
+      "text": "don't, you know, it's just not high"
+    },
+    {
+      "start": 500.56,
+      "duration": 3.68,
+      "text": "enough value"
+    },
+    {
+      "start": 502.08,
+      "duration": 4.48,
+      "text": ">> for me to like, you know, what are you"
+    },
+    {
+      "start": 504.24,
+      "duration": 3.92,
+      "text": "gonna do? gonna gonna pop me and you're"
+    },
+    {
+      "start": 506.56,
+      "duration": 3.44,
+      "text": "gonna like see the pictures of my"
+    },
+    {
+      "start": 508.16,
+      "duration": 3.999,
+      "text": "daughter, you know, on my desktop. Like,"
+    },
+    {
+      "start": 510.0,
+      "duration": 3.44,
+      "text": "okay. Like, that's weird, you know? But"
+    },
+    {
+      "start": 512.159,
+      "duration": 2.961,
+      "text": "it's like not the end of the world,"
+    },
+    {
+      "start": 513.44,
+      "duration": 2.8,
+      "text": "right? You know, I don't have any"
+    },
+    {
+      "start": 515.12,
+      "duration": 2.479,
+      "text": ">> think you're a bigger target than you're"
+    },
+    {
+      "start": 516.24,
+      "duration": 3.359,
+      "text": "selling, right? You do have access to a"
+    },
+    {
+      "start": 517.599,
+      "duration": 4.641,
+      "text": "lot of vulnerabilities, but but I"
+    },
+    {
+      "start": 519.599,
+      "duration": 5.281,
+      "text": ">> Yeah, I mean, yeah, they'll find my"
+    },
+    {
+      "start": 522.24,
+      "duration": 4.0,
+      "text": "little eye with, you know, I don't know."
+    },
+    {
+      "start": 524.88,
+      "duration": 2.639,
+      "text": "sometimes and and there have been four"
+    },
+    {
+      "start": 526.24,
+      "duration": 4.56,
+      "text": "or five times in my career where I'm"
+    },
+    {
+      "start": 527.519,
+      "duration": 5.201,
+      "text": "like, \"Okay, actually this exploit might"
+    },
+    {
+      "start": 530.8,
+      "duration": 4.0,
+      "text": "put me on the, you know, this is"
+    },
+    {
+      "start": 532.72,
+      "duration": 4.16,
+      "text": "something that people might actually"
+    },
+    {
+      "start": 534.8,
+      "duration": 3.28,
+      "text": "hack me to get access to, you know, if"
+    },
+    {
+      "start": 536.88,
+      "duration": 3.12,
+      "text": "they knew that I had it.\""
+    },
+    {
+      "start": 538.08,
+      "duration": 3.68,
+      "text": ">> Dude, my first rce, if you remember"
+    },
+    {
+      "start": 540.0,
+      "duration": 3.36,
+      "text": "this, it was only $1,000 paid because"
+    },
+    {
+      "start": 541.76,
+      "duration": 3.759,
+      "text": "they had not up their bounties yet, was"
+    },
+    {
+      "start": 543.36,
+      "duration": 3.76,
+      "text": "RC on Alibaba on a Chinese server. And I"
+    },
+    {
+      "start": 545.519,
+      "duration": 3.121,
+      "text": "remember thinking like, man, does this"
+    },
+    {
+      "start": 547.12,
+      "duration": 2.48,
+      "text": "actually increase my risk of going to"
+    },
+    {
+      "start": 548.64,
+      "duration": 3.04,
+      "text": "China?"
+    },
+    {
+      "start": 549.6,
+      "duration": 4.08,
+      "text": ">> Yeah, dude. I don't know. I'm I I don't"
+    },
+    {
+      "start": 551.68,
+      "duration": 5.36,
+      "text": "think I will go to China, dude. I think"
+    },
+    {
+      "start": 553.68,
+      "duration": 5.279,
+      "text": "I think that would I don't know I just"
+    },
+    {
+      "start": 557.04,
+      "duration": 5.12,
+      "text": "let's just put it this way. I have had"
+    },
+    {
+      "start": 558.959,
+      "duration": 5.44,
+      "text": "interactions with governments that I"
+    },
+    {
+      "start": 562.16,
+      "duration": 4.72,
+      "text": "have not wanted to have and I definitely"
+    },
+    {
+      "start": 564.399,
+      "duration": 7.041,
+      "text": "don't want to do that in China like and"
+    },
+    {
+      "start": 566.88,
+      "duration": 6.24,
+      "text": "it's like yeah so don't love that. All"
+    },
+    {
+      "start": 571.44,
+      "duration": 2.48,
+      "text": "right anyway um"
+    },
+    {
+      "start": 573.12,
+      "duration": 3.12,
+      "text": ">> share your bug."
+    },
+    {
+      "start": 573.92,
+      "duration": 6.08,
+      "text": ">> Great great bug dude. I will I will"
+    },
+    {
+      "start": 576.24,
+      "duration": 5.92,
+      "text": "mention my bug now. Um this one wow big"
+    },
+    {
+      "start": 580.0,
+      "duration": 2.88,
+      "text": "surprise is a CSPT"
+    },
+    {
+      "start": 582.16,
+      "duration": 2.799,
+      "text": ">> uh Nice."
+    },
+    {
+      "start": 582.88,
+      "duration": 4.959,
+      "text": ">> But it's a little bit of an interesting"
+    },
+    {
+      "start": 584.959,
+      "duration": 6.56,
+      "text": "um twist on a CSPT because it is a"
+    },
+    {
+      "start": 587.839,
+      "duration": 7.12,
+      "text": "mobile bug and the way that it works is"
+    },
+    {
+      "start": 591.519,
+      "duration": 7.76,
+      "text": "there was a it's kind of like a second"
+    },
+    {
+      "start": 594.959,
+      "duration": 7.281,
+      "text": "order CSPT uh in a mobile app. So what"
+    },
+    {
+      "start": 599.279,
+      "duration": 5.361,
+      "text": "would happen is the attacker would have"
+    },
+    {
+      "start": 602.24,
+      "duration": 6.32,
+      "text": "to use an API key that was embedded in"
+    },
+    {
+      "start": 604.64,
+      "duration": 8.0,
+      "text": "the mobile app to create a custom link"
+    },
+    {
+      "start": 608.56,
+      "duration": 7.279,
+      "text": "on the um victim sites"
+    },
+    {
+      "start": 612.64,
+      "duration": 6.72,
+      "text": "uh what what link shortener service"
+    },
+    {
+      "start": 615.839,
+      "duration": 5.761,
+      "text": ">> and in that short link shortener service"
+    },
+    {
+      "start": 619.36,
+      "duration": 4.88,
+      "text": "you have the ability to supply extra"
+    },
+    {
+      "start": 621.6,
+      "duration": 4.4,
+      "text": "parameters that get sent along with that"
+    },
+    {
+      "start": 624.24,
+      "duration": 4.64,
+      "text": ">> oh that's uh short link"
+    },
+    {
+      "start": 626.0,
+      "duration": 4.64,
+      "text": ">> like get or post also it it's not like"
+    },
+    {
+      "start": 628.88,
+      "duration": 5.44,
+      "text": "parameters like that. It's like like a"
+    },
+    {
+      "start": 630.64,
+      "duration": 7.12,
+      "text": "JSON you know key value"
+    },
+    {
+      "start": 634.32,
+      "duration": 5.92,
+      "text": ">> thing and it just like gives it whenever"
+    },
+    {
+      "start": 637.76,
+      "duration": 4.24,
+      "text": "you it resolves that um link"
+    },
+    {
+      "start": 640.24,
+      "duration": 3.839,
+      "text": ">> and so anyway what would happen is we"
+    },
+    {
+      "start": 642.0,
+      "duration": 3.92,
+      "text": "would create I would create the link"
+    },
+    {
+      "start": 644.079,
+      "duration": 3.841,
+      "text": ">> and it I would include these you know"
+    },
+    {
+      "start": 645.92,
+      "duration": 3.68,
+      "text": "this JSON blob in there that for the"
+    },
+    {
+      "start": 647.92,
+      "duration": 4.72,
+      "text": "parameters for this link"
+    },
+    {
+      "start": 649.6,
+      "duration": 5.2,
+      "text": ">> and then when I opened it in the app"
+    },
+    {
+      "start": 652.64,
+      "duration": 5.68,
+      "text": ">> the app would catch that link because"
+    },
+    {
+      "start": 654.8,
+      "duration": 5.84,
+      "text": "it's it registered that link um and then"
+    },
+    {
+      "start": 658.32,
+      "duration": 4.8,
+      "text": "it would grab those parameters from the"
+    },
+    {
+      "start": 660.64,
+      "duration": 4.24,
+      "text": "service using an API key and then it"
+    },
+    {
+      "start": 663.12,
+      "duration": 3.68,
+      "text": "would invoke"
+    },
+    {
+      "start": 664.88,
+      "duration": 4.399,
+      "text": "any array of actions. I think there was"
+    },
+    {
+      "start": 666.8,
+      "duration": 3.68,
+      "text": "like 27 actions that the app app would"
+    },
+    {
+      "start": 669.279,
+      "duration": 3.441,
+      "text": "take"
+    },
+    {
+      "start": 670.48,
+      "duration": 6.0,
+      "text": ">> uh from those parameters that were"
+    },
+    {
+      "start": 672.72,
+      "duration": 6.48,
+      "text": "passed in by the um the the link"
+    },
+    {
+      "start": 676.48,
+      "duration": 6.08,
+      "text": "shortening service and one of those of"
+    },
+    {
+      "start": 679.2,
+      "duration": 5.759,
+      "text": "course would um trigger a post request"
+    },
+    {
+      "start": 682.56,
+      "duration": 4.24,
+      "text": "where the attacker's parameter that was"
+    },
+    {
+      "start": 684.959,
+      "duration": 3.761,
+      "text": "supplied via the the link shortener"
+    },
+    {
+      "start": 686.8,
+      "duration": 4.08,
+      "text": "service would be embedded into the path."
+    },
+    {
+      "start": 688.72,
+      "duration": 4.4,
+      "text": "So then I could do, you know, truncation"
+    },
+    {
+      "start": 690.88,
+      "duration": 4.56,
+      "text": "with the hashtag, path traversal with"
+    },
+    {
+      "start": 693.12,
+      "duration": 7.52,
+      "text": "the dot dot slash, and that would result"
+    },
+    {
+      "start": 695.44,
+      "duration": 6.72,
+      "text": "in an arbitrary post um uh verb request"
+    },
+    {
+      "start": 700.64,
+      "duration": 3.199,
+      "text": "um being sent to anywhere on the API"
+    },
+    {
+      "start": 702.16,
+      "duration": 4.0,
+      "text": "with the victim's API key."
+    },
+    {
+      "start": 703.839,
+      "duration": 4.721,
+      "text": ">> Could you control the body or no?"
+    },
+    {
+      "start": 706.16,
+      "duration": 4.239,
+      "text": ">> Could not control the body. Um what you"
+    },
+    {
+      "start": 708.56,
+      "duration": 4.48,
+      "text": "could do however is control the query"
+    },
+    {
+      "start": 710.399,
+      "duration": 4.321,
+      "text": "parameters which get injected you know"
+    },
+    {
+      "start": 713.04,
+      "duration": 3.359,
+      "text": "like depending on what is processing it"
+    },
+    {
+      "start": 714.72,
+      "duration": 4.64,
+      "text": "on the back end those sometimes get"
+    },
+    {
+      "start": 716.399,
+      "duration": 4.801,
+      "text": "perceived as the the body as well. So,"
+    },
+    {
+      "start": 719.36,
+      "duration": 7.36,
+      "text": "um, I was able to hit a couple good"
+    },
+    {
+      "start": 721.2,
+      "duration": 8.0,
+      "text": "ones, um, that have some effect, uh, one"
+    },
+    {
+      "start": 726.72,
+      "duration": 4.96,
+      "text": "that incurred financial loss, one that,"
+    },
+    {
+      "start": 729.2,
+      "duration": 4.56,
+      "text": "uh, made a change to the account, uh,"
+    },
+    {
+      "start": 731.68,
+      "duration": 3.76,
+      "text": "and one that I wasn't able to fully"
+    },
+    {
+      "start": 733.76,
+      "duration": 3.84,
+      "text": "confirm, but got confirmation from the"
+    },
+    {
+      "start": 735.44,
+      "duration": 4.639,
+      "text": "team that it it seems vulnerable to be"
+    },
+    {
+      "start": 737.6,
+      "duration": 4.08,
+      "text": "able to uh, confirm somebody who"
+    },
+    {
+      "start": 740.079,
+      "duration": 3.281,
+      "text": "requested access to a restricted"
+    },
+    {
+      "start": 741.68,
+      "duration": 3.68,
+      "text": "resource. So, then I could request"
+    },
+    {
+      "start": 743.36,
+      "duration": 2.479,
+      "text": "access, send the link, autoconfirm"
+    },
+    {
+      "start": 745.36,
+      "duration": 2.4,
+      "text": "myself."
+    },
+    {
+      "start": 745.839,
+      "duration": 3.921,
+      "text": ">> Oh, nice. Um,"
+    },
+    {
+      "start": 747.76,
+      "duration": 4.16,
+      "text": ">> so that was a pretty fun one. I just"
+    },
+    {
+      "start": 749.76,
+      "duration": 6.0,
+      "text": "think that I had mentioned this before"
+    },
+    {
+      "start": 751.92,
+      "duration": 5.84,
+      "text": "because I found a CSPT on a um on a"
+    },
+    {
+      "start": 755.76,
+      "duration": 3.759,
+      "text": "desktop client the other day, but I just"
+    },
+    {
+      "start": 757.76,
+      "duration": 2.079,
+      "text": "think CSPTs are everywhere."
+    },
+    {
+      "start": 759.519,
+      "duration": 1.521,
+      "text": ">> Yeah,"
+    },
+    {
+      "start": 759.839,
+      "duration": 2.56,
+      "text": ">> they're in desktop clients, they're in"
+    },
+    {
+      "start": 761.04,
+      "duration": 2.96,
+      "text": "mobile apps, they're in web apps,"
+    },
+    {
+      "start": 762.399,
+      "duration": 2.801,
+      "text": "they're everywhere. So,"
+    },
+    {
+      "start": 764.0,
+      "duration": 2.959,
+      "text": ">> everyone I've ever found though, I've"
+    },
+    {
+      "start": 765.2,
+      "duration": 3.04,
+      "text": "struggled to get impact on. Like, I just"
+    },
+    {
+      "start": 766.959,
+      "duration": 2.641,
+      "text": "feel like that it's just like a get"
+    },
+    {
+      "start": 768.24,
+      "duration": 2.64,
+      "text": "request and then it's not that"
+    },
+    {
+      "start": 769.6,
+      "duration": 3.6,
+      "text": "interesting, you know?"
+    },
+    {
+      "start": 770.88,
+      "duration": 4.079,
+      "text": ">> I'm not gonna lie. I spent a lot of time"
+    },
+    {
+      "start": 773.2,
+      "duration": 4.56,
+      "text": "trying to get impact for this and I did"
+    },
+    {
+      "start": 774.959,
+      "duration": 3.841,
+      "text": "you know but um AI definitely helps with"
+    },
+    {
+      "start": 777.76,
+      "duration": 4.24,
+      "text": "that"
+    },
+    {
+      "start": 778.8,
+      "duration": 5.599,
+      "text": ">> uh you got to know some tricks you know"
+    },
+    {
+      "start": 782.0,
+      "duration": 4.16,
+      "text": "getting getting the parameters to the"
+    },
+    {
+      "start": 784.399,
+      "duration": 3.841,
+      "text": "request in"
+    },
+    {
+      "start": 786.16,
+      "duration": 3.919,
+      "text": ">> uh via the query parameters one if that"
+    },
+    {
+      "start": 788.24,
+      "duration": 3.92,
+      "text": "gadget doesn't work it is more painful"
+    },
+    {
+      "start": 790.079,
+      "duration": 4.481,
+      "text": "then you go for like a nobody request"
+    },
+    {
+      "start": 792.16,
+      "duration": 3.919,
+      "text": "right a request that has no body at all"
+    },
+    {
+      "start": 794.56,
+      "duration": 2.88,
+      "text": ">> um and then you see if it ignores your"
+    },
+    {
+      "start": 796.079,
+      "duration": 4.56,
+      "text": "parameters that are automatically being"
+    },
+    {
+      "start": 797.44,
+      "duration": 5.36,
+      "text": "sent in from the forged request and then"
+    },
+    {
+      "start": 800.639,
+      "duration": 5.921,
+      "text": "uh worst case scenario, you look for"
+    },
+    {
+      "start": 802.8,
+      "duration": 7.039,
+      "text": "something that uh will"
+    },
+    {
+      "start": 806.56,
+      "duration": 8.399,
+      "text": "accept similar set of parameters or and"
+    },
+    {
+      "start": 809.839,
+      "duration": 6.961,
+      "text": "or return a sort of a a masked version"
+    },
+    {
+      "start": 814.959,
+      "duration": 2.961,
+      "text": "of what the typical response is"
+    },
+    {
+      "start": 816.8,
+      "duration": 2.8,
+      "text": "expecting"
+    },
+    {
+      "start": 817.92,
+      "duration": 3.28,
+      "text": ">> and then but you have more control. So"
+    },
+    {
+      "start": 819.6,
+      "duration": 3.84,
+      "text": "sometimes they'll be looking for like ID"
+    },
+    {
+      "start": 821.2,
+      "duration": 3.6,
+      "text": "or they'll be looking for like uh a"
+    },
+    {
+      "start": 823.44,
+      "duration": 3.199,
+      "text": "specific"
+    },
+    {
+      "start": 824.8,
+      "duration": 4.159,
+      "text": ">> um"
+    },
+    {
+      "start": 826.639,
+      "duration": 5.361,
+      "text": "uh JSON key or whatever and you have"
+    },
+    {
+      "start": 828.959,
+      "duration": 5.361,
+      "text": "like a partial JSON injection on a"
+    },
+    {
+      "start": 832.0,
+      "duration": 3.76,
+      "text": "different endpoint where you can chain"
+    },
+    {
+      "start": 834.32,
+      "duration": 3.44,
+      "text": "that together to like make everything"
+    },
+    {
+      "start": 835.76,
+      "duration": 4.56,
+      "text": "work. So it is it is a little bit of a"
+    },
+    {
+      "start": 837.76,
+      "duration": 4.56,
+      "text": "chainy uh bug type for sure uh that"
+    },
+    {
+      "start": 840.32,
+      "duration": 4.8,
+      "text": "requires some deep deep digging to get"
+    },
+    {
+      "start": 842.32,
+      "duration": 4.56,
+      "text": "full impact. But between between those"
+    },
+    {
+      "start": 845.12,
+      "duration": 5.839,
+      "text": "techniques, an open redirect and an"
+    },
+    {
+      "start": 846.88,
+      "duration": 5.84,
+      "text": "arbitrary JSON hosting um gadget, most"
+    },
+    {
+      "start": 850.959,
+      "duration": 3.041,
+      "text": "times some impact falls out."
+    },
+    {
+      "start": 852.72,
+      "duration": 2.799,
+      "text": ">> Okay, nice. Yeah, that's good to know."
+    },
+    {
+      "start": 854.0,
+      "duration": 2.88,
+      "text": "Look for those other little gadgets."
+    },
+    {
+      "start": 855.519,
+      "duration": 2.721,
+      "text": ">> I'm going to bake this into a skill."
+    },
+    {
+      "start": 856.88,
+      "duration": 3.68,
+      "text": "Look for these three things."
+    },
+    {
+      "start": 858.24,
+      "duration": 4.24,
+      "text": ">> Yeah. Yeah, that's good. Um, sweet,"
+    },
+    {
+      "start": 860.56,
+      "duration": 3.6,
+      "text": "dude. Uh, let me see if there's Oh,"
+    },
+    {
+      "start": 862.48,
+      "duration": 3.039,
+      "text": "okay. I actually pulled out the other I"
+    },
+    {
+      "start": 864.16,
+      "duration": 2.4,
+      "text": "had another little thing I was going to"
+    },
+    {
+      "start": 865.519,
+      "duration": 2.801,
+      "text": "talk about, but I think I'll actually"
+    },
+    {
+      "start": 866.56,
+      "duration": 3.519,
+      "text": "talk about that in a future episode. So,"
+    },
+    {
+      "start": 868.32,
+      "duration": 3.44,
+      "text": ">> okay. Sweet. So, I had a question about"
+    },
+    {
+      "start": 870.079,
+      "duration": 3.12,
+      "text": "this one. The the finding is not that"
+    },
+    {
+      "start": 871.76,
+      "duration": 3.28,
+      "text": "interesting. like it's just a direct"
+    },
+    {
+      "start": 873.199,
+      "duration": 4.401,
+      "text": "phone, like it's just a key, a key found"
+    },
+    {
+      "start": 875.04,
+      "duration": 4.239,
+      "text": "in a JS file. But I was I'm curious if"
+    },
+    {
+      "start": 877.6,
+      "duration": 4.56,
+      "text": "you've ever ran across like a social"
+    },
+    {
+      "start": 879.279,
+      "duration": 5.441,
+      "text": "media admin API key that like allows you"
+    },
+    {
+      "start": 882.16,
+      "duration": 5.52,
+      "text": "to have like full admin access to like a"
+    },
+    {
+      "start": 884.72,
+      "duration": 4.08,
+      "text": "Facebook group or like a social media"
+    },
+    {
+      "start": 887.68,
+      "duration": 1.68,
+      "text": "account or anything like that. Have you"
+    },
+    {
+      "start": 888.8,
+      "duration": 2.32,
+      "text": "ever found this?"
+    },
+    {
+      "start": 889.36,
+      "duration": 3.36,
+      "text": ">> No, I haven't. I haven't found that."
+    },
+    {
+      "start": 891.12,
+      "duration": 3.04,
+      "text": ">> Yeah. So, this this that's what I found."
+    },
+    {
+      "start": 892.72,
+      "duration": 3.359,
+      "text": "And I was just curious how you rate that"
+    },
+    {
+      "start": 894.16,
+      "duration": 5.119,
+      "text": "severity because to me it feels like"
+    },
+    {
+      "start": 896.079,
+      "duration": 5.841,
+      "text": "there is both um integrity and"
+    },
+    {
+      "start": 899.279,
+      "duration": 4.24,
+      "text": "confidentiality impact. Like if if the"
+    },
+    {
+      "start": 901.92,
+      "duration": 3.44,
+      "text": "social media platform allows you to have"
+    },
+    {
+      "start": 903.519,
+      "duration": 2.801,
+      "text": "like I don't know private messages or"
+    },
+    {
+      "start": 905.36,
+      "duration": 3.76,
+      "text": "stuff like that then there's kind of"
+    },
+    {
+      "start": 906.32,
+      "duration": 4.72,
+      "text": "like a confidentiality impact. And then"
+    },
+    {
+      "start": 909.12,
+      "duration": 3.6,
+      "text": "if there if you can like delete which"
+    },
+    {
+      "start": 911.04,
+      "duration": 3.44,
+      "text": "you almost always can with these keys"
+    },
+    {
+      "start": 912.72,
+      "duration": 3.44,
+      "text": "basically delete users comments or post"
+    },
+    {
+      "start": 914.48,
+      "duration": 4.159,
+      "text": "on like that Facebook group or on that"
+    },
+    {
+      "start": 916.16,
+      "duration": 4.799,
+      "text": "like social media group then it feels"
+    },
+    {
+      "start": 918.639,
+      "duration": 3.76,
+      "text": "like there's both confidentiality and"
+    },
+    {
+      "start": 920.959,
+      "duration": 2.801,
+      "text": "integrity. So, I feel I mean I"
+    },
+    {
+      "start": 922.399,
+      "duration": 3.68,
+      "text": "definitely am very passionate. It's a"
+    },
+    {
+      "start": 923.76,
+      "duration": 3.6,
+      "text": "critical, but um anyways, I was curious"
+    },
+    {
+      "start": 926.079,
+      "duration": 2.0,
+      "text": "about your thoughts on the severity for"
+    },
+    {
+      "start": 927.36,
+      "duration": 3.919,
+      "text": "that."
+    },
+    {
+      "start": 928.079,
+      "duration": 6.081,
+      "text": ">> Yeah. Um Jeez, dude. I mean, are they"
+    },
+    {
+      "start": 931.279,
+      "duration": 5.041,
+      "text": "actively using it? Like, have they"
+    },
+    {
+      "start": 934.16,
+      "duration": 3.52,
+      "text": "posted on it recently?"
+    },
+    {
+      "start": 936.32,
+      "duration": 2.8,
+      "text": ">> I need to go check that. But it"
+    },
+    {
+      "start": 937.68,
+      "duration": 2.399,
+      "text": "definitely has like millions of"
+    },
+    {
+      "start": 939.12,
+      "duration": 4.64,
+      "text": "followers."
+    },
+    {
+      "start": 940.079,
+      "duration": 4.081,
+      "text": ">> Oh, what what then? Absolutely. Like, if"
+    },
+    {
+      "start": 943.76,
+      "duration": 2.48,
+      "text": "it does,"
+    },
+    {
+      "start": 944.16,
+      "duration": 5.2,
+      "text": ">> it's a major brand. Like it's like a you"
+    },
+    {
+      "start": 946.24,
+      "duration": 6.159,
+      "text": "know, a Fortune 100 brand. Yeah."
+    },
+    {
+      "start": 949.36,
+      "duration": 4.479,
+      "text": ">> What? It's a Fortune 100 brand. Yeah,"
+    },
+    {
+      "start": 952.399,
+      "duration": 2.8,
+      "text": "that I mean that's like a I feel like"
+    },
+    {
+      "start": 953.839,
+      "duration": 1.68,
+      "text": "that's a mega crit, dude."
+    },
+    {
+      "start": 955.199,
+      "duration": 2.08,
+      "text": ">> Okay."
+    },
+    {
+      "start": 955.519,
+      "duration": 3.521,
+      "text": ">> Like if you are able"
+    },
+    {
+      "start": 957.279,
+      "duration": 4.56,
+      "text": ">> if you are able to take over the social"
+    },
+    {
+      "start": 959.04,
+      "duration": 4.32,
+      "text": "media account of it that has a I mean"
+    },
+    {
+      "start": 961.839,
+      "duration": 3.761,
+      "text": "dude I mean just think about the impact"
+    },
+    {
+      "start": 963.36,
+      "duration": 2.719,
+      "text": "of tweeting out like a crypto scam."
+    },
+    {
+      "start": 965.6,
+      "duration": 2.56,
+      "text": ">> Yeah."
+    },
+    {
+      "start": 966.079,
+      "duration": 3.68,
+      "text": ">> Like like you would you would walk away"
+    },
+    {
+      "start": 968.16,
+      "duration": 3.2,
+      "text": "with millions of dollars if you just"
+    },
+    {
+      "start": 969.759,
+      "duration": 2.241,
+      "text": "tweeted out a crypto scam from that."
+    },
+    {
+      "start": 971.36,
+      "duration": 1.76,
+      "text": "Dude."
+    },
+    {
+      "start": 972.0,
+      "duration": 2.32,
+      "text": ">> Yeah. I think this is one of those"
+    },
+    {
+      "start": 973.12,
+      "duration": 2.0,
+      "text": "situations where like two years ago I'd"
+    },
+    {
+      "start": 974.32,
+      "duration": 1.92,
+      "text": "have been like, \"Oh yeah, it's"
+    },
+    {
+      "start": 975.12,
+      "duration": 2.88,
+      "text": "definitely a crit.\" But today it just"
+    },
+    {
+      "start": 976.24,
+      "duration": 4.399,
+      "text": "feels like programs are so stingy and"
+    },
+    {
+      "start": 978.0,
+      "duration": 4.48,
+      "text": "argumentative. It feels hard, you know,"
+    },
+    {
+      "start": 980.639,
+      "duration": 3.841,
+      "text": "to like just to know for sure like,"
+    },
+    {
+      "start": 982.48,
+      "duration": 2.32,
+      "text": "yeah, this actually is a critical."
+    },
+    {
+      "start": 984.48,
+      "duration": 2.08,
+      "text": ">> So,"
+    },
+    {
+      "start": 984.8,
+      "duration": 4.32,
+      "text": ">> yeah, I mean, like people pay a ton of"
+    },
+    {
+      "start": 986.56,
+      "duration": 4.48,
+      "text": "money to to get like a, you know, a post"
+    },
+    {
+      "start": 989.12,
+      "duration": 4.159,
+      "text": "on like a million dollar or million"
+    },
+    {
+      "start": 991.04,
+      "duration": 3.84,
+      "text": "follower plus they so totally. And then"
+    },
+    {
+      "start": 993.279,
+      "duration": 3.041,
+      "text": "especially, I mean, if it's their main"
+    },
+    {
+      "start": 994.88,
+      "duration": 4.48,
+      "text": "social media account and if you have"
+    },
+    {
+      "start": 996.32,
+      "duration": 4.48,
+      "text": "access to like reading DMs and Yeah,"
+    },
+    {
+      "start": 999.36,
+      "duration": 3.52,
+      "text": ">> it is a it is a country specific"
+    },
+    {
+      "start": 1000.8,
+      "duration": 3.76,
+      "text": "account, but it but it's like a major"
+    },
+    {
+      "start": 1002.88,
+      "duration": 3.12,
+      "text": "like it's a major first world country"
+    },
+    {
+      "start": 1004.56,
+      "duration": 2.959,
+      "text": "where they like I said, it has millions"
+    },
+    {
+      "start": 1006.0,
+      "duration": 2.079,
+      "text": "of followers on on the on the page."
+    },
+    {
+      "start": 1007.519,
+      "duration": 2.56,
+      "text": "though."
+    },
+    {
+      "start": 1008.079,
+      "duration": 4.161,
+      "text": ">> Dude, mega crit. Nice work, dude. Give"
+    },
+    {
+      "start": 1010.079,
+      "duration": 5.041,
+      "text": "me some. You are just Give me some,"
+    },
+    {
+      "start": 1012.24,
+      "duration": 6.56,
+      "text": "dude. You are printing, man. Guys, I I"
+    },
+    {
+      "start": 1015.12,
+      "duration": 5.44,
+      "text": "have been blown away by how much reso"
+    },
+    {
+      "start": 1018.8,
+      "duration": 4.0,
+      "text": "like, dude, you your Q right now is"
+    },
+    {
+      "start": 1020.56,
+      "duration": 4.8,
+      "text": "insane. You your earnings for this year"
+    },
+    {
+      "start": 1022.8,
+      "duration": 4.56,
+      "text": "phenomenal. And your Q is even better"
+    },
+    {
+      "start": 1025.36,
+      "duration": 2.959,
+      "text": "than the ear. You know, it's like, oh my"
+    },
+    {
+      "start": 1027.36,
+      "duration": 2.0,
+      "text": "gosh."
+    },
+    {
+      "start": 1028.319,
+      "duration": 2.24,
+      "text": ">> I appreciate that. Yeah, that's what I"
+    },
+    {
+      "start": 1029.36,
+      "duration": 2.959,
+      "text": "keep telling JD. We just got to keep the"
+    },
+    {
+      "start": 1030.559,
+      "duration": 3.041,
+      "text": "hopper full, you know, with our hack. We"
+    },
+    {
+      "start": 1032.319,
+      "duration": 4.401,
+      "text": "got to keep the hopper full of bugs."
+    },
+    {
+      "start": 1033.6,
+      "duration": 7.04,
+      "text": ">> Yeah. Yeah, you do. Um I I'll jump to"
+    },
+    {
+      "start": 1036.72,
+      "duration": 5.68,
+      "text": "something similar to that then. Uh I"
+    },
+    {
+      "start": 1040.64,
+      "duration": 4.0,
+      "text": "after learning from your success have"
+    },
+    {
+      "start": 1042.4,
+      "duration": 4.08,
+      "text": "spun up my own hackbot. It is found its"
+    },
+    {
+      "start": 1044.64,
+      "duration": 4.72,
+      "text": "first bug this week. I was very pleased"
+    },
+    {
+      "start": 1046.48,
+      "duration": 4.72,
+      "text": "and it's 12th bug but you know the the"
+    },
+    {
+      "start": 1049.36,
+      "duration": 6.88,
+      "text": "first one was special of course."
+    },
+    {
+      "start": 1051.2,
+      "duration": 6.96,
+      "text": ">> Um and yeah it's going great. Uh, and I"
+    },
+    {
+      "start": 1056.24,
+      "duration": 3.36,
+      "text": "had a couple tips that I was going to"
+    },
+    {
+      "start": 1058.16,
+      "duration": 3.68,
+      "text": "throw out to the to the people,"
+    },
+    {
+      "start": 1059.6,
+      "duration": 5.6,
+      "text": "especially in light of the recent"
+    },
+    {
+      "start": 1061.84,
+      "duration": 5.68,
+      "text": "announcement from uh, Anthropic saying"
+    },
+    {
+      "start": 1065.2,
+      "duration": 5.92,
+      "text": "that they're going to start charging for"
+    },
+    {
+      "start": 1067.52,
+      "duration": 6.8,
+      "text": "programmatic use of cloud code um, which"
+    },
+    {
+      "start": 1071.12,
+      "duration": 4.48,
+      "text": "erases access to cla or-print."
+    },
+    {
+      "start": 1074.32,
+      "duration": 2.8,
+      "text": ">> Well, let let me let me clarify this"
+    },
+    {
+      "start": 1075.6,
+      "duration": 3.36,
+      "text": "because it was very confusing. They had"
+    },
+    {
+      "start": 1077.12,
+      "duration": 3.919,
+      "text": "this very confusing tweet."
+    },
+    {
+      "start": 1078.96,
+      "duration": 3.839,
+      "text": ">> Basically, they're selling this as, oh,"
+    },
+    {
+      "start": 1081.039,
+      "duration": 3.201,
+      "text": "this is an upgrade. If you're on the"
+    },
+    {
+      "start": 1082.799,
+      "duration": 4.641,
+      "text": "$200 a month plan, you now have a"
+    },
+    {
+      "start": 1084.24,
+      "duration": 5.04,
+      "text": "separate extra $200 worth of API credits"
+    },
+    {
+      "start": 1087.44,
+      "duration": 4.72,
+      "text": "that you can use for programmatic access"
+    },
+    {
+      "start": 1089.28,
+      "duration": 4.72,
+      "text": "for the agent SDK or for the -p"
+    },
+    {
+      "start": 1092.16,
+      "duration": 3.519,
+      "text": "non-interactive mode. And that's just"
+    },
+    {
+      "start": 1094.0,
+      "duration": 3.919,
+      "text": "extra Justin. That's just an extra $200"
+    },
+    {
+      "start": 1095.679,
+      "duration": 4.641,
+      "text": "just for you, man. But what they didn't"
+    },
+    {
+      "start": 1097.919,
+      "duration": 4.161,
+      "text": "say, which really sucks, is that now you"
+    },
+    {
+      "start": 1100.32,
+      "duration": 4.239,
+      "text": "can't use your normal token bucket,"
+    },
+    {
+      "start": 1102.08,
+      "duration": 4.08,
+      "text": "which is like, you know, the like $4,000"
+    },
+    {
+      "start": 1104.559,
+      "duration": 3.761,
+      "text": "per month crazy amount of subsidized"
+    },
+    {
+      "start": 1106.16,
+      "duration": 3.68,
+      "text": "tokens that you get uh that you would"
+    },
+    {
+      "start": 1108.32,
+      "duration": 3.28,
+      "text": "normally use. And so yeah, that"
+    },
+    {
+      "start": 1109.84,
+      "duration": 4.4,
+      "text": "massively impacted me because both like"
+    },
+    {
+      "start": 1111.6,
+      "duration": 4.48,
+      "text": "mine and JD's hackbot and also just the"
+    },
+    {
+      "start": 1114.24,
+      "duration": 3.84,
+      "text": "Discord control that I use to like"
+    },
+    {
+      "start": 1116.08,
+      "duration": 4.08,
+      "text": "interact with Claude on my VPS both use"
+    },
+    {
+      "start": 1118.08,
+      "duration": 3.52,
+      "text": "the -p uh parameter."
+    },
+    {
+      "start": 1120.16,
+      "duration": 3.12,
+      "text": ">> Yeah, that's really disappointing to"
+    },
+    {
+      "start": 1121.6,
+      "duration": 4.24,
+      "text": "see. And I tweeted out about it and I"
+    },
+    {
+      "start": 1123.28,
+      "duration": 5.519,
+      "text": "was like, \"Guys, this sucks because this"
+    },
+    {
+      "start": 1125.84,
+      "duration": 4.32,
+      "text": "is just very easily bypassable.\" And I"
+    },
+    {
+      "start": 1128.799,
+      "duration": 3.521,
+      "text": "think Johan"
+    },
+    {
+      "start": 1130.16,
+      "duration": 3.6,
+      "text": ">> came in and said, \"Yeah, but you know,"
+    },
+    {
+      "start": 1132.32,
+      "duration": 3.76,
+      "text": "essentially they're just adding friction"
+    },
+    {
+      "start": 1133.76,
+      "duration": 4.0,
+      "text": "to stop the bleeding, you know, and I I"
+    },
+    {
+      "start": 1136.08,
+      "duration": 3.599,
+      "text": "I get that. That makes sense. But"
+    },
+    {
+      "start": 1137.76,
+      "duration": 3.44,
+      "text": "anyway, you guys that are listeners of"
+    },
+    {
+      "start": 1139.679,
+      "duration": 3.36,
+      "text": "the podcast, we know that you're smart"
+    },
+    {
+      "start": 1141.2,
+      "duration": 4.0,
+      "text": "enough and you're going to get a"
+    },
+    {
+      "start": 1143.039,
+      "duration": 4.721,
+      "text": "workaround. Uh, which was actually very"
+    },
+    {
+      "start": 1145.2,
+      "duration": 4.479,
+      "text": "conveniently timed because I when"
+    },
+    {
+      "start": 1147.76,
+      "duration": 4.56,
+      "text": "building my own hackbot was consulting"
+    },
+    {
+      "start": 1149.679,
+      "duration": 5.36,
+      "text": "with reszo and they are using d-print"
+    },
+    {
+      "start": 1152.32,
+      "duration": 4.32,
+      "text": "and I was like uh I would like to use"
+    },
+    {
+      "start": 1155.039,
+      "duration": 2.961,
+      "text": "the-rc"
+    },
+    {
+      "start": 1156.64,
+      "duration": 5.279,
+      "text": "feature of cloud code to be able to"
+    },
+    {
+      "start": 1158.0,
+      "duration": 6.0,
+      "text": "connect it back to my um like remote"
+    },
+    {
+      "start": 1161.919,
+      "duration": 4.321,
+      "text": "control for in the cloud app on my"
+    },
+    {
+      "start": 1164.0,
+      "duration": 5.6,
+      "text": "mobile device. Um, and you can't do that"
+    },
+    {
+      "start": 1166.24,
+      "duration": 7.12,
+      "text": "with -print. So, um, I actually built a"
+    },
+    {
+      "start": 1169.6,
+      "duration": 5.6,
+      "text": "harness that uses a pseudo terminal and"
+    },
+    {
+      "start": 1173.36,
+      "duration": 6.16,
+      "text": "just writes messages straight into the"
+    },
+    {
+      "start": 1175.2,
+      "duration": 5.839,
+      "text": "the TUI that Claude has. Um, and it it's"
+    },
+    {
+      "start": 1179.52,
+      "duration": 4.159,
+      "text": "worked great. I haven't had any issues"
+    },
+    {
+      "start": 1181.039,
+      "duration": 4.081,
+      "text": "with it. I'm able to get um, d-rc"
+    },
+    {
+      "start": 1183.679,
+      "duration": 4.801,
+      "text": "working, so I can easily control it from"
+    },
+    {
+      "start": 1185.12,
+      "duration": 5.76,
+      "text": "my my phone. Um, and you get all the"
+    },
+    {
+      "start": 1188.48,
+      "duration": 4.96,
+      "text": "benefits of the normal clawed uh, UI in"
+    },
+    {
+      "start": 1190.88,
+      "duration": 5.2,
+      "text": "the app. Um, so that's an easy"
+    },
+    {
+      "start": 1193.44,
+      "duration": 3.84,
+      "text": "workaround. I mean, just I'm sure you"
+    },
+    {
+      "start": 1196.08,
+      "duration": 3.12,
+      "text": "guys would have figured that out"
+    },
+    {
+      "start": 1197.28,
+      "duration": 3.68,
+      "text": "already, but uh it's just annoying that"
+    },
+    {
+      "start": 1199.2,
+      "duration": 3.599,
+      "text": "they're making us refactor a little bit."
+    },
+    {
+      "start": 1200.96,
+      "duration": 4.959,
+      "text": ">> Yeah, I think there's like a bunch of"
+    },
+    {
+      "start": 1202.799,
+      "duration": 4.641,
+      "text": "different ways to get around the input"
+    },
+    {
+      "start": 1205.919,
+      "duration": 3.521,
+      "text": "in an interactive session."
+    },
+    {
+      "start": 1207.44,
+      "duration": 3.52,
+      "text": ">> And then there's also probably some ways"
+    },
+    {
+      "start": 1209.44,
+      "duration": 2.8,
+      "text": "to get around it from an API level. I"
+    },
+    {
+      "start": 1210.96,
+      "duration": 3.599,
+      "text": "think we're in a group chat with with"
+    },
+    {
+      "start": 1212.24,
+      "duration": 3.6,
+      "text": "with Corbin and and Douglas and Corbin"
+    },
+    {
+      "start": 1214.559,
+      "duration": 2.561,
+      "text": "was like very quickly like I wonder how"
+    },
+    {
+      "start": 1215.84,
+      "duration": 2.16,
+      "text": "they're doing this on the API side of"
+    },
+    {
+      "start": 1217.12,
+      "duration": 2.559,
+      "text": "things because there's probably just a"
+    },
+    {
+      "start": 1218.0,
+      "duration": 3.28,
+      "text": "parameter that's like interactive false"
+    },
+    {
+      "start": 1219.679,
+      "duration": 3.36,
+      "text": "or interactive true because it just"
+    },
+    {
+      "start": 1221.28,
+      "duration": 4.399,
+      "text": "still goes to the same model on the back"
+    },
+    {
+      "start": 1223.039,
+      "duration": 4.321,
+      "text": "end. It's like that's like a little gray"
+    },
+    {
+      "start": 1225.679,
+      "duration": 2.961,
+      "text": "hat though in my opinion. Like"
+    },
+    {
+      "start": 1227.36,
+      "duration": 2.0,
+      "text": ">> Oh, if you're like intercepting it and"
+    },
+    {
+      "start": 1228.64,
+      "duration": 2.399,
+      "text": "swapping that."
+    },
+    {
+      "start": 1229.36,
+      "duration": 3.52,
+      "text": ">> Yeah. Like that's where it kind of"
+    },
+    {
+      "start": 1231.039,
+      "duration": 2.481,
+      "text": "crosses the line like like in my"
+    },
+    {
+      "start": 1232.88,
+      "duration": 1.36,
+      "text": "opinion. Like"
+    },
+    {
+      "start": 1233.52,
+      "duration": 3.84,
+      "text": ">> Yeah. Yeah. Sure."
+    },
+    {
+      "start": 1234.24,
+      "duration": 5.84,
+      "text": ">> They they they don't control what in in"
+    },
+    {
+      "start": 1237.36,
+      "duration": 4.0,
+      "text": "my opinion and maybe there's some legal"
+    },
+    {
+      "start": 1240.08,
+      "duration": 3.28,
+      "text": "things that's different different than"
+    },
+    {
+      "start": 1241.36,
+      "duration": 5.12,
+      "text": "this, but in my opinion, you know, I'm"
+    },
+    {
+      "start": 1243.36,
+      "duration": 5.199,
+      "text": "still using their app just like a normal"
+    },
+    {
+      "start": 1246.48,
+      "duration": 3.92,
+      "text": "user would by the by the TUI. Right."
+    },
+    {
+      "start": 1248.559,
+      "duration": 3.201,
+      "text": ">> Right. you know, so it's like, okay,"
+    },
+    {
+      "start": 1250.4,
+      "duration": 4.08,
+      "text": "they don't really control what what"
+    },
+    {
+      "start": 1251.76,
+      "duration": 3.44,
+      "text": "terminal interface I use, so it doesn't"
+    },
+    {
+      "start": 1254.48,
+      "duration": 2.64,
+      "text": "matter."
+    },
+    {
+      "start": 1255.2,
+      "duration": 3.359,
+      "text": ">> Well, and I think the main reason"
+    },
+    {
+      "start": 1257.12,
+      "duration": 3.76,
+      "text": "they're rolling this out, Justin, is"
+    },
+    {
+      "start": 1258.559,
+      "duration": 4.961,
+      "text": "because I guarantee you there are tons"
+    },
+    {
+      "start": 1260.88,
+      "duration": 5.2,
+      "text": "of scrappy startups that are not allowed"
+    },
+    {
+      "start": 1263.52,
+      "duration": 4.88,
+      "text": "to based on the terms of service use"
+    },
+    {
+      "start": 1266.08,
+      "duration": 3.92,
+      "text": "these subsidized tokens for like real"
+    },
+    {
+      "start": 1268.4,
+      "duration": 3.44,
+      "text": "customers in the world. Yeah."
+    },
+    {
+      "start": 1270.0,
+      "duration": 3.12,
+      "text": ">> And like, and honestly, this is actually"
+    },
+    {
+      "start": 1271.84,
+      "duration": 2.319,
+      "text": "one reason why I love being a bug bounty"
+    },
+    {
+      "start": 1273.12,
+      "duration": 3.28,
+      "text": "hunter. back to what you were saying"
+    },
+    {
+      "start": 1274.159,
+      "duration": 3.681,
+      "text": "before. It's like when we're using these"
+    },
+    {
+      "start": 1276.4,
+      "duration": 3.44,
+      "text": "hack bots, like we're using them for"
+    },
+    {
+      "start": 1277.84,
+      "duration": 3.68,
+      "text": "personal use for like literally hacking"
+    },
+    {
+      "start": 1279.84,
+      "duration": 4.079,
+      "text": "it. We're not getting we're not like a"
+    },
+    {
+      "start": 1281.52,
+      "duration": 3.76,
+      "text": "company who's doing a pin test cuz I'm"
+    },
+    {
+      "start": 1283.919,
+      "duration": 2.721,
+      "text": "sure there actually are a lot of people"
+    },
+    {
+      "start": 1285.28,
+      "duration": 2.879,
+      "text": "also doing that. That's against terms of"
+    },
+    {
+      "start": 1286.64,
+      "duration": 4.159,
+      "text": "service. If you are basically a business"
+    },
+    {
+      "start": 1288.159,
+      "duration": 4.321,
+      "text": "providing services to a customer via"
+    },
+    {
+      "start": 1290.799,
+      "duration": 3.12,
+      "text": "cloud code, you are supposed to be"
+    },
+    {
+      "start": 1292.48,
+      "duration": 2.64,
+      "text": "paying the API credits. You're not"
+    },
+    {
+      "start": 1293.919,
+      "duration": 2.481,
+      "text": "supposed to be using these subsidized"
+    },
+    {
+      "start": 1295.12,
+      "duration": 3.76,
+      "text": "tokens, right? This is like for personal"
+    },
+    {
+      "start": 1296.4,
+      "duration": 3.68,
+      "text": "use. And um I think that there are"
+    },
+    {
+      "start": 1298.88,
+      "duration": 3.84,
+      "text": "probably lots of companies that are"
+    },
+    {
+      "start": 1300.08,
+      "duration": 5.2,
+      "text": "basically using the AIA SDK or the or"
+    },
+    {
+      "start": 1302.72,
+      "duration": 4.88,
+      "text": "the Dashp like print mode to to"
+    },
+    {
+      "start": 1305.28,
+      "duration": 4.24,
+      "text": "basically you to sell a service at the"
+    },
+    {
+      "start": 1307.6,
+      "duration": 3.36,
+      "text": "subsidized token cost. And so I think"
+    },
+    {
+      "start": 1309.52,
+      "duration": 3.76,
+      "text": "that what they're really trying to do is"
+    },
+    {
+      "start": 1310.96,
+      "duration": 4.16,
+      "text": "just like basically enforce the terms of"
+    },
+    {
+      "start": 1313.28,
+      "duration": 4.16,
+      "text": "service that people have already agreed"
+    },
+    {
+      "start": 1315.12,
+      "duration": 3.439,
+      "text": "to for usage, but it does really suck"
+    },
+    {
+      "start": 1317.44,
+      "duration": 2.88,
+      "text": "because like you said, just it's like"
+    },
+    {
+      "start": 1318.559,
+      "duration": 2.721,
+      "text": "super easy to bypass and these companies"
+    },
+    {
+      "start": 1320.32,
+      "duration": 2.88,
+      "text": "are going to do the same thing we're"
+    },
+    {
+      "start": 1321.28,
+      "duration": 3.44,
+      "text": "doing. And so it's like I do think that"
+    },
+    {
+      "start": 1323.2,
+      "duration": 3.52,
+      "text": "the subsidized tokens are not going to"
+    },
+    {
+      "start": 1324.72,
+      "duration": 3.04,
+      "text": "last forever. Yeah, it's unfortunate,"
+    },
+    {
+      "start": 1326.72,
+      "duration": 2.8,
+      "text": "man. So, we got to get while the"
+    },
+    {
+      "start": 1327.76,
+      "duration": 3.12,
+      "text": "getting's good. And you are definitely"
+    },
+    {
+      "start": 1329.52,
+      "duration": 3.68,
+      "text": "doing that. And as of this week, I'm"
+    },
+    {
+      "start": 1330.88,
+      "duration": 4.24,
+      "text": "doing that, too. So,"
+    },
+    {
+      "start": 1333.2,
+      "duration": 4.4,
+      "text": ">> I had to slow my hackbot down a little"
+    },
+    {
+      "start": 1335.12,
+      "duration": 3.919,
+      "text": "bit because I was turning through a lot"
+    },
+    {
+      "start": 1337.6,
+      "duration": 2.16,
+      "text": "of tokens, you know, and I was like,"
+    },
+    {
+      "start": 1339.039,
+      "duration": 1.921,
+      "text": "actually,"
+    },
+    {
+      "start": 1339.76,
+      "duration": 3.12,
+      "text": ">> no, you shouldn't do that. You should"
+    },
+    {
+      "start": 1340.96,
+      "duration": 4.56,
+      "text": "just buy another sub for another $200."
+    },
+    {
+      "start": 1342.88,
+      "duration": 3.679,
+      "text": ">> So, right. Shut up, dude. I I know. I"
+    },
+    {
+      "start": 1345.52,
+      "duration": 2.0,
+      "text": "know. Just give me a second."
+    },
+    {
+      "start": 1346.559,
+      "duration": 3.521,
+      "text": ">> Slow down."
+    },
+    {
+      "start": 1347.52,
+      "duration": 4.399,
+      "text": ">> Like, okay. Yes, you are correct. Um,"
+    },
+    {
+      "start": 1350.08,
+      "duration": 4.0,
+      "text": "and I will do that next week once I"
+    },
+    {
+      "start": 1351.919,
+      "duration": 4.561,
+      "text": "figure out how to handle the scale. But"
+    },
+    {
+      "start": 1354.08,
+      "duration": 6.64,
+      "text": "um very fun stuff and I will say it is"
+    },
+    {
+      "start": 1356.48,
+      "duration": 5.6,
+      "text": "now my go-to like scrolling thing right"
+    },
+    {
+      "start": 1360.72,
+      "duration": 3.839,
+      "text": "now. Now now instead of opening Twitter"
+    },
+    {
+      "start": 1362.08,
+      "duration": 4.719,
+      "text": "and like reading through that I I open"
+    },
+    {
+      "start": 1364.559,
+      "duration": 4.0,
+      "text": "the Claude app and I scroll through what"
+    },
+    {
+      "start": 1366.799,
+      "duration": 3.281,
+      "text": "my thing is doing and I give it a little"
+    },
+    {
+      "start": 1368.559,
+      "duration": 3.041,
+      "text": "extra direction in the moment. I'm just"
+    },
+    {
+      "start": 1370.08,
+      "duration": 4.32,
+      "text": "like hey you know just go do this"
+    },
+    {
+      "start": 1371.6,
+      "duration": 4.8,
+      "text": "instead you know and like and it's it's"
+    },
+    {
+      "start": 1374.4,
+      "duration": 4.0,
+      "text": "great dude. It's great and so many have"
+    },
+    {
+      "start": 1376.4,
+      "duration": 3.44,
+      "text": "fallen out of that already. Um,"
+    },
+    {
+      "start": 1378.4,
+      "duration": 2.56,
+      "text": ">> let me let me let me give a little pro"
+    },
+    {
+      "start": 1379.84,
+      "duration": 2.48,
+      "text": "tip then because while we're on the"
+    },
+    {
+      "start": 1380.96,
+      "duration": 3.36,
+      "text": "topic of this,"
+    },
+    {
+      "start": 1382.32,
+      "duration": 3.599,
+      "text": ">> one thing that I have done which I think"
+    },
+    {
+      "start": 1384.32,
+      "duration": 3.12,
+      "text": "is like wildly valuable and you might"
+    },
+    {
+      "start": 1385.919,
+      "duration": 2.721,
+      "text": "like this too, especially as you scale"
+    },
+    {
+      "start": 1387.44,
+      "duration": 2.4,
+      "text": "because you can't scroll those forever"
+    },
+    {
+      "start": 1388.64,
+      "duration": 3.76,
+      "text": "as you scale."
+    },
+    {
+      "start": 1389.84,
+      "duration": 4.64,
+      "text": ">> Um, is I like the validation agent that"
+    },
+    {
+      "start": 1392.4,
+      "duration": 3.759,
+      "text": "me and JD have that like actually"
+    },
+    {
+      "start": 1394.48,
+      "duration": 5.12,
+      "text": "triages the bug and then writes the"
+    },
+    {
+      "start": 1396.159,
+      "duration": 6.4,
+      "text": "report. it gets it it gives me an SSH"
+    },
+    {
+      "start": 1399.6,
+      "duration": 7.199,
+      "text": "command that is SSH to the block it's"
+    },
+    {
+      "start": 1402.559,
+      "duration": 6.961,
+      "text": "running on with uh the D-res to the"
+    },
+    {
+      "start": 1406.799,
+      "duration": 4.161,
+      "text": "triage agent. So I just copy that paste"
+    },
+    {
+      "start": 1409.52,
+      "duration": 3.519,
+      "text": "it straight into my terminal and then"
+    },
+    {
+      "start": 1410.96,
+      "duration": 4.4,
+      "text": "I'm dropped into a context which has the"
+    },
+    {
+      "start": 1413.039,
+      "duration": 4.241,
+      "text": "full vulnerability and replication. So"
+    },
+    {
+      "start": 1415.36,
+      "duration": 3.679,
+      "text": "very often I do that to basically be"
+    },
+    {
+      "start": 1417.28,
+      "duration": 3.68,
+      "text": "like, \"Hey, but does this have real"
+    },
+    {
+      "start": 1419.039,
+      "duration": 3.841,
+      "text": "impact?\" Or, \"Hey, actually, can you see"
+    },
+    {
+      "start": 1420.96,
+      "duration": 4.24,
+      "text": "if you can also do this?\" And because it"
+    },
+    {
+      "start": 1422.88,
+      "duration": 4.08,
+      "text": "already has like the PC and the the bug"
+    },
+    {
+      "start": 1425.2,
+      "duration": 3.52,
+      "text": "all loaded up into it, basically into"
+    },
+    {
+      "start": 1426.96,
+      "duration": 3.68,
+      "text": "its session, it's like the perfect"
+    },
+    {
+      "start": 1428.72,
+      "duration": 4.079,
+      "text": "terminal to get dropped into without me"
+    },
+    {
+      "start": 1430.64,
+      "duration": 4.0,
+      "text": "having to like copy the report over and"
+    },
+    {
+      "start": 1432.799,
+      "duration": 4.481,
+      "text": "then like my, you know, my local stack"
+    },
+    {
+      "start": 1434.64,
+      "duration": 3.919,
+      "text": "now has to like go find that JS file and"
+    },
+    {
+      "start": 1437.28,
+      "duration": 2.879,
+      "text": "figure out where it's at. Like, right?"
+    },
+    {
+      "start": 1438.559,
+      "duration": 3.201,
+      "text": "Like I'd rather just drop right into the"
+    },
+    {
+      "start": 1440.159,
+      "duration": 3.121,
+      "text": "session that has all of the information"
+    },
+    {
+      "start": 1441.76,
+      "duration": 2.88,
+      "text": "in the context."
+    },
+    {
+      "start": 1443.28,
+      "duration": 3.519,
+      "text": ">> Yeah. I've been trying to think about"
+    },
+    {
+      "start": 1444.64,
+      "duration": 3.76,
+      "text": "how I can do that with D-RC. Like I"
+    },
+    {
+      "start": 1446.799,
+      "duration": 3.521,
+      "text": "would love to have the validation agent"
+    },
+    {
+      "start": 1448.4,
+      "duration": 3.84,
+      "text": "spin up like another claude code"
+    },
+    {
+      "start": 1450.32,
+      "duration": 4.719,
+      "text": "instance rather than using like a sub"
+    },
+    {
+      "start": 1452.24,
+      "duration": 3.6,
+      "text": "agent within the cloud code that I'm"
+    },
+    {
+      "start": 1455.039,
+      "duration": 2.24,
+      "text": "already running."
+    },
+    {
+      "start": 1455.84,
+      "duration": 4.64,
+      "text": ">> Dude, how does the name get set for"
+    },
+    {
+      "start": 1457.279,
+      "duration": 4.801,
+      "text": "that? What if you had a in the system"
+    },
+    {
+      "start": 1460.48,
+      "duration": 4.079,
+      "text": "prompt you said like, hey, if you're the"
+    },
+    {
+      "start": 1462.08,
+      "duration": 5.44,
+      "text": "title writer, write the company name"
+    },
+    {
+      "start": 1464.559,
+      "duration": 4.24,
+      "text": "dash the vulnerability name dash the"
+    },
+    {
+      "start": 1467.52,
+      "duration": 3.279,
+      "text": "severity or whatever. So then when"
+    },
+    {
+      "start": 1468.799,
+      "duration": 4.401,
+      "text": "you're scrolling RC in that sidebar, you"
+    },
+    {
+      "start": 1470.799,
+      "duration": 3.921,
+      "text": "can see which one to click on. Well,"
+    },
+    {
+      "start": 1473.2,
+      "duration": 3.2,
+      "text": "that's what I'm doing right now with the"
+    },
+    {
+      "start": 1474.72,
+      "duration": 3.6,
+      "text": "with the other agents is I've got like,"
+    },
+    {
+      "start": 1476.4,
+      "duration": 3.92,
+      "text": "you know, exploitation agent for this,"
+    },
+    {
+      "start": 1478.32,
+      "duration": 3.76,
+      "text": "and I've got another agent, which I"
+    },
+    {
+      "start": 1480.32,
+      "duration": 3.839,
+      "text": "decided I'm not going to talk about uh"
+    },
+    {
+      "start": 1482.08,
+      "duration": 4.32,
+      "text": "because it's doing good. I I'll tell you"
+    },
+    {
+      "start": 1484.159,
+      "duration": 5.201,
+      "text": "about it off air, but um"
+    },
+    {
+      "start": 1486.4,
+      "duration": 4.8,
+      "text": ">> yeah, the man, it's tricky because I I'm"
+    },
+    {
+      "start": 1489.36,
+      "duration": 5.04,
+      "text": "such a give everything to the pod"
+    },
+    {
+      "start": 1491.2,
+      "duration": 5.839,
+      "text": "person, but like we said,"
+    },
+    {
+      "start": 1494.4,
+      "duration": 4.879,
+      "text": ">> AI has removed the do it,"
+    },
+    {
+      "start": 1497.039,
+      "duration": 3.76,
+      "text": ">> you know? It's so the conceptual is all"
+    },
+    {
+      "start": 1499.279,
+      "duration": 2.721,
+      "text": "we have. So, I'm going to try to give"
+    },
+    {
+      "start": 1500.799,
+      "duration": 2.321,
+      "text": "you guys as much as I can, but"
+    },
+    {
+      "start": 1502.0,
+      "duration": 2.559,
+      "text": ">> well, let me actually tell you this cuz"
+    },
+    {
+      "start": 1503.12,
+      "duration": 6.0,
+      "text": "I cuz me and JD kind of came up with a"
+    },
+    {
+      "start": 1504.559,
+      "duration": 6.0,
+      "text": "philosophy for this. My my logic is that"
+    },
+    {
+      "start": 1509.12,
+      "duration": 2.48,
+      "text": "basically I'm going to hold it and use"
+    },
+    {
+      "start": 1510.559,
+      "duration": 2.561,
+      "text": "it for a couple weeks and then I'm going"
+    },
+    {
+      "start": 1511.6,
+      "duration": 5.36,
+      "text": "to share on the pod. So, that's exactly"
+    },
+    {
+      "start": 1513.12,
+      "duration": 6.24,
+      "text": "what I did with the with the um skill um"
+    },
+    {
+      "start": 1516.96,
+      "duration": 3.52,
+      "text": "improvements which I think I you you did"
+    },
+    {
+      "start": 1519.36,
+      "duration": 2.96,
+      "text": "me and I mentioned that on the episode"
+    },
+    {
+      "start": 1520.48,
+      "duration": 3.84,
+      "text": "with Gret, right? Where you have to do"
+    },
+    {
+      "start": 1522.32,
+      "duration": 4.719,
+      "text": "like greater than."
+    },
+    {
+      "start": 1524.32,
+      "duration": 4.4,
+      "text": ">> Yes. Uh we we did it last week."
+    },
+    {
+      "start": 1527.039,
+      "duration": 3.281,
+      "text": ">> Yeah. Yeah. So yeah, basically I figured"
+    },
+    {
+      "start": 1528.72,
+      "duration": 3.12,
+      "text": "that out like two weeks before that and"
+    },
+    {
+      "start": 1530.32,
+      "duration": 2.479,
+      "text": "I improved my skills and I use it for"
+    },
+    {
+      "start": 1531.84,
+      "duration": 2.24,
+      "text": "two weeks and then I share it on the"
+    },
+    {
+      "start": 1532.799,
+      "duration": 1.76,
+      "text": "pod. So that's kind of"
+    },
+    {
+      "start": 1534.08,
+      "duration": 1.199,
+      "text": ">> my thoughts."
+    },
+    {
+      "start": 1534.559,
+      "duration": 2.48,
+      "text": ">> That's good."
+    },
+    {
+      "start": 1535.279,
+      "duration": 2.321,
+      "text": ">> That's good, man. That's brave."
+    },
+    {
+      "start": 1537.039,
+      "duration": 2.161,
+      "text": ">> That's great."
+    },
+    {
+      "start": 1537.6,
+      "duration": 2.88,
+      "text": ">> It is. Yeah. I mean, maybe it's a month"
+    },
+    {
+      "start": 1539.2,
+      "duration": 2.4,
+      "text": "or maybe I forget or whatever, but"
+    },
+    {
+      "start": 1540.48,
+      "duration": 2.72,
+      "text": "that's like kind of like my philosophy"
+    },
+    {
+      "start": 1541.6,
+      "duration": 4.0,
+      "text": "where I can still be extremely giving"
+    },
+    {
+      "start": 1543.2,
+      "duration": 6.079,
+      "text": "but still feel like in this day and age"
+    },
+    {
+      "start": 1545.6,
+      "duration": 5.52,
+      "text": "that like, you know, um I'm able to like"
+    },
+    {
+      "start": 1549.279,
+      "duration": 2.88,
+      "text": "uh harvest some of that benefit for my"
+    },
+    {
+      "start": 1551.12,
+      "duration": 1.84,
+      "text": "family as well."
+    },
+    {
+      "start": 1552.159,
+      "duration": 2.64,
+      "text": ">> Um"
+    },
+    {
+      "start": 1552.96,
+      "duration": 3.44,
+      "text": ">> I'm I'm so I'm so lucky to have you as a"
+    },
+    {
+      "start": 1554.799,
+      "duration": 3.441,
+      "text": "co-host, man. Thank you for coming on"
+    },
+    {
+      "start": 1556.4,
+      "duration": 3.6,
+      "text": "the pod and doing this with me."
+    },
+    {
+      "start": 1558.24,
+      "duration": 3.12,
+      "text": ">> Yeah, of course. Uh, and one more thing"
+    },
+    {
+      "start": 1560.0,
+      "duration": 2.4,
+      "text": "on that same topic with just the"
+    },
+    {
+      "start": 1561.36,
+      "duration": 2.559,
+      "text": "building of hackpods because I've been"
+    },
+    {
+      "start": 1562.4,
+      "duration": 3.84,
+      "text": "talking a lot with Gretney about this."
+    },
+    {
+      "start": 1563.919,
+      "duration": 3.681,
+      "text": "He is just peeved. Like he's just Oh,"
+    },
+    {
+      "start": 1566.24,
+      "duration": 4.88,
+      "text": "man. Is there is there an English word"
+    },
+    {
+      "start": 1567.6,
+      "duration": 5.04,
+      "text": "for being mad? What's what the chuff"
+    },
+    {
+      "start": 1571.12,
+      "duration": 3.919,
+      "text": "tweaked? I don't I don't know."
+    },
+    {
+      "start": 1572.64,
+      "duration": 5.44,
+      "text": ">> Yeah, he's tweaked. There we go. And he"
+    },
+    {
+      "start": 1575.039,
+      "duration": 4.721,
+      "text": "uh he has been mad at Claude ever since"
+    },
+    {
+      "start": 1578.08,
+      "duration": 3.199,
+      "text": "four. Well, one, he got gas lit, right?"
+    },
+    {
+      "start": 1579.76,
+      "duration": 2.88,
+      "text": "when they had those weird changes where"
+    },
+    {
+      "start": 1581.279,
+      "duration": 3.201,
+      "text": "it was like dropping the like the"
+    },
+    {
+      "start": 1582.64,
+      "duration": 4.08,
+      "text": "session history and like the quality"
+    },
+    {
+      "start": 1584.48,
+      "duration": 3.679,
+      "text": "actually did degrade and who who called"
+    },
+    {
+      "start": 1586.72,
+      "duration": 2.64,
+      "text": "them out for that from trusted sec Dave"
+    },
+    {
+      "start": 1588.159,
+      "duration": 2.481,
+      "text": "Kennedy was calling them out for this"
+    },
+    {
+      "start": 1589.36,
+      "duration": 3.28,
+      "text": "and all that"
+    },
+    {
+      "start": 1590.64,
+      "duration": 4.08,
+      "text": ">> during that drama Brandon got burned a"
+    },
+    {
+      "start": 1592.64,
+      "duration": 4.72,
+      "text": "lot was so upset he felt gas lit and so"
+    },
+    {
+      "start": 1594.72,
+      "duration": 4.48,
+      "text": "then 47 drops and he felt like for his"
+    },
+    {
+      "start": 1597.36,
+      "duration": 3.84,
+      "text": "hackbot it got way worse so he was gas"
+    },
+    {
+      "start": 1599.2,
+      "duration": 4.16,
+      "text": "lit again and then now all of a sudden"
+    },
+    {
+      "start": 1601.2,
+      "duration": 3.52,
+      "text": "with the dashp he's just like mad right"
+    },
+    {
+      "start": 1603.36,
+      "duration": 3.28,
+      "text": "so I was messaging this morning"
+    },
+    {
+      "start": 1604.72,
+      "duration": 3.12,
+      "text": ">> and we were talking about GPT55 I was"
+    },
+    {
+      "start": 1606.64,
+      "duration": 3.519,
+      "text": "like okay so what are you doing are you"
+    },
+    {
+      "start": 1607.84,
+      "duration": 3.439,
+      "text": "using codecs with GPT55 which you know"
+    },
+    {
+      "start": 1610.159,
+      "duration": 2.321,
+      "text": "you've probably seen me tweeting like"
+    },
+    {
+      "start": 1611.279,
+      "duration": 2.721,
+      "text": "it's it's quite good"
+    },
+    {
+      "start": 1612.48,
+      "duration": 2.96,
+      "text": ">> and um he was like yeah that's what I've"
+    },
+    {
+      "start": 1614.0,
+      "duration": 3.44,
+      "text": "been using it's been great"
+    },
+    {
+      "start": 1615.44,
+      "duration": 4.239,
+      "text": ">> and then I told him I was like my"
+    },
+    {
+      "start": 1617.44,
+      "duration": 6.88,
+      "text": "biggest problem is that it's a little"
+    },
+    {
+      "start": 1619.679,
+      "duration": 6.561,
+      "text": "bit overly PhD sl autisticy in the way"
+    },
+    {
+      "start": 1624.32,
+      "duration": 3.92,
+      "text": "that it describes bugs it describes them"
+    },
+    {
+      "start": 1626.24,
+      "duration": 4.88,
+      "text": "in like such like a highlevel language"
+    },
+    {
+      "start": 1628.24,
+      "duration": 4.48,
+      "text": "like such big vocabulary that it feels"
+    },
+    {
+      "start": 1631.12,
+      "duration": 3.36,
+      "text": "confusing to me whereas like Claude"
+    },
+    {
+      "start": 1632.72,
+      "duration": 3.439,
+      "text": "codes reports feel like much more like"
+    },
+    {
+      "start": 1634.48,
+      "duration": 3.199,
+      "text": "um humanlike like I can just understand"
+    },
+    {
+      "start": 1636.159,
+      "duration": 3.281,
+      "text": "them a lot better and he said he had"
+    },
+    {
+      "start": 1637.679,
+      "duration": 2.801,
+      "text": "found that exact same experience So, I"
+    },
+    {
+      "start": 1639.44,
+      "duration": 2.479,
+      "text": "wanted to mention that to our listeners"
+    },
+    {
+      "start": 1640.48,
+      "duration": 2.88,
+      "text": "because if they if anyone's building on"
+    },
+    {
+      "start": 1641.919,
+      "duration": 2.561,
+      "text": "that, like maybe there's some way to get"
+    },
+    {
+      "start": 1643.36,
+      "duration": 2.4,
+      "text": "around that and via prompting like,"
+    },
+    {
+      "start": 1644.48,
+      "duration": 2.64,
+      "text": "\"Hey, make sure you explain this to me"
+    },
+    {
+      "start": 1645.76,
+      "duration": 4.36,
+      "text": "like I'm an idiot.\""
+    },
+    {
+      "start": 1647.12,
+      "duration": 3.0,
+      "text": ">> But,"
+    },
+    {
+      "start": 1650.159,
+      "duration": 3.76,
+      "text": "but the other thing is it's much more"
+    },
+    {
+      "start": 1652.08,
+      "duration": 2.88,
+      "text": "hesitant to like show real impact. So,"
+    },
+    {
+      "start": 1653.919,
+      "duration": 2.401,
+      "text": "like for example, you've probably seen"
+    },
+    {
+      "start": 1654.96,
+      "duration": 3.599,
+      "text": "this before, Justin, it's like you're"
+    },
+    {
+      "start": 1656.32,
+      "duration": 4.8,
+      "text": "trying to access this resource and it's"
+    },
+    {
+      "start": 1658.559,
+      "duration": 4.881,
+      "text": "401 or 403ing. You use like an X forward"
+    },
+    {
+      "start": 1661.12,
+      "duration": 5.28,
+      "text": "for or sorry, like a Yeah. Yeah. like an"
+    },
+    {
+      "start": 1663.44,
+      "duration": 6.32,
+      "text": "X forwarded for or like um the what's"
+    },
+    {
+      "start": 1666.4,
+      "duration": 5.04,
+      "text": "the header that changes the the verb"
+    },
+    {
+      "start": 1669.76,
+      "duration": 3.519,
+      "text": ">> uh X like overwrite method is that"
+    },
+    {
+      "start": 1671.44,
+      "duration": 3.359,
+      "text": ">> yeah X override method right so it"
+    },
+    {
+      "start": 1673.279,
+      "duration": 3.76,
+      "text": "figures out that one of those actually"
+    },
+    {
+      "start": 1674.799,
+      "duration": 3.441,
+      "text": "allows you access to the internal like"
+    },
+    {
+      "start": 1677.039,
+      "duration": 3.52,
+      "text": "or to the site you're trying to get"
+    },
+    {
+      "start": 1678.24,
+      "duration": 4.08,
+      "text": "access to GPT55 will just stop there and"
+    },
+    {
+      "start": 1680.559,
+      "duration": 3.441,
+      "text": "like put in a report I'm like dude no"
+    },
+    {
+      "start": 1682.32,
+      "duration": 4.0,
+      "text": "one's going to accept this you have to"
+    },
+    {
+      "start": 1684.0,
+      "duration": 3.52,
+      "text": "actually go further hit the APIs show me"
+    },
+    {
+      "start": 1686.32,
+      "duration": 3.44,
+      "text": "something meaningful and then even when"
+    },
+    {
+      "start": 1687.52,
+      "duration": 4.399,
+      "text": "I ask it to do that sometimes it'll like"
+    },
+    {
+      "start": 1689.76,
+      "duration": 4.399,
+      "text": ">> it will often find an API that it can"
+    },
+    {
+      "start": 1691.919,
+      "duration": 3.921,
+      "text": "like dump data from, but it doesn't want"
+    },
+    {
+      "start": 1694.159,
+      "duration": 3.361,
+      "text": "to expose that data to me. So, it'll"
+    },
+    {
+      "start": 1695.84,
+      "duration": 4.719,
+      "text": "like pipe it through a jQ command that"
+    },
+    {
+      "start": 1697.52,
+      "duration": 5.12,
+      "text": "only shows the ID and it shows like, oh,"
+    },
+    {
+      "start": 1700.559,
+      "duration": 4.321,
+      "text": "I got an ID door. Check out this I the"
+    },
+    {
+      "start": 1702.64,
+      "duration": 2.639,
+      "text": "ID of another organization. And I'm"
+    },
+    {
+      "start": 1704.88,
+      "duration": 3.12,
+      "text": "like,"
+    },
+    {
+      "start": 1705.279,
+      "duration": 4.241,
+      "text": ">> dude, stop hiding the impact. You're"
+    },
+    {
+      "start": 1708.0,
+      "duration": 2.799,
+      "text": "hiding the impact from me. And so,"
+    },
+    {
+      "start": 1709.52,
+      "duration": 2.399,
+      "text": "anyways, that that can be a little bit"
+    },
+    {
+      "start": 1710.799,
+      "duration": 2.321,
+      "text": "annoying. And so, I just wanted to let"
+    },
+    {
+      "start": 1711.919,
+      "duration": 3.36,
+      "text": "that know to the listeners that like if"
+    },
+    {
+      "start": 1713.12,
+      "duration": 3.679,
+      "text": "you're using GP55, sometimes it'll skirt"
+    },
+    {
+      "start": 1715.279,
+      "duration": 2.961,
+      "text": "around showing you real impact and you"
+    },
+    {
+      "start": 1716.799,
+      "duration": 3.281,
+      "text": "might have to like hand it to Claude or"
+    },
+    {
+      "start": 1718.24,
+      "duration": 4.64,
+      "text": "tell it like, \"Bro, show me some"
+    },
+    {
+      "start": 1720.08,
+      "duration": 4.88,
+      "text": "impact.\" Um whereas Claude will just go"
+    },
+    {
+      "start": 1722.88,
+      "duration": 4.159,
+      "text": "out of scope to get impact, you know."
+    },
+    {
+      "start": 1724.96,
+      "duration": 3.839,
+      "text": ">> It's Yeah, seriously. And it it's really"
+    },
+    {
+      "start": 1727.039,
+      "duration": 3.841,
+      "text": "interesting that you mentioned the"
+    },
+    {
+      "start": 1728.799,
+      "duration": 3.921,
+      "text": "validator piece before because I was"
+    },
+    {
+      "start": 1730.88,
+      "duration": 3.519,
+      "text": "actually going to discuss with you that"
+    },
+    {
+      "start": 1732.72,
+      "duration": 3.76,
+      "text": "I feel like my validator is a little bit"
+    },
+    {
+      "start": 1734.399,
+      "duration": 3.52,
+      "text": "too much of a hard ass. Like"
+    },
+    {
+      "start": 1736.48,
+      "duration": 4.24,
+      "text": ">> it's shutting down some good bugs."
+    },
+    {
+      "start": 1737.919,
+      "duration": 6.561,
+      "text": ">> Yeah. like it'll it'll kick back some"
+    },
+    {
+      "start": 1740.72,
+      "duration": 6.0,
+      "text": "stuff that I would like to see as low or"
+    },
+    {
+      "start": 1744.48,
+      "duration": 4.64,
+      "text": "or medium, you know, like and it's not I"
+    },
+    {
+      "start": 1746.72,
+      "duration": 4.079,
+      "text": "mean I appreciate that it's doing uh a"
+    },
+    {
+      "start": 1749.12,
+      "duration": 3.2,
+      "text": "good job, you know, like filtering the"
+    },
+    {
+      "start": 1750.799,
+      "duration": 2.401,
+      "text": "the noise because it does catch some"
+    },
+    {
+      "start": 1752.32,
+      "duration": 4.32,
+      "text": "noise."
+    },
+    {
+      "start": 1753.2,
+      "duration": 4.88,
+      "text": ">> Um but I also am not getting the amount"
+    },
+    {
+      "start": 1756.64,
+      "duration": 3.039,
+      "text": "of debate that I would like to have"
+    },
+    {
+      "start": 1758.08,
+      "duration": 3.44,
+      "text": "between the two agents. Like I would"
+    },
+    {
+      "start": 1759.679,
+      "duration": 4.24,
+      "text": "like to have the main agent really"
+    },
+    {
+      "start": 1761.52,
+      "duration": 4.399,
+      "text": "advocate for its bug to the validator,"
+    },
+    {
+      "start": 1763.919,
+      "duration": 4.48,
+      "text": "right? Because essentially like the"
+    },
+    {
+      "start": 1765.919,
+      "duration": 4.0,
+      "text": "validator I is coming back saying, \"Hey,"
+    },
+    {
+      "start": 1768.399,
+      "duration": 2.64,
+      "text": "this is not a bug. This is a primitive."
+    },
+    {
+      "start": 1769.919,
+      "duration": 3.36,
+      "text": "Here's what you need to convince me it's"
+    },
+    {
+      "start": 1771.039,
+      "duration": 3.681,
+      "text": "a bug.\" And then the the thing is like,"
+    },
+    {
+      "start": 1773.279,
+      "duration": 2.721,
+      "text": "\"Okay, well the validator says it's a"
+    },
+    {
+      "start": 1774.72,
+      "duration": 2.079,
+      "text": "primitive, so I'm going to put as a"
+    },
+    {
+      "start": 1776.0,
+      "duration": 2.24,
+      "text": "primitive.\""
+    },
+    {
+      "start": 1776.799,
+      "duration": 2.401,
+      "text": ">> Anyway, moving on to my next, you know,"
+    },
+    {
+      "start": 1778.24,
+      "duration": 4.64,
+      "text": "and I'm like, \"Right,"
+    },
+    {
+      "start": 1779.2,
+      "duration": 5.599,
+      "text": ">> no.\" Um, so I feel like my validator is"
+    },
+    {
+      "start": 1782.88,
+      "duration": 3.039,
+      "text": "doing a little bit um little bit too"
+    },
+    {
+      "start": 1784.799,
+      "duration": 3.12,
+      "text": "much right now. Mhm."
+    },
+    {
+      "start": 1785.919,
+      "duration": 4.24,
+      "text": ">> Uh so I have feel like I have to kind of"
+    },
+    {
+      "start": 1787.919,
+      "duration": 3.921,
+      "text": "keep an eye on it and really"
+    },
+    {
+      "start": 1790.159,
+      "duration": 6.161,
+      "text": ">> read the primitives that come out of"
+    },
+    {
+      "start": 1791.84,
+      "duration": 6.0,
+      "text": "each um you know turn of the hackbot"
+    },
+    {
+      "start": 1796.32,
+      "duration": 2.959,
+      "text": "because there could be some good stuff"
+    },
+    {
+      "start": 1797.84,
+      "duration": 2.079,
+      "text": "there that is kind of slipping through"
+    },
+    {
+      "start": 1799.279,
+      "duration": 2.081,
+      "text": "the cracks. Yeah,"
+    },
+    {
+      "start": 1799.919,
+      "duration": 2.721,
+      "text": ">> I've got a lot to say on that. So the"
+    },
+    {
+      "start": 1801.36,
+      "duration": 2.559,
+      "text": "first one is pretty cool that you have"
+    },
+    {
+      "start": 1802.64,
+      "duration": 2.8,
+      "text": "them communicating. Our validator is"
+    },
+    {
+      "start": 1803.919,
+      "duration": 3.201,
+      "text": "just like an independent run"
+    },
+    {
+      "start": 1805.44,
+      "duration": 3.599,
+      "text": ">> but but secondly I think that there are"
+    },
+    {
+      "start": 1807.12,
+      "duration": 4.24,
+      "text": "a couple ways to solve this. One is I"
+    },
+    {
+      "start": 1809.039,
+      "duration": 3.681,
+      "text": "think all of your failed validations you"
+    },
+    {
+      "start": 1811.36,
+      "duration": 3.12,
+      "text": "should still be outputting to a thread"
+    },
+    {
+      "start": 1812.72,
+      "duration": 3.839,
+      "text": "like in Discord because like that that"
+    },
+    {
+      "start": 1814.48,
+      "duration": 3.52,
+      "text": "that's the best thing to scroll like we"
+    },
+    {
+      "start": 1816.559,
+      "duration": 2.641,
+      "text": "I scroll I scroll through my failed"
+    },
+    {
+      "start": 1818.0,
+      "duration": 2.24,
+      "text": "validations all the time and and like"
+    },
+    {
+      "start": 1819.2,
+      "duration": 2.24,
+      "text": "you said every once in a while there's"
+    },
+    {
+      "start": 1820.24,
+      "duration": 2.799,
+      "text": "one in there that I'm like oh that's a"
+    },
+    {
+      "start": 1821.44,
+      "duration": 3.2,
+      "text": "bug"
+    },
+    {
+      "start": 1823.039,
+      "duration": 3.681,
+      "text": ">> but I think that the other thing that"
+    },
+    {
+      "start": 1824.64,
+      "duration": 3.279,
+      "text": "you could do um is set up that tiered"
+    },
+    {
+      "start": 1826.72,
+      "duration": 3.439,
+      "text": "system that I've that I've pitched on"
+    },
+    {
+      "start": 1827.919,
+      "duration": 5.12,
+      "text": "the pod multiple times where like you"
+    },
+    {
+      "start": 1830.159,
+      "duration": 4.4,
+      "text": "know you have like notes primitives uh"
+    },
+    {
+      "start": 1833.039,
+      "duration": 3.041,
+      "text": ">> I have that I do have that"
+    },
+    {
+      "start": 1834.559,
+      "duration": 2.561,
+      "text": ">> so then yeah like you should just you"
+    },
+    {
+      "start": 1836.08,
+      "duration": 2.64,
+      "text": "could just go back and read the"
+    },
+    {
+      "start": 1837.12,
+      "duration": 3.6,
+      "text": "primitive channel or the or the lead or"
+    },
+    {
+      "start": 1838.72,
+      "duration": 4.4,
+      "text": "the gadget channel whatever uh from time"
+    },
+    {
+      "start": 1840.72,
+      "duration": 4.079,
+      "text": "to time like you know in your scrolling"
+    },
+    {
+      "start": 1843.12,
+      "duration": 2.559,
+      "text": "like if there's no findings then go"
+    },
+    {
+      "start": 1844.799,
+      "duration": 2.88,
+      "text": "scroll those yeah"
+    },
+    {
+      "start": 1845.679,
+      "duration": 3.761,
+      "text": ">> that's a good point though so what how I"
+    },
+    {
+      "start": 1847.679,
+      "duration": 3.441,
+      "text": "have that currently is that notes and"
+    },
+    {
+      "start": 1849.44,
+      "duration": 3.839,
+      "text": "primitives are not being outputed to a"
+    },
+    {
+      "start": 1851.12,
+      "duration": 4.0,
+      "text": "channel they're just being kept in the"
+    },
+    {
+      "start": 1853.279,
+      "duration": 2.961,
+      "text": "the exploitation kit"
+    },
+    {
+      "start": 1855.12,
+      "duration": 2.24,
+      "text": ">> that makes sense for notes but for"
+    },
+    {
+      "start": 1856.24,
+      "duration": 2.4,
+      "text": "primitives you should output it there"
+    },
+    {
+      "start": 1857.36,
+      "duration": 2.559,
+      "text": "because you're much smarter and when you"
+    },
+    {
+      "start": 1858.64,
+      "duration": 2.72,
+      "text": "see those primitives you'll be like oh"
+    },
+    {
+      "start": 1859.919,
+      "duration": 2.801,
+      "text": "that's a great gadget you know"
+    },
+    {
+      "start": 1861.36,
+      "duration": 3.52,
+      "text": ">> that's a good point okay I'll do that"
+    },
+    {
+      "start": 1862.72,
+      "duration": 4.959,
+      "text": "I'm going to do that right after this um"
+    },
+    {
+      "start": 1864.88,
+      "duration": 4.64,
+      "text": "yeah I'll do that thank you Um, second,"
+    },
+    {
+      "start": 1867.679,
+      "duration": 4.88,
+      "text": "another tip that I had for the hackbot"
+    },
+    {
+      "start": 1869.52,
+      "duration": 4.159,
+      "text": "was uh, you know, I'm strugg struggling"
+    },
+    {
+      "start": 1872.559,
+      "duration": 2.641,
+      "text": "with the whole concept of like how do"
+    },
+    {
+      "start": 1873.679,
+      "duration": 2.961,
+      "text": "you keep it going forever, right? And"
+    },
+    {
+      "start": 1875.2,
+      "duration": 2.56,
+      "text": "there's like the Ralph loop or whatever,"
+    },
+    {
+      "start": 1876.64,
+      "duration": 3.44,
+      "text": "blahy blahy blah."
+    },
+    {
+      "start": 1877.76,
+      "duration": 4.799,
+      "text": ">> Well, they official goal loops now."
+    },
+    {
+      "start": 1880.08,
+      "duration": 4.4,
+      "text": ">> They do, which is cool. Um, but I've got"
+    },
+    {
+      "start": 1882.559,
+      "duration": 4.081,
+      "text": "a very much simpler solution, which is"
+    },
+    {
+      "start": 1884.48,
+      "duration": 5.679,
+      "text": "just use a stop hook to write into the"
+    },
+    {
+      "start": 1886.64,
+      "duration": 5.919,
+      "text": "PTY. So, uh there's like very easy"
+    },
+    {
+      "start": 1890.159,
+      "duration": 6.321,
+      "text": "configuration file you can write in for"
+    },
+    {
+      "start": 1892.559,
+      "duration": 5.84,
+      "text": "Claude, uh where it's like, um you know,"
+    },
+    {
+      "start": 1896.48,
+      "duration": 2.559,
+      "text": "triggers whenever Claude naturally"
+    },
+    {
+      "start": 1898.399,
+      "duration": 1.28,
+      "text": "stops."
+    },
+    {
+      "start": 1899.039,
+      "duration": 3.52,
+      "text": ">> Yep."
+    },
+    {
+      "start": 1899.679,
+      "duration": 5.281,
+      "text": ">> And so as soon as that triggers, it just"
+    },
+    {
+      "start": 1902.559,
+      "duration": 4.96,
+      "text": "grabs the PTY and writes into it like"
+    },
+    {
+      "start": 1904.96,
+      "duration": 4.16,
+      "text": "don't stop, keep going. You know, and I"
+    },
+    {
+      "start": 1907.519,
+      "duration": 3.601,
+      "text": "will say it like maybe it's not a"
+    },
+    {
+      "start": 1909.12,
+      "duration": 3.679,
+      "text": "perfect solution because sometimes it'll"
+    },
+    {
+      "start": 1911.12,
+      "duration": 3.2,
+      "text": "be like especially on like really tight"
+    },
+    {
+      "start": 1912.799,
+      "duration": 3.201,
+      "text": "scope, it'll be like I've done"
+    },
+    {
+      "start": 1914.32,
+      "duration": 3.359,
+      "text": "everything. I'm just going to wait and"
+    },
+    {
+      "start": 1916.0,
+      "duration": 3.12,
+      "text": "then it stops again and it's like keep"
+    },
+    {
+      "start": 1917.679,
+      "duration": 3.84,
+      "text": "going. It's like no, I'm just going to"
+    },
+    {
+      "start": 1919.12,
+      "duration": 3.52,
+      "text": "wait like I've done everything complete."
+    },
+    {
+      "start": 1921.519,
+      "duration": 2.721,
+      "text": "You know,"
+    },
+    {
+      "start": 1922.64,
+      "duration": 3.36,
+      "text": ">> even worse, this this where I thought"
+    },
+    {
+      "start": 1924.24,
+      "duration": 5.039,
+      "text": "you were going with that. What if it"
+    },
+    {
+      "start": 1926.0,
+      "duration": 4.48,
+      "text": "what if it says like hey I'm like uh I"
+    },
+    {
+      "start": 1929.279,
+      "duration": 2.961,
+      "text": "would like to maybe try to prove out"
+    },
+    {
+      "start": 1930.48,
+      "duration": 3.439,
+      "text": "this PC, but I'm not sure if I should"
+    },
+    {
+      "start": 1932.24,
+      "duration": 4.559,
+      "text": "drop this table in the database. And you"
+    },
+    {
+      "start": 1933.919,
+      "duration": 4.161,
+      "text": "say keep going."
+    },
+    {
+      "start": 1936.799,
+      "duration": 2.561,
+      "text": "cuz I have a lot of issues with it going"
+    },
+    {
+      "start": 1938.08,
+      "duration": 3.04,
+      "text": "out of scope and I would expect that"
+    },
+    {
+      "start": 1939.36,
+      "duration": 2.64,
+      "text": "keep going is going to push it more in"
+    },
+    {
+      "start": 1941.12,
+      "duration": 3.76,
+      "text": "that direction."
+    },
+    {
+      "start": 1942.0,
+      "duration": 3.12,
+      "text": ">> Well, [ __ ] dude. I didn't think about"
+    },
+    {
+      "start": 1944.88,
+      "duration": 1.6,
+      "text": "that."
+    },
+    {
+      "start": 1945.12,
+      "duration": 3.2,
+      "text": ">> I mean, you you could just make that"
+    },
+    {
+      "start": 1946.48,
+      "duration": 3.199,
+      "text": "message a lot longer. Like, hey, you're"
+    },
+    {
+      "start": 1948.32,
+      "duration": 2.64,
+      "text": "doing great. Keep going if you're on a"
+    },
+    {
+      "start": 1949.679,
+      "duration": 2.401,
+      "text": "good lead, but just remember the rules"
+    },
+    {
+      "start": 1950.96,
+      "duration": 2.24,
+      "text": "to knock out as, you know, like you can"
+    },
+    {
+      "start": 1952.08,
+      "duration": 2.4,
+      "text": "just make that message as long as you"
+    },
+    {
+      "start": 1953.2,
+      "duration": 1.599,
+      "text": "want and as verbose as you want and"
+    },
+    {
+      "start": 1954.48,
+      "duration": 1.52,
+      "text": "it'll just"
+    },
+    {
+      "start": 1954.799,
+      "duration": 3.441,
+      "text": ">> and that is the message that I have"
+    },
+    {
+      "start": 1956.0,
+      "duration": 4.24,
+      "text": "right now. It's like, hey, there's no"
+    },
+    {
+      "start": 1958.24,
+      "duration": 3.439,
+      "text": "user listening. Use your best judgment"
+    },
+    {
+      "start": 1960.24,
+      "duration": 3.6,
+      "text": "in alignment with the, you know, thing"
+    },
+    {
+      "start": 1961.679,
+      "duration": 3.84,
+      "text": "that we have. But"
+    },
+    {
+      "start": 1963.84,
+      "duration": 3.92,
+      "text": "yeah, I think I do say keep going at the"
+    },
+    {
+      "start": 1965.519,
+      "duration": 4.0,
+      "text": "end. So maybe I I got to double check"
+    },
+    {
+      "start": 1967.76,
+      "duration": 4.32,
+      "text": "that. That's a good point."
+    },
+    {
+      "start": 1969.519,
+      "duration": 6.481,
+      "text": ">> Okay. Um last little bit that I had on"
+    },
+    {
+      "start": 1972.08,
+      "duration": 5.68,
+      "text": "my Hackbot journey. Um is I I don't want"
+    },
+    {
+      "start": 1976.0,
+      "duration": 3.039,
+      "text": "to give away super duper secret sauce."
+    },
+    {
+      "start": 1977.76,
+      "duration": 3.12,
+      "text": "Maybe I'll give it a couple weeks and do"
+    },
+    {
+      "start": 1979.039,
+      "duration": 4.801,
+      "text": "what what you do. But I've been having a"
+    },
+    {
+      "start": 1980.88,
+      "duration": 5.279,
+      "text": "ton of success with something that I'm"
+    },
+    {
+      "start": 1983.84,
+      "duration": 4.8,
+      "text": "going to try to vaguely describe to you"
+    },
+    {
+      "start": 1986.159,
+      "duration": 4.481,
+      "text": "guys and hopefully some of you guys will"
+    },
+    {
+      "start": 1988.64,
+      "duration": 6.32,
+      "text": "really get it and and benefit from it."
+    },
+    {
+      "start": 1990.64,
+      "duration": 6.96,
+      "text": "But um Essentially, I thought about"
+    },
+    {
+      "start": 1994.96,
+      "duration": 4.64,
+      "text": "what does AI"
+    },
+    {
+      "start": 1997.6,
+      "duration": 3.76,
+      "text": "do so much differently than any other"
+    },
+    {
+      "start": 1999.6,
+      "duration": 4.559,
+      "text": "automation that we've ever had,"
+    },
+    {
+      "start": 2001.36,
+      "duration": 4.72,
+      "text": ">> right? And and"
+    },
+    {
+      "start": 2004.159,
+      "duration": 4.0,
+      "text": "what"
+    },
+    {
+      "start": 2006.08,
+      "duration": 4.24,
+      "text": "does having an actual understanding of"
+    },
+    {
+      "start": 2008.159,
+      "duration": 5.921,
+      "text": "the app and having like looking at the"
+    },
+    {
+      "start": 2010.32,
+      "duration": 6.719,
+      "text": "JS code and being able to comprehend how"
+    },
+    {
+      "start": 2014.08,
+      "duration": 4.56,
+      "text": "this application exists, you know, what"
+    },
+    {
+      "start": 2017.039,
+      "duration": 3.841,
+      "text": "benefit does that give me as far as"
+    },
+    {
+      "start": 2018.64,
+      "duration": 6.56,
+      "text": "exploitation goes? And then I've I've"
+    },
+    {
+      "start": 2020.88,
+      "duration": 6.96,
+      "text": "created a um the hackbot that focuses"
+    },
+    {
+      "start": 2025.2,
+      "duration": 4.64,
+      "text": "specifically on those areas and and"
+    },
+    {
+      "start": 2027.84,
+      "duration": 6.64,
+      "text": "attack surface that was previously very"
+    },
+    {
+      "start": 2029.84,
+      "duration": 6.88,
+      "text": "very hard to automate against. Um and I"
+    },
+    {
+      "start": 2034.48,
+      "duration": 5.28,
+      "text": "was kind of surprised because it it"
+    },
+    {
+      "start": 2036.72,
+      "duration": 6.4,
+      "text": "requires a very specific condition to be"
+    },
+    {
+      "start": 2039.76,
+      "duration": 5.519,
+      "text": "met uh that I believe the AI can meet in"
+    },
+    {
+      "start": 2043.12,
+      "duration": 3.84,
+      "text": "most cases. But I've been blown away"
+    },
+    {
+      "start": 2045.279,
+      "duration": 3.761,
+      "text": "because I've added like six apps to this"
+    },
+    {
+      "start": 2046.96,
+      "duration": 3.84,
+      "text": "and it is able to find it is able to hit"
+    },
+    {
+      "start": 2049.04,
+      "duration": 5.28,
+      "text": "that condition every time which just"
+    },
+    {
+      "start": 2050.8,
+      "duration": 5.119,
+      "text": "opens up a ton of scope for it. Um, so"
+    },
+    {
+      "start": 2054.32,
+      "duration": 3.039,
+      "text": "anyway, I know that that's vague and"
+    },
+    {
+      "start": 2055.919,
+      "duration": 3.601,
+      "text": "annoying, but maybe it'll get your"
+    },
+    {
+      "start": 2057.359,
+      "duration": 4.8,
+      "text": "brains it'll get it'll get your brains"
+    },
+    {
+      "start": 2059.52,
+      "duration": 4.319,
+      "text": "spinning, but um just think about what"
+    },
+    {
+      "start": 2062.159,
+      "duration": 4.96,
+      "text": "AI can do very differently and what"
+    },
+    {
+      "start": 2063.839,
+      "duration": 5.921,
+      "text": "understanding the app uh like from like"
+    },
+    {
+      "start": 2067.119,
+      "duration": 4.401,
+      "text": "a understanding perspective can can give"
+    },
+    {
+      "start": 2069.76,
+      "duration": 3.839,
+      "text": "you and what kind of scope that that can"
+    },
+    {
+      "start": 2071.52,
+      "duration": 4.159,
+      "text": "expand and then go after that scope"
+    },
+    {
+      "start": 2073.599,
+      "duration": 3.121,
+      "text": "because it's very fruitful right now."
+    },
+    {
+      "start": 2075.679,
+      "duration": 1.841,
+      "text": "It's very fruitful."
+    },
+    {
+      "start": 2076.72,
+      "duration": 3.04,
+      "text": ">> Nice."
+    },
+    {
+      "start": 2077.52,
+      "duration": 3.839,
+      "text": ">> Yeah. I think uh a good example of that"
+    },
+    {
+      "start": 2079.76,
+      "duration": 4.879,
+      "text": "which is not what you're talking about"
+    },
+    {
+      "start": 2081.359,
+      "duration": 5.52,
+      "text": "but is like um decompiling like Mac apps"
+    },
+    {
+      "start": 2084.639,
+      "duration": 3.841,
+      "text": "and like you know local apps and like"
+    },
+    {
+      "start": 2086.879,
+      "duration": 4.0,
+      "text": "all of that like things that like some"
+    },
+    {
+      "start": 2088.48,
+      "duration": 4.0,
+      "text": "hackers do do and can do but that these"
+    },
+    {
+      "start": 2090.879,
+      "duration": 3.04,
+      "text": "agents are like extremely good at like"
+    },
+    {
+      "start": 2092.48,
+      "duration": 3.84,
+      "text": "you know I never do that sort of thing"
+    },
+    {
+      "start": 2093.919,
+      "duration": 3.68,
+      "text": "but I've pointed at a couple apps and"
+    },
+    {
+      "start": 2096.32,
+      "duration": 2.56,
+      "text": "they it just like immediately dump"
+    },
+    {
+      "start": 2097.599,
+      "duration": 2.801,
+      "text": "source code and starts going through it"
+    },
+    {
+      "start": 2098.88,
+      "duration": 2.64,
+      "text": "and finding like secrets you know like"
+    },
+    {
+      "start": 2100.4,
+      "duration": 3.84,
+      "text": "it's really good at looking at local"
+    },
+    {
+      "start": 2101.52,
+      "duration": 4.8,
+      "text": "apps."
+    },
+    {
+      "start": 2104.24,
+      "duration": 4.0,
+      "text": ">> I I'll add one more demystifying piece."
+    },
+    {
+      "start": 2106.32,
+      "duration": 3.279,
+      "text": "This is something that a user normally"
+    },
+    {
+      "start": 2108.24,
+      "duration": 1.68,
+      "text": "gives the AI."
+    },
+    {
+      "start": 2109.599,
+      "duration": 3.441,
+      "text": ">> Yeah."
+    },
+    {
+      "start": 2109.92,
+      "duration": 6.32,
+      "text": ">> But it is actually something the AI can"
+    },
+    {
+      "start": 2113.04,
+      "duration": 4.88,
+      "text": "do itself and or"
+    },
+    {
+      "start": 2116.24,
+      "duration": 4.16,
+      "text": "um"
+    },
+    {
+      "start": 2117.92,
+      "duration": 5.04,
+      "text": "continue on indefinitely"
+    },
+    {
+      "start": 2120.4,
+      "duration": 3.84,
+      "text": "uh that the user typically provides."
+    },
+    {
+      "start": 2122.96,
+      "duration": 3.44,
+      "text": "Okay, that's it. That's your riddle."
+    },
+    {
+      "start": 2124.24,
+      "duration": 6.24,
+      "text": "Figure it out. Um let's move to the next"
+    },
+    {
+      "start": 2126.4,
+      "duration": 6.88,
+      "text": "piece here. Uh so there was a a tweet"
+    },
+    {
+      "start": 2130.48,
+      "duration": 3.76,
+      "text": "popping up um in Okay, before I hijack"
+    },
+    {
+      "start": 2133.28,
+      "duration": 2.319,
+      "text": "it, do you have anything else on the"
+    },
+    {
+      "start": 2134.24,
+      "duration": 2.48,
+      "text": "hackbot bot arena?"
+    },
+    {
+      "start": 2135.599,
+      "duration": 2.081,
+      "text": ">> Nope. Yeah, but I was moving. I was"
+    },
+    {
+      "start": 2136.72,
+      "duration": 2.8,
+      "text": "ready to move on to I actually still"
+    },
+    {
+      "start": 2137.68,
+      "duration": 3.12,
+      "text": "have another bug. Oh, we uh we skipped"
+    },
+    {
+      "start": 2139.52,
+      "duration": 3.12,
+      "text": "it. So, we'll come back."
+    },
+    {
+      "start": 2140.8,
+      "duration": 2.72,
+      "text": ">> Okay, let's go. No, no, hit me. Hit me."
+    },
+    {
+      "start": 2142.64,
+      "duration": 2.64,
+      "text": "I want that."
+    },
+    {
+      "start": 2143.52,
+      "duration": 3.839,
+      "text": ">> Cool. Yeah. Uh this is actually a"
+    },
+    {
+      "start": 2145.28,
+      "duration": 3.28,
+      "text": "program that we have a friend who runs"
+    },
+    {
+      "start": 2147.359,
+      "duration": 5.601,
+      "text": "uh which I'll just say the name and"
+    },
+    {
+      "start": 2148.56,
+      "duration": 5.44,
+      "text": "we'll just bleep it. Um but, uh"
+    },
+    {
+      "start": 2152.96,
+      "duration": 2.0,
+      "text": ">> uh you know where he works?"
+    },
+    {
+      "start": 2154.0,
+      "duration": 2.64,
+      "text": ">> Oh, yeah. Mhm."
+    },
+    {
+      "start": 2154.96,
+      "duration": 2.639,
+      "text": ">> Yeah. So, uh they don't they don't get a"
+    },
+    {
+      "start": 2156.64,
+      "duration": 3.76,
+      "text": "lot of great bugs, so they're a"
+    },
+    {
+      "start": 2157.599,
+      "duration": 6.48,
+      "text": "relatively secure company. And um"
+    },
+    {
+      "start": 2160.4,
+      "duration": 6.24,
+      "text": "anyways, this was a endpoint that for"
+    },
+    {
+      "start": 2164.079,
+      "duration": 6.481,
+      "text": "some for some reason my my hackbot found"
+    },
+    {
+      "start": 2166.64,
+      "duration": 6.719,
+      "text": "that you could use a base 64 encoded"
+    },
+    {
+      "start": 2170.56,
+      "duration": 4.799,
+      "text": "username. It it was it like it didn't"
+    },
+    {
+      "start": 2173.359,
+      "duration": 3.121,
+      "text": "give you like a traditional basic off"
+    },
+    {
+      "start": 2175.359,
+      "duration": 3.361,
+      "text": "pop-up if you went to the site or"
+    },
+    {
+      "start": 2176.48,
+      "duration": 5.04,
+      "text": "whatever. But um but it gave you like a"
+    },
+    {
+      "start": 2178.72,
+      "duration": 5.2,
+      "text": "random 401 or 403, but if you passed"
+    },
+    {
+      "start": 2181.52,
+      "duration": 5.12,
+      "text": "basic off with the username admin and"
+    },
+    {
+      "start": 2183.92,
+      "duration": 4.4,
+      "text": "any password, it it would let you in."
+    },
+    {
+      "start": 2186.64,
+      "duration": 4.56,
+      "text": "And it was like a it was like an API"
+    },
+    {
+      "start": 2188.32,
+      "duration": 5.68,
+      "text": "like a full soap waddle API and all of"
+    },
+    {
+      "start": 2191.2,
+      "duration": 4.56,
+      "text": "the endpoints worked. So uh anyways"
+    },
+    {
+      "start": 2194.0,
+      "duration": 2.56,
+      "text": "really cool crit that that the Hagbot"
+    },
+    {
+      "start": 2195.76,
+      "duration": 3.04,
+      "text": "found that I was gonna"
+    },
+    {
+      "start": 2196.56,
+      "duration": 4.08,
+      "text": ">> dude I bet it looked at that. I bet it"
+    },
+    {
+      "start": 2198.8,
+      "duration": 4.319,
+      "text": "was a 401 and I bet it looked at the"
+    },
+    {
+      "start": 2200.64,
+      "duration": 5.52,
+      "text": "like authorization header in the realm"
+    },
+    {
+      "start": 2203.119,
+      "duration": 4.561,
+      "text": "and stuff like that. H that's so Yeah,"
+    },
+    {
+      "start": 2206.16,
+      "duration": 4.959,
+      "text": "that is one thing that is a little crazy"
+    },
+    {
+      "start": 2207.68,
+      "duration": 5.919,
+      "text": "is AI does have that weird like that"
+    },
+    {
+      "start": 2211.119,
+      "duration": 3.841,
+      "text": "very clear attention to detail with it"
+    },
+    {
+      "start": 2213.599,
+      "duration": 3.281,
+      "text": "sometimes. like it's very much like,"
+    },
+    {
+      "start": 2214.96,
+      "duration": 3.6,
+      "text": "\"Oh, notice how that was a little bit"
+    },
+    {
+      "start": 2216.88,
+      "duration": 3.68,
+      "text": "different here than here.\" And I'm like,"
+    },
+    {
+      "start": 2218.56,
+      "duration": 2.32,
+      "text": "\"Oh, yeah. Mhm. Yeah, I noticed that.\""
+    },
+    {
+      "start": 2220.56,
+      "duration": 2.559,
+      "text": "You know,"
+    },
+    {
+      "start": 2220.88,
+      "duration": 4.479,
+      "text": ">> it very often looks at response headers"
+    },
+    {
+      "start": 2223.119,
+      "duration": 4.321,
+      "text": "like in ways that like I would have"
+    },
+    {
+      "start": 2225.359,
+      "duration": 3.441,
+      "text": "never noticed and like it uh catches"
+    },
+    {
+      "start": 2227.44,
+      "duration": 2.8,
+      "text": "things that I would never have noticed"
+    },
+    {
+      "start": 2228.8,
+      "duration": 2.48,
+      "text": "because of like the unique response"
+    },
+    {
+      "start": 2230.24,
+      "duration": 4.32,
+      "text": "headers."
+    },
+    {
+      "start": 2231.28,
+      "duration": 5.12,
+      "text": ">> Yeah, totally. Um, good [ __ ] dude. Nice"
+    },
+    {
+      "start": 2234.56,
+      "duration": 3.68,
+      "text": "job. Um, the one that I was going to"
+    },
+    {
+      "start": 2236.4,
+      "duration": 4.719,
+      "text": "talk about before was a tweet that we'll"
+    },
+    {
+      "start": 2238.24,
+      "duration": 4.72,
+      "text": "link in the description from uh V12 SEC"
+    },
+    {
+      "start": 2241.119,
+      "duration": 4.24,
+      "text": "entitled uh another day, another"
+    },
+    {
+      "start": 2242.96,
+      "duration": 4.72,
+      "text": "universal and a Linux LP. And there's"
+    },
+    {
+      "start": 2245.359,
+      "duration": 4.48,
+      "text": "been a couple uh crazy universal Linux"
+    },
+    {
+      "start": 2247.68,
+      "duration": 3.919,
+      "text": "LPS lately, which is really cool for"
+    },
+    {
+      "start": 2249.839,
+      "duration": 4.321,
+      "text": "like sandbox and stuff if you if you're"
+    },
+    {
+      "start": 2251.599,
+      "duration": 3.921,
+      "text": "going to go after that. Um, dirty frag"
+    },
+    {
+      "start": 2254.16,
+      "duration": 4.64,
+      "text": "and that sort of thing. Uh,"
+    },
+    {
+      "start": 2255.52,
+      "duration": 6.559,
+      "text": ">> dude, look at this beautiful video."
+    },
+    {
+      "start": 2258.8,
+      "duration": 5.039,
+      "text": ">> That's what I'm saying, dude. Like, so I"
+    },
+    {
+      "start": 2262.079,
+      "duration": 6.161,
+      "text": "guess we'll put it up on the screen. Uh,"
+    },
+    {
+      "start": 2263.839,
+      "duration": 8.081,
+      "text": "but the this video is just stunning."
+    },
+    {
+      "start": 2268.24,
+      "duration": 6.72,
+      "text": "Like it it it is smashing 192 bytes into"
+    },
+    {
+      "start": 2271.92,
+      "duration": 5.919,
+      "text": "a readonly page cache and it shows like"
+    },
+    {
+      "start": 2274.96,
+      "duration": 6.08,
+      "text": "the representation of each of you know"
+    },
+    {
+      "start": 2277.839,
+      "duration": 4.881,
+      "text": "the hex pieces of that like changing one"
+    },
+    {
+      "start": 2281.04,
+      "duration": 4.4,
+      "text": "by one as they overwrite a specific"
+    },
+    {
+      "start": 2282.72,
+      "duration": 5.28,
+      "text": "bite. And it and it's just so easy to do"
+    },
+    {
+      "start": 2285.44,
+      "duration": 4.56,
+      "text": "stuff like this now with AI. And I just"
+    },
+    {
+      "start": 2288.0,
+      "duration": 3.92,
+      "text": "want to encourage you guys like"
+    },
+    {
+      "start": 2290.0,
+      "duration": 3.76,
+      "text": "triagers, they're overwhelmed, they're"
+    },
+    {
+      "start": 2291.92,
+      "duration": 5.04,
+      "text": "stressed, they're having a bad time"
+    },
+    {
+      "start": 2293.76,
+      "duration": 5.04,
+      "text": "lately. Like give them something savory."
+    },
+    {
+      "start": 2296.96,
+      "duration": 4.159,
+      "text": "Give them something beautiful to look"
+    },
+    {
+      "start": 2298.8,
+      "duration": 3.6,
+      "text": "at, you know, when you drop your your"
+    },
+    {
+      "start": 2301.119,
+      "duration": 2.401,
+      "text": "high quality [ __ ] because you guys are"
+    },
+    {
+      "start": 2302.4,
+      "duration": 3.12,
+      "text": "the people that make the difference"
+    },
+    {
+      "start": 2303.52,
+      "duration": 3.599,
+      "text": "here, right? You guys are the ones when"
+    },
+    {
+      "start": 2305.52,
+      "duration": 3.2,
+      "text": "the triagers get to your report, they"
+    },
+    {
+      "start": 2307.119,
+      "duration": 2.881,
+      "text": "should breathe a breath of fresh air,"
+    },
+    {
+      "start": 2308.72,
+      "duration": 3.04,
+      "text": "you know? They should be like, \"Wow,"
+    },
+    {
+      "start": 2310.0,
+      "duration": 3.599,
+      "text": "this is beautifully written. This is"
+    },
+    {
+      "start": 2311.76,
+      "duration": 4.16,
+      "text": "easy to reproduce. And what a stunning"
+    },
+    {
+      "start": 2313.599,
+      "duration": 5.681,
+      "text": "bug.\" you know, and I just I just want"
+    },
+    {
+      "start": 2315.92,
+      "duration": 6.0,
+      "text": "to like commend you guys to do what V12"
+    },
+    {
+      "start": 2319.28,
+      "duration": 4.559,
+      "text": "sack does here. Prompt the AI to build"
+    },
+    {
+      "start": 2321.92,
+      "duration": 4.4,
+      "text": "something, you know, take your your"
+    },
+    {
+      "start": 2323.839,
+      "duration": 4.801,
+      "text": "scrappy little PC and build something"
+    },
+    {
+      "start": 2326.32,
+      "duration": 3.279,
+      "text": "gorgeous like this and make the triagers"
+    },
+    {
+      "start": 2328.64,
+      "duration": 2.8,
+      "text": "day because that'll make the difference"
+    },
+    {
+      "start": 2329.599,
+      "duration": 3.76,
+      "text": "in Bug Bounty right now. It really will,"
+    },
+    {
+      "start": 2331.44,
+      "duration": 3.679,
+      "text": ">> dude. Yeah. I had like I sent that video"
+    },
+    {
+      "start": 2333.359,
+      "duration": 3.121,
+      "text": "of that first bug I mentioned, the QRM"
+    },
+    {
+      "start": 2335.119,
+      "duration": 3.521,
+      "text": "injection to multiple people and the one"
+    },
+    {
+      "start": 2336.48,
+      "duration": 4.639,
+      "text": "you watched. I had so many people be"
+    },
+    {
+      "start": 2338.64,
+      "duration": 3.52,
+      "text": "like, \"This video is so good.\" And I I"
+    },
+    {
+      "start": 2341.119,
+      "duration": 2.161,
+      "text": "don't really know what made it good."
+    },
+    {
+      "start": 2342.16,
+      "duration": 2.4,
+      "text": "Maybe it was just the inflection of my"
+    },
+    {
+      "start": 2343.28,
+      "duration": 3.76,
+      "text": "voice and the excitement and me me"
+    },
+    {
+      "start": 2344.56,
+      "duration": 4.72,
+      "text": "describing or whatever, but like uh"
+    },
+    {
+      "start": 2347.04,
+      "duration": 3.36,
+      "text": ">> but yeah, and the team responded I I did"
+    },
+    {
+      "start": 2349.28,
+      "duration": 2.48,
+      "text": "send you that, but like the team"
+    },
+    {
+      "start": 2350.4,
+      "duration": 2.8,
+      "text": "responded with like, \"Hey, thank you so"
+    },
+    {
+      "start": 2351.76,
+      "duration": 3.12,
+      "text": "much. This is like the best breakdown of"
+    },
+    {
+      "start": 2353.2,
+      "duration": 3.52,
+      "text": "a bug we've ever seen, you know.\" And so"
+    },
+    {
+      "start": 2354.88,
+      "duration": 4.32,
+      "text": "I and so I do think that it makes a"
+    },
+    {
+      "start": 2356.72,
+      "duration": 4.639,
+      "text": "really big difference on the perception"
+    },
+    {
+      "start": 2359.2,
+      "duration": 4.96,
+      "text": "of your vulnerability and like you know"
+    },
+    {
+      "start": 2361.359,
+      "duration": 4.48,
+      "text": "how the team handles it like quickly and"
+    },
+    {
+      "start": 2364.16,
+      "duration": 3.76,
+      "text": "you know how how it gets triaged and all"
+    },
+    {
+      "start": 2365.839,
+      "duration": 3.841,
+      "text": "that. So yeah, Justin's not wrong and it"
+    },
+    {
+      "start": 2367.92,
+      "duration": 3.84,
+      "text": "takes so little time these days to make"
+    },
+    {
+      "start": 2369.68,
+      "duration": 3.76,
+      "text": "a really good PC with the help of AI."
+    },
+    {
+      "start": 2371.76,
+      "duration": 3.92,
+      "text": "So, you might as well do it."
+    },
+    {
+      "start": 2373.44,
+      "duration": 3.52,
+      "text": ">> Nice. Yeah, I agree. Um, you got"
+    },
+    {
+      "start": 2375.68,
+      "duration": 2.48,
+      "text": "something next or do you want to jump"
+    },
+    {
+      "start": 2376.96,
+      "duration": 2.879,
+      "text": "into the ZDI drama?"
+    },
+    {
+      "start": 2378.16,
+      "duration": 4.0,
+      "text": ">> I think I'm done. Yeah. Well, both the"
+    },
+    {
+      "start": 2379.839,
+      "duration": 4.641,
+      "text": "ZDI drama and I see you also linked to"
+    },
+    {
+      "start": 2382.16,
+      "duration": 2.64,
+      "text": "the to the GitHub security tweet that I"
+    },
+    {
+      "start": 2384.48,
+      "duration": 1.76,
+      "text": "also"
+    },
+    {
+      "start": 2384.8,
+      "duration": 5.44,
+      "text": ">> Well, so we we've got two little pieces"
+    },
+    {
+      "start": 2386.24,
+      "duration": 7.359,
+      "text": "of drama to cover next. Um, so our boy"
+    },
+    {
+      "start": 2390.24,
+      "duration": 5.2,
+      "text": "Uriotak, who uh we talked about on the"
+    },
+    {
+      "start": 2393.599,
+      "duration": 3.76,
+      "text": "pod last week for his uh amazing"
+    },
+    {
+      "start": 2395.44,
+      "duration": 2.88,
+      "text": "vulnerability with the delete directory"
+    },
+    {
+      "start": 2397.359,
+      "duration": 2.48,
+      "text": "thing,"
+    },
+    {
+      "start": 2398.32,
+      "duration": 3.519,
+      "text": ">> um tweeted out, \"Does anybody have a"
+    },
+    {
+      "start": 2399.839,
+      "duration": 3.601,
+      "text": "direct contact at ZDI? I've been trying"
+    },
+    {
+      "start": 2401.839,
+      "duration": 2.801,
+      "text": "to register for the pone to own entries"
+    },
+    {
+      "start": 2403.44,
+      "duration": 2.8,
+      "text": "for the past 3 weeks, but I haven't"
+    },
+    {
+      "start": 2404.64,
+      "duration": 3.36,
+      "text": "received a clear response. I'm going to"
+    },
+    {
+      "start": 2406.24,
+      "duration": 4.8,
+      "text": "have to cancel my flight soon. Please"
+    },
+    {
+      "start": 2408.0,
+      "duration": 5.92,
+      "text": "help me.\" essentially. and um they got"
+    },
+    {
+      "start": 2411.04,
+      "duration": 5.6,
+      "text": "back to him and as I'm sure a lot of you"
+    },
+    {
+      "start": 2413.92,
+      "duration": 4.8,
+      "text": "guys saw on Twitter, ZDI had to like cap"
+    },
+    {
+      "start": 2416.64,
+      "duration": 5.36,
+      "text": "out their competition because of so many"
+    },
+    {
+      "start": 2418.72,
+      "duration": 4.879,
+      "text": "submissions this year. Um and a lot of"
+    },
+    {
+      "start": 2422.0,
+      "duration": 3.44,
+      "text": "people just had to submit to the main"
+    },
+    {
+      "start": 2423.599,
+      "duration": 3.681,
+      "text": "program. There's probably going to be a"
+    },
+    {
+      "start": 2425.44,
+      "duration": 3.2,
+      "text": "lot of dupes. Um"
+    },
+    {
+      "start": 2427.28,
+      "duration": 4.24,
+      "text": ">> well, I think they said there's only"
+    },
+    {
+      "start": 2428.64,
+      "duration": 4.16,
+      "text": "five valid reports, right?"
+    },
+    {
+      "start": 2431.52,
+      "duration": 4.559,
+      "text": ">> Did they really?"
+    },
+    {
+      "start": 2432.8,
+      "duration": 4.88,
+      "text": ">> I was pretty sure. Well, see if you can"
+    },
+    {
+      "start": 2436.079,
+      "duration": 4.241,
+      "text": "discuss that while I'm while I'm talking"
+    },
+    {
+      "start": 2437.68,
+      "duration": 5.2,
+      "text": "about this. But um one, just really sad"
+    },
+    {
+      "start": 2440.32,
+      "duration": 4.799,
+      "text": "to see super talented researchers like"
+    },
+    {
+      "start": 2442.88,
+      "duration": 5.68,
+      "text": "uh not be able to get their stuff"
+    },
+    {
+      "start": 2445.119,
+      "duration": 5.121,
+      "text": "submitted. Two, totally crazy that Pon"
+    },
+    {
+      "start": 2448.56,
+      "duration": 3.84,
+      "text": "is maxing out. Like what kind of a world"
+    },
+    {
+      "start": 2450.24,
+      "duration": 3.52,
+      "text": "are we in right now? Uh where that is"
+    },
+    {
+      "start": 2452.4,
+      "duration": 2.719,
+      "text": "happening. Um"
+    },
+    {
+      "start": 2453.76,
+      "duration": 2.8,
+      "text": ">> Oh, they're actively tweeting in the"
+    },
+    {
+      "start": 2455.119,
+      "duration": 2.561,
+      "text": "last 30 minutes. They've tweeted a bunch"
+    },
+    {
+      "start": 2456.56,
+      "duration": 3.68,
+      "text": "of findings."
+    },
+    {
+      "start": 2457.68,
+      "duration": 3.76,
+      "text": ">> Yeah. Yeah, that's what So, um, yeah, I"
+    },
+    {
+      "start": 2460.24,
+      "duration": 3.04,
+      "text": "don't think it's just five because I"
+    },
+    {
+      "start": 2461.44,
+      "duration": 3.919,
+      "text": "mean there were a couple that that came"
+    },
+    {
+      "start": 2463.28,
+      "duration": 4.96,
+      "text": "through uh that I saw that I had in the"
+    },
+    {
+      "start": 2465.359,
+      "duration": 8.161,
+      "text": "notes for today and one of which is"
+    },
+    {
+      "start": 2468.24,
+      "duration": 9.44,
+      "text": "freaking uh dude of orange dropped a"
+    },
+    {
+      "start": 2473.52,
+      "duration": 7.92,
+      "text": "four logic bug chain to get rce on"
+    },
+    {
+      "start": 2477.68,
+      "duration": 5.76,
+      "text": "Microsoft Edge and got 175k"
+    },
+    {
+      "start": 2481.44,
+      "duration": 4.399,
+      "text": ">> without a memory corruption without a"
+    },
+    {
+      "start": 2483.44,
+      "duration": 4.399,
+      "text": "memory corruption. He pawned the browser"
+    },
+    {
+      "start": 2485.839,
+      "duration": 3.841,
+      "text": "without a memory corrupt corruption bug,"
+    },
+    {
+      "start": 2487.839,
+      "duration": 2.961,
+      "text": "dude."
+    },
+    {
+      "start": 2489.68,
+      "duration": 2.32,
+      "text": "Insane."
+    },
+    {
+      "start": 2490.8,
+      "duration": 3.44,
+      "text": ">> Insane."
+    },
+    {
+      "start": 2492.0,
+      "duration": 4.48,
+      "text": ">> Yeah. So, I just the amount of skill"
+    },
+    {
+      "start": 2494.24,
+      "duration": 5.359,
+      "text": "required to do that without any sort of"
+    },
+    {
+      "start": 2496.48,
+      "duration": 5.2,
+      "text": "like memory corruption bug is nuts. And"
+    },
+    {
+      "start": 2499.599,
+      "duration": 3.601,
+      "text": "I think Johan"
+    },
+    {
+      "start": 2501.68,
+      "duration": 4.32,
+      "text": "posted in the Discord this morning like"
+    },
+    {
+      "start": 2503.2,
+      "duration": 5.6,
+      "text": "a video that uh ZDI took of him being"
+    },
+    {
+      "start": 2506.0,
+      "duration": 5.68,
+      "text": "like, \"Yeah, I didn't um\" It was such a"
+    },
+    {
+      "start": 2508.8,
+      "duration": 4.96,
+      "text": "beast video. He was like, \"Yeah, I um I"
+    },
+    {
+      "start": 2511.68,
+      "duration": 5.28,
+      "text": "used my eyes to find this bug. not the"
+    },
+    {
+      "start": 2513.76,
+      "duration": 7.12,
+      "text": "not the AI. And I'm like, dude,"
+    },
+    {
+      "start": 2516.96,
+      "duration": 5.44,
+      "text": "you are you are crazy, dude. Um, so I've"
+    },
+    {
+      "start": 2520.88,
+      "duration": 2.4,
+      "text": "got to I've got to get I got to talk to"
+    },
+    {
+      "start": 2522.4,
+      "duration": 2.4,
+      "text": "Orange more."
+    },
+    {
+      "start": 2523.28,
+      "duration": 3.12,
+      "text": ">> I'm definitely wrong. There's so many"
+    },
+    {
+      "start": 2524.8,
+      "duration": 3.92,
+      "text": "bugs."
+    },
+    {
+      "start": 2526.4,
+      "duration": 6.24,
+      "text": ">> Yeah. Yeah. So, shout out to Orange."
+    },
+    {
+      "start": 2528.72,
+      "duration": 7.2,
+      "text": "Congrats on that. 175K, 17.5 Masters of"
+    },
+    {
+      "start": 2532.64,
+      "duration": 6.08,
+      "text": "Pone points. That's pretty sick, dude."
+    },
+    {
+      "start": 2535.92,
+      "duration": 7.6,
+      "text": "On just bugs. a as somebody who doesn't"
+    },
+    {
+      "start": 2538.72,
+      "duration": 6.56,
+      "text": "do a lot of um memory corruption, it's"
+    },
+    {
+      "start": 2543.52,
+      "duration": 3.92,
+      "text": "very encouraging to me to see him"
+    },
+    {
+      "start": 2545.28,
+      "duration": 4.799,
+      "text": "opponent browser with logic bugs."
+    },
+    {
+      "start": 2547.44,
+      "duration": 4.48,
+      "text": ">> Yeah, that's it. Um um the other one"
+    },
+    {
+      "start": 2550.079,
+      "duration": 3.361,
+      "text": "that I wanted to mention though was uh"
+    },
+    {
+      "start": 2551.92,
+      "duration": 3.84,
+      "text": "Chompy, who's another person I would"
+    },
+    {
+      "start": 2553.44,
+      "duration": 5.04,
+      "text": "love to get on the pod. She tweeted out"
+    },
+    {
+      "start": 2555.76,
+      "duration": 7.76,
+      "text": "after getting a a 50k in five masters of"
+    },
+    {
+      "start": 2558.48,
+      "duration": 7.28,
+      "text": "pone um uh exploit in envy container"
+    },
+    {
+      "start": 2563.52,
+      "duration": 4.559,
+      "text": "toolkit. She tweeted out not a bad"
+    },
+    {
+      "start": 2565.76,
+      "duration": 3.2,
+      "text": "return on one month of claude code max."
+    },
+    {
+      "start": 2568.079,
+      "duration": 2.641,
+      "text": ">> That's right. That's right."
+    },
+    {
+      "start": 2568.96,
+      "duration": 3.68,
+      "text": ">> Which is like dude"
+    },
+    {
+      "start": 2570.72,
+      "duration": 2.8,
+      "text": ">> clearly it's her skill mixed with cloud"
+    },
+    {
+      "start": 2572.64,
+      "duration": 3.04,
+      "text": "code but yes."
+    },
+    {
+      "start": 2573.52,
+      "duration": 4.24,
+      "text": ">> Yeah. Clearly clearly knowing how to"
+    },
+    {
+      "start": 2575.68,
+      "duration": 4.24,
+      "text": "direct the AI, right? Mhm."
+    },
+    {
+      "start": 2577.76,
+      "duration": 4.4,
+      "text": ">> Um, so I don't know, cool stuff"
+    },
+    {
+      "start": 2579.92,
+      "duration": 4.32,
+      "text": "happening in the Pon world. Little"
+    },
+    {
+      "start": 2582.16,
+      "duration": 4.0,
+      "text": "difficult for a lot of the people that"
+    },
+    {
+      "start": 2584.24,
+      "duration": 5.44,
+      "text": "didn't get their um, submissions"
+    },
+    {
+      "start": 2586.16,
+      "duration": 4.24,
+      "text": "accepted into the into the event, but"
+    },
+    {
+      "start": 2589.68,
+      "duration": 2.639,
+      "text": "um, yeah."
+    },
+    {
+      "start": 2590.4,
+      "duration": 4.08,
+      "text": ">> So, do they do they not get do they got"
+    },
+    {
+      "start": 2592.319,
+      "duration": 3.601,
+      "text": "get points or money if that happens"
+    },
+    {
+      "start": 2594.48,
+      "duration": 3.76,
+      "text": ">> or you can do remote? I think they"
+    },
+    {
+      "start": 2595.92,
+      "duration": 3.439,
+      "text": "submit it to the main ZDI program and"
+    },
+    {
+      "start": 2598.24,
+      "duration": 4.8,
+      "text": "they might get their submission"
+    },
+    {
+      "start": 2599.359,
+      "duration": 7.041,
+      "text": "accepted, but um you know less cool than"
+    },
+    {
+      "start": 2603.04,
+      "duration": 4.72,
+      "text": "uh having having access to the pone"
+    },
+    {
+      "start": 2606.4,
+      "duration": 2.64,
+      "text": "environment, you know."
+    },
+    {
+      "start": 2607.76,
+      "duration": 2.48,
+      "text": ">> Well, do you know if that you think"
+    },
+    {
+      "start": 2609.04,
+      "duration": 2.64,
+      "text": "there's going to be like way more"
+    },
+    {
+      "start": 2610.24,
+      "duration": 3.52,
+      "text": "findings and way more payouts this year"
+    },
+    {
+      "start": 2611.68,
+      "duration": 4.399,
+      "text": "versus any other year ever before?"
+    },
+    {
+      "start": 2613.76,
+      "duration": 3.839,
+      "text": ">> Yeah, I mean, right. I think so. I mean,"
+    },
+    {
+      "start": 2616.079,
+      "duration": 3.681,
+      "text": "look at our look at our payouts this"
+    },
+    {
+      "start": 2617.599,
+      "duration": 4.24,
+      "text": "year, dude. I feel like this has been uh"
+    },
+    {
+      "start": 2619.76,
+      "duration": 3.44,
+      "text": "a really good year already and we've got"
+    },
+    {
+      "start": 2621.839,
+      "duration": 5.041,
+      "text": "a lot in the pipeline still,"
+    },
+    {
+      "start": 2623.2,
+      "duration": 5.28,
+      "text": ">> right? So, um I I imagine that's"
+    },
+    {
+      "start": 2626.88,
+      "duration": 2.88,
+      "text": "representative of the rest of the"
+    },
+    {
+      "start": 2628.48,
+      "duration": 2.0,
+      "text": "community."
+    },
+    {
+      "start": 2629.76,
+      "duration": 2.48,
+      "text": ">> So,"
+    },
+    {
+      "start": 2630.48,
+      "duration": 3.76,
+      "text": ">> that's just sweet to see like, you know,"
+    },
+    {
+      "start": 2632.24,
+      "duration": 3.52,
+      "text": "so many bugs being mopped up. Like, you"
+    },
+    {
+      "start": 2634.24,
+      "duration": 2.64,
+      "text": "know, I I tweeted that yesterday. I was"
+    },
+    {
+      "start": 2635.76,
+      "duration": 2.72,
+      "text": "like, we're mopping up the internet one"
+    },
+    {
+      "start": 2636.88,
+      "duration": 1.92,
+      "text": "bug at a one submission at a time, you"
+    },
+    {
+      "start": 2638.48,
+      "duration": 2.32,
+      "text": "know."
+    },
+    {
+      "start": 2638.8,
+      "duration": 3.519,
+      "text": ">> Yeah, man. Yeah. So, we'll see. We'll"
+    },
+    {
+      "start": 2640.8,
+      "duration": 3.36,
+      "text": "see. I mean, it's it's definitely"
+    },
+    {
+      "start": 2642.319,
+      "duration": 3.681,
+      "text": "interesting to see where the um industry"
+    },
+    {
+      "start": 2644.16,
+      "duration": 3.439,
+      "text": "is going to go. Like I said, triagers"
+    },
+    {
+      "start": 2646.0,
+      "duration": 4.96,
+      "text": "are are burnt"
+    },
+    {
+      "start": 2647.599,
+      "duration": 5.52,
+      "text": ">> and stressed and there's a lot of really"
+    },
+    {
+      "start": 2650.96,
+      "duration": 3.52,
+      "text": "like verbose, confusing reports that"
+    },
+    {
+      "start": 2653.119,
+      "duration": 2.561,
+      "text": "they're having to deal with in mass"
+    },
+    {
+      "start": 2654.48,
+      "duration": 2.48,
+      "text": "volume."
+    },
+    {
+      "start": 2655.68,
+      "duration": 2.08,
+      "text": ">> Um,"
+    },
+    {
+      "start": 2656.96,
+      "duration": 2.159,
+      "text": ">> tricky time."
+    },
+    {
+      "start": 2657.76,
+      "duration": 3.12,
+      "text": ">> Can I just give a shout out though to"
+    },
+    {
+      "start": 2659.119,
+      "duration": 4.48,
+      "text": "Tal from Bug Crowd?"
+    },
+    {
+      "start": 2660.88,
+      "duration": 4.4,
+      "text": ">> When whenever it feels like he literally"
+    },
+    {
+      "start": 2663.599,
+      "duration": 4.881,
+      "text": "is just triaging every vulnerability"
+    },
+    {
+      "start": 2665.28,
+      "duration": 5.28,
+      "text": "that goes to Bug Crowd. Like I mean,"
+    },
+    {
+      "start": 2668.48,
+      "duration": 4.0,
+      "text": "yeah, I I assume it's a he, but it might"
+    },
+    {
+      "start": 2670.56,
+      "duration": 3.68,
+      "text": "not be, but forgive me if if not. But"
+    },
+    {
+      "start": 2672.48,
+      "duration": 3.76,
+      "text": "anyways, just like it feels like he"
+    },
+    {
+      "start": 2674.24,
+      "duration": 3.68,
+      "text": "literally triages every single"
+    },
+    {
+      "start": 2676.24,
+      "duration": 3.68,
+      "text": "vulnerability for all of Bug Crowd and"
+    },
+    {
+      "start": 2677.92,
+      "duration": 3.919,
+      "text": "he's like fast and efficient and good at"
+    },
+    {
+      "start": 2679.92,
+      "duration": 3.28,
+      "text": "his job. So anyways, yeah, that that"
+    },
+    {
+      "start": 2681.839,
+      "duration": 3.041,
+      "text": "type of skill right now is just so much"
+    },
+    {
+      "start": 2683.2,
+      "duration": 3.6,
+      "text": "more impressive, you know."
+    },
+    {
+      "start": 2684.88,
+      "duration": 4.239,
+      "text": ">> That is that is I agree. Shout out to"
+    },
+    {
+      "start": 2686.8,
+      "duration": 5.519,
+      "text": "all the triagers. You guys are you guys"
+    },
+    {
+      "start": 2689.119,
+      "duration": 5.361,
+      "text": "are going through it right now. Um,"
+    },
+    {
+      "start": 2692.319,
+      "duration": 4.241,
+      "text": "yeah, and the last one that I wanted to"
+    },
+    {
+      "start": 2694.48,
+      "duration": 3.68,
+      "text": "talk about was, uh, GitHub Security"
+    },
+    {
+      "start": 2696.56,
+      "duration": 2.96,
+      "text": "tweeted out, and I think you retweeted"
+    },
+    {
+      "start": 2698.16,
+      "duration": 4.159,
+      "text": "and we commented and had a little back"
+    },
+    {
+      "start": 2699.52,
+      "duration": 6.24,
+      "text": "and forth, but 325 bounty reports"
+    },
+    {
+      "start": 2702.319,
+      "duration": 6.721,
+      "text": "submitted, 226 hackers participated in"
+    },
+    {
+      "start": 2705.76,
+      "duration": 5.2,
+      "text": "the program, and $2,367"
+    },
+    {
+      "start": 2709.04,
+      "duration": 4.16,
+      "text": "in bounties paid out in April."
+    },
+    {
+      "start": 2710.96,
+      "duration": 6.08,
+      "text": ">> Yeah."
+    },
+    {
+      "start": 2713.2,
+      "duration": 5.84,
+      "text": ">> Yeah. So, it's has to be massive slop."
+    },
+    {
+      "start": 2717.04,
+      "duration": 4.16,
+      "text": "But the other thing is I think there's"
+    },
+    {
+      "start": 2719.04,
+      "duration": 3.52,
+      "text": "probably more valid reports in there and"
+    },
+    {
+      "start": 2721.2,
+      "duration": 3.44,
+      "text": "they are they're they are slow to get"
+    },
+    {
+      "start": 2722.56,
+      "duration": 3.759,
+      "text": "back to them and obviously GitHub has"
+    },
+    {
+      "start": 2724.64,
+      "duration": 3.6,
+      "text": "already been in the news for lots of"
+    },
+    {
+      "start": 2726.319,
+      "duration": 3.921,
+      "text": "drama around uptime and all kinds of"
+    },
+    {
+      "start": 2728.24,
+      "duration": 3.68,
+      "text": "stuff. And I mean I don't understand how"
+    },
+    {
+      "start": 2730.24,
+      "duration": 5.2,
+      "text": "they haven't started charging per"
+    },
+    {
+      "start": 2731.92,
+      "duration": 5.52,
+      "text": "repository or per data on repository for"
+    },
+    {
+      "start": 2735.44,
+      "duration": 4.48,
+      "text": "because they're basically hosting the"
+    },
+    {
+      "start": 2737.44,
+      "duration": 6.639,
+      "text": "code of the entire world, right?"
+    },
+    {
+      "start": 2739.92,
+      "duration": 6.32,
+      "text": ">> Yeah. Yeah. That's it's crazy, dude. I I"
+    },
+    {
+      "start": 2744.079,
+      "duration": 5.201,
+      "text": "don't know. I don't know. And I'm sure"
+    },
+    {
+      "start": 2746.24,
+      "duration": 5.839,
+      "text": "people are utilizing, you know, all"
+    },
+    {
+      "start": 2749.28,
+      "duration": 4.16,
+      "text": "sorts of GitHub actions for this, for"
+    },
+    {
+      "start": 2752.079,
+      "duration": 2.24,
+      "text": "that, for the other thing."
+    },
+    {
+      "start": 2753.44,
+      "duration": 3.12,
+      "text": ">> So,"
+    },
+    {
+      "start": 2754.319,
+      "duration": 4.641,
+      "text": ">> it's uh it's definitely challenging. And"
+    },
+    {
+      "start": 2756.56,
+      "duration": 4.64,
+      "text": "I think that probably the 2000 awarded"
+    },
+    {
+      "start": 2758.96,
+      "duration": 4.08,
+      "text": "here, just like you said, is not GitHub,"
+    },
+    {
+      "start": 2761.2,
+      "duration": 3.68,
+      "text": "you know, doing some crazy"
+    },
+    {
+      "start": 2763.04,
+      "duration": 3.6,
+      "text": ">> cutting of hackers, you know, ripping"
+    },
+    {
+      "start": 2764.88,
+      "duration": 4.56,
+      "text": "off hackers. It's slop"
+    },
+    {
+      "start": 2766.64,
+      "duration": 4.16,
+      "text": ">> or andor reports that they have been"
+    },
+    {
+      "start": 2769.44,
+      "duration": 3.12,
+      "text": "struggling, struggling, struggling to"
+    },
+    {
+      "start": 2770.8,
+      "duration": 2.799,
+      "text": "get through the volume and just haven't"
+    },
+    {
+      "start": 2772.56,
+      "duration": 2.96,
+      "text": "paid out yet. So,"
+    },
+    {
+      "start": 2773.599,
+      "duration": 3.041,
+      "text": ">> right. Yeah. My guess is my guess is"
+    },
+    {
+      "start": 2775.52,
+      "duration": 3.44,
+      "text": "that if you could like draw a perfect"
+    },
+    {
+      "start": 2776.64,
+      "duration": 5.76,
+      "text": "line and be omnisient and be like, \"Hey,"
+    },
+    {
+      "start": 2778.96,
+      "duration": 5.44,
+      "text": "these these 20% of or 10% of bugs that"
+    },
+    {
+      "start": 2782.4,
+      "duration": 3.12,
+      "text": "do get paid out eventually, if you could"
+    },
+    {
+      "start": 2784.4,
+      "duration": 2.4,
+      "text": "like move them from the forward back"
+    },
+    {
+      "start": 2785.52,
+      "duration": 2.799,
+      "text": "into this month where they paid the same"
+    },
+    {
+      "start": 2786.8,
+      "duration": 3.44,
+      "text": "month they were submitted, that it might"
+    },
+    {
+      "start": 2788.319,
+      "duration": 3.28,
+      "text": "be something more like 20 or 30k, right?"
+    },
+    {
+      "start": 2790.24,
+      "duration": 2.64,
+      "text": "It's not going to be some crazy number,"
+    },
+    {
+      "start": 2791.599,
+      "duration": 3.121,
+      "text": "but at the very least it would actually"
+    },
+    {
+      "start": 2792.88,
+      "duration": 3.04,
+      "text": "be like a more reasonable number like"
+    },
+    {
+      "start": 2794.72,
+      "duration": 2.399,
+      "text": "because this just feels very"
+    },
+    {
+      "start": 2795.92,
+      "duration": 3.199,
+      "text": "unreasonable.\""
+    },
+    {
+      "start": 2797.119,
+      "duration": 4.0,
+      "text": ">> I don't know, man. GitHub GitHub I mean"
+    },
+    {
+      "start": 2799.119,
+      "duration": 3.761,
+      "text": "might be more than 20 or 30. GitHub. Uh"
+    },
+    {
+      "start": 2801.119,
+      "duration": 3.521,
+      "text": "I I guess we should go back and look at"
+    },
+    {
+      "start": 2802.88,
+      "duration": 3.84,
+      "text": "what they have paid in previous months,"
+    },
+    {
+      "start": 2804.64,
+      "duration": 4.32,
+      "text": "but when I've hacked on GitHub, yeah, I"
+    },
+    {
+      "start": 2806.72,
+      "duration": 5.599,
+      "text": "mean they're paying in in March they"
+    },
+    {
+      "start": 2808.96,
+      "duration": 7.28,
+      "text": "paid 94, you know, in February 48, in"
+    },
+    {
+      "start": 2812.319,
+      "duration": 4.881,
+      "text": "January 76. So yeah, I would I would"
+    },
+    {
+      "start": 2816.24,
+      "duration": 2.24,
+      "text": "imagine"
+    },
+    {
+      "start": 2817.2,
+      "duration": 3.68,
+      "text": ">> I wonder if they just have a bunch of"
+    },
+    {
+      "start": 2818.48,
+      "duration": 4.48,
+      "text": "bounties that they uh that are ready to"
+    },
+    {
+      "start": 2820.88,
+      "duration": 3.92,
+      "text": "be paid and just didn't pay in April,"
+    },
+    {
+      "start": 2822.96,
+      "duration": 3.04,
+      "text": "you know, like they paid them on May 1st"
+    },
+    {
+      "start": 2824.8,
+      "duration": 2.96,
+      "text": "or something because of some sort of"
+    },
+    {
+      "start": 2826.0,
+      "duration": 4.24,
+      "text": "like hiccup in like the payment"
+    },
+    {
+      "start": 2827.76,
+      "duration": 5.2,
+      "text": "processing or their team or whatever."
+    },
+    {
+      "start": 2830.24,
+      "duration": 4.72,
+      "text": ">> Dude, look look at Hold on. Uh I'm about"
+    },
+    {
+      "start": 2832.96,
+      "duration": 5.119,
+      "text": "to like message you on on Discord. Look"
+    },
+    {
+      "start": 2834.96,
+      "duration": 5.2,
+      "text": "at the um look at the the tweets though"
+    },
+    {
+      "start": 2838.079,
+      "duration": 7.601,
+      "text": "cuz if we look back at at let's go back"
+    },
+    {
+      "start": 2840.16,
+      "duration": 7.6,
+      "text": "to November 162 78K 162 reports 78K 146"
+    },
+    {
+      "start": 2845.68,
+      "duration": 7.36,
+      "text": "reports 93k"
+    },
+    {
+      "start": 2847.76,
+      "duration": 6.88,
+      "text": "uh 151 reports 48k 182 reports 76k and"
+    },
+    {
+      "start": 2853.04,
+      "duration": 4.24,
+      "text": "then here comes"
+    },
+    {
+      "start": 2854.64,
+      "duration": 8.88,
+      "text": ">> here comes the hackbot problems right"
+    },
+    {
+      "start": 2857.28,
+      "duration": 8.4,
+      "text": "200 reports 48k 380 reports 94k"
+    },
+    {
+      "start": 2863.52,
+      "duration": 4.0,
+      "text": "320 reports 2K, right?"
+    },
+    {
+      "start": 2865.68,
+      "duration": 3.52,
+      "text": ">> They stop being able to keep up."
+    },
+    {
+      "start": 2867.52,
+      "duration": 3.2,
+      "text": ">> Yeah, it seems like,"
+    },
+    {
+      "start": 2869.2,
+      "duration": 3.76,
+      "text": ">> and I will say, don't you think this is"
+    },
+    {
+      "start": 2870.72,
+      "duration": 4.72,
+      "text": "both true of humans, but also true of"
+    },
+    {
+      "start": 2872.96,
+      "duration": 5.28,
+      "text": "our hackbots is like when there's really"
+    },
+    {
+      "start": 2875.44,
+      "duration": 6.72,
+      "text": "complex scope where like the boundaries"
+    },
+    {
+      "start": 2878.24,
+      "duration": 7.2,
+      "text": "for permissions are hard to know uh"
+    },
+    {
+      "start": 2882.16,
+      "duration": 5.439,
+      "text": "exactly what uh what's intended mixed"
+    },
+    {
+      "start": 2885.44,
+      "duration": 4.08,
+      "text": "with the fact that a lot of times like"
+    },
+    {
+      "start": 2887.599,
+      "duration": 3.52,
+      "text": "on like CI/CD runners and stuff like"
+    },
+    {
+      "start": 2889.52,
+      "duration": 3.92,
+      "text": "that, you might have code execution, but"
+    },
+    {
+      "start": 2891.119,
+      "duration": 4.641,
+      "text": "it's not impactful because whatever. And"
+    },
+    {
+      "start": 2893.44,
+      "duration": 4.32,
+      "text": "I bet there are a lot of uh newbies and"
+    },
+    {
+      "start": 2895.76,
+      "duration": 4.24,
+      "text": "or people using Hackbots that are like"
+    },
+    {
+      "start": 2897.76,
+      "duration": 4.079,
+      "text": "finding issues for companies that are"
+    },
+    {
+      "start": 2900.0,
+      "duration": 3.839,
+      "text": "hosting something on GitHub, but it's"
+    },
+    {
+      "start": 2901.839,
+      "duration": 3.681,
+      "text": "being reported to GitHub as a GitHub bug"
+    },
+    {
+      "start": 2903.839,
+      "duration": 3.601,
+      "text": "when it's really somebody set up a"
+    },
+    {
+      "start": 2905.52,
+      "duration": 2.319,
+      "text": "malicious runner or something, right?"
+    },
+    {
+      "start": 2907.44,
+      "duration": 0.96,
+      "text": "Like"
+    },
+    {
+      "start": 2907.839,
+      "duration": 0.961,
+      "text": ">> totally."
+    },
+    {
+      "start": 2908.4,
+      "duration": 2.8,
+      "text": ">> Yeah."
+    },
+    {
+      "start": 2908.8,
+      "duration": 3.519,
+      "text": ">> Yeah, I imagine so. And and so anyway, I"
+    },
+    {
+      "start": 2911.2,
+      "duration": 3.359,
+      "text": "just wanted to give a shout out to the"
+    },
+    {
+      "start": 2912.319,
+      "duration": 4.641,
+      "text": "GitHub team, you know, for one for the"
+    },
+    {
+      "start": 2914.559,
+      "duration": 3.841,
+      "text": "transparency, right? And hopefully you"
+    },
+    {
+      "start": 2916.96,
+      "duration": 2.639,
+      "text": "guys can hang in there because"
+    },
+    {
+      "start": 2918.4,
+      "duration": 2.719,
+      "text": ">> you know that was a painful button to"
+    },
+    {
+      "start": 2919.599,
+      "duration": 3.76,
+      "text": "push. You know, that was a painful"
+    },
+    {
+      "start": 2921.119,
+      "duration": 3.761,
+      "text": "button to push. We are going to catch"
+    },
+    {
+      "start": 2923.359,
+      "duration": 3.361,
+      "text": "flack for this tweet."
+    },
+    {
+      "start": 2924.88,
+      "duration": 5.92,
+      "text": ">> Yeah. So, shout out to them for that. I"
+    },
+    {
+      "start": 2926.72,
+      "duration": 6.48,
+      "text": "I appreciate the transparency. And yeah,"
+    },
+    {
+      "start": 2930.8,
+      "duration": 3.92,
+      "text": "my prayers go up for you because I mean,"
+    },
+    {
+      "start": 2933.2,
+      "duration": 4.08,
+      "text": "comparing some of these months, you've"
+    },
+    {
+      "start": 2934.72,
+      "duration": 5.04,
+      "text": "seen triple the reports, you know,"
+    },
+    {
+      "start": 2937.28,
+      "duration": 4.799,
+      "text": "closer to triple than double. Uh, which"
+    },
+    {
+      "start": 2939.76,
+      "duration": 4.64,
+      "text": "is just got to be really rough. Mhm."
+    },
+    {
+      "start": 2942.079,
+      "duration": 5.441,
+      "text": ">> Uh, and like we talked about before,"
+    },
+    {
+      "start": 2944.4,
+      "duration": 6.08,
+      "text": "it's not just triple the reports, it's"
+    },
+    {
+      "start": 2947.52,
+      "duration": 5.12,
+      "text": "longer reports, more more professional"
+    },
+    {
+      "start": 2950.48,
+      "duration": 2.96,
+      "text": "looking reports that are just garbage."
+    },
+    {
+      "start": 2952.64,
+      "duration": 1.439,
+      "text": "So"
+    },
+    {
+      "start": 2953.44,
+      "duration": 2.0,
+      "text": ">> sad."
+    },
+    {
+      "start": 2954.079,
+      "duration": 1.681,
+      "text": ">> Harder to weed through."
+    },
+    {
+      "start": 2955.44,
+      "duration": 2.32,
+      "text": ">> Yeah."
+    },
+    {
+      "start": 2955.76,
+      "duration": 3.92,
+      "text": ">> Yeah. Totally, man. All right. Well,"
+    },
+    {
+      "start": 2957.76,
+      "duration": 3.44,
+      "text": "that's all I had. You got anything else?"
+    },
+    {
+      "start": 2959.68,
+      "duration": 3.679,
+      "text": ">> That's all I've got."
+    },
+    {
+      "start": 2961.2,
+      "duration": 2.879,
+      "text": ">> All right. Well, keep hacking, hackers."
+    },
+    {
+      "start": 2963.359,
+      "duration": 1.841,
+      "text": "Peace."
+    },
+    {
+      "start": 2964.079,
+      "duration": 2.641,
+      "text": ">> Peace."
+    },
+    {
+      "start": 2965.2,
+      "duration": 2.96,
+      "text": ">> And that's a wrap on this episode of"
+    },
+    {
+      "start": 2966.72,
+      "duration": 3.04,
+      "text": "Critical Thinking. Thanks so much for"
+    },
+    {
+      "start": 2968.16,
+      "duration": 3.52,
+      "text": "watching to the end, y'all. If you want"
+    },
+    {
+      "start": 2969.76,
+      "duration": 3.359,
+      "text": "more critical thinking content, uh, or"
+    },
+    {
+      "start": 2971.68,
+      "duration": 3.52,
+      "text": "if you want to support the show, head"
+    },
+    {
+      "start": 2973.119,
+      "duration": 3.521,
+      "text": "over to ctvb.show/isord."
+    },
+    {
+      "start": 2975.2,
+      "duration": 2.879,
+      "text": "You can hop in the community. There's"
+    },
+    {
+      "start": 2976.64,
+      "duration": 3.28,
+      "text": "lots of great highlevel hacking"
+    },
+    {
+      "start": 2978.079,
+      "duration": 4.401,
+      "text": "discussion happening there on top of"
+    },
+    {
+      "start": 2979.92,
+      "duration": 4.639,
+      "text": "master classes, hackalongs, exclusive"
+    },
+    {
+      "start": 2982.48,
+      "duration": 3.92,
+      "text": "content, and a full-time hunter guild."
+    },
+    {
+      "start": 2984.559,
+      "duration": 3.361,
+      "text": "If you're a full-time hunter, it's a"
+    },
+    {
+      "start": 2986.4,
+      "duration": 4.76,
+      "text": "great time. Trust me. All right, I'll"
+    },
+    {
+      "start": 2987.92,
+      "duration": 3.24,
+      "text": "see you there."
+    }
+  ]
+}

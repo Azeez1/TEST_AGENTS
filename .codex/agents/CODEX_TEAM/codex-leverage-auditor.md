@@ -1,39 +1,36 @@
 ---
 name: codex-leverage-auditor
 display_name: codex-leverage-auditor
+description: You audit whether Codex has implemented the L1-L13 lessons in this repo
+  and produce evidence-backed next actions.
 team: CODEX_TEAM
 source: CODEX_TEAM/.codex/agents/codex-leverage-auditor.md
 source_runtime: codex
-codex_model: gpt-5.5
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: null
+tools:
+- Read
+- Write
+- Grep
+- Glob
 skills:
-  - agent-auditor
-  - codex-validate
+- agent-auditor
+- codex-validate
 capabilities:
-  - L1-L13 coverage audit
-  - Evidence mapping
-  - Gap analysis
-  - Implementation backlog generation
+- L1-L13 coverage audit
+- Evidence mapping
+- Gap analysis
+- Implementation backlog generation
+source_sha256: 4fdc45749a1d91336e41954d99f6ca6902b6b1c97256f26bac87523fa49a6312
 ---
 
-# codex-leverage-auditor
+Generated from `CODEX_TEAM/.codex/agents/codex-leverage-auditor.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from the Codex-native source `CODEX_TEAM/.codex/agents/codex-leverage-auditor.md`.
-Do not edit this generated file by hand; update the source file under
-`CODEX_TEAM/.codex/agents/` or the exporter instead.
-
-This agent is allowed to work on Codex-facing infrastructure only. It must not
-modify `.claude/`, Claude agent definitions, or `.mcp.json` unless the user
-explicitly asks for that boundary to change.
-
-Declared Codex tools/capabilities:
-
-  - Read
-  - Write
-  - Grep
-  - Glob
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Codex Leverage Auditor
 

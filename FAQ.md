@@ -42,7 +42,7 @@ No. Configure only the agents you plan to use.
 - Google Workspace (MARKETING email, drive, docs)
 - Perplexity (MARKETING research)
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md)
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md)
 
 ---
 
@@ -189,7 +189,7 @@ PERPLEXITY_API_KEY=pplx-your-key-here
 echo ".env" >> .gitignore
 ```
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md)
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md)
 
 ---
 
@@ -507,7 +507,7 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 - Monitor usage regularly
 - Use caching for repeated requests
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) - Cost Considerations sections
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) - Cost Considerations sections
 
 ---
 
@@ -540,7 +540,7 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 ### Where do I start?
 
 **New users:**
-1. [README.md](README.md) - Project overview
+1. [CLAUDE.md](CLAUDE.md) - Claude system overview
 2. [GETTING_STARTED.md](GETTING_STARTED.md) - 5-minute quick start
 3. [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All agents explained
 4. [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - How to use agents
@@ -556,11 +556,11 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 
 ---
 
-### What's the difference between all these README files?
+### Where are the overview and team README files?
 
 **Root level:**
-- [README.md](README.md) - Project overview
-- [claude.md](claude.md) - Repository navigation hub
+- [DOCUMENTATION.md](DOCUMENTATION.md) - Documentation index
+- [CLAUDE.md](CLAUDE.md) - Claude system overview
 
 **Team level:**
 - [MARKETING_TEAM/README.md](MARKETING_TEAM/README.md) - MARKETING agents
@@ -575,10 +575,10 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 
 ### Where is the documentation index?
 
-**Coming soon:** DOCUMENTATION.md
+See [DOCUMENTATION.md](DOCUMENTATION.md) for the current index.
 
-**For now, use:**
-- [claude.md](claude.md) - Navigation hub
+**Other entry points:**
+- [CLAUDE.md](CLAUDE.md) - Navigation hub
 - [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance docs
 - [GETTING_STARTED.md](GETTING_STARTED.md) - Setup guide
 
@@ -591,7 +591,6 @@ claude/cleanup-docs-01694mTUfmUevsSwYpgbUTQY
 1. **Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Most issues covered
 2. **Check [FAQ.md](FAQ.md)** - This document
 3. **Check agent-specific docs** - Team READMEs
-4. **Check [GLOSSARY.md](GLOSSARY.md)** - Terms and definitions
 
 ---
 
@@ -656,7 +655,7 @@ Yes, but consider:
 4. **Monitoring** - Track agent performance
 5. **Error handling** - Implement robust retry logic
 
-**See:** [API_SETUP_GUIDE.md](API_SETUP_GUIDE.md) - Security Best Practices
+**See:** [API_SETUP_GUIDE.md](MARKETING_TEAM/docs/API_SETUP_GUIDE.md) - Security Best Practices
 
 ---
 
@@ -665,7 +664,6 @@ Yes, but consider:
 **Check these resources:**
 - [GETTING_STARTED.md](GETTING_STARTED.md) - Setup guide
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debugging guide
-- [GLOSSARY.md](GLOSSARY.md) - Terms and definitions
 - [GOVERNANCE_OVERVIEW.md](docs/archive/GOVERNANCE_OVERVIEW.md) *(archived)* - Governance rules
 - [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) - All agents
 - [AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md) - Invocation patterns

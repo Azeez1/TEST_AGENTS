@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DRA Mini Framework: Requirements and Assets</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --ink: #151515;
+      --muted: #5d625f;
+      --line: #d8d8cf;
+      --panel: #ffffff;
+      --accent: #1f6f68;
+      --accent-soft: #e7f1ef;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 22px 64px;
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    h2 {
+      margin: 32px 0 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      font-size: 22px;
+    }
+    p { margin: 8px 0; }
+    .lead { color: var(--muted); font-size: 17px; }
+    .rule {
+      margin: 20px 0;
+      padding: 16px 18px;
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    code {
+      padding: 1px 5px;
+      background: #efefea;
+      border: 1px solid #dfdfd6;
+      border-radius: 4px;
+    }
+    pre {
+      margin: 12px 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 8px;
+      background: #171717;
+      color: #f4f4ef;
+      white-space: pre-wrap;
+    }
+    @media print {
+      body { background: white; }
+      main { padding: 20px; }
+      .card, .rule { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>DRA Mini Framework</h1>
+  <p class="lead">Use this before W. It helps separate non-functional requirements from assets without needing polished wording.</p>
+
+  <div class="rule">Functional means what the app must do. Non-functional means how well, safely, or reliably it must do it.</div>
+
+  <h2>Non-Functional Requirements</h2>
+  <p>Ask these six questions. Pick only the two that matter most for the product.</p>
+  <div class="grid">
+    <section class="card"><h3>How fast?</h3><p>Latency or freshness.</p></section>
+    <section class="card"><h3>How correct?</h3><p>What must never be wrong or duplicated?</p></section>
+    <section class="card"><h3>How available?</h3><p>When must the product stay usable?</p></section>
+    <section class="card"><h3>How secure?</h3><p>Who is allowed to do or see what?</p></section>
+    <section class="card"><h3>How much load?</h3><p>How many users, requests, or events must it handle?</p></section>
+    <section class="card"><h3>What cannot be lost?</h3><p>What needs durable storage?</p></section>
+  </div>
+  <p>Write each requirement in plain English:</p>
+  <pre>The system must [constraint] [thing] [within condition or time].</pre>
+  <pre>The system must show a new driver location to the recipient within a few seconds.
+The system must not attach a driver update to the wrong shipment.</pre>
+
+  <h2>Assets</h2>
+  <p>An asset is a business thing the system needs to remember. Use these five noun buckets:</p>
+  <div class="grid">
+    <section class="card"><h3>Who?</h3><p>User account, employee, driver.</p></section>
+    <section class="card"><h3>Thing?</h3><p>Document, order, shipment.</p></section>
+    <section class="card"><h3>State or change?</h3><p>Status, version, location update.</p></section>
+    <section class="card"><h3>Relationship?</h3><p>Invitation, permission, assignment.</p></section>
+    <section class="card"><h3>Evidence or history?</h3><p>Receipt, comment, approval decision, audit record.</p></section>
+  </div>
+
+  <h2>Asset or Component?</h2>
+  <pre>Business thing with fields, state, and a lifecycle? -> Asset
+Machine that stores, moves, processes, or delivers that thing? -> W component</pre>
+  <p><code>Shipment</code>, <code>bid</code>, and <code>document version</code> are assets. <code>DB</code>, <code>queue</code>, <code>cache</code>, and <code>WebSocket</code> are W components.</p>
+</main>
+</body>
+</html>

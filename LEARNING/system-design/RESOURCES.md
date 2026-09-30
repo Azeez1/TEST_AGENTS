@@ -13,6 +13,10 @@ Curated, high-trust sources. Teaching claims are grounded here, not in parametri
 
 ## Wisdom (Communities)
 
+- [Phillip Choi — _How to Become Dangerously Self Educated_](https://youtube.com/watch?v=bENRFImB-8A)
+  Saved transcript: `C:\Users\sabaa\OneDrive\Desktop\MEMORY\VAULT\System Design\How to Become Dangerously Self Educated (Complete Plan for A Developer).md`. Use for: the learning method behind reps — build/draw before feeling ready, redraw from memory, and use AI to critique reasoning instead of replacing it.
+- [Philosophical Vision — _Learn Anything So Fast It Seems Unfair_](https://youtube.com/watch?v=hHk03PBHKSA)
+  Saved transcript: `C:\Users\sabaa\OneDrive\Desktop\MEMORY\VAULT\System Design\Learn Anything So Fast It Seems Unfair — Machiavelli.md`. Use for: learning-method reinforcement only — active retrieval, principle extraction, practicing at the point of failure, and turning each miss into the next rep.
 - [r/ExperiencedDevs](https://www.reddit.com/r/ExperiencedDevs/) and [r/systemdesign](https://www.reddit.com/r/systemdesign/)
   Use for: critique of a design you've drafted, and "is this trade-off reasonable?" gut-checks from practitioners.
 - _AI/agent-architecture angle:_ EZ's own multi-agent system (67 agents, 8 teams) is a live lab. Use it as the real-world test bed where classic patterns get applied — the best "community" here is shipping and observing.

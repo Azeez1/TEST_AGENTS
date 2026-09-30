@@ -1,19 +1,15 @@
 ---
-description: Check the generated Codex sidecar manifest and local ignore rules
+description: Validate the generated Codex sidecar manifest and installed skill status.
 ---
 
 # Codex Validate
 
-Validate the generated Codex sidecar layer.
-
-Run:
+Validate the generated Codex sidecar layer:
 
 ```powershell
-$m = Get-Content .codex\manifest.json -Raw | ConvertFrom-Json
-"agents=$($m.agents.Count)"
-"skills=$($m.skills.Count)"
-$m.skills | Group-Object status | Select-Object Count,Name | Format-Table -AutoSize
-git check-ignore -v .codex\secrets.local.env .codex\runtime.local.json
+python tools/project_health.py
 ```
+
+For offline behavior and coverage, add `--tests`. Local hook dispatch and connector authentication require separate live verification.
 
 Report counts and any `missing_source` skills. Do not print secret file contents.

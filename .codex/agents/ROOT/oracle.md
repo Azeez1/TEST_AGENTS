@@ -1,45 +1,39 @@
 ---
 name: oracle
 display_name: oracle
+description: Personal knowledge base (second brain) manager — ingests sources (YouTube,
+  articles, notes) into an Obsidian-based knowledge wiki, maintains indexes and cross-references,
+  answers questions against the entire knowledge base, and runs health checks. Single
+  entry point for all knowledge operations.
 team: ROOT
 source: .claude/agents/oracle.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
-skills:[]
-capabilities:[]
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+- youtube-transcript
+- wiki-ingest
+- wiki-compile
+- wiki-query
+- wiki-lint
+skills: []
+capabilities: []
+source_sha256: d9997192ce66ab6d5e64c4ab65964146add89e56b93c04c146513dacd11ca99e
 ---
 
-# oracle
+Generated from `.claude/agents/oracle.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `.claude/agents/oracle.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
-  - youtube-transcript
-  - wiki-ingest
-  - wiki-compile
-  - wiki-query
-  - wiki-lint
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Oracle — Personal Knowledge Base Manager
 

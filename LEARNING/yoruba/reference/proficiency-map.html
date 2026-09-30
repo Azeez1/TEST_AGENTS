@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yoruba Proficiency Map</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17202a;
+      --muted: #59636f;
+      --line: #d7dee8;
+      --paper: #fbfcf8;
+      --band: #edf5f1;
+      --accent: #1e6f5c;
+      --warm: #9a5b18;
+      --cool: #345995;
+    }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 22px 60px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      letter-spacing: 0;
+    }
+    .lede {
+      margin: 0 0 28px;
+      color: var(--muted);
+      max-width: 760px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    section {
+      border-top: 4px solid var(--accent);
+      background: white;
+      padding: 18px;
+      box-shadow: 0 1px 0 var(--line);
+    }
+    section:nth-child(2n) { border-top-color: var(--cool); }
+    section:nth-child(3n) { border-top-color: var(--warm); }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    li { margin: 7px 0; }
+    .loop {
+      margin-top: 26px;
+      padding: 18px;
+      background: var(--band);
+      border-left: 5px solid var(--accent);
+    }
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    a { color: var(--cool); }
+    @media print {
+      body { background: white; }
+      main { padding: 20px; }
+      section { break-inside: avoid; box-shadow: none; border: 1px solid var(--line); border-top-width: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Yoruba Proficiency Map</h1>
+    <p class="lede">A quick reference for moving from beginner to professional Yoruba. Advance by performance: what you can do reliably with a listener, not what you have read once.</p>
+
+    <div class="grid">
+      <section>
+        <h2>1. Sound</h2>
+        <ul>
+          <li>Hear high, mid, and low tone.</li>
+          <li>Produce oral and nasal vowels.</li>
+          <li>Use ẹ, ọ, ṣ, gb, and p accurately.</li>
+          <li>Record speech and accept correction.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>2. Survival</h2>
+        <ul>
+          <li>Greet by time, age, and respect context.</li>
+          <li>Introduce yourself and ask basic questions.</li>
+          <li>Use repair phrases before switching to English.</li>
+          <li>Hold a 3-minute beginner conversation.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>3. Sentence Engine</h2>
+        <ul>
+          <li>Create original statements, questions, and negatives.</li>
+          <li>Talk about time, place, possession, and sequence.</li>
+          <li>Describe a day, a past event, and a future plan.</li>
+          <li>Correct repeated errors from your log.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>4. Everyday Domains</h2>
+        <ul>
+          <li>Handle family, food, market, travel, home, work, and health contexts.</li>
+          <li>Ask follow-up questions naturally.</li>
+          <li>Summarize simple dialogues and stories.</li>
+          <li>Speak without a script in five common situations.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>5. Literacy And Culture</h2>
+        <ul>
+          <li>Read tone-marked texts aloud.</li>
+          <li>Write connected paragraphs with diacritics.</li>
+          <li>Understand names, titles, greetings, and respect forms.</li>
+          <li>Explain social meaning, not just literal translation.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>6. Professional Domain</h2>
+        <ul>
+          <li>Pick one domain first: family, work, culture, religion, media, or literacy.</li>
+          <li>Build a domain glossary and scripts.</li>
+          <li>Practice role-plays with a native speaker.</li>
+          <li>Perform three real tasks in Yoruba.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="loop">
+      <h2>Daily Loop</h2>
+      <p>Ear, mouth, memory, sentence engine, input, output. A study day only counts when you produce Yoruba by speaking or writing.</p>
+      <p class="small">Core sources: <a href="https://coerll.utexas.edu/yemi/">Yorùbá Yé Mi</a>, <a href="https://www.fsi-language-courses.org/fsi-yoruba-basic-course/">FSI Yoruba Basic Course</a>, <a href="https://www.actfl.org/proficiency-guidelines-overview">ACTFL Proficiency Guidelines</a>.</p>
+    </div>
+  </main>
+</body>
+</html>

@@ -15,6 +15,7 @@ capabilities:
   - Hook wiring
   - Local automation setup
   - Runtime validation
+description: "You maintain Codex MCP setup, hooks, local automation, and deterministic gates."
 ---
 
 # Codex MCP Hooks Engineer

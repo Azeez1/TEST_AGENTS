@@ -8,13 +8,10 @@ description: Validate the generated Codex sidecar manifest and installed skill s
 Validate the generated Codex sidecar layer:
 
 ```powershell
-$m = Get-Content .codex\manifest.json -Raw | ConvertFrom-Json
-"agents=$($m.agents.Count)"
-"skills=$($m.skills.Count)"
-$m.skills | Group-Object status | Select-Object Count,Name | Format-Table -AutoSize
-git check-ignore -v .codex\secrets.local.env .codex\runtime.local.json
-git check-ignore -v .codex\config.toml .codex\mcp.generated.toml
+python tools/project_health.py
 ```
+
+For offline behavior and coverage, add `--tests`. Local hook dispatch and connector authentication require separate live verification.
 
 Report counts and any `missing_source` skills. Do not print secret file contents.
 

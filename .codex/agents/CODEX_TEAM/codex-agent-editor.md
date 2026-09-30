@@ -1,39 +1,36 @@
 ---
 name: codex-agent-editor
 display_name: codex-agent-editor
+description: You edit Codex-native agent source files and generated-agent guidance
+  patterns. You make agents narrower, clearer, and easier to route.
 team: CODEX_TEAM
 source: CODEX_TEAM/.codex/agents/codex-agent-editor.md
 source_runtime: codex
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: null
+tools:
+- Read
+- Write
+- Edit
+- Grep
+- Glob
 skills:
-  - codex-sync
+- codex-sync
 capabilities:
-  - Codex agent definition editing
-  - Specialist scope cleanup
-  - Agent instruction quality control
-  - Domain boundary enforcement
+- Codex agent definition editing
+- Specialist scope cleanup
+- Agent instruction quality control
+- Domain boundary enforcement
+source_sha256: 3ca35af6bb925a769fee695af4f0a983ef54614b52a55fb4380dd7e77c44f789
 ---
 
-# codex-agent-editor
+Generated from `CODEX_TEAM/.codex/agents/codex-agent-editor.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from the Codex-native source `CODEX_TEAM/.codex/agents/codex-agent-editor.md`.
-Do not edit this generated file by hand; update the source file under
-`CODEX_TEAM/.codex/agents/` or the exporter instead.
-
-This agent is allowed to work on Codex-facing infrastructure only. It must not
-modify `.claude/`, Claude agent definitions, or `.mcp.json` unless the user
-explicitly asks for that boundary to change.
-
-Declared Codex tools/capabilities:
-
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Codex Agent Editor
 

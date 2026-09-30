@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python syntax 01: for loops</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f7fb; color: #15233a; }
+    body { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; line-height: 1.55; }
+    main { background: white; padding: 28px; border: 1px solid #dce4ed; border-radius: 16px; box-shadow: 0 8px 28px #1020300b; }
+    h1 { line-height: 1.15; margin-top: 0; }
+    h2 { margin-top: 32px; }
+    .eyebrow { color: #146b70; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    pre { background: #101d30; color: #e8f4ff; padding: 16px; border-radius: 10px; overflow-x: auto; }
+    .task { background: #e9f7f4; border-left: 4px solid #14846f; padding: 14px 18px; border-radius: 8px; }
+    a { color: #075c91; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">FDE Python prep · syntax 01 · about 5 minutes</p>
+  <h1>Tell Python to visit each character</h1>
+  <p><strong>The basic fact:</strong> a string is a sequence of characters. A <code>for</code> loop takes one character at a time from that sequence and gives it a temporary name.</p>
+  <pre><code>word = "cat"
+for letter in word:
+    print(letter)</code></pre>
+  <p>This prints <code>c</code>, then <code>a</code>, then <code>t</code>. Each time through the loop, <code>letter</code> refers to the current character. The colon starts the loop body; the indented line is repeated.</p>
+  <p>If you only need the characters, this is enough. Later, when you need their positions, you can use indices and <code>range()</code>. See the <a href="https://docs.python.org/3/tutorial/controlflow.html#for-statements">official Python tutorial</a>.</p>
+  <h2>Your turn</h2>
+  <div class="task">
+    <p>From memory, write a loop that prints each character of <code>s = "dog"</code>. Do it in chat or a plain editor with autocomplete off. Then explain what the loop variable means after each pass.</p>
+  </div>
+  <p>Send your attempt to your tutor for feedback before moving to the next syntax piece.</p>
+</main>
+</body>
+</html>

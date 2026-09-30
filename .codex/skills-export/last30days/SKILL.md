@@ -81,6 +81,33 @@ echo "Edit to add your API keys for enhanced research."
 
 ## Research Execution
 
+### Completion and credential checks
+
+Resolve `scripts/last30days.py` relative to this loaded skill's directory.
+On Windows, use the working `python` executable if `python3` is an App
+Execution Alias. Do not assume another installation exists at a hard-coded path.
+
+- Preserve the full command result, including its running session or task ID.
+  Startup progress is not completion. If a session ID is returned, poll that
+  same session until an exit code and final report arrive. A wrapper finishing
+  does not mean its child command finished. Do not start a duplicate run.
+- In Codex, return the complete `exec_command` result (not only `.output`)
+  from orchestration, then use `write_stdin` with its `session_id`.
+  A `functions.exec` cell ID is separate: resume it with `functions.wait`
+  first, then inspect the nested command result for a remaining session ID.
+  In Claude, use the returned background task handle with TaskOutput.
+- Do not declare keys missing from a quiet run or from reading loader code.
+  Check `lib.env.get_config()` and `get_available_sources()` in the actual
+  runner environment; print only presence booleans and source mode.
+  Existing credentials live in `~/.config/last30days/.env`; environment
+  variables take precedence. Never overwrite that file with a blank template.
+- A mock run only tests fixtures. It does not verify credentials or live
+  research; old fixtures may all be filtered out by the current date range.
+- Before synthesis, check exit status, report topic/date, mode, and per-source
+  errors. Missing engagement counts are unknown, not zero. Report partial
+  coverage explicitly; do not claim all sources or agents succeeded unless
+  the observed results support it.
+
 **IMPORTANT: The script handles API key detection automatically.** Run it and check the output to determine mode.
 
 **Step 1: Run the research script**

@@ -10,6 +10,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from tools.runtime_events import parse_event, is_shell_tool, is_write_tool
 
 PROTECTED_FILE_NAMES = {
     "claude.md",
@@ -33,7 +35,7 @@ def normalize_path(value: str) -> Path | None:
     expanded = value.strip().strip('"').strip("'")
     if not expanded:
         return None
-    path = Path(expanded)
+    path = Path(expanded.replace("\\", "/"))
     if not path.is_absolute():
         path = ROOT / path
     try:
@@ -110,11 +112,13 @@ def main() -> None:
     except json.JSONDecodeError:
         sys.exit(0)
 
-    tool_name = str(payload.get("tool_name") or payload.get("tool") or "")
-    raw_tool_input = payload.get("tool_input") or payload.get("input") or {}
-    tool_input = raw_tool_input
-    if not isinstance(tool_input, dict):
-        tool_input = {}
+    try:
+        event = parse_event(payload)
+    except ValueError:
+        sys.exit(0)
+    tool_name = event.name
+    raw_tool_input = event.raw_input
+    tool_input = event.arguments
 
     write_like_tools = {
         "write",
@@ -134,7 +138,7 @@ def main() -> None:
 
     normalized_tool = tool_name.lower()
 
-    if normalized_tool in write_like_tools or any(key in normalized_tool for key in ("write", "edit", "patch")):
+    if is_write_tool(normalized_tool):
         if isinstance(raw_tool_input, str) and command_mentions_protected_path(raw_tool_input):
             block(
                 "Blocked by Codex Claude-boundary gate: patch/edit payload targets "
@@ -150,6 +154,8 @@ def main() -> None:
                 )
 
         for value in iter_strings(tool_input):
+            if "*** " in value and command_mentions_protected_path(value):
+                block("Blocked by Codex Claude-boundary gate: patch targets Claude-owned infrastructure.")
             path = normalize_path(value)
             if path and is_protected_path(path):
                 block(
@@ -157,8 +163,8 @@ def main() -> None:
                     f"Claude-owned path `{path}`."
                 )
 
-    if normalized_tool in shell_like_tools or "shell" in normalized_tool or "bash" in normalized_tool:
-        command = str(tool_input.get("command") or "")
+    if is_shell_tool(normalized_tool):
+        command = event.command
         if command and command_mentions_protected_path(command) and MUTATING_SHELL_PATTERNS.search(command):
             block(
                 "Blocked by Codex Claude-boundary gate: shell command appears to mutate "

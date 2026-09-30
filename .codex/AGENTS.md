@@ -7,6 +7,7 @@ This directory is generated from Claude-first sources plus Codex-native sources 
 
 ## Runtime Rules
 
+- Read `.codex/runtime-contract.md` once per task; preserve the active model and use one owner by default.
 - Load agent instructions from `.codex/agents/<team>/<agent>.md`.
 - Load exported skills from `.codex/skills-export/<skill>/SKILL.md` when no native Codex skill exists.
 - Use Codex-native tools/connectors first when available.

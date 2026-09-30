@@ -1,6 +1,6 @@
 ---
 name: "youtube-transcript"
-description: ">"
+description: "Scrape YouTube video transcripts and save them as structured Obsidian notes with YAML frontmatter, timestamps, and metadata. Use when the user wants to capture a YouTube video transcript, save video notes to Obsidian, or batch-process YouTube playlists/channels into their vault. Supports single videos, playlists, and full channel ingestion with smart selection (top-viewed, most-recent, longest, or a --smart-150 preset) so you can synthesize a creator's body of work without watching every video. Pair with wiki-ingest + wiki-compile to auto-extract repeated concepts across a creator's catalog."
 ---
 
 # YouTube Transcript → Obsidian Skill

@@ -23,6 +23,9 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO))
+from tools.workspace_registry import load_registry, discover_agents
+from scripts.export_codex_layer import parse_frontmatter
 
 # Built-in Claude Code tools that are always valid in a tools: list.
 CORE_TOOLS = {
@@ -32,10 +35,8 @@ CORE_TOOLS = {
     "ListMcpResourcesTool", "ReadMcpResourceTool",
 }
 
-TEAM_DIRS = [
-    "MARKETING_TEAM", "ENGINEERING_TEAM", "FINANCIAL_TEAM", "SALES_TEAM",
-    "QA_TEAM", "VOICE_TEAM", "PROPOSAL_TEAM", "HEDGE_FUND",
-]
+TEAM_DIRS = [name for name,cfg in load_registry()["teams"].items()
+             if cfg["runtime"] == "claude" and name != "ROOT"]
 
 # MCP servers that connect at session level (extensions, /chrome) and are
 # legitimately absent from .mcp.json.
@@ -44,6 +45,9 @@ SESSION_SERVERS = {"claude-in-chrome"}
 
 def load_mcp_servers():
     """Return {server_name: enabled_bool} from .mcp.json (never expose env values)."""
+    if "--local" not in sys.argv:
+        catalog = json.loads((REPO / "config/integrations.json").read_text(encoding="utf-8"))
+        return {name: True for name in catalog["servers"]}
     mcp_path = REPO / ".mcp.json"
     if not mcp_path.exists():
         return {}
@@ -73,28 +77,14 @@ def python_tool_exists(name: str, team: str | None) -> bool:
 
 def parse_frontmatter_lists(text: str):
     """Return (name_value, tools_list, skills_list) from YAML frontmatter."""
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "---":
-        return None, [], []
-    name_val, tools, skills = None, [], []
-    current_key = None
-    for line in lines[1:]:
-        if line.strip() == "---":
-            break
-        top = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(.*)$", line)
-        if top:
-            key, inline = top.group(1), top.group(2).strip()
-            current_key = key
-            if key == "name":
-                name_val = inline
-            # inline empty list form: `skills: []`
-            if key in ("tools", "skills") and inline in ("[]", ""):
-                continue
-        elif current_key in ("tools", "skills"):
-            item = re.match(r"^\s+-\s+(.+?)\s*$", line)
-            if item:
-                (tools if current_key == "tools" else skills).append(item.group(1))
-    return name_val, tools, skills
+    header, _ = parse_frontmatter(text)
+    values = []
+    for key in ("tools", "skills"):
+        entries = header.get(key, [])
+        if not isinstance(entries, list) or not all(isinstance(x, str) for x in entries):
+            raise ValueError(f"{key} must be a list of strings")
+        values.append(entries)
+    return header.get("name"), *values
 
 
 def classify_and_check(entry: str, team: str | None, servers: dict) -> str | None:
@@ -165,7 +155,7 @@ def main():
             violations[str(path.relative_to(REPO))] = problems
 
     if "--json" in sys.argv:
-        print(json.dumps({"agents_scanned": len(agent_files), "violations": violations}, indent=2))
+        print(json.dumps({"agents_scanned": len(agent_files), "violations": violations, "scope": "Static declarations; runtime availability is unverified", "integration_source": "local MCP config" if "--local" in sys.argv else "tracked integration catalog"}, indent=2))
     else:
         print(f"Scanned {len(agent_files)} agent files against {len(servers)} MCP servers.")
         if not violations:

@@ -1,41 +1,37 @@
 ---
 name: voice-email-validator
 display_name: voice-email-validator
+description: Independent reviewer subagent that validates a VOICE_TEAM intake-summary
+  email intent BEFORE it's dispatched via mcp__google-workspace__send_gmail_message.
+  Reads the email intent JSON file from outputs/emails/, scores it against white-label
+  + structural rules, returns approve/reject. Read-only by design — cannot modify
+  the intent.
 team: VOICE_TEAM
 source: VOICE_TEAM/.claude/agents/voice-email-validator.md
 source_runtime: claude
-codex_model: gpt-5.4
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
 claude_model: claude-haiku-4-5-20251001
-skills:[]
+tools:
+- Read
+- Grep
+- Glob
+skills: []
 capabilities:
-  - Read a single email intent file from VOICE_TEAM/outputs/emails/
-  - Validate against white-label rules (no vendor names) and structural rules (required sections, subject prefix)
-  - Return a structured verdict: APPROVE / REJECT with reasons
-  - Suggest exact text changes to fix rejections
+- Read a single email intent file from VOICE_TEAM/outputs/emails/
+- Validate against white-label rules (no vendor names) and structural rules (required
+  sections, subject prefix)
+- 'Return a structured verdict: APPROVE / REJECT with reasons'
+- Suggest exact text changes to fix rejections
+source_sha256: 10faac52dda452830f61cc36e576a03969724f961f1665aa26c080866c9ebea9
 ---
 
-# voice-email-validator
+Generated from `VOICE_TEAM/.claude/agents/voice-email-validator.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `VOICE_TEAM/.claude/agents/voice-email-validator.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - Read
-  - Grep
-  - Glob
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Voice Email Validator Agent
 

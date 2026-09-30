@@ -765,13 +765,9 @@ Used By:
 - **[TOOL_REGISTRY.md](TOOL_REGISTRY.md)** - Complete inventory (check for existing tools/skills)
 - **[TOOL_USAGE_POLICY.md](TOOL_USAGE_POLICY.md)** - Priority hierarchy (MCP → Skill → Tool)
 - **[PRE_FLIGHT_CHECKS.md](PRE_FLIGHT_CHECKS.md)** - Mandatory pre-creation checklist
-- **[TOOL_AUDITOR_CHECKLIST.md](TOOL_AUDITOR_CHECKLIST.md)** - Quarterly audit workflow
-- **[TOOL_CLEANUP_WORKFLOW.md](TOOL_CLEANUP_WORKFLOW.md)** - Deprecation process
-- **[GOVERNANCE_METRICS.md](GOVERNANCE_METRICS.md)** - Success tracking
-
----
-
-**Last Audit:** Not yet conducted (first audit scheduled for 2025-12-03)
+- `TOOL_AUDITOR_CHECKLIST.md` *(planned)* - Quarterly audit workflow
+- `TOOL_CLEANUP_WORKFLOW.md` *(planned)* - Deprecation process
+- `GOVERNANCE_METRICS.md` *(planned)* - Success tracking
 
 ---
 

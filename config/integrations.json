@@ -1,0 +1,15 @@
+{
+  "schema": "test-agents/integrations/v1",
+  "verification": "declarations_only",
+  "servers": [
+    "bright-data",
+    "claude-in-chrome",
+    "google-workspace",
+    "marketing-tools",
+    "n8n-mcp",
+    "perplexity",
+    "playwright",
+    "sequential-thinking"
+  ],
+  "note": "Names used by source definitions, not proof of a configured or callable server. Verify against current session tools before execution."
+}

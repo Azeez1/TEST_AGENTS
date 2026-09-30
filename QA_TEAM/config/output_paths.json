@@ -1,0 +1,12 @@
+{
+  "marketing": "QA_TEAM/tests/marketing",
+  "engineering": "QA_TEAM/tests/engineering",
+  "qa": "QA_TEAM/tests/qa",
+  "integration": "QA_TEAM/tests/integration",
+  "unit": "QA_TEAM/tests/unit",
+  "edge_cases": "QA_TEAM/tests/edge_cases",
+  "user_story": "QA_TEAM/tests/user_story",
+  "financial": "QA_TEAM/tests/financial",
+  "sales": "QA_TEAM/tests/sales",
+  "proposal": "QA_TEAM/tests/proposal"
+}

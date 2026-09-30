@@ -17,6 +17,8 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from tools.runtime_events import parse_event, is_shell_tool, is_write_tool
 HOOK_DIR = Path(__file__).resolve().parent
 LOG_DIR = Path.home() / ".codex" / "test_agents_hooks"
 LOG = LOG_DIR / "codex-enforcement.log"
@@ -204,13 +206,11 @@ def normalize_tool(tool: str) -> str:
 
 
 def is_shell(tool: str) -> bool:
-    normalized = normalize_tool(tool)
-    return normalized in SHELL_TOOLS or any(key in normalized for key in ("shell", "bash", "command", "exec"))
+    return is_shell_tool(tool)
 
 
 def is_write(tool: str) -> bool:
-    normalized = normalize_tool(tool)
-    return normalized in WRITE_TOOLS or any(key in normalized for key in ("write", "edit", "patch", "notebook"))
+    return is_write_tool(tool)
 
 
 def is_gmail_send(tool: str) -> bool:
@@ -508,7 +508,7 @@ def enforce_financial_approval(tool: str, raw_input: Any, command: str, blob: st
 
 
 def extract_command(raw_input: Any, tool_input: dict[str, Any]) -> str:
-    command = str(tool_input.get("command") or "")
+    command = str(tool_input.get("cmd") or tool_input.get("command") or "")
     if not command and isinstance(raw_input, str):
         command = raw_input
     if not command:
@@ -523,13 +523,10 @@ def main() -> None:
         sys.exit(0)
 
     try:
-        tool = str(payload.get("tool_name") or payload.get("tool") or "")
-        raw_input = payload.get("tool_input")
-        if raw_input is None:
-            raw_input = payload.get("input") or {}
-        tool_input = raw_input if isinstance(raw_input, dict) else {}
+        event = parse_event(payload)
+        tool, raw_input, tool_input = event.name, event.raw_input, event.arguments
         blob = json.dumps(raw_input, default=str)
-        command = extract_command(raw_input, tool_input)
+        command = event.command
 
         def has_token(token: str) -> bool:
             return token in blob

@@ -1,6 +1,6 @@
 ---
 name: "wiki-compile"
-description: ">"
+description: "Full wiki compilation: rebuild indexes, generate concept pages from extracted concepts, create and validate backlinks, update the concept map, and ensure consistency across all wiki articles. Use when the user says \"compile\", \"rebuild\", \"reindex\", \"update wiki\", or after running /wiki-ingest on new data."
 ---
 
 # Wiki Compile — Rebuild, Link, and Organize

@@ -1,40 +1,37 @@
 ---
 name: codex-mcp-hooks-engineer
 display_name: codex-mcp-hooks-engineer
+description: You maintain Codex MCP setup, hooks, local automation, and deterministic
+  gates.
 team: CODEX_TEAM
 source: CODEX_TEAM/.codex/agents/codex-mcp-hooks-engineer.md
 source_runtime: codex
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: null
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
 skills:
-  - codex-sync-mcps
+- codex-sync-mcps
 capabilities:
-  - Codex MCP configuration
-  - Hook wiring
-  - Local automation setup
-  - Runtime validation
+- Codex MCP configuration
+- Hook wiring
+- Local automation setup
+- Runtime validation
+source_sha256: dc375ec3fa176cc313688e9f210acf86668ccc6618c4c79b228255e95be5096b
 ---
 
-# codex-mcp-hooks-engineer
+Generated from `CODEX_TEAM/.codex/agents/codex-mcp-hooks-engineer.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from the Codex-native source `CODEX_TEAM/.codex/agents/codex-mcp-hooks-engineer.md`.
-Do not edit this generated file by hand; update the source file under
-`CODEX_TEAM/.codex/agents/` or the exporter instead.
-
-This agent is allowed to work on Codex-facing infrastructure only. It must not
-modify `.claude/`, Claude agent definitions, or `.mcp.json` unless the user
-explicitly asks for that boundary to change.
-
-Declared Codex tools/capabilities:
-
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Codex MCP Hooks Engineer
 

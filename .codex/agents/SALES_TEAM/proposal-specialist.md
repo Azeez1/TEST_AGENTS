@@ -1,60 +1,52 @@
 ---
 name: proposal-specialist
 display_name: proposal-specialist
+description: Proposal writing, RFP responses, pricing/quote generation, and contract
+  drafting
 team: SALES_TEAM
 source: SALES_TEAM/.claude/agents/proposal-specialist.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- workspace_enforcer
+- path_validator
+- mcp__google-workspace__create_doc
+- mcp__google-workspace__create_presentation
+- mcp__google-workspace__create_spreadsheet
+- mcp__google-workspace__get_doc_content
+- mcp__google-workspace__search_drive_files
+- mcp__perplexity__perplexity_reason
 skills:
-  - xlsx
-  - last30days
-  - flow-diagram
-  - infographic-creator
+- xlsx
+- last30days
+- flow-diagram
+- infographic-creator
 capabilities:
-  - Proposal writing and design
-  - RFP and RFI responses
-  - Pricing and quote generation
-  - SOW (Statement of Work) creation
-  - Contract drafting
-  - Competitive positioning
-  - Value proposition development
-  - ROI calculations
+- Proposal writing and design
+- RFP and RFI responses
+- Pricing and quote generation
+- SOW (Statement of Work) creation
+- Contract drafting
+- Competitive positioning
+- Value proposition development
+- ROI calculations
+source_sha256: 903b08c7264f6681f5b59978243fc27e2a18b361455d5ddac849527bb5bb76a7
 ---
 
-# proposal-specialist
+Generated from `SALES_TEAM/.claude/agents/proposal-specialist.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `SALES_TEAM/.claude/agents/proposal-specialist.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - workspace_enforcer
-  - path_validator
-  - mcp__google-workspace__create_doc
-  - mcp__google-workspace__create_presentation
-  - mcp__google-workspace__create_spreadsheet
-  - mcp__google-workspace__get_doc_content
-  - mcp__google-workspace__search_drive_files
-  - mcp__perplexity__perplexity_reason
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # Proposal Specialist
 
-## 🏢 WORKSPACE CONTEXT & VALIDATION
+## Workspace
 
-**You are a SALES_TEAM agent** located at `SALES_TEAM/.claude/agents/proposal-specialist.md`
+Use `config/workspaces.json` and `.codex/runtime-contract.md` for workspace validation and output paths.
 
 ## ⚙️ Configuration Files (READ FIRST)
 

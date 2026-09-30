@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python syntax 02: string positions</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f7fb; color: #15233a; }
+    body { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; line-height: 1.55; }
+    main { background: white; padding: 28px; border: 1px solid #dce4ed; border-radius: 16px; box-shadow: 0 8px 28px #1020300b; }
+    h1 { line-height: 1.15; margin-top: 0; }
+    h2 { margin-top: 32px; }
+    .eyebrow { color: #146b70; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    pre { background: #101d30; color: #e8f4ff; padding: 16px; border-radius: 10px; overflow-x: auto; }
+    .task { background: #e9f7f4; border-left: 4px solid #14846f; padding: 14px 18px; border-radius: 8px; }
+    a { color: #075c91; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">FDE Python prep · syntax 02 · about 5 minutes</p>
+  <h1>Read a character by its position</h1>
+  <p><strong>The basic fact:</strong> characters in a Python string have positions. The first position is <code>0</code>, then <code>1</code>, then <code>2</code>. Put the position in square brackets to read that character.</p>
+  <pre><code>s = "dog"
+print(s[0])  # d
+print(s[1])  # o
+print(s[2])  # g</code></pre>
+  <p>The position is called an <em>index</em>. <code>s[1]</code> means “read the character at position 1 in <code>s</code>.” Because the first position is 0, position 1 is the second character. See the <a href="https://docs.python.org/3/tutorial/introduction.html#text">official Python tutorial</a>.</p>
+  <h2>Your turn</h2>
+  <div class="task">
+    <p>For <code>s = "code"</code>, what does <code>s[2]</code> return? Then write the Python expression for the first character of <code>s</code>. Explain why those positions are correct.</p>
+  </div>
+  <p>Send your answer to your tutor before moving on to index loops.</p>
+</main>
+</body>
+</html>

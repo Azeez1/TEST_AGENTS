@@ -1,0 +1,9 @@
+inbox/*
+!inbox/.gitkeep
+outputs/*
+!outputs/analyses/
+!outputs/tests/
+outputs/analyses/*
+outputs/tests/*
+!outputs/analyses/.gitkeep
+!outputs/tests/.gitkeep

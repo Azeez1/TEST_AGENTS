@@ -1,0 +1,15 @@
+{
+  "ai": "ENGINEERING_TEAM/outputs/ai",
+  "backend": "ENGINEERING_TEAM/outputs/backend",
+  "database": "ENGINEERING_TEAM/outputs/database",
+  "debugging": "ENGINEERING_TEAM/outputs/debugging",
+  "design": "ENGINEERING_TEAM/outputs/design",
+  "diagrams": "ENGINEERING_TEAM/outputs/diagrams",
+  "docker": "ENGINEERING_TEAM/outputs/docker",
+  "frontend": "ENGINEERING_TEAM/outputs/frontend",
+  "optimization": "ENGINEERING_TEAM/outputs/optimization",
+  "quality": "ENGINEERING_TEAM/outputs/quality",
+  "security": "ENGINEERING_TEAM/outputs/security",
+  "specs": "ENGINEERING_TEAM/outputs/specs",
+  "testing": "ENGINEERING_TEAM/outputs/testing"
+}

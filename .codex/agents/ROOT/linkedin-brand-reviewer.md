@@ -1,37 +1,31 @@
 ---
 name: linkedin-brand-reviewer
 display_name: linkedin-brand-reviewer
+description: Independent reviewer subagent that scores a draft LinkedIn post against
+  Dux Machina brand voice rules and structural requirements. Returns a structured
+  verdict as its final message. Read-only by design — cannot modify the post being
+  reviewed.
 team: ROOT
 source: .claude/agents/linkedin-brand-reviewer.md
 source_runtime: claude
-codex_model: gpt-5.4
-claude_model: 
-skills:[]
-capabilities:[]
+model_policy: inherit_session_unless_user_selects
+codex_model: inherit
+claude_model: None
+tools:
+- Read
+- Grep
+- Glob
+skills: []
+capabilities: []
+source_sha256: 5f61e5620809d20fa1567a30a10c5e53e83d4459d8ff2c4048d4463303c5202c
 ---
 
-# linkedin-brand-reviewer
+Generated from `.claude/agents/linkedin-brand-reviewer.md`. Edit the source or exporter.
 
-## Codex Runtime Notes
-
-This file is generated for Codex from `.claude/agents/linkedin-brand-reviewer.md`. Do not edit it by hand;
-update the Claude source or the exporter instead.
-
-Codex does not receive Claude Code MCP tools or Claude runtime skill bindings
-directly. Treat Claude `tools:` and `skills:` as capability documentation unless
-a matching Codex skill, connector, MCP server, or local script is available.
-
-Claude tools declared by the source agent:
-
-  - Read
-  - Grep
-  - Glob
-
-When an API-backed capability is needed, prefer this order:
-1. Use a Codex-native connector/tool if one is available in the current session.
-2. Use a mirrored Codex skill from `.codex/skills-export/` when it is instruction-only or local-file based.
-3. Use local Python tools only when required environment variables are present.
-4. Produce a clear handoff if the capability is Claude-only in the current runtime.
+Read `.codex/runtime-contract.md` once per task. It defines the Codex
+runtime adaptation of the source below: inherit the active model, resolve
+tools from this session, and use the shared workspace registry.
+Source model/tool declarations below are reference metadata.
 
 # LinkedIn Brand Reviewer
 

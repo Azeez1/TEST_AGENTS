@@ -878,7 +878,7 @@ cat .claude/agents/pdf-specialist.md | head -20
 
 For comprehensive guide on proper agent invocation:
 - **[AGENT_INVOCATION_BEST_PRACTICES.md](AGENT_INVOCATION_BEST_PRACTICES.md)** - Complete guide with examples, decision trees, and troubleshooting
-- **[claude.md](claude.md)** - Repository navigation with agent invocation guidelines
+- **[CLAUDE.md](CLAUDE.md)** - Repository navigation with agent invocation guidelines
 - **Agent Definitions:** `.claude/agents/*.md` files show declared tools and workflows
 
 ---
