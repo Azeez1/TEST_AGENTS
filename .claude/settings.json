@@ -182,6 +182,10 @@
           {
             "type": "command",
             "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\sabaa\\ONEDRIVE\\DESKTOP\\TEST_AGENTS\\.claude\\hooks\\session_start_time.ps1\""
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/cloud_session_start.py"
           }
         ]
       }

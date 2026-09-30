@@ -155,6 +155,22 @@ Agent autonomously:
 
 ---
 
+## Cloud Sessions (Claude Code on the web)
+
+`.mcp.json` is gitignored, so cloud sessions don't get it. Instead, `.claude/hooks/cloud_session_start.py` (SessionStart, runs only when `CLAUDE_CODE_REMOTE=true`) writes `.mcp.json` from `config/mcp.cloud.json`, enabling only servers whose env vars are set in the cloud environment:
+
+| Server | Env vars (set in the cloud environment settings, never in the repo) |
+|--------|------|
+| perplexity | `PERPLEXITY_API_KEY` |
+| bright-data | `BRIGHTDATA_API_TOKEN` |
+| n8n-mcp | `N8N_API_URL`, `N8N_API_KEY` |
+| marketing-tools | `OPENAI_API_KEY` (optional: `GEMINI_API_KEY`, `PIAPI_API_KEY`) |
+| sequential-thinking | none |
+
+google-workspace and playwright are not mirrored: use the claude.ai Gmail/Drive/Calendar connectors instead. Also allow each API's host under the environment's Network access. The hook never overwrites a `.mcp.json` it didn't generate, and does nothing in local sessions.
+
+---
+
 ## Testing
 
 Test autonomous navigation:
