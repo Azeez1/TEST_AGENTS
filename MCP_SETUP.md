@@ -157,17 +157,26 @@ Agent autonomously:
 
 ## Cloud Sessions (Claude Code on the web)
 
-`.mcp.json` is gitignored, so cloud sessions don't get it. Instead, `.claude/hooks/cloud_session_start.py` (SessionStart, runs only when `CLAUDE_CODE_REMOTE=true`) writes `.mcp.json` from `config/mcp.cloud.json`, enabling only servers whose env vars are set in the cloud environment:
+`.mcp.json` is gitignored, so cloud sessions don't get it. The cloud environment builds it instead, from `config/mcp.cloud.json` (`${VAR}` placeholders only, no secrets).
 
-| Server | Env vars (set in the cloud environment settings, never in the repo) |
+**Setup (once per cloud environment, in the environment's settings):**
+1. **Setup script:** paste the contents of `scripts/cloud_setup.sh`. It runs before Claude Code starts, copies the template to `.mcp.json`, auto-approves the servers, and installs marketing-tools' Python deps into a private venv. This is what makes the servers load in the first session.
+2. **Environment variables:** add the keys below. They are read when the session starts, not by the setup script (env vars aren't visible to it, which is why it includes every server unfiltered).
+3. **Network access:** Full, or allow each API's host.
+
+| Server | Env vars |
 |--------|------|
 | perplexity | `PERPLEXITY_API_KEY` |
 | bright-data | `BRIGHTDATA_API_TOKEN` |
-| n8n-mcp | `N8N_API_URL`, `N8N_API_KEY` |
 | marketing-tools | `OPENAI_API_KEY` (optional: `GEMINI_API_KEY`, `PIAPI_API_KEY`) |
 | sequential-thinking | none |
+| n8n-mcp | `N8N_API_URL`, `N8N_API_KEY` (without them it loads docs-only tools) |
 
-google-workspace and playwright are not mirrored: use the claude.ai Gmail/Drive/Calendar connectors instead. Also allow each API's host under the environment's Network access. The hook never overwrites a `.mcp.json` it didn't generate, and does nothing in local sessions.
+A server whose key is missing just fails to connect; nothing else breaks.
+
+`.claude/hooks/cloud_session_start.py` (SessionStart, cloud only) is a fallback for environments without the setup script: it regenerates `.mcp.json`, but runs after servers are loaded, so its result only applies from the next session. It never overwrites a `.mcp.json` it didn't generate and does nothing in local sessions.
+
+Not mirrored: google-workspace (use the claude.ai Gmail/Drive/Calendar connectors) and playwright / Chrome MCP (local only; use `claude remote-control` for browser work).
 
 ---
 
