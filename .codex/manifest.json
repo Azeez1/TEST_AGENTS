@@ -2845,6 +2845,18 @@
       "codexPath": ".codex/skills-export/artifacts-builder/SKILL.md"
     },
     {
+      "name": "asd-ste100",
+      "status": "exported",
+      "source": ".claude/skills/asd-ste100",
+      "codexPath": ".codex/skills-export/asd-ste100/SKILL.md"
+    },
+    {
+      "name": "azeez-project-manager",
+      "status": "exported",
+      "source": ".claude/skills/azeez-project-manager",
+      "codexPath": ".codex/skills-export/azeez-project-manager/SKILL.md"
+    },
+    {
       "name": "brand-guidelines",
       "status": "exported",
       "source": ".claude/skills/brand-guidelines",
@@ -2932,16 +2944,40 @@
       "codexPath": ".codex/skills/debug-investigator/SKILL.md"
     },
     {
+      "name": "docs",
+      "status": "exported",
+      "source": ".claude/skills/docs",
+      "codexPath": ".codex/skills-export/docs/SKILL.md"
+    },
+    {
       "name": "docx",
       "status": "exported",
       "source": ".claude/skills/document-skills/docx",
       "codexPath": ".codex/skills-export/docx/SKILL.md"
     },
     {
+      "name": "eli5",
+      "status": "exported",
+      "source": ".claude/skills/eli5",
+      "codexPath": ".codex/skills-export/eli5/SKILL.md"
+    },
+    {
+      "name": "embedded-captions",
+      "status": "exported",
+      "source": ".claude/skills/embedded-captions",
+      "codexPath": ".codex/skills-export/embedded-captions/SKILL.md"
+    },
+    {
       "name": "excalidraw-diagrams",
       "status": "exported",
       "source": ".claude/skills/excalidraw-diagrams",
       "codexPath": ".codex/skills-export/excalidraw-diagrams/SKILL.md"
+    },
+    {
+      "name": "faceless-explainer",
+      "status": "exported",
+      "source": ".claude/skills/faceless-explainer",
+      "codexPath": ".codex/skills-export/faceless-explainer/SKILL.md"
     },
     {
       "name": "figma",
@@ -2978,6 +3014,12 @@
       "codexPath": ".codex/skills-export/frontend-design/SKILL.md"
     },
     {
+      "name": "general-video",
+      "status": "exported",
+      "source": ".claude/skills/general-video",
+      "codexPath": ".codex/skills-export/general-video/SKILL.md"
+    },
+    {
       "name": "gsap",
       "status": "exported",
       "source": ".claude/skills/gsap",
@@ -2990,10 +3032,34 @@
       "codexPath": ".codex/skills-export/hyperframes/SKILL.md"
     },
     {
+      "name": "hyperframes-animation",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-animation",
+      "codexPath": ".codex/skills-export/hyperframes-animation/SKILL.md"
+    },
+    {
       "name": "hyperframes-cli",
       "status": "exported",
       "source": ".claude/skills/hyperframes-cli",
       "codexPath": ".codex/skills-export/hyperframes-cli/SKILL.md"
+    },
+    {
+      "name": "hyperframes-core",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-core",
+      "codexPath": ".codex/skills-export/hyperframes-core/SKILL.md"
+    },
+    {
+      "name": "hyperframes-creative",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-creative",
+      "codexPath": ".codex/skills-export/hyperframes-creative/SKILL.md"
+    },
+    {
+      "name": "hyperframes-keyframes",
+      "status": "exported",
+      "source": ".claude/skills/hyperframes-keyframes",
+      "codexPath": ".codex/skills-export/hyperframes-keyframes/SKILL.md"
     },
     {
       "name": "hyperframes-media",
@@ -3006,6 +3072,12 @@
       "status": "exported",
       "source": ".claude/skills/hyperframes-registry",
       "codexPath": ".codex/skills-export/hyperframes-registry/SKILL.md"
+    },
+    {
+      "name": "import-memory",
+      "status": "exported",
+      "source": ".claude/skills/import-memory",
+      "codexPath": ".codex/skills-export/import-memory/SKILL.md"
     },
     {
       "name": "infographic-creator",
@@ -3036,6 +3108,30 @@
       "status": "exported",
       "source": ".claude/skills/mcp-builder",
       "codexPath": ".codex/skills-export/mcp-builder/SKILL.md"
+    },
+    {
+      "name": "media-use",
+      "status": "exported",
+      "source": ".claude/skills/media-use",
+      "codexPath": ".codex/skills-export/media-use/SKILL.md"
+    },
+    {
+      "name": "morning",
+      "status": "exported",
+      "source": ".claude/skills/morning",
+      "codexPath": ".codex/skills-export/morning/SKILL.md"
+    },
+    {
+      "name": "motion-graphics",
+      "status": "exported",
+      "source": ".claude/skills/motion-graphics",
+      "codexPath": ".codex/skills-export/motion-graphics/SKILL.md"
+    },
+    {
+      "name": "music-to-video",
+      "status": "exported",
+      "source": ".claude/skills/music-to-video",
+      "codexPath": ".codex/skills-export/music-to-video/SKILL.md"
     },
     {
       "name": "n8n-code-javascript",
@@ -3099,6 +3195,18 @@
       "codexPath": ".codex/skills-export/pptx/SKILL.md"
     },
     {
+      "name": "pr-to-video",
+      "status": "exported",
+      "source": ".claude/skills/pr-to-video",
+      "codexPath": ".codex/skills-export/pr-to-video/SKILL.md"
+    },
+    {
+      "name": "product-launch-video",
+      "status": "exported",
+      "source": ".claude/skills/product-launch-video",
+      "codexPath": ".codex/skills-export/product-launch-video/SKILL.md"
+    },
+    {
       "name": "remotion-to-hyperframes",
       "status": "exported",
       "source": ".claude/skills/remotion-to-hyperframes",
@@ -3129,6 +3237,30 @@
       "codexPath": ".codex/skills-export/slack-gif-creator/SKILL.md"
     },
     {
+      "name": "slideshow",
+      "status": "exported",
+      "source": ".claude/skills/slideshow",
+      "codexPath": ".codex/skills-export/slideshow/SKILL.md"
+    },
+    {
+      "name": "source-command-comment-engine",
+      "status": "exported",
+      "source": ".claude/skills/source-command-comment-engine",
+      "codexPath": ".codex/skills-export/source-command-comment-engine/SKILL.md"
+    },
+    {
+      "name": "source-command-sync-codex",
+      "status": "exported",
+      "source": ".claude/skills/source-command-sync-codex",
+      "codexPath": ".codex/skills-export/source-command-sync-codex/SKILL.md"
+    },
+    {
+      "name": "source-command-sync-memory",
+      "status": "exported",
+      "source": ".claude/skills/source-command-sync-memory",
+      "codexPath": ".codex/skills-export/source-command-sync-memory/SKILL.md"
+    },
+    {
       "name": "spec-driven-dev",
       "status": "exported",
       "source": ".claude/skills/spec-driven-dev",
@@ -3139,6 +3271,12 @@
       "status": "exported",
       "source": ".claude/skills/tailwind",
       "codexPath": ".codex/skills-export/tailwind/SKILL.md"
+    },
+    {
+      "name": "talking-head-recut",
+      "status": "exported",
+      "source": ".claude/skills/talking-head-recut",
+      "codexPath": ".codex/skills-export/talking-head-recut/SKILL.md"
     },
     {
       "name": "teach",
@@ -3175,6 +3313,18 @@
       "status": "exported",
       "source": ".claude/skills/website-to-hyperframes",
       "codexPath": ".codex/skills-export/website-to-hyperframes/SKILL.md"
+    },
+    {
+      "name": "website-to-video",
+      "status": "exported",
+      "source": ".claude/skills/website-to-video",
+      "codexPath": ".codex/skills-export/website-to-video/SKILL.md"
+    },
+    {
+      "name": "whiteboard-explainer",
+      "status": "exported",
+      "source": ".claude/skills/whiteboard-explainer",
+      "codexPath": ".codex/skills-export/whiteboard-explainer/SKILL.md"
     },
     {
       "name": "wiki-compile",

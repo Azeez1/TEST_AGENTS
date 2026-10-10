@@ -1,0 +1,2866 @@
+{
+  "schema": "test-agents/skill-backup/v1",
+  "snapshot_date": "2026-10-10",
+  "note": "Original local skill packages; runtime tools and authentication are not included. Hashes describe source bytes before Git line-ending conversion.",
+  "skills": [
+    {
+      "name": "asd-ste100",
+      "source_kind": "project-local-source",
+      "repository_path": ".claude/skills/asd-ste100",
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "3a6eff503af8c52557732334e1cb9b68a091931d1c62a566b5a2df183da66e8d"
+        },
+        {
+          "path": "references/example-review.md",
+          "sha256": "6326b90300196d7ddcb9570a0e997a896dc8ae2dc2caad86a3e9d4372e3f1fcf"
+        },
+        {
+          "path": "references/official-guidance.md",
+          "sha256": "baf68c5a8cbc5143c28b0cbaaf1e1b510b2528b07054f18da623929cb5af73e9"
+        },
+        {
+          "path": "references/verification-checklist.md",
+          "sha256": "802ac7f1dab1b72ad27428385bd101a8e7bc3754e20d68c2c9811d09585f02fe"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "faab2a8578ae293bb2a56d317597b4c2aef92ccb954ca140aebe25d5d18c4b25"
+        }
+      ]
+    },
+    {
+      "name": "azeez-project-manager",
+      "source_kind": "project-local-source",
+      "repository_path": ".claude/skills/azeez-project-manager",
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "c804beb3cb2415610dd62715c14d86d36f09fc00b87b0bb8b675fc5295295518"
+        },
+        {
+          "path": "references/build-acceptance.md",
+          "sha256": "0edc3297291bd83ca0acca32273e98f798b50a04fd8de3e519ac1d8ce9836c9a"
+        },
+        {
+          "path": "references/host-adapters.md",
+          "sha256": "f775cd4f619a4d328887d04b94ce396caebf32ff52ec8267b19791929f991a78"
+        },
+        {
+          "path": "references/workflow-settings.md",
+          "sha256": "0bfe58dbb08237640970216b81ff87a6f89136e4b6f6f6dcc6eea00a2be2b28d"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "e11475fec0dd506e17dd5754912a7d9d7282b8226a0e22d24eb53cd0c3f7ce0e"
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "source_kind": "claude-synced-package",
+      "repository_path": ".claude/skills/docs",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a8ada0a3a3978536d2177fbc2bea71aa06f28818d2adb3980dd6e434488835be"
+        }
+      ]
+    },
+    {
+      "name": "embedded-captions",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/embedded-captions",
+      "files": [
+        {
+          "path": ".gitignore",
+          "sha256": "dd88c474d1d479f0074432cbe48fa89e0679081910a0f7e1d16f5c32be7597f2"
+        },
+        {
+          "path": "assets/brand/CDPR-fankit-terms.txt",
+          "sha256": "279a3b81f7c29d1120549d27441ea63d070aa63ec9979df79ddfcff1e95305ab"
+        },
+        {
+          "path": "assets/brand/cyberpunk-widths.json",
+          "sha256": "738878673b72da24da793702ee9a092a871b21abd853784bb44f55409e7f2f12"
+        },
+        {
+          "path": "assets/brand/CyberpunkReplica.ttf",
+          "sha256": "356ea4d2bbec0cad5525716d50182795fb229efa7bdca0ab8477c64a775671b3"
+        },
+        {
+          "path": "assets/fonts/char-widths.json",
+          "sha256": "48331f6cc479c7ea92780d1a380ace0b85df8fc629668477c8fbb8f209f2a493"
+        },
+        {
+          "path": "assets/strokefonts/HersheyScript1.svg",
+          "sha256": "bc0cbdca869d455d000e9961cca0191843cc1c2d7e134a732be2b5081b32eb3b"
+        },
+        {
+          "path": "assets/strokefonts/HersheyScriptMed.svg",
+          "sha256": "76dd1d086946019499c062ca056033696f17d9733c83fa75f38b4a1d9e55a31b"
+        },
+        {
+          "path": "CATALOG.md",
+          "sha256": "520bf27f249f755cb02d00643a619a5c851fc8ccb4435d99612c4f2ef544efea"
+        },
+        {
+          "path": "dna/chrome.json",
+          "sha256": "76098991c06906f62d5ab11197b46ebab990bb42e96753be2739de9f5fa7ac90"
+        },
+        {
+          "path": "dna/cream.json",
+          "sha256": "507af451941040e9068ce0d70dde07616a88360ca8cbe5ec1267e4722fe6ea97"
+        },
+        {
+          "path": "dna/documentary.json",
+          "sha256": "ade83c1784c34eaae88229be155e6a8aa98060755f7a2feb045da842b5d9ac4d"
+        },
+        {
+          "path": "dna/editorial.json",
+          "sha256": "392e520ba1121cf3fec4e02813eb11f9f1c3081f4aee7a2f90a6f3a93d17a947"
+        },
+        {
+          "path": "dna/glitch.json",
+          "sha256": "953467af5ff4d85bc98568398a761ffcb4b2558f9d64c2d611747bc7980df8fb"
+        },
+        {
+          "path": "dna/ink.json",
+          "sha256": "d8f85394ceeb3425e35d52d8ecc07ed69d62dfbb21493b3dacb7e21cb15ae705"
+        },
+        {
+          "path": "dna/keynote.json",
+          "sha256": "df8192358a75579a410ae9a5cc4f292cf95ffb119c23967e66ed4674f08d109f"
+        },
+        {
+          "path": "dna/loud.json",
+          "sha256": "54fd67acd2453860195a321e66219d8052b9a6ae5f6036e768e2bad53e3379ff"
+        },
+        {
+          "path": "dna/neon.json",
+          "sha256": "9dfd09a38f976316703cfe2fb15b075b839d1f28a1faf27fe80b816972a9aad8"
+        },
+        {
+          "path": "dna/README.md",
+          "sha256": "ad95c4c621f7685d965d733f49f6d825eaa281606d67573d3fc80ccf131da5cc"
+        },
+        {
+          "path": "dna/velocity.json",
+          "sha256": "bc39c5748cb3f913b0685821ba3f4f878fe930bffe2aae3089ad56c5291cb7a0"
+        },
+        {
+          "path": "modes/cinematic/_archive/champion/spec.md",
+          "sha256": "741bfeecd94f18172ac379dda857ec93892687b18a28c570fc2d7d5909dd531a"
+        },
+        {
+          "path": "modes/cinematic/_archive/champion/template.html",
+          "sha256": "f374671528f43a2b0a3558f6a2da4dcec2ff5125cf67e1c5316f8f09c7ccaacf"
+        },
+        {
+          "path": "modes/cinematic/_archive/memory-wall/spec.md",
+          "sha256": "c3e774f9dbb5426ee7abce6b046b657dbb0b57800dc6a0602ebbfd846c6de78b"
+        },
+        {
+          "path": "modes/cinematic/_archive/memory-wall/template.html",
+          "sha256": "38b91ef473eb2e0f9057f304b54c8d90cbbd214c401c682a46dae77dcbedf7f2"
+        },
+        {
+          "path": "modes/cinematic/_archive/portrait-header/spec.md",
+          "sha256": "523f0a815c92f3948d646cc65c0f5333e4981953e4eedc4f915f28b6cd45e958"
+        },
+        {
+          "path": "modes/cinematic/_archive/portrait-header/template.html",
+          "sha256": "3f438cb37803f927faf9c9ee19c14f13fe8eec29289644f5cce157980f2fd149"
+        },
+        {
+          "path": "modes/cinematic/cinematic-cream/spec.md",
+          "sha256": "ce24dfae893e7076b4b1e030dcd4c1d29cc2b833e3761044a000f35a69c91e88"
+        },
+        {
+          "path": "modes/cinematic/cinematic-cream/template.html",
+          "sha256": "e6974daf039e51840a3d29a8f8cb371266a11a8f2e5909e9f85fac8f37243521"
+        },
+        {
+          "path": "modes/cinematic/engine.html",
+          "sha256": "3c156899efea20bb252a0e759087a8d705e908c86a4fc988d5d34105e34c8338"
+        },
+        {
+          "path": "modes/cinematic/README.md",
+          "sha256": "c95d0d2374ba6b3a0e721bbf9c66c125aaedd738e78c04591a9552e0f1fcfa46"
+        },
+        {
+          "path": "modes/standard/_anatomy.md",
+          "sha256": "20fed8b9be789cdf0425649321445d5980d74acdebe8d4306793a2de82970876"
+        },
+        {
+          "path": "modes/standard/_motion.md",
+          "sha256": "b5b4a7abc68a0da2dbdc60d45eb5ae6565f08774f77df63279be244741ad1ce3"
+        },
+        {
+          "path": "modes/standard/fonts/build-fonts-css.cjs",
+          "sha256": "dddc5cd15c33c63eb7b1550f771561a7909799f8a34a78621de9fe7738103a17"
+        },
+        {
+          "path": "modes/standard/fonts/files/anton-latin-400-normal.woff2",
+          "sha256": "d0fa07ff63dd60cbc0e2f58e29c802dca2a5ae0276c999f59c6111ab7bbaec3b"
+        },
+        {
+          "path": "modes/standard/fonts/files/audiowide-latin-400-normal.woff2",
+          "sha256": "e21fd195dd9dcdafc5a0f162a8fc252703f3683179861afb057cd58f9d27dbe5"
+        },
+        {
+          "path": "modes/standard/fonts/files/baloo-2-latin-400-normal.woff2",
+          "sha256": "18ebcf63cd353f8472583e8261755fd527cddf0fdb5caa89dd2e60b4a9e4ba1c"
+        },
+        {
+          "path": "modes/standard/fonts/files/baloo-2-latin-700-normal.woff2",
+          "sha256": "8e7ffc9b993aa8caa89bcab81e103c9eb2da4e3e042f37b7a5115d0ddbff12c0"
+        },
+        {
+          "path": "modes/standard/fonts/files/bangers-latin-400-normal.woff2",
+          "sha256": "04f54ff42ea2b8fc50b4259c29c60b1e05e606b769c2fb541c98624346c9767c"
+        },
+        {
+          "path": "modes/standard/fonts/files/bodoni-moda-latin-400-normal.woff2",
+          "sha256": "e2863d3bbe2e094f1ce98053ee3c6200cfa35f82b9f4cc6fd95fbaead4125d4f"
+        },
+        {
+          "path": "modes/standard/fonts/files/bodoni-moda-latin-700-normal.woff2",
+          "sha256": "595d28347ea02f9adccab277f49a122f04212fd220e972ce0c80fe933c915541"
+        },
+        {
+          "path": "modes/standard/fonts/files/caveat-latin-400-normal.woff2",
+          "sha256": "d0b7b931b8980049327e8f8f9ac264617c8200b8422d62e886473d3d9527bad3"
+        },
+        {
+          "path": "modes/standard/fonts/files/caveat-latin-700-normal.woff2",
+          "sha256": "15f9638095ad5ec9816f93d66805ca1a87e71dc5a76b596bfce1c78d4704c405"
+        },
+        {
+          "path": "modes/standard/fonts/files/chakra-petch-latin-500-normal.woff2",
+          "sha256": "36ad966cb653de70ba37355c41003b02de8940b2df6cbcd46480a6ad8cadd65d"
+        },
+        {
+          "path": "modes/standard/fonts/files/chakra-petch-latin-700-normal.woff2",
+          "sha256": "ce5095dc1cb200aaa939e38067a0677018d10e9f26ec38cdcf1557ac524fc775"
+        },
+        {
+          "path": "modes/standard/fonts/files/cinzel-latin-400-normal.woff2",
+          "sha256": "b873cdd90d6bd9ca4793c805b4175abfae00b3611ee8afccf63067133dcf1217"
+        },
+        {
+          "path": "modes/standard/fonts/files/cinzel-latin-700-normal.woff2",
+          "sha256": "8efa224fe70fef188a39c095e218b81fd31061809f2752537e33a9ec7b9c2263"
+        },
+        {
+          "path": "modes/standard/fonts/files/cormorant-garamond-latin-400-normal.woff2",
+          "sha256": "8048ac209bec741e1c29cd0cfac5aac1c0c2ba8c3ddbd4a58fa9bd92ef5c63c2"
+        },
+        {
+          "path": "modes/standard/fonts/files/cormorant-garamond-latin-700-normal.woff2",
+          "sha256": "21a0fc1c5c22708cf4aa0c147fd32982e25bf9e21efec0ca31a4495ba41753eb"
+        },
+        {
+          "path": "modes/standard/fonts/files/creepster-latin-400-normal.woff2",
+          "sha256": "899f0b2dd69f34439731f2726804a9593ba8161294e9b4a1ed4fd9f84e094470"
+        },
+        {
+          "path": "modes/standard/fonts/files/fredoka-latin-400-normal.woff2",
+          "sha256": "9cf74f703532ef61311d6c6dd32a582b6e410727f5fce1dbf5570cbe6b023c2f"
+        },
+        {
+          "path": "modes/standard/fonts/files/fredoka-latin-700-normal.woff2",
+          "sha256": "ee61b48acab42fcfee4e1c398b03bbae7e09d1be8471779c440a97dc85118c16"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-400-normal.woff2",
+          "sha256": "8909904ab6c872eb994093482a88a28eca2cd95912d7b6fecd72103b0dc07edc"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-500-italic.woff2",
+          "sha256": "ec7b5fad608d36d16f65939bd09e70b4bb81446fa7ee32b345d0c2e4fcd174b7"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-500-normal.woff2",
+          "sha256": "f3779f1efccc4bdcdf9c0a02ab95bf6bd092ed09c48c08cedc725889edd1d19f"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-600-italic.woff2",
+          "sha256": "c45ec86655c4614e7db0b9d2ea00303c1b252dae5671227aae5955f696069de6"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-600-normal.woff2",
+          "sha256": "f9a06e79cd3a2a20951c0f0e28f66dd0e6d3fda73911d640a2125c8fcb78f21a"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-700-normal.woff2",
+          "sha256": "6f56409fd3d64bb85f7d070bce20749db2d66b6d63cec586cc22d1c761be2491"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-800-normal.woff2",
+          "sha256": "a7d0a50f15d389cad679238466bdb5fc9787aa0715719064ce25abaff042820d"
+        },
+        {
+          "path": "modes/standard/fonts/files/inter-latin-900-normal.woff2",
+          "sha256": "d5c0ed7b8b5dde97d48b97947d740bbd8ad3ba9f2c5cc6b8280f16acba2d828e"
+        },
+        {
+          "path": "modes/standard/fonts/files/monoton-latin-400-normal.woff2",
+          "sha256": "54dd0ac1cf6c02e094ad114d3cc038baddc42e5d6ba1c0b74566cedaed765c4c"
+        },
+        {
+          "path": "modes/standard/fonts/files/orbitron-latin-400-normal.woff2",
+          "sha256": "9320ca80be2f4275e7aaa009bc058b9ea46264d4f92b06f0b822c3405cf45841"
+        },
+        {
+          "path": "modes/standard/fonts/files/orbitron-latin-700-normal.woff2",
+          "sha256": "ee6acc5ad5349018f9ca71fab8118144160e110838931874150a1ac3f97db38d"
+        },
+        {
+          "path": "modes/standard/fonts/files/permanent-marker-latin-400-normal.woff2",
+          "sha256": "4884fec2c73aa52a2461073c1b87d1ceb80f400520391b43f97ca7d3c39eeb24"
+        },
+        {
+          "path": "modes/standard/fonts/files/press-start-2p-latin-400-normal.woff2",
+          "sha256": "afec86997fdaf54af1f59358fa2c1e2a0f1d04146edad18e5cd141d0384a7548"
+        },
+        {
+          "path": "modes/standard/fonts/files/rajdhani-latin-500-normal.woff2",
+          "sha256": "23afdb9b5b89b878fab04d80cc30bf41bb4f3f7e8be88e5f16a7cc7671cdb2dc"
+        },
+        {
+          "path": "modes/standard/fonts/files/rajdhani-latin-700-normal.woff2",
+          "sha256": "5b7e4a6f97163c2636724d4de90304fc895653dcfe64c67a7a22f26331ca5c5f"
+        },
+        {
+          "path": "modes/standard/fonts/files/saira-stencil-one-latin-400-normal.woff2",
+          "sha256": "cd6d5dfdb860075088697dc0c14d1cbe473afe5cf1435c01f21c884a60efd893"
+        },
+        {
+          "path": "modes/standard/fonts/files/shippori-mincho-latin-400-normal.woff2",
+          "sha256": "65624096ca9a30ccc9a32bb915fb5a4dd9052e571b342ece09ef2f20a682862f"
+        },
+        {
+          "path": "modes/standard/fonts/files/shippori-mincho-latin-700-normal.woff2",
+          "sha256": "b72c8f55b753b95b239e7ed4da63317c99407e1dffddf4232a16e75d46c8b35d"
+        },
+        {
+          "path": "modes/standard/fonts/files/sora-latin-400-normal.woff2",
+          "sha256": "98141d7eaa6e9ee35e0827d279018cd33c3e59c6650541ec7de1c692efd93942"
+        },
+        {
+          "path": "modes/standard/fonts/files/sora-latin-700-normal.woff2",
+          "sha256": "c3337a673c9bbbfe433091d3831714dd9a257951f16f41eb3fc650ec593cfac2"
+        },
+        {
+          "path": "modes/standard/fonts/files/space-grotesk-latin-400-normal.woff2",
+          "sha256": "65fd17fcbd2e2f522940b5f67ead3d23329e02891aa5495e74d11a499c0b0673"
+        },
+        {
+          "path": "modes/standard/fonts/files/space-grotesk-latin-700-normal.woff2",
+          "sha256": "35f8aec56cfd5cbfdb03cc68733a54a0b05bb3617ffcd5fd332badc0b045ca55"
+        },
+        {
+          "path": "modes/standard/fonts/files/special-elite-latin-400-normal.woff2",
+          "sha256": "770493d84cbb753cd0573d0f014550583138f40469d137e310d239593a1949d8"
+        },
+        {
+          "path": "modes/standard/fonts/files/teko-latin-400-normal.woff2",
+          "sha256": "40ce801f68cba2bad6e3383d97583f60682306b9639a52f9d5cdefba1f24404c"
+        },
+        {
+          "path": "modes/standard/fonts/files/teko-latin-700-normal.woff2",
+          "sha256": "a57552efb251875b32580e1d14ce784ba1fa48612c7e7d77856375af4cbc87c7"
+        },
+        {
+          "path": "modes/standard/fonts/files/vt323-latin-400-normal.woff2",
+          "sha256": "8ddbebcc1048154132e1d78eb9b1f7850bca1b7d857035ccf1cb4318ebc615b6"
+        },
+        {
+          "path": "modes/standard/fonts/fonts.css",
+          "sha256": "648d60c022ffb730c31a1091a4bee807f863e4979033fb8cb3ea1fdc9cb26277"
+        },
+        {
+          "path": "references/aesthetic-principles.md",
+          "sha256": "37ccf9664ba369750f103094f5f68f691772b372d3cb10dad0ca6d7b4daa9eba"
+        },
+        {
+          "path": "references/anti-patterns.md",
+          "sha256": "5da0349ca6b5e2de6a5a636cd61e8b926ac17135fb2c009bf06c202dbe405d69"
+        },
+        {
+          "path": "references/bespoke-vs-presets.md",
+          "sha256": "11472e647d99545005ec80c68b281055148efc8feb80ab35ddd4842b2f8e08df"
+        },
+        {
+          "path": "references/caption-grouping.md",
+          "sha256": "f662de51945190b000ff3fa1f4e5777e38b405209272030214b0f26fb5ed3ab7"
+        },
+        {
+          "path": "references/composition-craft.md",
+          "sha256": "635b1f344403c81dcdee243c44aaec1d3ec1e4bc177526fe82371f2ee0a3e039"
+        },
+        {
+          "path": "references/direction-catalog.md",
+          "sha256": "f7facf4ea32f2f06494937c9b4f87a0ccde829eedb88cfd7b3cbbb7533928b6a"
+        },
+        {
+          "path": "references/example-renders/champion.html",
+          "sha256": "ae194e3a969a0159fa205e7795b71727503e2c184c5b001074f33d1db3d9f000"
+        },
+        {
+          "path": "references/example-renders/memory-wall.html",
+          "sha256": "c1eb4377d3b1eac6be9e631021cb094fff79c092b0429726c5ee3af57bee1937"
+        },
+        {
+          "path": "references/failure-modes.md",
+          "sha256": "845dd3833707f5602a554a3dc7128907d8f75c132193367988fe0f02ec29efe2"
+        },
+        {
+          "path": "references/layout-heuristics.md",
+          "sha256": "d08fbbdf3ee270dd57c022f4750e11cf18acc178fe983d121c91bb0adbdeb950"
+        },
+        {
+          "path": "references/motion-vocabulary.md",
+          "sha256": "a8b77c5d2aa8bcf5a1207f12521a9bd912e2467bb6eb64977e3f752e078572f7"
+        },
+        {
+          "path": "references/rail.md",
+          "sha256": "c3112f4659d5cbac16b03db85027dfb725f564f7658e25e95174c62f06add103"
+        },
+        {
+          "path": "references/reference-bar.md",
+          "sha256": "c9b1051b2bf97066832c5071c596d7981e850cff56ed736335a943a0e98d57c1"
+        },
+        {
+          "path": "references/scene-types.md",
+          "sha256": "f7f5e147278375f67d2c9c334608b65a6162be72ad98ad3558a92a10a3d0ac2f"
+        },
+        {
+          "path": "references/test-set.md",
+          "sha256": "a5fe130766c4f8acdfe5127dd98bbf6913f2ca7b6a0738f8894c5a5904efca0b"
+        },
+        {
+          "path": "references/typographic-moves.md",
+          "sha256": "1207b96dc851098109534d2eeeb307f04ba96a601d5db10edeb0ef22d8097aa6"
+        },
+        {
+          "path": "references/typography-presets.md",
+          "sha256": "c1ae436f9bd9639addad91246466b928a1e6989ea3023aa4a5292e6056007bf7"
+        },
+        {
+          "path": "scripts/audio-envelope.cjs",
+          "sha256": "a40f49b4c98af5e2f9904b90b5ce16a14558ccdceb4ff750eb661ba86a64fc1a"
+        },
+        {
+          "path": "scripts/check-occlusion.cjs",
+          "sha256": "03e589bd8afde48f6232988b0809ff07bb5d6b662f83679cf71267fda13f8960"
+        },
+        {
+          "path": "scripts/check-overflow.cjs",
+          "sha256": "6c86d822fbb9184007540a556a8088e36738baf7663c43443da1ed1b21a30445"
+        },
+        {
+          "path": "scripts/check-rail-climax.cjs",
+          "sha256": "466fe63be4c16789eba5b656a94350b461d8585dddad63ff746a0c2926eb5cce"
+        },
+        {
+          "path": "scripts/check-timing.cjs",
+          "sha256": "d265284c6583b8c9052564baf4ca370b8ec3c18b4f3ce4322c20aec214a68e6e"
+        },
+        {
+          "path": "scripts/fill-timings.cjs",
+          "sha256": "ff801a9dd1ab626e23a54fc61a9e3f9c3cef68dbf5f3a1e6fb81a19a4913df2b"
+        },
+        {
+          "path": "scripts/fit-fonts.cjs",
+          "sha256": "eb8a35551e9ae53565c381143dbbfecadfdcbaf742fab1fb9c80c1019388aa2a"
+        },
+        {
+          "path": "scripts/gen-stroke-path.py",
+          "sha256": "b08e49ab84b3a603c0f185b1b117661a6a2a291e1a96a3b9c67d6630a8135c9b"
+        },
+        {
+          "path": "scripts/inject-fonts.cjs",
+          "sha256": "4ceb534adf05d91139e34aeaef83eb5cf332994811a3a3e8ed367fe5b4c4398a"
+        },
+        {
+          "path": "scripts/lib-dna.cjs",
+          "sha256": "fcf6bf5101b5ea3437164804f8a4fd19a6a2f6674c26e45922fc95398354089e"
+        },
+        {
+          "path": "scripts/make-cinematic.cjs",
+          "sha256": "3d22b580c2b751adc26d60e8690132c40f7985d8844159586b39f950f4075734"
+        },
+        {
+          "path": "scripts/make-composition.cjs",
+          "sha256": "4a38c4318c1e676de7441f1b7f1966704e08582030aed400629b875b16419fa6"
+        },
+        {
+          "path": "scripts/make-theme.cjs",
+          "sha256": "af1302202fd490607fcd3da317f533cdfebc43a02bf055ac0f92aea05163ad52"
+        },
+        {
+          "path": "scripts/matte.cjs",
+          "sha256": "284b22bc7826a6ec4d792fe758642a218c15bccf849efbc226855672cc6947bd"
+        },
+        {
+          "path": "scripts/measure-layout.cjs",
+          "sha256": "caf864435ba201cb370f61eee350a0ff29c7408c83e11a3b7c6b0d821f35ef4f"
+        },
+        {
+          "path": "scripts/prepare.sh",
+          "sha256": "1ea6be6cc31286d7ab5252697db4ead1a019a565c99b3375976caf0ac7fde928"
+        },
+        {
+          "path": "scripts/preview-frames.cjs",
+          "sha256": "ea2fc72468ef8661032bdc777c7723b784619f6ada1b31f46c3b8753c3f8bcea"
+        },
+        {
+          "path": "scripts/render-and-composite.sh",
+          "sha256": "6a859a6db0e3acf08c69f2faa7feca32ef06c7d9343d5b5758966e403f23fe15"
+        },
+        {
+          "path": "scripts/render-theme.sh",
+          "sha256": "ddb28bf1ba646b190996a153cdad8c83a7400a5269a71ef65d62b3a7b6b348d7"
+        },
+        {
+          "path": "scripts/safe-zones.cjs",
+          "sha256": "14e58c313ca6c63949bb3b6b37d78ff385d5db586c2cc7e10ff6a92d5d8af69a"
+        },
+        {
+          "path": "scripts/transcribe.cjs",
+          "sha256": "dd954ba14b6d6a4a13aceed1033e4caf50e57dba936fb90a06a18e35c4e72927"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "f259486ad6955a115dcb24ca2ab6fe0e2663dceeb3c50d1f46a78094288c0dc7"
+        },
+        {
+          "path": "themes/anchor.json",
+          "sha256": "ed017f5cb3e0a558ab7f0763f775b736db0e32d62b4741f9bde793e7a379e519"
+        },
+        {
+          "path": "themes/arcade.json",
+          "sha256": "fc645cdbfa5154473e12cf9c806bfd53cd0dee1f2ae02e278164a020cdbcf320"
+        },
+        {
+          "path": "themes/aurora.json",
+          "sha256": "4b650d6d3cb6098b0fe18cdccc42e83ec13c9da8476db684073b58928750a63c"
+        },
+        {
+          "path": "themes/biolume.json",
+          "sha256": "d908a6d4a9341a4eea59e6ccab9f436ab1771d8f2158fde1ec51243bacbd9287"
+        },
+        {
+          "path": "themes/brush.json",
+          "sha256": "b03398b39dae2960447495dfe36a91db8ae42127f0399a7e5e894b38bc22fd78"
+        },
+        {
+          "path": "themes/chalkboard.json",
+          "sha256": "743170731830350da64c78d64f2cb05440b304385bcbe50a7312c5dafadc500a"
+        },
+        {
+          "path": "themes/dossier.json",
+          "sha256": "13bbb134abbd7ecf074b3c0b12d10ddc8a9c6a2523b3c11a69a3166a007a47d5"
+        },
+        {
+          "path": "themes/graffiti.json",
+          "sha256": "93923d759d09bcaa6f01f10c572a492089d50ca9a7fb3aa1da0d8ed5e2014dd8"
+        },
+        {
+          "path": "themes/hologram.json",
+          "sha256": "1a6d38e7254601797a267de68c131ea521d50b925afd054b74a91ab363f37073"
+        },
+        {
+          "path": "themes/inkwater.json",
+          "sha256": "0c141d4917b13d733c334f8b83b8bb4e9b938ac6baba37b796ab5532009c82dc"
+        },
+        {
+          "path": "themes/laser.json",
+          "sha256": "101436587fbf6219872e42f87e401f3dc62276a0f418f6b2f6c2583064bffe0a"
+        },
+        {
+          "path": "themes/lastpage.json",
+          "sha256": "0674513d1d4449c0f757650db1b91adb18b7b9487c707ea3762432c79aa9d79d"
+        },
+        {
+          "path": "themes/neonsign.json",
+          "sha256": "c90b140ecfbb3988836819985bede2b41badf5be014092f6ab3dabe169878c0a"
+        },
+        {
+          "path": "themes/nightcity.json",
+          "sha256": "cc8deba8b21389692b654bf34317ecb41c21c568d8f4b79a003319fc90263bf0"
+        },
+        {
+          "path": "themes/ordnance.json",
+          "sha256": "04332c2cb2c7f6bd16c6e6c9d5bfea545edacae6ee2a2a7451aae9aefdee2614"
+        },
+        {
+          "path": "themes/papercut.json",
+          "sha256": "6ae64aa5f010f96b2395d6d02c9235db2be391481751128424c944cafaa19d2b"
+        },
+        {
+          "path": "themes/popup.json",
+          "sha256": "15165a6cc6ee99611e983c6d05588c3bec9bc2ad39cb32dbb6339a4683b3c2fa"
+        },
+        {
+          "path": "themes/PORTING.md",
+          "sha256": "8d59d9b03cfc6d2d56a1eed4e1ae762c678b9adac7f9e8ea52288168e24e0fb6"
+        },
+        {
+          "path": "themes/ransom.json",
+          "sha256": "4f5c5d5068695e12f332d51397594d5300062c66582abcdf8e55e29d77261f6e"
+        },
+        {
+          "path": "themes/README.md",
+          "sha256": "e814d1ad2bec80fd51bb84837fbf0eb04e84058def9f629be1338cf8b2ea7bf3"
+        },
+        {
+          "path": "themes/scoreboard.json",
+          "sha256": "135e08d6efdc50826865e855100ffe8c4b8b054c0f4d70e50a116d8af570a4c6"
+        },
+        {
+          "path": "themes/spectrum.json",
+          "sha256": "ba48209eed38ceb5b9a96c8986fc32e64ef6acbeb1b251fe0d0a767932ece20a"
+        },
+        {
+          "path": "themes/stardust.json",
+          "sha256": "1e726a446dbc7be71a0fb56a77a3fd2f8d64e79a9e15c524fea9175fe9316389"
+        },
+        {
+          "path": "themes/stomp.json",
+          "sha256": "45cc397f8d185f988e1eccd795122d346b3af18cbb66f7d62c76afbdb580c4a4"
+        },
+        {
+          "path": "themes/terminal.json",
+          "sha256": "e9a9f1accf1882fb931a95c33e8db0f67ba6ef2742889a06d82146d63ea645d4"
+        },
+        {
+          "path": "themes/thunder.json",
+          "sha256": "10dba3a01217fa1d33aed00dc7b256d5e91c960dd02da1a969597883d2c2a90f"
+        },
+        {
+          "path": "themes/transit.json",
+          "sha256": "e904b3ef5627a47225a773ef6640450f063f0e0ad98ff18ba8f337e504fb6370"
+        },
+        {
+          "path": "themes/vhs.json",
+          "sha256": "a63c5f97bf7b7b55d281d5fbb8a05fb3376a66a140c70a1df652d9242b1890d0"
+        }
+      ]
+    },
+    {
+      "name": "faceless-explainer",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/faceless-explainer",
+      "files": [
+        {
+          "path": "references/cut-catalog.md",
+          "sha256": "9efbade2be5b9b2acb7793a313cda8a63b11781400c05f4705e49096f1f27c3f"
+        },
+        {
+          "path": "references/motion-language.md",
+          "sha256": "b9c25f6b1c935ab243c3273ed7cbf303619e5fcc1fd0fefc4717e37340b786d0"
+        },
+        {
+          "path": "references/story-design.md",
+          "sha256": "a8d722ab704332756e19aa70a45ea8cb88e86c5352f452cbe41a963ea562efe3"
+        },
+        {
+          "path": "references/visual-design.md",
+          "sha256": "5271ebbf0a2c25e64975b5606a166655dfe2e2bac2fee09995fcf5d71401a2dc"
+        },
+        {
+          "path": "scripts/assemble-index.mjs",
+          "sha256": "dc606b8fc898a7d8b69056d8ddb013a901a3ab58310a1675aaee25c7268fda25"
+        },
+        {
+          "path": "scripts/audio.mjs",
+          "sha256": "c82208e58415b0a04d0a2b5e3fa5ff29b3492354503fe4e9abce5191f7faf6e1"
+        },
+        {
+          "path": "scripts/build-frame.mjs",
+          "sha256": "e7ed9cc840bea260406d288b8153a21edd9a19771c5a52c0ca620bbec52a27a8"
+        },
+        {
+          "path": "scripts/captions.mjs",
+          "sha256": "60d86ec3ce2e9226e73087957db71b9e4fd56d4693bcbd3c166b8a9fb51f70e1"
+        },
+        {
+          "path": "scripts/lib/assets.mjs",
+          "sha256": "bc3a9bdfa56035cfd85391251ca7c80ae575376c0d726d0fd449b3d235cd5546"
+        },
+        {
+          "path": "scripts/lib/dimensions.mjs",
+          "sha256": "6d4b9603cfb212a8ebd65d74b1b1955636b49cdeaaf9763add02ff16d753b2d3"
+        },
+        {
+          "path": "scripts/lib/storyboard.mjs",
+          "sha256": "351d22701a115165b99695fbba880caf652dce92d436815236a430db2da94039"
+        },
+        {
+          "path": "scripts/lib/tokens.mjs",
+          "sha256": "4f210ce21e63b6a4c61282344bddd6a902699ca1ac881f96f5cd467e05f6fcf8"
+        },
+        {
+          "path": "scripts/lib/transition-registry.mjs",
+          "sha256": "a8baca4d865e20a8a0b713a303ea2228f1f82a7bee4eb581568782fe661add8d"
+        },
+        {
+          "path": "scripts/lib/transitions.json",
+          "sha256": "6fc520869fb41fbbf6a5291ef221186a64c3daa66dd8ebe612c782e01368e1e9"
+        },
+        {
+          "path": "scripts/transitions.mjs",
+          "sha256": "82a8969fce001dffc51541e6c9901ff4b889ef8d731b936410161081a29f6b58"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "34ef227ccdec33696e1e52ddad976744445e9245601e78d57ccebabbd97fdf7d"
+        },
+        {
+          "path": "sub-agents/frame-worker.md",
+          "sha256": "825f3e3c5e8051f2f00ca8d8bf20eec7aff42d16150df20c9a43d22cc622e2cd"
+        }
+      ]
+    },
+    {
+      "name": "figma",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/figma",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "efea70f72236b91dccc3f1de31b08ea517d5963953a2491e7accca598c68ed17"
+        }
+      ]
+    },
+    {
+      "name": "general-video",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/general-video",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5a1dc157f4916e41dadcf3d8dd8c535819d4f76f6bde3a656f818b7077b401ac"
+        }
+      ]
+    },
+    {
+      "name": "hyperframes-animation",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/hyperframes-animation",
+      "files": [
+        {
+          "path": "adapters/animate-text.md",
+          "sha256": "82f0e94d031480d186df792f0e2f8535276d805d699e5c84b9a7b736d107b10a"
+        },
+        {
+          "path": "adapters/animejs.md",
+          "sha256": "31ebe3dacacfa75a0d85cb38a2672e397fa90e892cfc7c290a2bd2b72935836c"
+        },
+        {
+          "path": "adapters/css-animations.md",
+          "sha256": "07774ef47d6dbbcf7d702a93ef0b5b8ce927b34d8488ea4e465fe713f2be888a"
+        },
+        {
+          "path": "adapters/gsap-easing-and-stagger.md",
+          "sha256": "b7a02ab56d049e204d37a95087580181020cb777c84ced62b310e489885b2b93"
+        },
+        {
+          "path": "adapters/gsap-timeline-and-labels.md",
+          "sha256": "bfd2e2bc0684455704ee3cea454641f6794ec868f7d8cbd0ecfae84def061d50"
+        },
+        {
+          "path": "adapters/gsap-transforms-and-perf.md",
+          "sha256": "c65a274948b163c1e865a7d43d3ff18d614e189bb56380f93a53b47374068983"
+        },
+        {
+          "path": "adapters/gsap.md",
+          "sha256": "378c5990fdb5b7d58f5710560a7a87f29662041b1336207a800ad110a5f067c7"
+        },
+        {
+          "path": "adapters/html-in-canvas-patterns.md",
+          "sha256": "5e7c801c65d8f34f38c535bc9ed6808ebb6f475f166347bf71a453eb87614e9a"
+        },
+        {
+          "path": "adapters/lottie.md",
+          "sha256": "03e905b7b0bec4abba22c2b1630435dde024dbd5500eb00b043bce986c278c8d"
+        },
+        {
+          "path": "adapters/three.md",
+          "sha256": "eba02859f6e6c2d458e0becef9684b4c727d4e508c81e99e4dc7385a9507b858"
+        },
+        {
+          "path": "adapters/typegpu.md",
+          "sha256": "13489ca7637177710d000e328326ffc0aea89453dbec72172dab4ba34fc682b1"
+        },
+        {
+          "path": "adapters/waapi.md",
+          "sha256": "a3a0f2acf5743b6bcf436152d0e7f175e2eb0f52bed48927c6d833c270d46534"
+        },
+        {
+          "path": "blueprints/comparison-split.md",
+          "sha256": "af2af2ddf86aba21ed8b2016b7b1bd4b1ced52b4ac98f17eff487dca1097599a"
+        },
+        {
+          "path": "blueprints/constellation-hub.md",
+          "sha256": "d8b9bbbe87d2d28b93cc23c15d97c09cf4bf5b9a442a1ea449042e23bfc6804f"
+        },
+        {
+          "path": "blueprints/cta-morph-press.md",
+          "sha256": "8be90f5d34a24500fa14ca2e1b813974c645bbadccf113fb8f93faa60496e01e"
+        },
+        {
+          "path": "blueprints/cursor-ui-demo.md",
+          "sha256": "472c56010e39a06825c361c3f42b89cb1eaf09be0b711addb02b27102e8700aa"
+        },
+        {
+          "path": "blueprints/dataviz-countup.md",
+          "sha256": "8688c3d3e32ada860d53bf3ff7f5ad8dc1a56016db12369caa2331534d59ab74"
+        },
+        {
+          "path": "blueprints/device-surface-showcase.md",
+          "sha256": "4976bbac08adad9cbc8cef08bcf12ccaeb57c0a2d5f50bb0df72649f0b17bb72"
+        },
+        {
+          "path": "blueprints/grid-card-assemble.md",
+          "sha256": "2302ad889acfe9fe10e5ed66f3a022ffa5c8378c6a05be5b5585b7f795aff56e"
+        },
+        {
+          "path": "blueprints/kinetic-type-beats.md",
+          "sha256": "23aa55a4a16faaefcb80ae238654a8916100cdb8141c9b611f9f905c99cb0506"
+        },
+        {
+          "path": "blueprints/logo-assemble-lockup.md",
+          "sha256": "b53493fd2eabf23e666d013acd9d00130cfeb735b475835f803a052ce883115b"
+        },
+        {
+          "path": "blueprints/overwhelm-surround.md",
+          "sha256": "ecb37bd185d7951db5bfa755dc79cab1e43bb2fc204618b7b1d25317838ef847"
+        },
+        {
+          "path": "blueprints/spatial-pan-stations.md",
+          "sha256": "25f6d0512bc63ae332e9c4ed8b530052f429441f37664456a88712abd4c1606f"
+        },
+        {
+          "path": "blueprints/ticker-takeover.md",
+          "sha256": "58e7a19b1aca8f3a85affbc24005d1b26ffd9b953053166783afa428f524b5d8"
+        },
+        {
+          "path": "blueprints/titlecard-reveal.md",
+          "sha256": "ba1bbb2bb1f43f7ae85c2d67a1e0b5d7d8b6396e758f432d458e0286ba074b64"
+        },
+        {
+          "path": "blueprints/typewriter-reveal.md",
+          "sha256": "be324c142dc5bf89649df3c59aa8a7e218ca99d8afe1222f4028a314a237245c"
+        },
+        {
+          "path": "blueprints/video-text-pivot.md",
+          "sha256": "6472224469cfb1801989510bec88a997819fa51cd4a5260bc23eee0fd7f086ed"
+        },
+        {
+          "path": "blueprints-index.md",
+          "sha256": "a99e44d572f7536ce31831a14a380864a93e5d5c1ed7ae9f1682dff96c28e526"
+        },
+        {
+          "path": "examples/assets/avatars/01.png",
+          "sha256": "0cd55ec712f6fd88eda3f1972b979cf2a7a312f15c99db94579fb3f99b9cb8a1"
+        },
+        {
+          "path": "examples/assets/avatars/02.avif",
+          "sha256": "11c77a8a62a97ecf8f36e8ab8b8bab16f8ec7e7aff96d157a29f54dcc22ab72a"
+        },
+        {
+          "path": "examples/assets/avatars/03.png",
+          "sha256": "1a101f8e4feee6ba42c7b063d2986b63ab9c3bb4ca33c4f675deb8c362965f32"
+        },
+        {
+          "path": "examples/assets/avatars/04.webp",
+          "sha256": "f7487adb6f94d75d7911b327b0cb0600e9e829ca56a54c37cf27c8e09968e885"
+        },
+        {
+          "path": "examples/assets/avatars/05.webp",
+          "sha256": "c8a0293c0b5c101fe08f6ea82c6406fe1b693a91cf51778d60c5bdcd547db834"
+        },
+        {
+          "path": "examples/assets/avatars/06.webp",
+          "sha256": "79f3620cec250c0915181a661c350034b0f44ca85ab670d715c8ae25f41ab473"
+        },
+        {
+          "path": "examples/assets/avatars/07.webp",
+          "sha256": "f97362045a3ac188d88f033ad21b4600be646b08438870acf1e1f854894ca124"
+        },
+        {
+          "path": "examples/assets/avatars/08.webp",
+          "sha256": "96605613b69ced167ed1e452de62b403001a9415892b24e3004ddeed2649c6f6"
+        },
+        {
+          "path": "examples/assets/avatars/09.jpg",
+          "sha256": "1bdf6958b2bc5a205a4a2d5bd54bc328fae725fbf5f3c7202b28fc230fc0c7ce"
+        },
+        {
+          "path": "examples/assets/avatars/10.webp",
+          "sha256": "a5054a23f2199977dbba1b994f7d5aa507432529d4cee7e0533d4369b8cdf1bc"
+        },
+        {
+          "path": "examples/assets/background-tech-data-flow.mp4",
+          "sha256": "f5d7c64dffda80b3b15bd116e4f2fda2231ae5d7997f2753ba01051aa243ce79"
+        },
+        {
+          "path": "examples/assets/brands/github.avif",
+          "sha256": "d6711618492e8f240df0898ee79d5cc277d883e8d612b0619c9aa82dbcd10d99"
+        },
+        {
+          "path": "examples/assets/brands/nvidia.avif",
+          "sha256": "e66ae041f22e4af7b672813ec0e60d26964e547a58f8b6e01e259c01ac11185a"
+        },
+        {
+          "path": "examples/assets/brands/visa.avif",
+          "sha256": "01ddb8924519d17d11dc5e94e2b87967c0919dc70952a1e07668603fcae67dff"
+        },
+        {
+          "path": "examples/assets/brands/zoominfo.avif",
+          "sha256": "35eb77247c08c15b0b84aaa882c85397be3a4d5c2ed9da98137a7545a90da3e7"
+        },
+        {
+          "path": "examples/assets/hyperframes-showcase-hypecard.mp4",
+          "sha256": "59894d108c5634cce855f4b9593d48ee0884955b1607e0f1c1c4e973e2eb101e"
+        },
+        {
+          "path": "examples/assets/logo-hyperframes.png",
+          "sha256": "2eba7073c4d8016e7b74013e7a12cb3142c5c73d71768fc02cab70ae9202aedd"
+        },
+        {
+          "path": "examples/brand-reveal-assemble-zoom.html",
+          "sha256": "6ef0274922bf33c9362c638476d97c475931941263f03934ce06f677c8301e5f"
+        },
+        {
+          "path": "examples/comparison-split-cards.html",
+          "sha256": "6fbf71a6620971f67d984d08346758a088d45297b68f2098d05a516001daa2b8"
+        },
+        {
+          "path": "examples/concept-demo-decode-pan.html",
+          "sha256": "003f8bbde732f9c982493ba3a531c8d861bdb3119fe772dc3bad135924b355ac"
+        },
+        {
+          "path": "examples/cta-morph-press.html",
+          "sha256": "4d423157e55cc7c46d112d3471bac207a2072f5f7d190f506809bc6c7ac68644"
+        },
+        {
+          "path": "examples/cta-orbit-collapse.html",
+          "sha256": "d41514f8bb0a4808a66f719bdc3b2118f16a476d47ac71b7db14a73e723f7aee"
+        },
+        {
+          "path": "examples/demo-page-scroll-spotlight.html",
+          "sha256": "aa1252821669b2f81d7925bac2869ee9a06650abec152c9ab0c978df1f9b2808"
+        },
+        {
+          "path": "examples/hook-counter-burst.html",
+          "sha256": "4766950cad912becd81d293ee23475caf4eac8c02dbde31c4c4f7ed015cb127b"
+        },
+        {
+          "path": "examples/messaging-multi-phrase.html",
+          "sha256": "dbfa5e74f09b0e2b45cb28cd100915143aab7f59ad3a2dffb46f5f88c3cccd77"
+        },
+        {
+          "path": "examples/metric-video-text-pivot.html",
+          "sha256": "5d0ede336552e9ac402bd7bf7dc84d95c9f76699d0e8ebb78f2dfeac3c7ebc36"
+        },
+        {
+          "path": "examples/problem-mockup-overwhelm.html",
+          "sha256": "127d94b53a48d36bf1a5eb5a9fd4e44b0c4cb3a5478c19783aff940f6683106d"
+        },
+        {
+          "path": "examples/proof-logo-chain.html",
+          "sha256": "b607d15d84d7666cb519626f1292fa42902f1c58e38766c2c8b5dc75825e7cc2"
+        },
+        {
+          "path": "examples/takeover-ticker-displace.html",
+          "sha256": "8d39a9028d8302ccd185d6fa2c5a6da1f097b4e9af083d18a1f0063a96989d22"
+        },
+        {
+          "path": "examples/workflow-approve-press.html",
+          "sha256": "2b04b61cc30113195f3a8173aec2a3abcaf13ddd5b7d577baea44aacae65990d"
+        },
+        {
+          "path": "rules/3d-page-scroll.md",
+          "sha256": "b7ad271fb9e36b5e78743fe049be108422315bc4fab90806a0e85aed4984d059"
+        },
+        {
+          "path": "rules/3d-text-depth-layers.md",
+          "sha256": "d6c8f1f2e04cff2d4f017bf103f1066e4668528b47f8793cd637ac1e079fceff"
+        },
+        {
+          "path": "rules/ai-tracking-box.md",
+          "sha256": "c814464ad391c89d89c01bf10c8bd70e330a18ef7fe12a68c957e4eedab158cd"
+        },
+        {
+          "path": "rules/ambient-glow-bloom.md",
+          "sha256": "20ca897cb1057afdc1274f6a64dbdc8c3e97e45974fbe3d56708f6c65aa9c185"
+        },
+        {
+          "path": "rules/asr-keyword-glow.md",
+          "sha256": "93f97f2f01285089b89577d03bea44b9fba0d24e31beca0e3b1c3f5dea7c4e4b"
+        },
+        {
+          "path": "rules/avatar-cloud-network.md",
+          "sha256": "782fc4d80e4f37f8e053cf345af4cc9d50fd2397da7d5b0de825f8ea6b63a31d"
+        },
+        {
+          "path": "rules/camera-cursor-tracking.md",
+          "sha256": "784da7c1bb4b9e5f58916fe7109c95ebab9e9cc8144a629caada20a1a0219157"
+        },
+        {
+          "path": "rules/card-morph-anchor.md",
+          "sha256": "1b93357a85d73205140baefe30de278e02aec0a20bcf8b9181541a8d5b842833"
+        },
+        {
+          "path": "rules/center-outward-expansion.md",
+          "sha256": "5fa1047e16e626f1c9b397cec80418d1befffbd447771436fd00af562190743e"
+        },
+        {
+          "path": "rules/context-sensitive-cursor.md",
+          "sha256": "6677c7bf802fb46774b8d67497983fe8ef22429f9e1c48e03563f6069e42bb2e"
+        },
+        {
+          "path": "rules/coordinate-target-zoom.md",
+          "sha256": "e76d8b06c3d15da584b4d1c1bc2690bbb4ecb97595baba8673d4c34af7a067b1"
+        },
+        {
+          "path": "rules/counting-dynamic-scale.md",
+          "sha256": "5b468962a12318be22721a7760f3ad7f7e516502a17e8b34a551f8e8723acfde"
+        },
+        {
+          "path": "rules/css-marker-patterns.md",
+          "sha256": "9705c6fd30c03974172a57d79a1825cfbdf9d0c9b8d5bb94eb61732c18184d54"
+        },
+        {
+          "path": "rules/cursor-click-ripple.md",
+          "sha256": "e095aada6dce26112d5afd98abaf96531c9eacca5d9ac321cb670956862e2fb7"
+        },
+        {
+          "path": "rules/depth-of-field-blur.md",
+          "sha256": "3acd9b77efeeb4e5604d0c22009ee8b3f89d0e1b55e828f336afd10638fc81b4"
+        },
+        {
+          "path": "rules/depth-scatter-assemble.md",
+          "sha256": "f8feddc4a23255ba25e936da8ef0a82deab7c5cd66976afbd28c1bd906dabedf"
+        },
+        {
+          "path": "rules/discrete-text-sequence.md",
+          "sha256": "b3b2874bba225567991fbae5f7977840a1c49814301dbad047df3ff44a54f1cc"
+        },
+        {
+          "path": "rules/dynamic-content-sequencing.md",
+          "sha256": "42b1b3e4840032686b3021028663caddd869647ef60bda7fd5e4ad6c32800199"
+        },
+        {
+          "path": "rules/gsap-effects.md",
+          "sha256": "6c2386767af9c31ab7e511095e641499956ae47822f81a5cafc7ff9dfbb63292"
+        },
+        {
+          "path": "rules/hacker-flip-3d.md",
+          "sha256": "33da181de8b7d8b4eeacfb8bcad4f4e7c714f15b56f3886ce170764ecbfe488c"
+        },
+        {
+          "path": "rules/kinetic-beat-slam.md",
+          "sha256": "e264f1d3d8b022841857197d4f8e6247cf7d9a869ca293d9b86bf5b90fd26646"
+        },
+        {
+          "path": "rules/motion-blur-streak.md",
+          "sha256": "d88fdd2902c441aa946a7052af465abc1bcb6f7ad95b3ebe890f20d9458e1a4a"
+        },
+        {
+          "path": "rules/multi-phase-camera.md",
+          "sha256": "f1314f53bd3047a074e301be4fcf6ee1801032f10d53e91b8d7a093c65b183f9"
+        },
+        {
+          "path": "rules/orbit-3d-entry.md",
+          "sha256": "dc6016a01ed764618294aca2eb3e0c473ee899f2fddde1defb37ebbf7a08c7aa"
+        },
+        {
+          "path": "rules/physics-press-reaction.md",
+          "sha256": "ebd7e692105c5e1aa9f9377b1f20398e121311e1d8f9963926bd150f5b8d7b5f"
+        },
+        {
+          "path": "rules/press-release-spring.md",
+          "sha256": "480d827c5dfc4e5d913a0f9e420efa5e8099ea278f83cfb6c6ac04dde4a1b595"
+        },
+        {
+          "path": "rules/reactive-displacement.md",
+          "sha256": "9538c030a4381cb7256dcb3534c2a9f780c3fe3d64792261de6e99928a1a42f5"
+        },
+        {
+          "path": "rules/scale-swap-transition.md",
+          "sha256": "76075cf82b9cb2d15269f14261d255dcbf3d46fd2e8443936559b0799eaeb6cf"
+        },
+        {
+          "path": "rules/sine-wave-loop.md",
+          "sha256": "25fafafa16a7afed9bb0aa1d2f011486f39bda439b742eef00f320b894618a85"
+        },
+        {
+          "path": "rules/split-tilt-cards.md",
+          "sha256": "e25313fbee84ef8597a17729fd9daded3364ced2bc185909debade67c95cf921"
+        },
+        {
+          "path": "rules/spring-pop-entrance.md",
+          "sha256": "5e2ae4a07e4c3794b89e51624a667e7c05c5c0a771e49c909a589c835a4f4a23"
+        },
+        {
+          "path": "rules/stat-bars-and-fills.md",
+          "sha256": "9ba06916fe29e05d6b0b2aaccd1f571513153cf4b10170975bfa66fca22a3bcb"
+        },
+        {
+          "path": "rules/svg-icon-enrichment.md",
+          "sha256": "95399e2393e155af85b8822e8f4b752e59c77de6f5b0080118065161fd12cbcc"
+        },
+        {
+          "path": "rules/svg-path-draw.md",
+          "sha256": "708afa7eb0843a60a62a8ca4282bb1f20e9f5058bd86b08876fa2ae90eb027ab"
+        },
+        {
+          "path": "rules/vertical-spring-ticker.md",
+          "sha256": "f356d0e38e92d2106317d74d351951cbe7017fea36e9f0cf40583f5c0db137cd"
+        },
+        {
+          "path": "rules/viewport-change.md",
+          "sha256": "86600df8e88e3814fe6fad360cfe524abc65d6689b11a49d8038a7fd368914fa"
+        },
+        {
+          "path": "rules-index.md",
+          "sha256": "942bf8bc7bc4706936b77e27c7257c1cfe778bea3b644a1b3e089ee4f310367b"
+        },
+        {
+          "path": "scripts/animation-map.mjs",
+          "sha256": "99ee44c78ffe700ec9c43ae6029be94fc322bb313d78dcfcc7b00109006ca89e"
+        },
+        {
+          "path": "scripts/package-loader.mjs",
+          "sha256": "437cadcea3773798679996286c1eefe3d5b0361c6816ca82cef191d066f045fb"
+        },
+        {
+          "path": "scripts/package-loader.test.mjs",
+          "sha256": "beb88750ec35aa701b92bd8e6e90220797c78127c8447416956f8dd3259e34dd"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "e846a7b95d737d0605b10ab574a0b1be014b329a5cf929f4385d85132b7f9bf9"
+        },
+        {
+          "path": "techniques.md",
+          "sha256": "59eca990aad2beade34e47b3c5ea7f03df894574bf9264dd2bd42188542420e7"
+        },
+        {
+          "path": "transitions/catalog.md",
+          "sha256": "3914ec091c1f16bfee5c53d38ed6af1dfab74caedf561788dc39e67c6d7ca239"
+        },
+        {
+          "path": "transitions/css-3d.md",
+          "sha256": "e1c3888dd0a2d4b36d25200c1e5ef9038649ae63953865e4b2c4c40fb028d7dd"
+        },
+        {
+          "path": "transitions/css-blur.md",
+          "sha256": "fd3eef889a517e1dd985ca816f36f1abfb43420a4b664d4fcc453554cdf561f9"
+        },
+        {
+          "path": "transitions/css-cover.md",
+          "sha256": "ba4e5926791c9e6a0a069e20afc91324acb018903f43b4b3f2866d9654f5b7eb"
+        },
+        {
+          "path": "transitions/css-destruction.md",
+          "sha256": "7cce7bbd9ebc64176c9ff4fe40ec97273c9c171524d89f853c0651e713949361"
+        },
+        {
+          "path": "transitions/css-dissolve.md",
+          "sha256": "47c11ca0a715675c2788aa4a162a652b5dc5f1773b058ea93e9907af56a4eb7c"
+        },
+        {
+          "path": "transitions/css-distortion.md",
+          "sha256": "7140650692926959bd5459ca5c478a9b4f137cc76fb92b9138e3b0d353677c06"
+        },
+        {
+          "path": "transitions/css-grid.md",
+          "sha256": "c62b17058aa7ba42d34df29436b6b4233e47ff2b72f2c7ce0963c75bdec45144"
+        },
+        {
+          "path": "transitions/css-light.md",
+          "sha256": "53f0422d3f6dd2584a30501f84e4f09c9b515f605d51ed264a2061567dda15db"
+        },
+        {
+          "path": "transitions/css-mechanical.md",
+          "sha256": "4fed48fa659a4b215a996beeea619d244e6c893700178b1f969c17f2ee0a8612"
+        },
+        {
+          "path": "transitions/css-other.md",
+          "sha256": "2156e4fcc3b42cba9e0d9e268944269057fb48ff15fc1983e3ff9386fa2a8cf8"
+        },
+        {
+          "path": "transitions/css-push.md",
+          "sha256": "d526a9612483472de4d865ae27061c98842a5155973dd0cec37fac4998dc1b97"
+        },
+        {
+          "path": "transitions/css-radial.md",
+          "sha256": "5d8f20de439e3f2c8d45df11c8acbe31dc1b9342e2d54bbe66b451cf81ca0a1b"
+        },
+        {
+          "path": "transitions/css-scale.md",
+          "sha256": "3c0cb33d6c844a7265379225f3241d8964afcc908ee757a1ebfb1700a5320ea7"
+        },
+        {
+          "path": "transitions/overview.md",
+          "sha256": "ec878d479d16addcd88c770b39fc88fa5219086478aee39e9f96a1096a58b084"
+        },
+        {
+          "path": "transitions/TRANSITION-REGISTRY.md",
+          "sha256": "fb9358d5d4219d2df9d81b02bd8c8e06fd62ed29557bd0c798d8223354c103ef"
+        }
+      ]
+    },
+    {
+      "name": "hyperframes-core",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/hyperframes-core",
+      "files": [
+        {
+          "path": "references/composition-patterns.md",
+          "sha256": "cd4d6e73230fd41554323254260477d99c7dae94daa0ee2817271490060323cc"
+        },
+        {
+          "path": "references/data-attributes.md",
+          "sha256": "50001a600e569b22b329c9b4b61102da114617039c4013b226a19e31f8dd014a"
+        },
+        {
+          "path": "references/determinism-rules.md",
+          "sha256": "396bb0940c168396fa2ae55ec828da54c03a52c4bb8e48226cc48bb19b8f674c"
+        },
+        {
+          "path": "references/full-screen-motion.md",
+          "sha256": "662ab555a1400e224bee0007dc57f2882429ae274afe0930587cf3b96ed738f3"
+        },
+        {
+          "path": "references/minimal-composition.md",
+          "sha256": "dcfd186be84c433b04fb07eeb334a4d871d12eecef69dea5540e4d127ae4967b"
+        },
+        {
+          "path": "references/script-format.md",
+          "sha256": "e3d5e0d8da152e4539cf4d1d5ffe3133f5d9425ca54079fc24d0e334c1b6288c"
+        },
+        {
+          "path": "references/storyboard-format.md",
+          "sha256": "b9b8e8421d50ab13c556c474cdd8e5d883dc7454f052aa1a71431b1353e58d98"
+        },
+        {
+          "path": "references/sub-compositions.md",
+          "sha256": "ec95b34ba56015d7609beeb1bfbd044aa6937e47fb48b0e75686388817b66006"
+        },
+        {
+          "path": "references/subagent-dispatch.md",
+          "sha256": "5c1a9f207cc10f9cea3f1e2ec6f15884388b1770ccbcc0115e3710fd20d40efa"
+        },
+        {
+          "path": "references/tailwind.md",
+          "sha256": "796f1536a852c5883c139dbdf0d17ac19109b109592edfa3eb64af4b879daa63"
+        },
+        {
+          "path": "references/tracks-and-clips.md",
+          "sha256": "e8686d88bacc757d5b4c4fa7ac0c19df7ff375aa45c9e53b3c05db11526fdc6d"
+        },
+        {
+          "path": "references/variables-and-media.md",
+          "sha256": "9ec4a0ab3a55dead96e5b734634844878e2e6b599eb38685885ef792916246c9"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "689de1f94e682ee31d1f22cf196040e8f24fdaee5fbf75a832fd890f1a27a2b7"
+        }
+      ]
+    },
+    {
+      "name": "hyperframes-creative",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/hyperframes-creative",
+      "files": [
+        {
+          "path": "frame-presets/biennale-yellow/caption-skin.html",
+          "sha256": "e6e24155d587ab0fe1beca7c62e6fbfcce9d069cfb9cf02dfcecffe95194554b"
+        },
+        {
+          "path": "frame-presets/biennale-yellow/frame-showcase.html",
+          "sha256": "5ba04e47cf9897e023dcfa49e1ec26fe26bac0c5061097dc6e7cb1d9ed46d7d0"
+        },
+        {
+          "path": "frame-presets/biennale-yellow/FRAME.md",
+          "sha256": "76d22cced9c152b0edb520543cf34c4ce772a312caa7211c40d4315b53c053cf"
+        },
+        {
+          "path": "frame-presets/blockframe/caption-skin.html",
+          "sha256": "85ef2bf1579587b97e26b617ea0c957329879e8413c2875605a278ad947c7d26"
+        },
+        {
+          "path": "frame-presets/blockframe/frame-showcase.html",
+          "sha256": "8d2e4963713928b353d0aa28c2c83fce415df81b66a500c192b602c0aaf4ddf2"
+        },
+        {
+          "path": "frame-presets/blockframe/FRAME.md",
+          "sha256": "ef8d9d47a209bed4ccc2d928c14a81cdaecb5129f5dc0cdc0dc40afc7ef92931"
+        },
+        {
+          "path": "frame-presets/blue-professional/caption-skin.html",
+          "sha256": "a4cec56e723db7fc6b6f0c71a52314f80fc3f3f6c43747ae46af8a0761aa0c8b"
+        },
+        {
+          "path": "frame-presets/blue-professional/frame-showcase.html",
+          "sha256": "715b130d086977a48925a3c79bb079fbc7270274c9c9a7761bf275df3020b0ba"
+        },
+        {
+          "path": "frame-presets/blue-professional/FRAME.md",
+          "sha256": "62e9a445885f6057084493de385a8ce20c3b4a299ae36a553ef54884f06bad68"
+        },
+        {
+          "path": "frame-presets/bold-poster/caption-skin.html",
+          "sha256": "c5408b8d2b36028d85455003a5f0bbcde863f33474799477bab6afa261ec0214"
+        },
+        {
+          "path": "frame-presets/bold-poster/frame-showcase.html",
+          "sha256": "57bbc3374b6a8b37ce59e36ed784c22bbb88fd44d039955221913b3e1bacf159"
+        },
+        {
+          "path": "frame-presets/bold-poster/FRAME.md",
+          "sha256": "af756ef993099f9ac78328f676eb79a6572ff0e9c2aacf12787471cd4525b171"
+        },
+        {
+          "path": "frame-presets/broadside/caption-skin.html",
+          "sha256": "d09b3e09bf497c0f2ed8db9dee181f376f75c65a25246181dc9d8f82cc938d6a"
+        },
+        {
+          "path": "frame-presets/broadside/frame-showcase.html",
+          "sha256": "8d23a2cbeb898568a5626b38ffc864236fb4a09930d59b17c34c45f34c8e4161"
+        },
+        {
+          "path": "frame-presets/broadside/FRAME.md",
+          "sha256": "3af0a1e5e61bece19841671672d7732082f03d5699b713475e90323a21dbcc89"
+        },
+        {
+          "path": "frame-presets/capsule/caption-skin.html",
+          "sha256": "a66a37a0b2060ebe635f4d2309b3cf0f78c31203de19c12fc477a23009ec0e89"
+        },
+        {
+          "path": "frame-presets/capsule/frame-showcase.html",
+          "sha256": "b3a642b5df3bbfb1ff227f1b82ee3ea02b51f20a0d7c5c46c97d72b180cddb4f"
+        },
+        {
+          "path": "frame-presets/capsule/FRAME.md",
+          "sha256": "f06dba67a3859f7c732b5177f7bcc58c94592caa5d6bbbcc6730a7876f5baa7a"
+        },
+        {
+          "path": "frame-presets/cartesian/caption-skin.html",
+          "sha256": "48f7b844d2936e0e0fc142605ec627adadc12120691bacb50dba7390d8706137"
+        },
+        {
+          "path": "frame-presets/cartesian/frame-showcase.html",
+          "sha256": "d7867cee5e07c4f22345c566071f2ce0261b3fccca111a94dfbec5fde64f3e55"
+        },
+        {
+          "path": "frame-presets/cartesian/FRAME.md",
+          "sha256": "3dc6a31813a333b2a7a1509ddbd3b4dabbbd7e12e6479b6cff10d69c185fec95"
+        },
+        {
+          "path": "frame-presets/claude/caption-skin.html",
+          "sha256": "6c1a1579e0c222c591c72f56f653edee2bca18590248621f025bb79489c5bc4f"
+        },
+        {
+          "path": "frame-presets/claude/frame-showcase.html",
+          "sha256": "5f41087fc8f8c476412455c511010aea218b54f134c8513d47fe4b65bdf32930"
+        },
+        {
+          "path": "frame-presets/claude/FRAME.md",
+          "sha256": "7e270ddd24b6d00996e5917521598656da301eae371546af8aba0ee828afe06a"
+        },
+        {
+          "path": "frame-presets/cobalt-grid/caption-skin.html",
+          "sha256": "506c0abc064ee4450afc7d34ff71a6fd04fa0dda69d57608ab310569d7651c03"
+        },
+        {
+          "path": "frame-presets/cobalt-grid/frame-showcase.html",
+          "sha256": "b135214cd2e310273a01e3f72b2828149f022803954a22a13cbf27aa1c2f518a"
+        },
+        {
+          "path": "frame-presets/cobalt-grid/FRAME.md",
+          "sha256": "62a6c9e6e5188cc29b9c0098e9bb8e72c23f152d9a99dd92c58139d26b69b19f"
+        },
+        {
+          "path": "frame-presets/coral/caption-skin.html",
+          "sha256": "9af79dabd44f5d6ac934a5c371aad5316a4e2db76542a1ec3c969245b33892fa"
+        },
+        {
+          "path": "frame-presets/coral/frame-showcase.html",
+          "sha256": "8ddf31ae13a4e57fe9730892fbbcb171cae67a204b5cb00b00374984f49b8f76"
+        },
+        {
+          "path": "frame-presets/coral/FRAME.md",
+          "sha256": "8530ecb36d1bb2d53392d88d972df35beeba19a5bcb3260fc9b18a58de7cdfe8"
+        },
+        {
+          "path": "frame-presets/creative-mode/caption-skin.html",
+          "sha256": "ef4a13de5757453294db153607891e60ab3f408603ed222e53b908359dcbd296"
+        },
+        {
+          "path": "frame-presets/creative-mode/frame-showcase.html",
+          "sha256": "32c1371fcd526c56edb515e5b255ad736a3e330ba3ff2631c61576064b384ef0"
+        },
+        {
+          "path": "frame-presets/creative-mode/FRAME.md",
+          "sha256": "c1a1359502d9fc79ef267305291fe0f651219c72d88088cee32327dd933dead8"
+        },
+        {
+          "path": "frame-presets/daisy-days/caption-skin.html",
+          "sha256": "6090e702f09c1df11e7289269a5b1ebc126981107c3ed5d9f951f69d471d1494"
+        },
+        {
+          "path": "frame-presets/daisy-days/frame-showcase.html",
+          "sha256": "4fb93e5fa3ba12367f303996b6ca8b62f8e18c721d02e8032274df12d49d96f3"
+        },
+        {
+          "path": "frame-presets/daisy-days/FRAME.md",
+          "sha256": "42d827dbd279990052e171d04380b5e6bbc111ae391dc283deb7a452e70b9b97"
+        },
+        {
+          "path": "frame-presets/editorial-forest/caption-skin.html",
+          "sha256": "31999378b8fed9a4511432e38017f287127ce25a534ee57bfe4cc0f3b74c7d48"
+        },
+        {
+          "path": "frame-presets/editorial-forest/frame-showcase.html",
+          "sha256": "bb87b88b91184f4fee7f02eea63ed35d9d378fa89fad8988326e31e82a43dbb1"
+        },
+        {
+          "path": "frame-presets/editorial-forest/FRAME.md",
+          "sha256": "ceeb2ab768367da1e1f3e1eca36ab9feeb3de3e4d15493319b0044c3d869329c"
+        },
+        {
+          "path": "palettes/bold-energetic.md",
+          "sha256": "17bc6b7889302151b4e5c84c0c6a33df676647078011d9decb2b68810e3baa7f"
+        },
+        {
+          "path": "palettes/clean-corporate.md",
+          "sha256": "d0c8c86838abb77985609629afe600d0ca365eccd835820f309959e8a85cba9d"
+        },
+        {
+          "path": "palettes/dark-premium.md",
+          "sha256": "abfecbf7e8dca3b674376590a0467aac3e13b2135022ae4ec519c4b27c2303b1"
+        },
+        {
+          "path": "palettes/jewel-rich.md",
+          "sha256": "17c8f7506469f66bca4e27ef78c19f0bcbf250f88fe840e3043816b7041c4fc5"
+        },
+        {
+          "path": "palettes/monochrome.md",
+          "sha256": "fe8586f6d70707098859063bdef34d68084f02cf7d5aaa436d4c9915a7ae3748"
+        },
+        {
+          "path": "palettes/nature-earth.md",
+          "sha256": "9710549b17487787fef3c7cb459cfd6e4ac28c1593bf471fcf55a3b4e546beed"
+        },
+        {
+          "path": "palettes/neon-electric.md",
+          "sha256": "35225bf8d2cd37223e88e0bc59b0a96bc8adeda7225389b3df97b675cfd33dfb"
+        },
+        {
+          "path": "palettes/pastel-soft.md",
+          "sha256": "ed4e25bb5f4953c002e55a53320249621437e03b5a11d43e3c1bd32c869b6d95"
+        },
+        {
+          "path": "palettes/warm-editorial.md",
+          "sha256": "c467ee3cc0bbf4b2bedccc8106e18293b8a06dbac8f092b10300492da0e0559a"
+        },
+        {
+          "path": "references/audio-reactive.md",
+          "sha256": "ad93a0c588a702203a08ed909842570f010f041500aa33512d2b06f66d450c1c"
+        },
+        {
+          "path": "references/beat-direction.md",
+          "sha256": "312560b513e689aeda44956c9a883cf465a982b8efce9730722bfb8d147f94f9"
+        },
+        {
+          "path": "references/composition-patterns.md",
+          "sha256": "bb287bdaa4779698d8cb6541488335aacabef781ebca1fa661b3fd8f3462d034"
+        },
+        {
+          "path": "references/data-in-motion.md",
+          "sha256": "6066c79717156c4a41ef86f28e07c6bd35f18d6830b12893c58523063c788d7d"
+        },
+        {
+          "path": "references/design-adherence.md",
+          "sha256": "ff21deb80143c8e09092958a6f40bc712173a43d23c5ea88742566573a2a7241"
+        },
+        {
+          "path": "references/design-picker.md",
+          "sha256": "3b37cd0e9366b8f9c30b5e31a909193b23b58ada7f73675eab0fe7d2a74bbdf8"
+        },
+        {
+          "path": "references/design-spec.md",
+          "sha256": "2287b88dab08bbbab4314e52f2770f34f6937e6eb69d37249c6b6fa8e1339d13"
+        },
+        {
+          "path": "references/house-style.md",
+          "sha256": "61e260aebcab552dcd42fd2dcaf4431349b51f043fe155c8f670f156d09b69dd"
+        },
+        {
+          "path": "references/motion-principles.md",
+          "sha256": "4e4aba01bfdb9eba6d5101825f610ca82829976aa7117d610de74ce3d33689ea"
+        },
+        {
+          "path": "references/narration.md",
+          "sha256": "6002bb2a2270149a8955068d5952fc57cd22594649f576b3e8c38057846610b6"
+        },
+        {
+          "path": "references/prompt-expansion.md",
+          "sha256": "efc78b016f0f02a9e634922fc8c0c2ea8e880bb86d84809b36e7d375725772e2"
+        },
+        {
+          "path": "references/typography.md",
+          "sha256": "3a844a2b3ed0f24e2892907ff68e9dfc3418833cd52e97dc7907892c2f558218"
+        },
+        {
+          "path": "references/video-composition.md",
+          "sha256": "6aae0bc1e79e9e8c1451ced986b5bbb4d59680c94276a299b6ecf67e3f440b09"
+        },
+        {
+          "path": "references/visual-styles.md",
+          "sha256": "c22d2c3f0732398ff52cbb469cf17567706b4d6555ad4149cae950a7cb3867c6"
+        },
+        {
+          "path": "scripts/contrast-report.mjs",
+          "sha256": "2ce130143165fb6cea4f3e9d285684e1040f6cb521c7a21cf1c41b4689782b72"
+        },
+        {
+          "path": "scripts/extract-audio-data.py",
+          "sha256": "7709b60d42730fc93a348c205ab565158d240b70051d109fcc844b215d56fa4f"
+        },
+        {
+          "path": "scripts/package-loader.mjs",
+          "sha256": "437cadcea3773798679996286c1eefe3d5b0361c6816ca82cef191d066f045fb"
+        },
+        {
+          "path": "scripts/package-loader.test.mjs",
+          "sha256": "beb88750ec35aa701b92bd8e6e90220797c78127c8447416956f8dd3259e34dd"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "3af739e7f601f1c67ac5ba8b15621a4474905a8b318e3670c61602cd7887c086"
+        },
+        {
+          "path": "templates/design-picker.html",
+          "sha256": "c417139fef8e21b34d56a85cedda8b9597c9574e0727ce603a4743c4ee592c1a"
+        }
+      ]
+    },
+    {
+      "name": "hyperframes-keyframes",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/hyperframes-keyframes",
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "1fbce5f9defa4c5f2d9e8cd7fad67566e21aba09e93a25e5836ebca62bd68f4b"
+        },
+        {
+          "path": "references/keyframe-patterns.md",
+          "sha256": "780f7ba0c5a287d7515bb8bcb00c066c3fc320f8da6bc0995a5d652deb71e9bf"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "87c5f0298ca33c00ab600b7a5261b7c7b4173205b00d3a999335292a87d73bf0"
+        }
+      ]
+    },
+    {
+      "name": "import-memory",
+      "source_kind": "claude-synced-package",
+      "repository_path": ".claude/skills/import-memory",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "5179b0780b7025c93271c181636a23acc8d05cad3b20584639cbaf1cf9c3b07a"
+        }
+      ]
+    },
+    {
+      "name": "media-use",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/media-use",
+      "files": [
+        {
+          "path": ".gitignore",
+          "sha256": "a299ec0fcdb6bc6670cf9fb22eefe3fcc37730e2e554b7f54e25de88be1ede02"
+        },
+        {
+          "path": "scripts/eval.mjs",
+          "sha256": "fadf274111a682acbfdff91eca75b977e3821c53026cd058551c538027f21f51"
+        },
+        {
+          "path": "scripts/lib/adopt.mjs",
+          "sha256": "7e75a593650c0920a478fd4705e1e70f9a9115a27a038383c3562ca7ca633d37"
+        },
+        {
+          "path": "scripts/lib/bgm-provider.mjs",
+          "sha256": "37db0d3e8ee052d1341339a75b68a3f98b2aaf2d3689a682149138ffb4aedf95"
+        },
+        {
+          "path": "scripts/lib/brand-provider.mjs",
+          "sha256": "3519d28f8bb2e59eed0c0706a1f57e0782aa94ed6237338b6110474d9ec093a1"
+        },
+        {
+          "path": "scripts/lib/cache.mjs",
+          "sha256": "432f703eebb0bbf1a4d062088bbeda779a62535125abeb0f4a3d51da08896f92"
+        },
+        {
+          "path": "scripts/lib/freeze.mjs",
+          "sha256": "215118825d48b8c18a3f93eef3c4e02b40533999c4874865635366fcdcaa9306"
+        },
+        {
+          "path": "scripts/lib/heygen-search.mjs",
+          "sha256": "564890d88718b41eb73b063dcbe2eb4cd9c5d17d15b4ad1a0c1e1103937e43ad"
+        },
+        {
+          "path": "scripts/lib/image-provider.mjs",
+          "sha256": "73ac032e7cf0bd80a08d3b279a16e60de1a6c010d9e197451d56a5fdd6874481"
+        },
+        {
+          "path": "scripts/lib/index-gen.mjs",
+          "sha256": "36ab3b3793e93947aa673b802e858a3d72862e0bfed379dcc971fb390ad40364"
+        },
+        {
+          "path": "scripts/lib/manifest.mjs",
+          "sha256": "673200af7767c41839c866d41cfa7867338bc20a83aeb35b8095abf7d45f8d52"
+        },
+        {
+          "path": "scripts/lib/manifest.test.mjs",
+          "sha256": "bee4f75a1ae83bb9594bc1b8ce3ec14091ed7fd8c72a518ec8f017d465c1902e"
+        },
+        {
+          "path": "scripts/lib/probe.mjs",
+          "sha256": "66b40d286d7eb1b6078a7e6f90594d72620c6d3a4e7574b3162583a8c917c293"
+        },
+        {
+          "path": "scripts/lib/probe.test.mjs",
+          "sha256": "e34bb14a3120cafe43776ff6ea60077080560d3d1c26a45ccb80fce65560b1fe"
+        },
+        {
+          "path": "scripts/lib/providers.mjs",
+          "sha256": "065c77be7768b88a552f368359614f9be409cc47541ba9d5e3c2e6bca84e0fda"
+        },
+        {
+          "path": "scripts/lib/sfx-provider.mjs",
+          "sha256": "c350a66469b7520f578c06f4c3281d83a96201420b451fbd3af596b13c57a619"
+        },
+        {
+          "path": "scripts/resolve.mjs",
+          "sha256": "3bdd96ee8451d278fbd2d0558b5aa8d09d52731ca3b4e665d4eb713f9a37961e"
+        },
+        {
+          "path": "scripts/resolve.test.mjs",
+          "sha256": "5522ee95dfcbcf06eb5c443f21a1f61275b5dd9a902bffc8b50035a62b1ad202"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "139ac9d653450bab3652ec3b9ae43620fb60ff68237f4fd6953b1a578928e075"
+        }
+      ]
+    },
+    {
+      "name": "morning",
+      "source_kind": "claude-synced-package",
+      "repository_path": ".claude/skills/morning",
+      "files": [
+        {
+          "path": "assets/fonts/fraunces-latin-600-normal.woff2",
+          "sha256": "3a1de7711d147bad4422825045f87597fd77cca72e7c96d3b0a81735d00dda82"
+        },
+        {
+          "path": "assets/fonts/Fraunces-OFL.txt",
+          "sha256": "0bc0daaa78b715774d4ad27d7f4ee8b436f48cef8e2f773531a8f22e27c06248"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "a7c4dbcb745799736991b027cceae39aae4880cc00ff43871ae5e87b38023bdd"
+        }
+      ]
+    },
+    {
+      "name": "motion-graphics",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/motion-graphics",
+      "files": [
+        {
+          "path": "agents/builder.md",
+          "sha256": "3faf8080738911b7acdea21432ab795a1f85716df79e8b8044d27147baaf0505"
+        },
+        {
+          "path": "agents/director.md",
+          "sha256": "58d418b1a1f2082274e6450d0741ebfb0b8037b4e2ece4b71742ab77e344b284"
+        },
+        {
+          "path": "agents/finalize.md",
+          "sha256": "201a849f32330201717cf7aed01fd2d243991915f726a34384a7ace55e35b937"
+        },
+        {
+          "path": "catalog-map.md",
+          "sha256": "3e6cd7894b214b4c3219dc5b4a707131b8c04648590d6b114c3e828c9ddf64bf"
+        },
+        {
+          "path": "categories/asset-fusion/module.md",
+          "sha256": "f482521fd24fc6091df8be86044344d64b126c528216fdf4de8f6971c68eeb9c"
+        },
+        {
+          "path": "categories/charts/module.md",
+          "sha256": "16b2bacb9e0b80347347043d3885fc323257426bd8d77a14a6ed9af6007bf6b4"
+        },
+        {
+          "path": "categories/kinetic-type/module.md",
+          "sha256": "7adab01bfabe1d690c2376435f548310e38b4584305ccf49b52449b55e8cf7db"
+        },
+        {
+          "path": "categories/logo-reveal/module.md",
+          "sha256": "059c8b4c015271cb054a5d73f8aa4a1f3d7c8687fa3180144aecb49423b4b1ae"
+        },
+        {
+          "path": "categories/lower-thirds/module.md",
+          "sha256": "4759e9d3e062a661718fa81ccc5115b6a86bcf706c374a71b37eb8b9f5d44609"
+        },
+        {
+          "path": "categories/maps/bake-basemap.mjs",
+          "sha256": "1f59814e759cdf662f2de7fa752ff85dadbaddfe6d96189542968b0bf62a8931"
+        },
+        {
+          "path": "categories/maps/module.md",
+          "sha256": "570b14a76d46c75e219e51220187c29a35c9889c5b68e0ebe7ee38f60756237f"
+        },
+        {
+          "path": "categories/news/module.md",
+          "sha256": "d0dfaa1a98c1f11e010cb652c093d09e35d23b46e0b1acc17cbf2ecc87890f5a"
+        },
+        {
+          "path": "categories/stat/module.md",
+          "sha256": "ec2be020cb891d28f453728bf836a93a648e33bd77679e24cf2bf705852b0e81"
+        },
+        {
+          "path": "categories/tweet/module.md",
+          "sha256": "e374b6c2eb56eb25dff05cab09872311ffc175d50369f6d02152e893219e4016"
+        },
+        {
+          "path": "categories/webpage/module.md",
+          "sha256": "a70d01fa1d9edf0c1c3969cfd1f70e5d807adc21a5fa1af3377e330e8424caa0"
+        },
+        {
+          "path": "grounding/locate.mjs",
+          "sha256": "28c1f686f7b5764b342799ad183428b200bf7479072ef4c6a2d351f7ab6c3a41"
+        },
+        {
+          "path": "grounding/PROTOCOL.md",
+          "sha256": "01a5bd32b14c13d5b7a396184f633d11e61c24910470461c4351b03d1a3a65a5"
+        },
+        {
+          "path": "phases/source/guide.md",
+          "sha256": "b316eeb7c38b28e3b869f96366a8fc44b8ac5bd07d2430b2e66347428280c311"
+        },
+        {
+          "path": "references/builder-contract.md",
+          "sha256": "487ca25974718656c9723940e5305ddb4606b5b1276a8532f31a13a76b67edce"
+        },
+        {
+          "path": "references/motion-vocabulary.md",
+          "sha256": "9f33ed29eee45f688a07d6a4edb84cbf7d803b93e8f7d9ab0f96de5d0afd5cc6"
+        },
+        {
+          "path": "references/shot-plan-ir.md",
+          "sha256": "ff52b844703121fef7bcac79fd4523fc9bcf6537a18390b7a3031f64270137d3"
+        },
+        {
+          "path": "samples/asset-fusion/_ref-circle-highlight.html",
+          "sha256": "1c6d33b1fc191735fe035a9a104be58236f9cb1fde33a0445ae08808204118b5"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "e8282d9904114ab330357e93dc1cdc1ceca3b95babd8ebed1f2cda9c0262bd66"
+        }
+      ]
+    },
+    {
+      "name": "music-to-video",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/music-to-video",
+      "files": [
+        {
+          "path": "references/frame-skeleton.md",
+          "sha256": "b3645755b72257076ae8b0ca733f0c2ede1a6556b20325f0a29d42b93d5e86c7"
+        },
+        {
+          "path": "references/montage.md",
+          "sha256": "ed18fa27afdffb82fcddc7ac38c37cd646d4bb47fe125f86652877cf61bc70fe"
+        },
+        {
+          "path": "references/motion-primitive-catalog.md",
+          "sha256": "92a67a68c99d7a894a5208ab86a6ca9979c3ef1459011c7a7be07d545e46b1f8"
+        },
+        {
+          "path": "references/motion-primitives/3d-card-flip/index.html",
+          "sha256": "2b26580cde05d9c228c1ad55c40a0075d8369e32cf0bdae63243d301cfc46f0f"
+        },
+        {
+          "path": "references/motion-primitives/assets/gsap.min.js",
+          "sha256": "92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb"
+        },
+        {
+          "path": "references/motion-primitives/bg-flow-field/index.html",
+          "sha256": "29bce6fe18a1420a50ad1884eecafea165fdd6858181bed94a7a90d553a74ff4"
+        },
+        {
+          "path": "references/motion-primitives/binary-decrypt/index.html",
+          "sha256": "6b9d90d222fe51a75df7375931c0fc83d1ccbdb127cba897e915ff9811c8f5ed"
+        },
+        {
+          "path": "references/motion-primitives/blur-resolve/index.html",
+          "sha256": "9a48099d7fc5a9091cc664416d3f151c4e243315e009212e09490cd24d90a2d0"
+        },
+        {
+          "path": "references/motion-primitives/braam-punch/index.html",
+          "sha256": "20009fb3ac86997c85c511dc812f40b69bf91d4b793bb2aba5bba2b07a3b9c26"
+        },
+        {
+          "path": "references/motion-primitives/chromatic-split/index.html",
+          "sha256": "8a2d99f81b7316a8332afac21dbab51ddb444b7ff761cb2528f2f33bcab50e91"
+        },
+        {
+          "path": "references/motion-primitives/chrome-sweep/index.html",
+          "sha256": "370817d6e14a390904982e034cc3aa779c221a83c0305376aa7d0a13b51455a5"
+        },
+        {
+          "path": "references/motion-primitives/counting-punch/index.html",
+          "sha256": "52b17af7db444e9d81bac996f1e0590fb47e88a8a200cdc9d5cefb85e1dc42fb"
+        },
+        {
+          "path": "references/motion-primitives/crash-zoom-in/index.html",
+          "sha256": "3033ea34231347c1463c14e4d470757d32b0fa3bb35120094f1e90e3fdff0fa2"
+        },
+        {
+          "path": "references/motion-primitives/datamosh-smear/index.html",
+          "sha256": "40008888197aacd9292ec101dfd250885a90987ffbd4e9fc575c0858fb5192fd"
+        },
+        {
+          "path": "references/motion-primitives/directional-fill/index.html",
+          "sha256": "1c1f17792f9e80e8dc6d62ea1c5dc8f4271e42e04055f8c97e67c5831a030fcf"
+        },
+        {
+          "path": "references/motion-primitives/dolly-zoom/index.html",
+          "sha256": "5f880691b03b091d42a74c4f7ff187197e56bbb41103417288be1c7bb139a4dd"
+        },
+        {
+          "path": "references/motion-primitives/electric-arc/index.html",
+          "sha256": "a5d931c1952049235c56ce075ded16d910782ed75a2a8a004acb0f713f7fc13c"
+        },
+        {
+          "path": "references/motion-primitives/flash-cut/index.html",
+          "sha256": "05f76dc5fc4da23bd2de65f3aab754cb2bf58a4a5b4df9f2d2d826acb8ef5232"
+        },
+        {
+          "path": "references/motion-primitives/gooey-metaball/index.html",
+          "sha256": "5819a487314ee710c1bc1479223d7fb494e6176f17ded188825149b9deb8317a"
+        },
+        {
+          "path": "references/motion-primitives/hard-cut/index.html",
+          "sha256": "d34752afe7745206d08b6cf0e0f61e94d47b75aaf1318cd06f133511bcbe3b19"
+        },
+        {
+          "path": "references/motion-primitives/hypercut-whip/index.html",
+          "sha256": "9048cdd93ec6494998c03bf2e92ca5d5ccc80a0fabd4ca768b474a26e1f8a083"
+        },
+        {
+          "path": "references/motion-primitives/iris-open/index.html",
+          "sha256": "8bf26be3cc3eabebbdd7ecaeffadda488db61d23a473aaceef4d927e64ff332b"
+        },
+        {
+          "path": "references/motion-primitives/kinetic-letter-in/index.html",
+          "sha256": "9b04ea1057e93e7be7ee956eec8a433bed6028e5269fbb23316a774cf6c41d9a"
+        },
+        {
+          "path": "references/motion-primitives/liquid-morph/index.html",
+          "sha256": "a2a98514166502350d0737f5cee01b6189e1ff7c4eea8b541ea3a07be6794ec1"
+        },
+        {
+          "path": "references/motion-primitives/mask-reveal/index.html",
+          "sha256": "fe0c1e4538ccab949c8bd954a2cd6e2d454887afbbc2a32ee80738434cacbfce"
+        },
+        {
+          "path": "references/motion-primitives/mosaic-pack/index.html",
+          "sha256": "7f2975afcee9c1c6ff7e0f03b02790aeec8bedd40834bf4129a29ae02eae931a"
+        },
+        {
+          "path": "references/motion-primitives/neon-flicker/index.html",
+          "sha256": "26a5e950abe8e3434ad69efe97b89b9a565f7859f61764266caff9c1bfbb40dd"
+        },
+        {
+          "path": "references/motion-primitives/outline-to-fill/index.html",
+          "sha256": "279ea438384e364f9529dff342caa1641126d03e3dd753d100ea2743b17d2665"
+        },
+        {
+          "path": "references/motion-primitives/palette-flip/index.html",
+          "sha256": "c03696cfd77331f83cc006d0512e27be8a663670e2a37103d994ae112fbb73eb"
+        },
+        {
+          "path": "references/motion-primitives/particle-burst/index.html",
+          "sha256": "574bcef6f8c1c2eba8a7a15227de8f01d0135af97b8763aa93c58e3649f6eb72"
+        },
+        {
+          "path": "references/motion-primitives/pixel-dissolve/index.html",
+          "sha256": "4ff37db19f215f505c1b8de420dd5e3ddd2c75e87a85e577e7f39444a9db85a6"
+        },
+        {
+          "path": "references/motion-primitives/radial-burst-lines/index.html",
+          "sha256": "5022379e0d66d108a665377ea90ffc90e9d1d06e6144817f6b0695114a74cc95"
+        },
+        {
+          "path": "references/motion-primitives/screen-shake/index.html",
+          "sha256": "ffab022425f8c5f5aed6ef6b8533b62041b09ea0032e65edda77c5b893b8d873"
+        },
+        {
+          "path": "references/motion-primitives/slot-machine-reveal/index.html",
+          "sha256": "fe5c83695b6c1358fff5a01400a5bab728e58ae362266aa57467a2add3298ab4"
+        },
+        {
+          "path": "references/motion-primitives/spotlight-sweep/index.html",
+          "sha256": "c2f27aeb84f46a7bbae66307bb9da6c5b866de84705b34c78a7513fc63f4cf63"
+        },
+        {
+          "path": "references/motion-primitives/staggered-exit/index.html",
+          "sha256": "1463d62f72c428a76ad64a45411e8f55db0e3f7c672540dcf5a7d807771d55e1"
+        },
+        {
+          "path": "references/motion-primitives/text-spectral-rays/index.html",
+          "sha256": "5f8dd911524ffea34f13254235c2939b989a43fbb0e22afb5b21a175195fe1be"
+        },
+        {
+          "path": "references/motion-primitives/text-spectral-rays/USAGE.md",
+          "sha256": "bb2cae8966c4eef4b381244097f7995b7ec4b02dd9dbfd5f3fd6473d9a5c7c11"
+        },
+        {
+          "path": "references/motion-primitives/text-wave-distort/index.html",
+          "sha256": "9e40b743c70c73ee5fbc3bbfc1f4cd6f402664a6d8fbcc65648173f6faf0e02b"
+        },
+        {
+          "path": "references/motion-primitives/tile-mosaic/index.html",
+          "sha256": "6c8bce28d90411d459d6fa71c350ce17521aeb9bacd2afc1f489853e7814f772"
+        },
+        {
+          "path": "references/motion-primitives/typewriter-reveal/index.html",
+          "sha256": "5387baba4095545024dbcc582396210eeda6d26f82ec11e96b12922ad40aa0ac"
+        },
+        {
+          "path": "references/motion-primitives/word-grid-burst/index.html",
+          "sha256": "c1456e605d1e905379894b31e178a2f3f126e8cc3a7163f74fe45516efd476eb"
+        },
+        {
+          "path": "references/planning.md",
+          "sha256": "49425a505e805f982d9383989225a20e20bc7e3b42ea77387455309df4d2a7fe"
+        },
+        {
+          "path": "references/storyboard-format.md",
+          "sha256": "2e343fa5288002e307486888de87b94746f50e5ce93a8372e8c199bb031fe760"
+        },
+        {
+          "path": "references/template-catalog.md",
+          "sha256": "7ce847407b6195f0aab68a960b1de69433cd0c178f4325a4b67c002f8b7c84f1"
+        },
+        {
+          "path": "references/templates/card-flyby/index.html",
+          "sha256": "22ee2bdc2eca84c124356e7b7d3e8d73f2db65641d5cbf1c7667a14d2ec457a4"
+        },
+        {
+          "path": "references/templates/card-flyby/program.json",
+          "sha256": "0bf66d1c680f5668794bc03939ced411164b0650803b1288dadfed9147bdc975"
+        },
+        {
+          "path": "references/templates/held-message-living-field/index.html",
+          "sha256": "6cb86b99a3734cf41baccce4914907866ea74746577d5f912f280d3f266e4ea5"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/asphalt-031.png",
+          "sha256": "246e18b10b02ec2f06a1114c49314d34df1cb78c6b5a463fca6961aaa96d6b3e"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/bark-014.png",
+          "sha256": "07f2ae28ed088f8f17353d19c4ba489f5826346a8f9c7f77836ed672c7fd696a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/brick.png",
+          "sha256": "aa86399c1b504ef3b3016ba7f6c40363cade1dede989fc6249d48008d9d68c3a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/bricks-075-a.png",
+          "sha256": "dd65311ddeee952196d8cce26765e7f39e2bea0f690bb2c13e124d71c43d6da1"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/bricks-101.png",
+          "sha256": "2f41a5e6725f4d7eed57c1055e8b0376ddd47e1ac63c6cd53f260cb036a3b526"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/bricks-102.png",
+          "sha256": "a3cd35912022bf49160e80ec2da8bb5f83bb75f2994a1d74dbadafc3392f604f"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/bricks-104.png",
+          "sha256": "17aef4795a18bdbca8ea4bda329feb72fc3531f9d564c31171c49c0321bf35cc"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/carpet.png",
+          "sha256": "d04e6c357d7c9179c1f35525f2636fd2acaff7a7265efe2982d9a04e200b2648"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/concrete-034.png",
+          "sha256": "168df876f6709144fe3c87803c27d7d5807ab7776f1cf214214191690aa25bf5"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/concrete-042-a.png",
+          "sha256": "8ee5f31943e9ada8286b2e847eeb9a64a4bff3a8732efff54776bc5c1c6b8176"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/concrete-046.png",
+          "sha256": "e0dbe79d0542911aa838b5f8085aab0dccad420b288107af6d1bcb8641532699"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/concrete-047-a.png",
+          "sha256": "930727b194865a519b7d630106ec12874d261276bacf48ca04e44a5d9d03853a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/concrete.png",
+          "sha256": "cef63116ef695361d4705d5f182f6cace043c3a223458415dc882b0f9289fe50"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/diamond-plate-009.png",
+          "sha256": "04526cb2e8f99ee3e8d70a0e978660d69946018d02ed6084cda931a4c805ce0a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/fabric-080.png",
+          "sha256": "6bcdeba650d64804435976d08f82c42618949e0f61f771e1c3a98361db1a647c"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/fabric-083.png",
+          "sha256": "84b0e11ee7227be027fc72728a86acfd49223e43f271abcc43d82931c39a6682"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/grass-001.png",
+          "sha256": "5b03882181b4b42da368f21f20cd910edf456ecb409d8c9d038bbcc7139394c8"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/grass-004.png",
+          "sha256": "589bae7859fcbbbe7c19266934fac8ec088d20299909f051ba997c1d27db3bd3"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/grass-005.png",
+          "sha256": "49f0ad0a2c1f7e4444ecf36af00cb4c53083bcd9cce801b50cf8981dc2df1442"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/ground-037.png",
+          "sha256": "40a799d2786af309e49d550799da90497012be2ebd0f943cca6143a40be8462c"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/ground-054.png",
+          "sha256": "971542bad18a2f74bdd1319d9530e274354fc797368cd4ed76bcbead60e5a024"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/ground-068.png",
+          "sha256": "2f3e23f4763e50449eedd840945f643d3d825db949a52fc1a7c336a75efad751"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/ground-080.png",
+          "sha256": "3932c28ad5695df2d04cab82e295a7612bda743e966f1aa3f93e9224edb16bcd"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/ground-103.png",
+          "sha256": "8dc2df48d2dfe7e1b5bb1a2817074eef139188da14bb8bdb7f5ee19e7485c2ef"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/ground-104.png",
+          "sha256": "f5c3384f8119311e3f7bb7eab11aa0cc06c5e55eee32209e708f07669fb33fd4"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/lava.png",
+          "sha256": "a921282ec9f570e2e2d7591dd72c284ff054613fa370f8981090332924e2ce5c"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/leather-037.png",
+          "sha256": "b59c4c545c32dd8b663516a6f7f75036cdbd567904f12319ad44f4a3ea0b25b6"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/marble-012.png",
+          "sha256": "a0429791f03a0ee265ede7c11f802db3e3077fd783d5e7e1061c7e3da770a018"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/marble-016.png",
+          "sha256": "9ff56d6fbec50a3c4b4ae879eaf307b1beaae9a9fdc910d7a679b4cd0fa666a3"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-032.png",
+          "sha256": "b44385cf1ef43e541eb84e4a691ca5f3e80070ded0019e9cd16a026ac45b09c6"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-038.png",
+          "sha256": "20a7d51f138496f8ad174d762ff3ffc8b0d9e6f12699e5713fb8cfa43dd94c80"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-041-a.png",
+          "sha256": "f261f3559c917ff92f873fa673297297a48c7437f587eae71bed44fbf520607a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-046-b.png",
+          "sha256": "8d2f2ff3544fa96155f4bb89d376953f11b1723f13d3110af6f9af07c659ab1b"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-048-a.png",
+          "sha256": "99afc502a6391ed0c9ea0af3dd7085b409daf2940e138e085d4b6ad65bf3dfca"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-049-a.png",
+          "sha256": "408c2ba08053a1f48278bc011042292968b7033d53a10c4a2a9032d1533d5e39"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-055-a.png",
+          "sha256": "0d0311f0e7e1150a234160f513cad3fd27a091f10c4fd0d63d8decf4d35fc96b"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal-061-b.png",
+          "sha256": "d8429c3e4cbb37c26771faf1dd393f88d9d39c0f33313ab1d2fe65f07c24a744"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/metal.png",
+          "sha256": "7cd714e74d9b29a83fe6ccdab8352b480a2fdd8cd1a6995d7792625f44f3ca4a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/onyx.png",
+          "sha256": "995f81490eb3370eb311a1df9434ef70929d2b8268fb23d053d32a86858aeb38"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/painted-plaster-017.png",
+          "sha256": "1912637e473754c0cb878beb450300847cc058ed1b8d38b595bcaaa52e8f72f4"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/paving-stones-138.png",
+          "sha256": "1cf0487c2c1ed82f0547060beba185f6957ea16acc299047cd924b6c3985d3fe"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/paving-stones-150.png",
+          "sha256": "f38a97103fee3c2bc447c25017a30e7e3c1ecdfd02b8b9c25281cbea33aa93b4"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/plaster-001.png",
+          "sha256": "dde8a9173122fc44e9227c231e7e124fcc46d2f3985c1fa4c949f13139223ff4"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/road-007.png",
+          "sha256": "9e85448c1c44be9094f09738f0daf0266196cde4af07defb68e3ce14560bfa28"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/road-008-a.png",
+          "sha256": "8efa117d87f1e34a9969d36dc46bda7d30d56044e83c89903c0525f8b0193295"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/road-009-c.png",
+          "sha256": "2335417f0f7a0e92410a1931eb0d6cfa78764bebfa3a6284df92c8ed56c9c7fe"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/road-012-a.png",
+          "sha256": "efa088c098031d766fcb8230d9e50f15896caccde3675443da1a43b4d30c51d3"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/road-012-b.png",
+          "sha256": "9dc0b3e2b596235d6e10d720b8a614b85edc3057a1f84a4b17e30ca894c32746"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/road-013-a.png",
+          "sha256": "22afa13c4e3a1c3964ef0d7ce6968dd24f948f66611c8624894a92b0a84e0950"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/rock-058.png",
+          "sha256": "e3da7340588b79b7772b0b9fa13c2458038467e9c0b3b0d62c9536db92c95e6d"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/rock-063.png",
+          "sha256": "bc2b918bae00ee89d3fe0c9eeee6cad97278fa91d75a87adf7a6f817a69ae62e"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/rock.png",
+          "sha256": "c6f7f00239eb0707870f6b29072df8966e59d04478d6e9416a5e6ce097a6bfae"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/snow-015.png",
+          "sha256": "5d79ba6d8b18525b3fe0d877b8b45b329c21988cd5b2f694a6ff56b126b2a1e3"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/snow.png",
+          "sha256": "e1ab94482b72bc0d81669e6645c37baf9be21508ecba311129efdce38b6a9818"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/tiles-138.png",
+          "sha256": "6f5ed5c9ea070b324b8d159ce8f88ba21ade899ec80b82623f327782d806f157"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/travertine-009.png",
+          "sha256": "a7ae327516d095406069befffe72eeb70ca9475d101a0008d43b988bd09998f5"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-049.png",
+          "sha256": "148e31a081873f2892b63c4279e32f15c517acfb320ceb2eee4436c0a30c7e5d"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-051.png",
+          "sha256": "53ee0ba7d6e5151f1a2a08cb85560514c4a8d9fb3696016e208e114ed8a579ad"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-058.png",
+          "sha256": "3d991151421f5d24cdafb72b48dccedc522ae4cca44142eda12095ff0278c56c"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-066.png",
+          "sha256": "ee2b237151cebee29c18aba3deea089592be20e92694c5a84f4b6e086df1689d"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-092.png",
+          "sha256": "89e949300f2912248f57773d9eea8229c82a857e6e3ffa9db2f3d5eced093459"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-094.png",
+          "sha256": "59d62dd0f528c9905ffd16f11083f30077666ff41662cef8922f60c5e38b387d"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-floor-051.png",
+          "sha256": "ad4ad086d9972b793fc2f00d0e67bf7db87fe9e589383e59c4f7c67159d4b9a5"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-floor-064.png",
+          "sha256": "f62b7e3cc6eafb5863b1ea765afc5e36a7457262e326f058e7b949b99c52d1e7"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood-floor-070.png",
+          "sha256": "19565cd026724054cc43923e4169fea45a059fd8500514a10a14b4482bb83ca0"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/assets/texture-mask-text/masks/wood.png",
+          "sha256": "751297ad6b60c00623e2b36db6ecff5697d173c9a8492989c1f68d9303316c4a"
+        },
+        {
+          "path": "references/templates/held-text-strobe-burst/index.html",
+          "sha256": "aa11432608a2672b62da03b19758f297c4dc3cda98dc7c74ffa22aee30030490"
+        },
+        {
+          "path": "references/templates/intro-kinetic-cascade/index.html",
+          "sha256": "7a69edbfd3cae461f233c934430d66791c11cb8d00d2979d9e15ff842159ab23"
+        },
+        {
+          "path": "references/templates/intro-kinetic-cascade/program.json",
+          "sha256": "e2f9a2a5de8e0fd659181d0ee545524aee245c0b0f24c891427217e749041ce5"
+        },
+        {
+          "path": "references/templates/logo-split-lockup-pulse/assets/fredoka-700.woff2",
+          "sha256": "ee61b48acab42fcfee4e1c398b03bbae7e09d1be8471779c440a97dc85118c16"
+        },
+        {
+          "path": "references/templates/logo-split-lockup-pulse/index.html",
+          "sha256": "ec2c97b761011d0fe044ba0983b7ce4ec9943c2997b153b9029de414b9664511"
+        },
+        {
+          "path": "references/templates/poster-tile-mosaic/index.html",
+          "sha256": "5d4d85c626f79bf443ad8d76ac98b1b106ffc99408128b767475ce91a5cac85f"
+        },
+        {
+          "path": "references/templates/poster-tile-mosaic/program.json",
+          "sha256": "99d840406246a1237c602362579b19c6d7e88d41607bfe6c5190221abec15519"
+        },
+        {
+          "path": "references/templates/roll-flipbook-word-cycle/index.html",
+          "sha256": "fecd97e92610cc30f38e563ea2152727de8f82fed810debf5df64284f273fb61"
+        },
+        {
+          "path": "references/templates/split-anchor-word-slot/index.html",
+          "sha256": "dbd8dba3ca08d9ea2a8eca7cd23b9f2c9da27a4b8c092271534e1377270f0b83"
+        },
+        {
+          "path": "references/templates/split-anchor-word-slot/program.json",
+          "sha256": "90096a51480803d04dc5a163fe1abfd4efeb936bb55d59b8e4a60f0bab98f955"
+        },
+        {
+          "path": "references/templates/typewriter-phrase-keyword-shuffle/index.html",
+          "sha256": "4c794931d075ca2e525c6023e5856ed36b29097d1454f69a1eb8dfaf24c2e88d"
+        },
+        {
+          "path": "scripts/analyze-beatgrid.py",
+          "sha256": "ed4032a948cb234291e27aefb83ec2d4f16929d080c6b216641e2872f1302279"
+        },
+        {
+          "path": "scripts/assemble-index.mjs",
+          "sha256": "0e5b209f45b980cf61fb0bfe96c648ed53469cd00274dee7037335536b8844da"
+        },
+        {
+          "path": "scripts/lib/storyboard.mjs",
+          "sha256": "351d22701a115165b99695fbba880caf652dce92d436815236a430db2da94039"
+        },
+        {
+          "path": "scripts/stage-assets.mjs",
+          "sha256": "50a4f20cf71a638cdeeb6625d5a6d75b203c20109ad703e12df538f03ec8730b"
+        },
+        {
+          "path": "scripts/validate-plan.mjs",
+          "sha256": "c0883b116ea0030a94cecac826e1bf464f92622166813032f75163cb261d0b6f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "6187efb7b0f8ed52e1b3be6d3ca6d5ec7f08d8a816c083b8a81c83adf7c20b36"
+        },
+        {
+          "path": "sub-agents/frame-worker.md",
+          "sha256": "1a17422053c50fe083e3b81e576248ec2b22445cd6fc833b580b401a31979c29"
+        }
+      ]
+    },
+    {
+      "name": "pr-to-video",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/pr-to-video",
+      "files": [
+        {
+          "path": "references/code-vocabulary.md",
+          "sha256": "49b4bcc15e314bb5839b5cbd33c629c8824e9470d34dbc8523a33c6b2799b3d8"
+        },
+        {
+          "path": "references/cut-catalog.md",
+          "sha256": "9efbade2be5b9b2acb7793a313cda8a63b11781400c05f4705e49096f1f27c3f"
+        },
+        {
+          "path": "references/motion-language.md",
+          "sha256": "16ba6256ef9cb77f2151a74a18927fec5f91a82db0c7448d6089d0379ee7fa5d"
+        },
+        {
+          "path": "references/story-design.md",
+          "sha256": "a42f2dfb341c04ab5d8b316e614257c4324b166c38f769569cb621e49dd645c7"
+        },
+        {
+          "path": "references/visual-design.md",
+          "sha256": "507079518512edc9ee84c28ba4cc0ae26af4895177ad30ea0eef0d7af8286eab"
+        },
+        {
+          "path": "scripts/assemble-index.mjs",
+          "sha256": "dc606b8fc898a7d8b69056d8ddb013a901a3ab58310a1675aaee25c7268fda25"
+        },
+        {
+          "path": "scripts/audio.mjs",
+          "sha256": "63c10eca7b876c36c5b07d78e46d11f20bebbe7dee9709a018619aa5d7aa7a68"
+        },
+        {
+          "path": "scripts/build-frame.mjs",
+          "sha256": "e7ed9cc840bea260406d288b8153a21edd9a19771c5a52c0ca620bbec52a27a8"
+        },
+        {
+          "path": "scripts/captions.mjs",
+          "sha256": "60d86ec3ce2e9226e73087957db71b9e4fd56d4693bcbd3c166b8a9fb51f70e1"
+        },
+        {
+          "path": "scripts/fetch-people-avatars.mjs",
+          "sha256": "c93e2554f697697d0f55e9b619c5acca87ce07c9c1b154855895ec1da0905184"
+        },
+        {
+          "path": "scripts/fetch-pr.mjs",
+          "sha256": "96d25cef3f7fa002564157df52620b602b3c9e95270c8974613dd5e43f20e34a"
+        },
+        {
+          "path": "scripts/ingest.mjs",
+          "sha256": "dfc65a82acb3167f595c3895b0984f4bab93611dd6f525bc1c47561b1bbccbae"
+        },
+        {
+          "path": "scripts/lib/assets.mjs",
+          "sha256": "bc3a9bdfa56035cfd85391251ca7c80ae575376c0d726d0fd449b3d235cd5546"
+        },
+        {
+          "path": "scripts/lib/dimensions.mjs",
+          "sha256": "6d4b9603cfb212a8ebd65d74b1b1955636b49cdeaaf9763add02ff16d753b2d3"
+        },
+        {
+          "path": "scripts/lib/storyboard.mjs",
+          "sha256": "351d22701a115165b99695fbba880caf652dce92d436815236a430db2da94039"
+        },
+        {
+          "path": "scripts/lib/tokens.mjs",
+          "sha256": "4f210ce21e63b6a4c61282344bddd6a902699ca1ac881f96f5cd467e05f6fcf8"
+        },
+        {
+          "path": "scripts/lib/transition-registry.mjs",
+          "sha256": "a8baca4d865e20a8a0b713a303ea2228f1f82a7bee4eb581568782fe661add8d"
+        },
+        {
+          "path": "scripts/lib/transitions.json",
+          "sha256": "6fc520869fb41fbbf6a5291ef221186a64c3daa66dd8ebe612c782e01368e1e9"
+        },
+        {
+          "path": "scripts/transitions.mjs",
+          "sha256": "82a8969fce001dffc51541e6c9901ff4b889ef8d731b936410161081a29f6b58"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "f6d46978744a69f6e885dccc2148da1d77765924ca580c4e5bed01477448636e"
+        },
+        {
+          "path": "sub-agents/frame-worker.md",
+          "sha256": "4658e3cf26d9c126ae1974059ded742fddfa620a22f03a70f22efdb0cdf195b4"
+        }
+      ]
+    },
+    {
+      "name": "product-launch-video",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/product-launch-video",
+      "files": [
+        {
+          "path": "references/cut-catalog.md",
+          "sha256": "882a2b604f35d6b8377fcc55cc16f1eedfb4515ab1934fe2da8f2e4e7a685cfd"
+        },
+        {
+          "path": "references/motion-language.md",
+          "sha256": "585eb6c509a1f7989d007a7b4332d8d73274d08ecaf6a9c8fa85dad0a5a60453"
+        },
+        {
+          "path": "references/story-design.md",
+          "sha256": "c12ccb67b1b038da0c76d4bd15d81ed0c5327a8dbf83aec2169b5b686e8341f3"
+        },
+        {
+          "path": "references/visual-design.md",
+          "sha256": "d8103d178f974009a573e17c54e1781721141492440860fdf880773af3251c5a"
+        },
+        {
+          "path": "scripts/assemble-index.mjs",
+          "sha256": "f1d7d587999fcdb612f15b0326c27ee422e2a2dc973d207177af75f69f452077"
+        },
+        {
+          "path": "scripts/audio.mjs",
+          "sha256": "b4412270782e3de574d79d21e05281d1cb06799381efa8d34aea8014eeef5347"
+        },
+        {
+          "path": "scripts/build-frame.mjs",
+          "sha256": "e7ed9cc840bea260406d288b8153a21edd9a19771c5a52c0ca620bbec52a27a8"
+        },
+        {
+          "path": "scripts/captions.mjs",
+          "sha256": "60d86ec3ce2e9226e73087957db71b9e4fd56d4693bcbd3c166b8a9fb51f70e1"
+        },
+        {
+          "path": "scripts/lib/assets.mjs",
+          "sha256": "bc3a9bdfa56035cfd85391251ca7c80ae575376c0d726d0fd449b3d235cd5546"
+        },
+        {
+          "path": "scripts/lib/dimensions.mjs",
+          "sha256": "f7fa9dbb55275644b72e21e3727e36c11c23c7ff550fa1756203918caf37f179"
+        },
+        {
+          "path": "scripts/lib/storyboard.mjs",
+          "sha256": "351d22701a115165b99695fbba880caf652dce92d436815236a430db2da94039"
+        },
+        {
+          "path": "scripts/lib/tokens.mjs",
+          "sha256": "4f210ce21e63b6a4c61282344bddd6a902699ca1ac881f96f5cd467e05f6fcf8"
+        },
+        {
+          "path": "scripts/lib/transition-registry.mjs",
+          "sha256": "a8baca4d865e20a8a0b713a303ea2228f1f82a7bee4eb581568782fe661add8d"
+        },
+        {
+          "path": "scripts/lib/transitions.json",
+          "sha256": "6fc520869fb41fbbf6a5291ef221186a64c3daa66dd8ebe612c782e01368e1e9"
+        },
+        {
+          "path": "scripts/stage-assets.mjs",
+          "sha256": "46eb2415c3c95722df16f41c43ac84b41693849682fb4a0e2c20be2d17f16fda"
+        },
+        {
+          "path": "scripts/transitions.mjs",
+          "sha256": "aa37559b82d2777bc0032647191d70cb04147e342d1f9030ee971fe22448d4a4"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "7778e6a25c07fb911650f2a5a2b22cd829de82020abc2c425714b997ba84207c"
+        },
+        {
+          "path": "sub-agents/frame-worker.md",
+          "sha256": "81d43fa481a88318da09a14ff1637ddd86c2631e7dc320d7374c29af877df5a2"
+        }
+      ]
+    },
+    {
+      "name": "slideshow",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/slideshow",
+      "files": [
+        {
+          "path": "references/standalone-harness.md",
+          "sha256": "9a7c1480fd580b36d8f397e02cd215297c7d30edba21305e2ca1fd41dd4d5b64"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "3d427dba7dc19f54a56737effdf5c345f966bc6f54171763e76bee132e92a842"
+        }
+      ]
+    },
+    {
+      "name": "source-command-comment-engine",
+      "source_kind": "project-ignored-command-wrapper",
+      "repository_path": ".claude/skills/source-command-comment-engine",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "b69a4100f82d4afda5ec8ec408ff62cf874f2117bcf364a567f210c491331883"
+        }
+      ]
+    },
+    {
+      "name": "source-command-sync-codex",
+      "source_kind": "project-ignored-command-wrapper",
+      "repository_path": ".claude/skills/source-command-sync-codex",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "90f5ed250aecb7c62b010ef302777b28636d50c6fbbf4ecb472f5288a08f1ca4"
+        }
+      ]
+    },
+    {
+      "name": "source-command-sync-memory",
+      "source_kind": "project-ignored-command-wrapper",
+      "repository_path": ".claude/skills/source-command-sync-memory",
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "e4a340b57224bcddd7aa97bccf3d2852202e06eb4a3d3ac2a924fb37d094f4c2"
+        }
+      ]
+    },
+    {
+      "name": "talking-head-recut",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/talking-head-recut",
+      "files": [
+        {
+          "path": "assets/fonts/Caveat-400-latin.woff2",
+          "sha256": "891951df5e8b5b0f0bc760d31375405e795c666b5add70437de12d4a6482b33f"
+        },
+        {
+          "path": "assets/fonts/Caveat-700-latin.woff2",
+          "sha256": "891951df5e8b5b0f0bc760d31375405e795c666b5add70437de12d4a6482b33f"
+        },
+        {
+          "path": "assets/fonts/Inter-400-latin.woff2",
+          "sha256": "dd05e326cf8eac3b55acecf29c842ed73e6e6dd06491cf47f7e8800680ab3e33"
+        },
+        {
+          "path": "assets/fonts/Inter-700-latin.woff2",
+          "sha256": "aac638f7503cebb084ec494cf00f75f7d8260d50c2f4e7820bccabba09626a3a"
+        },
+        {
+          "path": "assets/fonts/LXGWWenKaiTC-400-latin.woff2",
+          "sha256": "c85fea99d8417984df04982d26caa29ac33f3a79e46bf8ef8ff98af1fca2c2ee"
+        },
+        {
+          "path": "assets/fonts/Virgil.woff2",
+          "sha256": "9976295bfe709bdea64839a4d4e9a1d436dd6eb67538399a5a0e8b8fadbcf1cf"
+        },
+        {
+          "path": "assets/vendor/gsap.min.js",
+          "sha256": "c3a03a345e45bc954cd48c43f11572891f5dca7a5d99348d5bc14753a728618c"
+        },
+        {
+          "path": "NOTICE.md",
+          "sha256": "0e0a88d4eb584a1a0805930d30918ceebf0824fbb594731ebaa069eea9849995"
+        },
+        {
+          "path": "references/DESIGN_INDEX.md",
+          "sha256": "25fa72902a37cafb764f86d909e72dbf1c6b44ff3494d1c3da24c4a4a819ce16"
+        },
+        {
+          "path": "references/frames/clean.html",
+          "sha256": "10c18a856b9b3430075b14eaaa346fd953827c158c6640cc19d94e1ad622bb0f"
+        },
+        {
+          "path": "references/frames/hairline.html",
+          "sha256": "9de5bd85cb6f15dd6cd73ba0a08a69a698d8d68626d5255127a6d6455a35d17c"
+        },
+        {
+          "path": "references/frames/polaroid.html",
+          "sha256": "6e031ce943bbc47891ff5bdc7ae5ac22c9b85ba6dc838f9ba06175e979dd54d9"
+        },
+        {
+          "path": "references/layouts/overlay.html",
+          "sha256": "d8a44b6b0075b194b70e4df22b34c07d9bd4a41bd14017ef2c126eda37d91a26"
+        },
+        {
+          "path": "references/layouts/pip.html",
+          "sha256": "3fc7da10775d5ac6caeca78482939d5a6afad6f1637c0190beb023ebfca0a4f0"
+        },
+        {
+          "path": "references/layouts/split.html",
+          "sha256": "6078dba9780e850f1d21cd29fbc27f6dcf69ced3f8559e7db115d16d0ab41b7e"
+        },
+        {
+          "path": "references/layouts/stack.html",
+          "sha256": "054d1ec184f53bc6d8ca2a3effc6f8f19a98d29d6c4ab6d3cbf6f9bd4f5b4cb7"
+        },
+        {
+          "path": "references/styles/academic.html",
+          "sha256": "aae0f6b167f6a09a02622f1e785aa9b06f0d96382aba9f4cabcb89250747d5a6"
+        },
+        {
+          "path": "references/styles/audit.html",
+          "sha256": "2edbd5cfdd9bd3bd6789ac2a6bea9555187f65b03485dc58771b4bdf982a7c7d"
+        },
+        {
+          "path": "references/styles/editorial.html",
+          "sha256": "f59b3ef3edb66c523270179a59b1efd0b0183d8d4e871958142c99c6447f5710"
+        },
+        {
+          "path": "references/styles/geom.html",
+          "sha256": "4d4e5cdf29ee8082c181f2001c00764355d2a408605ecda87bacc7d1fb48b7c1"
+        },
+        {
+          "path": "references/styles/minimal.html",
+          "sha256": "cb161810bad03c9f8e2ed68a6bd300dafc52d184ff214a5e7933d0a0676e1a7f"
+        },
+        {
+          "path": "references/styles/spotlight.html",
+          "sha256": "91f2a516f947eab9f40f112f13185724e2cfbeaffb99786ab14ea13629bc38a5"
+        },
+        {
+          "path": "references/styles/swiss.html",
+          "sha256": "5c44a617334fb4f7bd4aaad23a2bea2231285ab25e80c952abaf72e9a5f4ac17"
+        },
+        {
+          "path": "references/styles/terminal.html",
+          "sha256": "a81c69499a4af4df9c8b1b2b81ffbc7eb467e27b3107fa3adf34bb406b17b72d"
+        },
+        {
+          "path": "references/styles/whiteboard.html",
+          "sha256": "5b01baa63fb41e39e8095da5397589489b2cfe328a3b2748a6f83ccd0f0ebb28"
+        },
+        {
+          "path": "references/styles/xhs.html",
+          "sha256": "47af8ffdcab845deec36d7d39913ef230a54ddc28c6cd95a5f67f4d50899680b"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "6a55193bbe5b7269dae40219cab2b496fe0177a8b9d27237c8e46fcaf3ccfba3"
+        }
+      ]
+    },
+    {
+      "name": "website-to-video",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/website-to-video",
+      "files": [
+        {
+          "path": "assets/sfx/chime.mp3",
+          "sha256": "74823b1b27703c56e0652db838f503c150ce9c2442d47d27430af3d5121d6d12"
+        },
+        {
+          "path": "assets/sfx/click-soft.mp3",
+          "sha256": "075e17bdac5c13662a1c9530050e0046f81d4138e00eb3bf30427a7b4404103d"
+        },
+        {
+          "path": "assets/sfx/click.mp3",
+          "sha256": "075e17bdac5c13662a1c9530050e0046f81d4138e00eb3bf30427a7b4404103d"
+        },
+        {
+          "path": "assets/sfx/CREDITS.md",
+          "sha256": "79590c7738b0427b10f362f76b02cfd2643158a40e1d5fd787f9ac6b33bcf4ce"
+        },
+        {
+          "path": "assets/sfx/error.mp3",
+          "sha256": "b4882e3941ca496b5038e7c7d64318419da9f69d3da9540a1c693adc639cf121"
+        },
+        {
+          "path": "assets/sfx/glitch-1.mp3",
+          "sha256": "760b72bdaad71f83350e2ef3a9d037daf58f44855a05a6cce25d990f1ffb888a"
+        },
+        {
+          "path": "assets/sfx/glitch-2.mp3",
+          "sha256": "b326efdf687f18f68f0df7443a65b0ea7a4a1287dfe3143ea23707cc645257f1"
+        },
+        {
+          "path": "assets/sfx/glitch-3.mp3",
+          "sha256": "7ebe61cfd0d69a2d35d9ee3a88c26025101e999d5cc6bfb2df410f820b433042"
+        },
+        {
+          "path": "assets/sfx/impact-bass-1.mp3",
+          "sha256": "634d5eda5eb7b501aca98393a64f3815eccf24157cd1d95df55aaec1b5000bd7"
+        },
+        {
+          "path": "assets/sfx/impact-bass-2.mp3",
+          "sha256": "fb832995477784f44ba8533359d20caf706195b52117ecc2a33b3e63e3c1307b"
+        },
+        {
+          "path": "assets/sfx/key-press.mp3",
+          "sha256": "bcc892df0898bf466162f14233c3e92a8c1ea351f6affd8a3a7e56c9a760bb72"
+        },
+        {
+          "path": "assets/sfx/manifest.json",
+          "sha256": "198c90afa10060dffa51a119102b8548e0a9495477615e13ad81d5d0bc207b6a"
+        },
+        {
+          "path": "assets/sfx/notification.mp3",
+          "sha256": "b1559967dedb7994a82371f10cec9f7f3992e6b147b4cd88d62112bcdc3f9ba3"
+        },
+        {
+          "path": "assets/sfx/ping.mp3",
+          "sha256": "c54d088fa2709e6b3c9ce87594a9187d0d5338d3a8c683271f9c4353a8ee8c91"
+        },
+        {
+          "path": "assets/sfx/pop.mp3",
+          "sha256": "19ab7193f626ff57fdeef60b45543bac416fcbcec803cfb417abe4b271c1b352"
+        },
+        {
+          "path": "assets/sfx/riser.mp3",
+          "sha256": "d2f29d49f27dee7d3b25af22ffe5bebc39390cc5d5fb3b3e1c433499c77f3d1d"
+        },
+        {
+          "path": "assets/sfx/sparkle.mp3",
+          "sha256": "a66b2829a307bcb5b1f6551d7cdc72fe45bbe9a91abfb994d28db8d5e4e42ea8"
+        },
+        {
+          "path": "assets/sfx/typing.mp3",
+          "sha256": "944160652faeb7b32acc9341ede4d735a5c9a4ce3fe8509ef7eab91efb430487"
+        },
+        {
+          "path": "assets/sfx/whoosh-cinematic.mp3",
+          "sha256": "0a0f3505856fdfa84ac6b86b3c55ccd0ef1eb4ff0907d7b6934002218a73404e"
+        },
+        {
+          "path": "assets/sfx/whoosh-short.mp3",
+          "sha256": "c2efd9d902a59bf9ec5019035d7deadd17762136896b6e3cb6dd99ea50997a30"
+        },
+        {
+          "path": "assets/sfx/whoosh.mp3",
+          "sha256": "c2efd9d902a59bf9ec5019035d7deadd17762136896b6e3cb6dd99ea50997a30"
+        },
+        {
+          "path": "references/beat-builder-guide.md",
+          "sha256": "d4cb02c2eab9170de1bac02ffdc79a6a8436ff9f7afbfb786142d8d5b0801483"
+        },
+        {
+          "path": "references/capabilities.md",
+          "sha256": "504ef7f7ef794884a66e2dd94feefb350886c444893859b8db3e8c43e977cab7"
+        },
+        {
+          "path": "references/step-0-capture.md",
+          "sha256": "6c1dbb4169c7dfd85f8651e133573c4aa1037edc923efe3fc19d0c76e0db6988"
+        },
+        {
+          "path": "references/step-1-design.md",
+          "sha256": "5da6e5018b1febb83ebaf2e3d4ffbf661a6a8c24e1e3fc39f9637517d3d35986"
+        },
+        {
+          "path": "references/step-2-brief.md",
+          "sha256": "a5d6fcbc5910f8728869c4082ae6b3f32c58094348a65379c0c267bbb84a467f"
+        },
+        {
+          "path": "references/step-3-storyboard.md",
+          "sha256": "396515da5c0cedf93e8f2749b621f93703e3c027b9dfe4073e96fac6d37ffb17"
+        },
+        {
+          "path": "references/step-4-vo.md",
+          "sha256": "9a70b1161bafef9e2d7f765db606bd76c61938102b05546cf6ba9f98e96b85b8"
+        },
+        {
+          "path": "references/step-5-build.md",
+          "sha256": "557b2efe18eebe43d9980e47de14867c9251fd2d960d9510880dd0903bc6571c"
+        },
+        {
+          "path": "references/step-6-validate.md",
+          "sha256": "b83f5db22bb42130ae30405852790713be4b7b2a686961dd34a8d2b916af027d"
+        },
+        {
+          "path": "scripts/w2h-verify.mjs",
+          "sha256": "079deae7eeb36912eade293c2e25ccdba8c5f36c78164c67e441c646c90306bd"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "034276ce1b67aa7f56652ca0304372671d568d89ba074b01b754b2ed85c6250b"
+        }
+      ]
+    },
+    {
+      "name": "whiteboard-explainer",
+      "source_kind": "user-codex-skill-installation",
+      "repository_path": ".claude/skills/whiteboard-explainer",
+      "files": [
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "e746d648e01e15bcb9f7d32385046b1225e3d113647d4c9cd614a0dc9fac2296"
+        },
+        {
+          "path": "assets/whiteboard-style.json",
+          "sha256": "5ab08da9d386bcd2f781d734a01780ec77f0e3678cdf223c40d822b3d7f67b39"
+        },
+        {
+          "path": "references/cost-and-gates.md",
+          "sha256": "a635336a979b888f7a307ede553d403cd9a3fced360356bc919967654f76105e"
+        },
+        {
+          "path": "references/elevenlabs-narration.md",
+          "sha256": "7913deb238ab467bda1bed37f1445b8fbff6d7ecfacfc2f29217dcb8720c3821"
+        },
+        {
+          "path": "references/production-pipeline.md",
+          "sha256": "763faa9214873c4ec1bcec70d019223039878eaed7fef9061a5e7614ed5d3152"
+        },
+        {
+          "path": "references/scene-schema.md",
+          "sha256": "095eb2f5accba37e8b9f0b79d06b3607929d49ee37f33f0df37dad8e3ea34877"
+        },
+        {
+          "path": "references/seedance-primary.md",
+          "sha256": "aa28c03b46c2d185b082fe2e038bd1e05bf86a9235039a6e171747aba07f1df7"
+        },
+        {
+          "path": "references/visual-system.md",
+          "sha256": "e267941914928ea9c360269020232aecc7bede38ef44208bfacc5c3050801c9d"
+        },
+        {
+          "path": "scripts/build_composition.py",
+          "sha256": "267d44b252c9a9bf578bce32688d74d1044408401358767a214c3ad5359e1865"
+        },
+        {
+          "path": "scripts/init_project.py",
+          "sha256": "cb5c7ec56d82b8ca0cf9a2cca6cd162327a357dd89a26cf22f97df666302eb44"
+        },
+        {
+          "path": "scripts/plan_narration.py",
+          "sha256": "8b4c16dd0e1eae5b156b49a5bd6eaf6b656134efacbaac19d2fbfc74e3671c1b"
+        },
+        {
+          "path": "scripts/plan_seedance.py",
+          "sha256": "39ab24b7cf93498787afdf6f040eabcd6169d727554b4f58c3332805a5526bf6"
+        },
+        {
+          "path": "scripts/smoke_test.py",
+          "sha256": "cf7df9572b0b3085bd0b7c7524bb4805be60fc37c9ae5e75448096bf1911f11d"
+        },
+        {
+          "path": "scripts/validate_project.py",
+          "sha256": "1632a027e0ede817f7ca42daf4757ba8853ede71150b0890f81ebbcf702dafa9"
+        },
+        {
+          "path": "scripts/whiteboard_lib.py",
+          "sha256": "379b6027c91b0d113983c0babe61f6d1d8ee57e2f05e8600884271cb59c7c7e8"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "e34897c00b19fc9649aa5299d3f6ccf934ecbf7a24e3158a53be2fb06a191b68"
+        }
+      ]
+    }
+  ]
+}

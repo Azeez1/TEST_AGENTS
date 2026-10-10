@@ -219,3 +219,14 @@ add_governance_reminders.sh
 
 # Interview practice workspace
 /MULTI_Agent/
+
+# Bundled skill libraries and sound effects are source assets, not runtime output.
+!/.claude/skills/*/scripts/lib/
+!/.claude/skills/*/scripts/lib/**
+!/.codex/skills-export/*/scripts/lib/
+!/.codex/skills-export/*/scripts/lib/**
+!/.claude/skills/website-to-video/assets/sfx/*.mp3
+!/.codex/skills-export/website-to-video/assets/sfx/*.mp3
+# Keep caches ignored inside the bundled library exceptions above.
+**/scripts/lib/__pycache__/
+**/scripts/lib/*.py[cod]

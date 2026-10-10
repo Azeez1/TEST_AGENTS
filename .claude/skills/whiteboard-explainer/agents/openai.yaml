@@ -1,0 +1,7 @@
+interface:
+  display_name: "Whiteboard Explainer"
+  short_description: "Build SeedDance whiteboard explainers cleanly"
+  brand_color: "#111827"
+  default_prompt: "Use $whiteboard-explainer to turn this topic into a SeedDance-led whiteboard explainer with ElevenLabs narration."
+policy:
+  allow_implicit_invocation: true

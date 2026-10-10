@@ -1,0 +1,12 @@
+{
+  "name": "Warm Paper Marker",
+  "surface": "#F7F4EC",
+  "ink": "#111827",
+  "accent_primary": "#2563EB",
+  "accent_secondary": "#F59E0B",
+  "caption_background": "rgba(17, 24, 39, 0.92)",
+  "caption_foreground": "#FFFFFF",
+  "line_style": "confident black marker, restrained detail",
+  "camera": "stable overhead whiteboard",
+  "generated_text_policy": "none; render exact copy in HyperFrames"
+}

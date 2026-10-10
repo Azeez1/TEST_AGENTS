@@ -1,0 +1,4 @@
+interface:
+  display_name: "ASD-STE100"
+  short_description: "Clear technical writing with optional ELI5 lessons"
+  default_prompt: "Use $asd-ste100 to write or review this material clearly while preserving facts, conditions, and uncertainty. Reuse ELI5 when visual teaching helps."
