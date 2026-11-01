@@ -35,6 +35,7 @@ REQUIRED_ENV = {
     "bright-data": ["BRIGHTDATA_API_TOKEN"],
     "n8n-mcp": ["N8N_API_URL", "N8N_API_KEY"],
     "sequential-thinking": [],
+    "rea": [],
     "marketing-tools": ["OPENAI_API_KEY"],
 }
 

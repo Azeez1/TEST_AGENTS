@@ -166,8 +166,9 @@ Agent autonomously:
 | n8n-mcp | `N8N_API_URL`, `N8N_API_KEY` |
 | marketing-tools | `OPENAI_API_KEY` (optional: `GEMINI_API_KEY`, `PIAPI_API_KEY`) |
 | sequential-thinking | none |
+| rea | none (pinned to the version installed locally; allow `registry.npmjs.org`) |
 
-google-workspace and playwright are not mirrored: use the claude.ai Gmail/Drive/Calendar connectors instead. Also allow each API's host under the environment's Network access. The hook never overwrites a `.mcp.json` it didn't generate, and does nothing in local sessions.
+google-workspace and playwright are not mirrored: use the claude.ai Gmail/Drive/Calendar connectors instead. tradingview and the telegram plugin stay local only: tradingview drives TV Desktop on the PC's port 9222, and a second telegram poller in the cloud would fight the local one for the same bot (409 conflict). Also allow each API's host under the environment's Network access. The hook never overwrites a `.mcp.json` it didn't generate, and does nothing in local sessions.
 
 ---
 
