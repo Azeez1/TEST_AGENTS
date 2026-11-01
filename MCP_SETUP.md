@@ -168,7 +168,7 @@ Agent autonomously:
 | sequential-thinking | none |
 | rea | none (pinned to the version installed locally; allow `registry.npmjs.org`) |
 
-google-workspace and playwright are not mirrored: use the claude.ai Gmail/Drive/Calendar connectors instead. tradingview and the telegram plugin were removed on 2026-11-01 (not in use). Neither one should be mirrored if it comes back: tradingview drives TV Desktop on the PC's port 9222, and a second telegram poller in the cloud would fight the local one for the same bot (409 conflict). Also allow each API's host under the environment's Network access. The hook never overwrites a `.mcp.json` it didn't generate, and does nothing in local sessions.
+google-workspace and playwright are not mirrored: use the claude.ai Gmail/Drive/Calendar connectors instead. tradingview stays local only (it drives TV Desktop on the PC's port 9222). The telegram plugin was turned off on 2026-11-01 (not in use); don't mirror it if it comes back, because a second poller in the cloud would fight the local one for the same bot (409 conflict). Also allow each API's host under the environment's Network access. The hook never overwrites a `.mcp.json` it didn't generate, and does nothing in local sessions.
 
 ---
 
