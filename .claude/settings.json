@@ -175,7 +175,7 @@
     }
   },
   "enabledPlugins": {
-    "telegram@claude-plugins-official": true
+    "telegram@claude-plugins-official": false
   },
   "hooks": {
     "SessionStart": [
