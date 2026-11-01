@@ -15,15 +15,14 @@
 
 ### Windows scheduled tasks (added 2026-06-10)
 
-Headless Claude Code runs via `scripts/run_scheduled_claude.ps1`. Each task gets a narrow tool allowlist (everything else auto-denies headless); the hard-block hooks apply on top. Logs land in `LOGS/scheduled/<name>-<date>.log` — skim them in the weekly glance.
+Headless Claude Code runs via `scripts/run_scheduled_claude.ps1` on the **desktop only** (DESKTOP-B8JD7TL), on the **claude.ai subscription only**. The runner strips API-key env vars, checks `claude auth status` is `claude.ai` before every run (logs FAILED and stops otherwise), and no-ops on any other machine. Register or re-register the jobs with `powershell -ExecutionPolicy Bypass -File scriptsegister_scheduled_claude.ps1`. Each task gets a narrow tool allowlist (everything else auto-denies headless); the hard-block hooks apply on top. Logs land in `LOGS/scheduled/<name>-<date>.log` — skim them in the weekly glance.
 
 | Task | Schedule | Runs |
 |---|---|---|
 | `DuxOS sync-memory daily` | Daily 7:00am | `/sync-memory` |
 | `DuxOS agent-health weekly` | Monday 8:00am | `/agent-health full generate-report` |
 
-Retired 2026-07-01 (were billing API credits daily/weekly): `DuxOS lead-gen-pm daily` and `DuxOS brand-check weekly`. The runner script now no-ops them; finish the job on the EZ desktop with:
-`Unregister-ScheduledTask -TaskName 'DuxOS lead-gen-pm daily' -Confirm:$false` and `Unregister-ScheduledTask -TaskName 'DuxOS brand-check weekly' -Confirm:$false`, then remove them from `$disabledTasks` in `scripts/run_scheduled_claude.ps1`.
+Retired 2026-07-01 (were billing API credits): `lead-gen-pm` and `brand-check` stay in `$disabledTasks`. The other machine still has old Task Scheduler entries for all four; they now log SKIPPED. Remove them there with `Get-ScheduledTask DuxOS* | Unregister-ScheduledTask -Confirm:$false`.
 
 Manage: `Get-ScheduledTask DuxOS*` · run now: `Start-ScheduledTask -TaskName 'DuxOS sync-memory daily'` · remove: `Unregister-ScheduledTask -TaskName '<name>'`
 
