@@ -48,11 +48,16 @@ This command runs diagnostic checks across all workspace components:
 ```bash
 python tools/lint_agent_declarations.py
 python tools/check_codex_drift.py
+python tools/census.py
+python tools/gen_tool_registry.py
 ```
 
-The drift checker verifies the generated `.codex/` mirror is fresh relative to `.claude/` sources (ghost/stale/unseen entries via `.codex/manifest.json`). On DRIFT, the fix is always: run `/sync-codex` — never hand-edit `.codex/`.
+- **Drift checker** compares the generated `.codex/` mirror with its `.claude/` sources: agent files (new, removed, changed), skill instructions, skills on disk that never made it into the manifest, hook scripts, and the MCP server list. On DRIFT, the fix is always: run `/sync-codex`, never hand-edit `.codex/`.
+- **What it does NOT prove about Codex:** binary skill assets, the global `~/.codex/skills` install, secret values, and slash commands (the exporter does not mirror them; Codex gets only its 3 `codex-*` aliases). It is a file-copy check: it never launches Codex, so "FRESH" means the copy is current, not that Codex loads or runs it. Its JSON `scope` field states this on every run; quote it in the report.
+- **Census** (`tools/census.py`) compares CLAUDE.md's header and team table with the agents, skills and MCP servers on disk. On mismatch run `python tools/census.py --write`.
+- **Tool registry** (`tools/gen_tool_registry.py`) checks the generated custom-tool inventory in TOOL_REGISTRY.md and flags phantom `*.py` entries with no file. On mismatch run `python tools/gen_tool_registry.py --write`; remove phantom rows by hand.
 
-It scans all 73 agent files and verifies every declaration against reality:
+The linter scans every agent file (count: see CLAUDE.md) and verifies every declaration against reality:
 - `mcp__server__*` entries → server exists in `.mcp.json` and is not disabled
 - snake_case entries → `tools/<name>.py` exists (root or team)
 - kebab-case / `plugin:skill` entries → `SKILL.md` exists (root, document-skills, or team)
@@ -63,13 +68,10 @@ Exit code 1 = violations (report them verbatim as CRITICAL findings). Also check
 - Required fields (name, description, tools)
 - Syntax and formatting issues
 
-**Teams checked (73 agents across 8 teams + ROOT — see CLAUDE.md, single source of truth):**
-- ROOT (5 agents incl. supervisor, oracle)
-- MARKETING_TEAM (18), ENGINEERING_TEAM (15), FINANCIAL_TEAM (14), SALES_TEAM (9)
-- QA_TEAM (5), VOICE_TEAM (3), PROPOSAL_TEAM (3), HEDGE_FUND (1)
+**Teams checked:** every team in CLAUDE.md's table (single source of truth for the roster; `tools/census.py` verifies it).
 
 **Report includes:**
-- Total agents: 73
+- Total agents (from `python tools/census.py --json`)
 - Agents with issues (from linter output)
 - Missing required fields
 - Invalid tool references
@@ -88,9 +90,9 @@ Exit code 1 = violations (report them verbatim as CRITICAL findings). Also check
 - `tools/` (root-level)
 - `TEAM_NAME/tools/` (team-specific)
 
-**Check against TOOL_REGISTRY.md:**
-- All registered tools exist
-- No unregistered tools in use
+**Check against TOOL_REGISTRY.md** (automated by `python tools/gen_tool_registry.py` in step 1):
+- All registered tools exist (no phantom entries)
+- No unregistered tools (generated inventory matches disk)
 - Tool versions match documentation
 - Dependencies are installed
 
@@ -103,7 +105,7 @@ Exit code 1 = violations (report them verbatim as CRITICAL findings). Also check
 - Response time is acceptable
 - Error rates are normal
 
-**MCP servers checked (10 in `.mcp.json`):**
+**MCP servers checked (every server in `.mcp.json`; count: see CLAUDE.md):**
 - Google Workspace, Perplexity, Bright Data, n8n, Sequential Thinking
 - Marketing Tools, Playwright, Microsoft Learn, Azure, TradingView
 - Plus session-level: claude-in-chrome (via /chrome, not in .mcp.json)

@@ -1,6 +1,6 @@
 # TEST_AGENTS - AI Multi-Agent System
 
-73 agents across 8 teams + 54 skills (50 top-level + 4 document-skills) + 10 MCP servers. Pure Claude Code conversation — no Python orchestrators. **This table is the single source of truth for roster counts — other docs defer to it.**
+73 agents across 8 teams, plus 6 Codex-native agents in CODEX_TEAM (census 2026-11-03) + 85 skills (81 top-level + 4 document-skills; census 2026-11-03) + 10 MCP servers. Pure Claude Code conversation — no Python orchestrators. **This table is the single source of truth for roster counts — other docs defer to it.**
 
 | Team | Agents | Orchestrator |
 |------|--------|-------------|
@@ -13,6 +13,7 @@
 | PROPOSAL_TEAM | 3 | rfp-agent |
 | HEDGE_FUND | 1 | ict-trader |
 | ROOT | 5 | supervisor + oracle |
+| CODEX_TEAM (Codex runtime, `CODEX_TEAM/.codex/agents/`) | 6 | codex-team-manager |
 
 Reference docs: [MULTI_AGENT_GUIDE.md](MULTI_AGENT_GUIDE.md) | [CLAUDE_REFERENCE.md](CLAUDE_REFERENCE.md) | [MCP_SETUP.md](MCP_SETUP.md)
 

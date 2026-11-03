@@ -6,7 +6,7 @@ allowed-tools: Bash
 Sync Claude Code infrastructure to the Codex layer. This re-runs `scripts/export_codex_layer.py` with full flags so OpenAI Codex CLI gets:
 - All team agents (`.codex/agents/<TEAM>/<agent>.md`)
 - All skills mirrored (`.codex/skills-export/`) AND installed globally (`~/.codex/skills/`) so Codex `/skills` discovers them
-- Slash command mirrors (`.codex/commands/`)
+- Codex-only command aliases (`.codex/commands/`: codex-sync, codex-sync-secrets, codex-validate). Claude slash commands in `.claude/commands/` are NOT mirrored
 - MCP server config (`.codex/config.toml` + `.codex/mcp.generated.toml`)
 - Secret env file with real values (`.codex/secrets.local.env` — gitignored)
 - Enforcement hooks (`.codex/hooks/*.ps1` + `.codex/hooks.json`) — the same guardrail gates that run in Claude Code, so Codex enforces secrets/money/destructive/deploy/etc. identically. The Codex-only `claude_boundary_gate.py` is preserved.
